@@ -94,7 +94,11 @@ def natW : NAt hL (withLoc L) (cfL L (cfOf x)) (chL L l.c.ch) (tpL L l.c.tp) whe
   all := al.a
   chr_eq := al.chr
   host := ⟨(by with_unfolding_all exact (l.a.host.fr :)), (by with_unfolding_all exact (l.a.host.jLL :)), (by with_unfolding_all exact (l.a.host.embLL :))⟩
-  frameN := fun y => (by with_unfolding_all exact (((congrArg (fun e : (Dof x).host.E →+* Qb => e ((by with_unfolding_all exact (y :)))) ((by with_unfolding_all exact (al.jE :)) : (kc% al.a.gal.fr.jE : (Dof x).host.E →+* Qb) = l.a.jE)).trans (l.a.frame ((by with_unfolding_all exact (y :))))) :))
+  frameN := by
+    intro y
+    with_unfolding_all
+      have embeddingEq : (al.a.gal.fr.jE : (Dof x).host.E →+* Qb) = l.a.jE := al.jE
+      exact (congrArg (fun e => e y) embeddingEq).trans (l.a.frame y)
   chrN := al.chrN
   chrGal := al.chrGal
   Pq := (by with_unfolding_all exact (l.Pq :))
@@ -132,7 +136,14 @@ def rowD : NRow (D := DL x L) (natD l Sp Au ss al hLg) (datL x L).R (datL x L).F
   nexp := ysL L l
   hecke := hkHL L l
   grp := grpD l L
-  rowLoc := (by with_unfolding_all exact ((al.loc ((by with_unfolding_all exact ((frameY Y) :))) ((by with_unfolding_all exact ((eq_of_heq (kc% hY.rep : HEq (repOf Y) (kc% (repOf x.r.Y) : type_of% (repOf Y)))) :)))) :))
+  rowLoc := by
+    let frame : Formalism.L2.RowFrame (withLoc L) := by
+      with_unfolding_all exact (frameY Y :)
+    have frameRep : frame.rep = repOf x.r.Y := by
+      apply eq_of_heq
+      with_unfolding_all exact hY.rep
+    have tied := al.loc frame frameRep
+    with_unfolding_all exact tied
   S_eq := (by with_unfolding_all exact ((SL_heq L l.rat) :))
   hL_eq := (by with_unfolding_all exact ((HEq.refl l.rat.In.hL) :))
   rep_eq := (by with_unfolding_all exact (hY.rep.symm :))
