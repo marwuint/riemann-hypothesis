@@ -1,5 +1,4 @@
 import Mathlib
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LowerMapSharpAmbientTie
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StabRatInjective
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LowerMapTie
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.LowerMapTwGen
@@ -27,9 +26,6 @@ import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.APerTw
 import Development.AbelianVarietyTheory.Definitions.GlobalTwisting.EventuallyAllScaleContextsAndOfBoth
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.NotGeoClFalse
 import Development.AbelianVarietyTheory.Definitions.AutomorphicMembership.UpLReStage
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.ExistsHostDatumOfPlaceDataStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.HostPlacesRayFieldStatement
-import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.StandardLatticesDiagonalStatement
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.Host GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl NumberField IsDedekindDomain
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.HeightCounting.Up GlobalTheory.Mem.SRe GlobalTheory.Mem.R3.Rw

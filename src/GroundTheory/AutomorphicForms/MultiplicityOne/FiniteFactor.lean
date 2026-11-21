@@ -1,5 +1,4 @@
 import Mathlib
-import GroundTheory.AutomorphicForms.MultiplicityOne.FiniteLevel
 import GroundTheory.AutomorphicForms.MultiplicityOne.FiniteLevelGroups
 import GroundTheory.AutomorphicForms.MultiplicityOne.OpenSubgroupRep
 
