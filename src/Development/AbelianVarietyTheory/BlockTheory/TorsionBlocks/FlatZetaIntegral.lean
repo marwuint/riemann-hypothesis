@@ -37,13 +37,4 @@ theorem norm_flatIntegrand (f : X → ℂ) {a : X → ℝ} (s₀ s : ℂ) {x : X
     ‖flatIntegrand f a s₀ s x‖ = ‖f x‖ * a x ^ (s.re - s₀.re) := by
   rw [flatIntegrand, norm_mul, Complex.norm_cpow_eq_rpow_re_of_pos hx, Complex.sub_re]
 
-example (s : ℂ) :
-    Integrable (flatIntegrand (fun _ : Unit => (1 : ℂ)) (fun _ => (1 / 2 : ℝ)) 0 s)
-        (Measure.dirac ()) ∧
-      flatZeta (Measure.dirac ()) (fun _ : Unit => (1 : ℂ)) (fun _ => (1 / 2 : ℝ)) 0 s
-        = (((1 / 2 : ℝ) : ℝ) : ℂ) ^ s := by
-  refine ⟨?_, ?_⟩
-  · exact Integrable.of_finite
-  · simp [flatZeta, flatIntegrand]
-
 end GlobalTheory.IndefiniteRowSideFullHecke.FlatZetaIntegral

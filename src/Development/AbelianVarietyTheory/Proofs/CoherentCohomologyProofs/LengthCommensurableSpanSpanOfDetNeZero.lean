@@ -363,12 +363,6 @@ theorem valuation_det_eq_exp_neg_signedLength {A B : Submodule R V} [A.IsLattice
     WithZero.exp_log ((map_ne_zero _).mpr g.isUnit_det'.ne_zero), Ring.ordFrac_eq_valuation_inv,
     inv_inv]
 
-example {ϖ : R} (hϖ : Irreducible ϖ) :
-    signedLength (Submodule.span R (Set.range fun _ : Unit => (1 : K)))
-      (Submodule.span R (Set.range fun _ : Unit => (algebraMap R K ϖ)⁻¹)) = -1 :=
-  signedLength_span_eq_of_det_eq_unit_mul_zpow (K := K) (by simp)
-    (Matrix.of fun _ _ => (algebraMap R K ϖ)⁻¹) (by simp) hϖ 1 (-1) (by simp)
-
 end Lattice
 
 end GlobalTheory

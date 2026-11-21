@@ -126,23 +126,6 @@ def Definite.Statement : Prop :=
   ∀ (N n : ℕ) (P : MvPolynomial (Fin (N + 1)) ℂ), P ∈ H0 N n →
     (l2Inner (N := N) n P P = 0 ↔ P = 0)
 
-example : LinearMap.det ((2 : ℂ) • LinearMap.id : (Fin 1 → ℂ) →ₗ[ℂ] (Fin 1 → ℂ)) ≠ 0 := by
-  rw [LinearMap.det_smul, LinearMap.det_id]; norm_num
-
-example : ((diagUnitary (N := 1) ![1, ⟨-1, by simp [Unitary.mem_iff]⟩] :
-    Matrix (Fin 2) (Fin 2) ℂ) 1 1) = -1 := by
-  simp [diagUnitary]
-
-example : (Finsupp.single (0 : Fin 2) 1) ≠ Finsupp.single 1 1 ∧
-    (Finsupp.single (0 : Fin 2) 1).degree = (Finsupp.single (1 : Fin 2) 1).degree := by
-  refine ⟨fun h => ?_, by simp⟩
-  have := congrArg (fun f => f 0) h
-  simp at this
-
-example : (X 0 : MvPolynomial (Fin 2) ℂ) ∈ H0 1 1 ∧ (![1, 0] : Fin 2 → ℂ) ≠ 0 :=
-  ⟨(mem_homogeneousSubmodule _ _).mpr (isHomogeneous_X ℂ 0), fun h => by
-    simpa using congrFun h 0⟩
-
 end FSInv
 
 end

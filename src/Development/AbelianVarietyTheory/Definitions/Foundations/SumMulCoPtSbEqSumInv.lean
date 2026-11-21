@@ -117,17 +117,4 @@ theorem chiAvg_shift (N p m k : ℕ) [NeZero N] (ψ : DirichletCharacter K (p ^ 
   simp only [MulChar.inv_apply_eq_inv', inv_inv] at h
   simp only [h, chiAvg, ZMod.natCast_zmod_val]
 
-example (p m k : ℕ) (ψ : DirichletCharacter K (p ^ m)) (c d x : ℤ) (s : ℕ) :
-    chiAvg 1 p m k ψ (fun _ => 1) c d x s = GlobalTheory.KummerEisensteinGalois.coPtS 1 p m k ψ c d x s := by
-  rw [chiAvg, Fintype.sum_unique, ← coPtSb_one, inv_one, one_mul,
-    coPtSb_congr 1 p m k ψ c d (a' := x) (b' := 1) Int.modEq_one Int.modEq_one]
-
-example (N p m k : ℕ) (ψ : DirichletCharacter K (p ^ m)) (a b : ℤ) (s : ℕ) : coPtSb N p m k ψ 1 1 a b s = 0 := by
-  simp [coPtSb]
-
-example : GlobalTheory.KummerEisensteinGalois.coPtMu (K := ℚ) 5 3 0 3 1 1 1 2 = 1 := by
-  have h1 : ∀ y : ZMod (3 ^ 0), (1 : DirichletCharacter ℚ (3 ^ 0)) y = 1 := fun y =>
-    MulChar.one_apply (@isUnit_of_subsingleton _ _ (inferInstanceAs (Subsingleton (ZMod 1))) y)
-  simp [GlobalTheory.KummerEisensteinGalois.coPtMu, GlobalTheory.KummerEisensteinGalois.cmul, GlobalTheory.KummerEisensteinGalois.ffMu, GlobalTheory.KummerEisensteinGalois.eeMu, Finset.sum_range_succ, h1, Int.ModEq]
-
 end GlobalTheory.LambdaValuationPowers

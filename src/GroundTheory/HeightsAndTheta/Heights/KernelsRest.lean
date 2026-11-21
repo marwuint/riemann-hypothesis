@@ -124,14 +124,6 @@ theorem isFlagIntegral_one : IsFlagIntegral 1 1 1 flagIntegralOne where
       rw [hD]; exact isHomogeneous_X _ _
     · simp [flagIntegralOne, coeff_X, Finsupp.single_eq_single_iff]
 
-example : (0 : ℝ) < 1 ∧ (∀ p ∈ {p : ℕ | p.Prime}, p.Prime) ∧
-    4 * (1 : ℕ) * ((1 + 1 : ℕ) : ℝ) ^ 2 ≤ 16 :=
-  ⟨one_pos, fun _ h => h, by norm_num⟩
-
-example : Antitone (![2, 1] : Fin 2 → ℕ) := by
-  intro a b h
-  fin_cases a <;> fin_cases b <;> simp_all
-
 end
 
 end GroundTheory.Heights₂.Heights

@@ -132,10 +132,4 @@ theorem circleAsph_G_nontrivial : Nontrivial (Multiplicative (AddSubgroup.zmulti
   have := congrArg (fun g => ((Multiplicative.toAdd g : AddSubgroup.zmultiples (1 : ℝ)) : ℝ)) h
   norm_num at this
 
-example : Asph.Lift circleAsph circleAsph (ContinuousMap.id _) := circleAsph.liftId
-example : circleAsph.n = 1 := rfl
-
-example (σ : Representation ℤ Γ L) (a b : SD σ) :
-    (a * b).left = Multiplicative.ofAdd ((a.left).toAdd + σ a.right (b.left).toAdd) := rfl
-
 end GlobalTheory.KS

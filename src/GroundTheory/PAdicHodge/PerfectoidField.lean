@@ -145,11 +145,6 @@ theorem surjective_fontaineTheta : Function.Surjective (WittVector.fontaineTheta
 theorem isDomain_preTilt : IsDomain (PreTilt (normInteger K) p) :=
   PreTilt.isDomain K NormedField.valuation (normInteger K) normInteger_integers p
 
-example : Field (Tilt K NormedField.valuation (normInteger K) normInteger_integers p) :=
-  inferInstance
-
-example : PreTilt (normInteger K) p →* normInteger K := PreTilt.untilt
-
 end IsPerfectoidField
 
 namespace IsPerfectoidField

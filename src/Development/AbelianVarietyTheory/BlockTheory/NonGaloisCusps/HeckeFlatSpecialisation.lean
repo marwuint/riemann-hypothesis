@@ -186,9 +186,6 @@ section Basic₂
 variable (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 variable {F : Type} [Field F] [Algebra O F] [IsFractionRing O F]
 
-example (p : ℕ) [Fact p.Prime] : Finite (ResidueField ℤ_[p]) ∧ IsFractionRing ℤ_[p] ℚ_[p] :=
-  ⟨Finite.of_equiv _ (PadicInt.residueField (p := p)).symm.toEquiv, inferInstance⟩
-
 end Basic₂
 
 end GlobalTheory.IndefiniteRowSideFullHecke.HeckeFlatSpecialisation

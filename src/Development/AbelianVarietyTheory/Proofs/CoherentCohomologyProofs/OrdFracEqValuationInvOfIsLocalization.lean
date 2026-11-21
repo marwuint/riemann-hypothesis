@@ -268,19 +268,4 @@ end Semilocal
 
 end ExtField
 
-example {K L : Type*} [Field K] [Field L] [Algebra K L] {a : L} (ha : a ≠ 0) :
-    ∃ W₀ : Submodule K (K × K), W₀ ≠ ⊥ ∧ W₀ ≠ ⊤ ∧ LinearMap.ker ((LinearMap.pi fun _ : Fin 1 =>
-      (LinearMap.fst K K K).smulRight a).liftBaseChange L) = W₀.baseChange L := by
-  refine ⟨LinearMap.ker (LinearMap.fst K K K), ?_, ?_, ?_⟩
-  · rw [Submodule.ne_bot_iff]
-    exact ⟨(0, 1), rfl, by simp⟩
-  · intro h
-    simpa using (h ▸ Submodule.mem_top : (1, 0) ∈ LinearMap.ker (LinearMap.fst K K K))
-  · refine ExtField.ker_liftBaseChange_eq_of_finrank_le _ (fun x hx => ?_) ?_
-      (θ := fun _ => (1, 0)) (by simpa using ha)
-    · funext i
-      simpa [ha] using hx
-    · rw [((LinearMap.fst K K K).quotKerEquivOfSurjective LinearMap.fst_surjective).finrank_eq]
-      simp
-
 end GlobalTheory

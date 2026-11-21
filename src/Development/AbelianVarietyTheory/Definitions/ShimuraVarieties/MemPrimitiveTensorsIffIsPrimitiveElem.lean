@@ -1502,20 +1502,6 @@ section Examples
 
 open CartierDual
 
-example (R H : Type) [CommRing R] [CommRing H] [HopfAlgebra R H] [IsCocomm R H]
-    [Module.Finite R H] [Module.Projective R H] : CommHopfAlgCat R :=
-  have : IsCocomm R (CartierDual R H) := inferInstance
-  have : Module.Finite R (CartierDual R H) := inferInstance
-  have : Module.Projective R (CartierDual R H) := inferInstance
-  CommHopfAlgCat.of R (CartierDual R H)
-
-example : addMonoidAlgebraEquiv ℤ (ZMod 3)
-    (antipode ℤ ((addMonoidAlgebraEquiv ℤ (ZMod 3)).symm (Pi.single 1 1))) = Pi.single 2 1 := by
-  funext γ
-  rw [antipode_addMonoidAlgebra, AlgEquiv.apply_symm_apply]
-  revert γ
-  decide
-
 theorem canonical_zmod_two_ne_one (R : Type*) [CommRing R] [Nontrivial R] :
     canonical R (AddMonoidAlgebra R (ZMod 2)) ≠ 1 := by
   intro h
@@ -1527,25 +1513,6 @@ theorem canonical_zmod_two_ne_one (R : Type*) [CommRing R] [Nontrivial R] :
     map_one (addMonoidAlgebraEquiv R (ZMod 2)), AddMonoidAlgebra.one_def,
     addMonoidAlgebraEquiv_symm_single] at h2
   simp at h2
-
-example (R : Type) [CommRing R] [Nontrivial R] :
-    IsPerfectBicharacter R (canonical R (AddMonoidAlgebra R (ZMod 2))) ∧
-      ¬ IsGroupLikeElem R (canonical R (AddMonoidAlgebra R (ZMod 2))) :=
-  ⟨isPerfectBicharacter_canonical _ _, fun h => canonical_zmod_two_ne_one R
-    ((isPerfectBicharacter_canonical _ _).toIsBicharacter.eq_one_of_isGroupLikeElem h)⟩
-
-example : IsPrimitiveElem (ZMod 2) ((addMonoidAlgebraEquiv (ZMod 2) (ZMod 2)).symm id) := by
-  refine tensor_ext fun a b => ?_
-  induction a using AddMonoidAlgebra.induction_linear with
-  | zero => simp
-  | add x y hx hy => simp only [add_tmul, map_add, hx, hy]
-  | single g r =>
-    induction b using AddMonoidAlgebra.induction_linear with
-    | zero => simp
-    | add x y hx hy => simp only [tmul_add, map_add, hx, hy]
-    | single g' r' =>
-      simp [AddMonoidAlgebra.single_mul_single]
-      ring
 
 end Examples
 

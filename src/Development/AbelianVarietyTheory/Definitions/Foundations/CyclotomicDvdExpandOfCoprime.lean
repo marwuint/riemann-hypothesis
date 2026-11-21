@@ -124,9 +124,6 @@ theorem FrobLift.witt (p : ℕ) [hp : Fact p.Prime] (k : Type) [Field k] [CharP 
       simp [WittVector.constantCoeff_apply, WittVector.coeff_frobenius_charP]
     exact this
 
-example (p : ℕ) [Fact p.Prime] : FrobLift (WittVector p (AlgebraicClosure (ZMod p))) p
-    (WittVector.frobeniusEquiv p (AlgebraicClosure (ZMod p))) := FrobLift.witt p _
-
 def padicToWitt (p : ℕ) [Fact p.Prime] (k : Type) [CommRing k] [CharP k p] : ℤ_[p] →+* WittVector p k :=
   (WittVector.map (ZMod.castHom (dvd_refl p) k)).comp (WittVector.equiv p).symm.toRingHom
 
@@ -324,25 +321,6 @@ theorem levF_levAct [IsHausdorff (Ideal.span {(p : R)}) R] (σ : R ≃+* R) (m :
   obtain ⟨h, rfl⟩ := Ideal.Quotient.mk_surjective x
   rw [levAct_ev, levF_ev, levF_ev, levAct_ev, smap_sbp]
 
-example : sbp p (-1) (1 + PowerSeries.X : PowerSeries R) * (1 + PowerSeries.X) = 1 := by
-  have h : (1 + PowerSeries.X : PowerSeries R) = PowerSeries.binomialSeries R ((1 : ℕ) : ℤ_[p]) := by
-    rw [PowerSeries.binomialSeries_nat, pow_one]
-  rw [sbp_one_add_X, h, ← PowerSeries.binomialSeries_add]
-  simpa using (PowerSeries.binomialSeries_nat (R := ℤ_[p]) (A := R) 0)
-
 end Act
-
-example (p : ℕ) [Fact p.Prime] (k : Type) [Field k] [CharP k p] [PerfectRing k p] (m : ℕ) (b : ℤ_[p]ˣ)
-    (x : lev (WittVector p k) p m) :
-    letI := (padicToWitt p k).toAlgebra
-    levF (WittVector.frobeniusEquiv p k) p m (levAct p m b x) = levAct p m b (levF (WittVector.frobeniusEquiv p k) p m x) :=
-  letI := (padicToWitt p k).toAlgebra
-  haveI := (FrobLift.witt p k).complete
-  levF_levAct p _ m b x
-
-example : dd (1 + PowerSeries.X : PowerSeries R) = 1 + PowerSeries.X := by simp [dd]
-
-example : cyc R 2 1 = PowerSeries.X + 2 := by
-  simp [cyc, Polynomial.cyclotomic_two]; ring
 
 end GlobalTheory.Col

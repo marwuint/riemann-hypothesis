@@ -564,8 +564,4 @@ theorem exists_half_char_of_sign {α : (ι → ℤ) → (ι → ℤ) → ℂ}
     funext i; simp [ofRealVec, neg_div]
   rw [this, neg_dotProduct]; ring
 
-example : Module.finrank ℂ (thetaLevel 3 !![1 + 2 * I, 1 / 2 + I; 1 / 2 + I, 2 * I]) = 9 := by
-  rw [finrank_thetaLevel ⟨isSiegel_example.1, isSiegel_example.2⟩ (by norm_num)]
-  simp
-
 end GlobalTheory

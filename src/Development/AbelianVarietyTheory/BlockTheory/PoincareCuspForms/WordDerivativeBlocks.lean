@@ -84,9 +84,6 @@ def exampleSystem : BlockSystem (fun _ : Fin 2 => 2) 3 where
   block := fun _ => exampleBlock
   disjoint := Subsingleton.pairwise
 
-example : exampleSystem.degree = 6 := by
-  decide
-
 section Operator
 
 variable {Λ W : Type} [NormedAddCommGroup W] [NormedSpace ℂ W]
@@ -139,12 +136,6 @@ theorem wordDeriv_perm (dir : Λ → W) {F : W → ℂ} {p : W} (hF : AnalyticAt
     subst hab
     exact iteratedFDeriv_directions_comp_perm_of_analyticAt dir hF u v e (funext he)
   exact gen _ _ hl _ _ e he
-
-example (dir : Λ → W) (F : W → ℂ) (p : W) : applyAt dir 1 F p = F p := by
-  classical
-  have h : (Finsupp.toMultiset (0 : Λ →₀ ℕ)).toList = [] := by simp
-  simp only [applyAt, MvPolynomial.support_one, Finset.sum_singleton, h]
-  simp [wordDeriv]
 
 end Operator
 

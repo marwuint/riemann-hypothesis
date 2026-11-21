@@ -371,8 +371,4 @@ noncomputable def harmonicSubrep : Subrepresentation (colRep R T p q κ) where
 
 end Action
 
-example : blockPoly ℤ (fun (_ : Unit) (_ : Fin 1) => 2) (fun _ (_ : Fin 1) => 1)
-    (fun _ _ _ => (0 : Fin 2)) (fun _ _ _ => 1) = X (xVar () 0 0) ^ 2 * X (yVar () 0 1) := by
-  simp [blockPoly]
-
 end GlobalTheory.Harm

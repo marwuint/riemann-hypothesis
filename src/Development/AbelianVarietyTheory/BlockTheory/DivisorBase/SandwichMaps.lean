@@ -28,9 +28,6 @@ def detLattice (ρ : Λ → Matrix (Fin h) (Fin h) O) (τ : Λ →+* O) (N : ℕ
   Submodule.span O
     {w | ∃ x : Fin N → eig C ρ τ, (∀ i, x i ∈ quotLattice C ρ τ) ∧ w = exteriorPower.ιMulti C N x}
 
-example (ρ : Λ → Matrix (Fin h) (Fin h) O) (τ : Λ →+* O) (N : ℕ) (a : O) (w : detLine C ρ τ N) :
-    a • w = algebraMap O C a • w := (algebraMap_smul C a w).symm
-
 end Eigen
 
 section Datum

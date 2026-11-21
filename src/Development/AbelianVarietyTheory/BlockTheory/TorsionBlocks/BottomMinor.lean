@@ -60,30 +60,4 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.CornerMinors.hookDen_pos 
   have h2 : ((i : ℕ) : ℚ) < ((j : ℕ) : ℚ) := by exact_mod_cast hij
   linarith
 
-example : hookProd ![2, 1] = 3 := by
-  have e : Finset.Ioi (1 : Fin 2) = ∅ := by decide
-  simp [hookProd, hookDen, Fin.prod_univ_two, Nat.factorial, e]
-  norm_num
-
-example : hookProd ![1, 1] = 2 ∧ hookProd ![1, 1, 0] = 2 := by
-  have e : Finset.Ioi (1 : Fin 2) = ∅ := by decide
-  constructor
-  · simp [hookProd, hookDen, Fin.prod_univ_two, Nat.factorial, e]
-  · simp [hookProd, hookDen, Fin.prod_univ_succ, Nat.factorial]
-    norm_num
-
-example (k : ℕ) : delTop (n := 2) (l := 1) (by norm_num) ![k] = X (0, 0) ^ k ∧
-    delBottom (n := 2) (l := 1) (by norm_num) ![k] = X (1, 0) ^ k := by
-  constructor
-  · simp [delTop, topMinor, nextPart]
-  · simp [delBottom, bottomMinor, nextPart]
-
-example (k : ℕ) : Formalism.E.fock (delTop (n := 2) (l := 1) (by norm_num) ![k])
-    (delTop (n := 2) (l := 1) (by norm_num) ![k]) = ((hookProd ![k] : ℚ) : ℂ) := by
-  have e : delTop (n := 2) (l := 1) (by norm_num) ![k] = monomial (Finsupp.single (0, 0) k) 1 := by
-    simp [delTop, topMinor, nextPart, X_pow_eq_monomial]
-  have e' : Finset.Ioi (0 : Fin 1) = ∅ := by decide
-  rw [e]
-  simp [Formalism.E.fock, support_monomial, Formalism.A.mfact, hookProd, hookDen, e']
-
 end GlobalTheory.IndefiniteRowSideFullHecke.CornerMinors

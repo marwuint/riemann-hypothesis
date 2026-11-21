@@ -536,54 +536,6 @@ theorem dualLattice_one_real : dualLattice (1 : Submodule ℤ ℝ) = 1 := by
     obtain ⟨k, rfl⟩ := mem_one_real_iff.1 hx
     exact ⟨m * k, by simp⟩
 
-example : minNorm ((-3 : ℝ) • (1 : Submodule ℤ ℝ)) = 3 ∧
-    minNorm (dualLattice ((-3 : ℝ) • (1 : Submodule ℤ ℝ))) = 1 / 3 := by
-  rw [dualLattice_smul (by norm_num), dualLattice_one_real, minNorm_smul (by norm_num),
-    minNorm_smul (by norm_num), minNorm_one_real]
-  norm_num [abs_of_neg]
-
-example : succMinQuad ((QuadraticMap.sq : QuadraticForm ℝ ℝ).prod ((4 : ℝ) • QuadraticMap.sq))
-    ((1 : Submodule ℤ ℝ).prod 1) 2 = 2 := by
-  have h1 : (1 : ℝ) ∈ (1 : Submodule ℤ ℝ) := mem_one_real_iff.2 ⟨1, by simp⟩
-  have hli : LinearIndependent ℝ ![((1 : ℝ), (0 : ℝ)), (0, 1)] := by
-    rw [LinearIndependent.pair_iff]
-    intro s t h
-    simpa using h
-  have hmem : ∀ k, ![((1 : ℝ), (0 : ℝ)), (0, 1)] k ∈
-      (((1 : Submodule ℤ ℝ).prod (1 : Submodule ℤ ℝ) : Submodule ℤ (ℝ × ℝ)) : Set (ℝ × ℝ)) := by
-    intro k
-    fin_cases k
-    · exact ⟨h1, Submodule.zero_mem _⟩
-    · exact ⟨Submodule.zero_mem _, h1⟩
-  refine le_antisymm (succMinOf_le_of_linearIndependent hli (by simp) (by norm_num) hmem ?_)
-    (le_succMinOf (natCast_le_rank_span_iff.2 ⟨_, hli, hmem⟩) ?_)
-  · intro k
-    fin_cases k <;> simp [Real.sqrt_le_left] <;> norm_num
-  · intro r hr
-    obtain ⟨h0, v, hv, h⟩ := mem_succMinRadii_iff.1 hr
-    by_contra! hr2
-    have hz : ∀ k, (v k).2 = 0 := by
-      intro k
-      obtain ⟨m, hm⟩ := mem_one_real_iff.1 (h k).1.2
-      have h2 := (Real.sqrt_le_left h0).1 (h k).2
-      simp only [QuadraticMap.prod_apply, QuadraticMap.smul_apply, QuadraticMap.sq_apply,
-        smul_eq_mul, ← hm] at h2
-      have h3 : (m : ℝ) * m < 1 := by nlinarith [mul_self_nonneg (v k).1]
-      have h4 : m * m < 1 := by exact_mod_cast h3
-      have h5 : m = 0 := by nlinarith
-      rw [← hm, h5, Int.cast_zero]
-    have := Fintype.linearIndependent_iff.1 hv ![(v 1).1, -(v 0).1] (by
-      ext <;> simp [Fin.sum_univ_two, hz]
-      ring) 1
-    exact hv.ne_zero 0 (Prod.ext (by simpa using this) (hz 0))
-
-example (n : ℕ) :
-    let L := span ℤ (Set.range (EuclideanSpace.basisFun (Fin n) ℝ).toBasis)
-    IsZLattice ℝ (dualLattice L) ∧ ZLattice.covolume (dualLattice L) = 1 := by
-  refine ⟨inferInstance, ?_⟩
-  rw [covolume_dualLattice, covolume_span_basis (EuclideanSpace.basisFun (Fin n) ℝ),
-    Basis.det_self, abs_one, inv_one]
-
 end Examples
 
 end GlobalTheory

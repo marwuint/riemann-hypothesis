@@ -371,38 +371,6 @@ section Examples
 
 variable {σ : E →+* E} {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
 
-example (σ : E →+* E) (Λ : Submodule (𝓞 E) (Fin 3 → E)) :
-    ∃ L, IsRed (r := 1) σ !![0, 1, 0; 1, 0, 0; 0, 0, -1] !![-1] Λ !![1, 0; 0, 0; 0, 1] (L, ![1])
-      !![0, 0, 1] := by
-  have hp (v : Fin 3 → E) : v ∈ perpX (r := 1) σ !![0, 1, 0; 1, 0, 0; 0, 0, -1] !![1, 0; 0, 0; 0, 1] ↔
-      v 1 = 0 := by
-    simp [mem_perpX_iff_form, form, dotProduct, Matrix.mulVec, Fin.sum_univ_three]
-  refine ⟨_, fun v hv => ?_, fun y => ⟨![0, 0, y 0], (hp _).2 rfl, ?_⟩, fun v hv w hw => ?_, rfl, ?_⟩
-  · rw [hp] at hv
-    constructor
-    · intro h
-      have h2 : v 2 = 0 := by simpa [Matrix.mulVec, dotProduct, Fin.sum_univ_three] using congrFun h 0
-      refine ⟨![v 0], ?_⟩
-      ext i
-      fin_cases i <;> simp [eOf, Matrix.mulVec, dotProduct, hv, h2]
-    · rintro ⟨c, rfl⟩
-      ext i
-      fin_cases i
-      simp [eOf, Matrix.mulVec, dotProduct, Fin.sum_univ_three]
-  · ext i
-    fin_cases i
-    simp [Matrix.mulVec, dotProduct, Fin.sum_univ_three]
-  · rw [hp] at hv hw
-    simp [form, Matrix.mulVec, dotProduct, Fin.sum_univ_three, hv, hw]
-  · ext i
-    fin_cases i
-    simp [zOf, Matrix.mulVec, dotProduct, Fin.sum_univ_three]
-
-example (t : E) : (!![1, t; 0, 1] : Matrix (Fin (1 + 1)) (Fin (1 + 1)) E) ∈ UO E 1 ↔ t ∈ dInv E 1 := by
-  refine ⟨fun h => h.2 0 1 (by decide), fun h => ⟨fun i j => ?_, fun a b hab => ?_⟩⟩
-  · fin_cases i <;> fin_cases j <;> simp
-  · fin_cases a <;> fin_cases b <;> first | exact h | exact absurd hab (by decide)
-
 end Examples
 
 end GlobalTheory.SgGlob

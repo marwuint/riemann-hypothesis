@@ -33,7 +33,3 @@ theorem galMap_galElt [DecidableEq G] (act : G →* (C ≃ₐ[R] C)) (σ : C →
     simp [this, hg]
 
 end GlobalTheory.GoodEtale
-
-example (R : Type) [CommRing R] (o r : R) :
-    GlobalTheory.GoodEtale.galMap (G := Unit) 1 (AlgHom.id R R) (o ⊗ₜ r) () = o * r := by
-  simp

@@ -50,9 +50,4 @@ theorem topologicalKrullDim_flags (k : Type) [Field k] [IsAlgClosed k] (ι : Typ
   rw [Set.inter_univ]
   exact GlobalTheory.topologicalKrullDim_eq_of_isEmbedding he.isEmbedding rfl
 
-example : ∀ (k : Type) [Field k] [IsAlgClosed k] (ι : Type) [Fintype ι] (V : ι → Type) [∀ i, AddCommGroup (V i)]
-    [∀ i, Module k (V i)] [∀ i, FiniteDimensional k (V i)] (n : ℕ), (∀ i, finrank k (V i) = n) →
-    topologicalKrullDim (Flags k V) = (Fintype.card ι * (n * (n - 1) / 2) : ℕ) :=
-  topologicalKrullDim_flags
-
 end GlobalTheory.FlagPts

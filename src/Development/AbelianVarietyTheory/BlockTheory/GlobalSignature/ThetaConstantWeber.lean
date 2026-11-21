@@ -111,7 +111,4 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber.ThetaW
   · rw [h2, mul_div_cancel_left₀ _ hη, ← pow_mul]
   · rw [h3, mul_div_cancel_left₀ _ hη, ← pow_mul]
 
-example (τ : ℍ) : thetaConst 0 0 τ = jacobiTheta τ := by
-  simp [thetaConst, jacobiTheta_eq_jacobiTheta₂]
-
 end GlobalTheory.IndefiniteRowSideFullHecke.ThetaConstantWeber

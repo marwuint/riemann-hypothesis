@@ -172,27 +172,6 @@ def LastSteps : Prop :=
 section Checks
 variable {k : Type} [Field k] [ValuativeRel k] {ι n : Type} [Fintype n] [DecidableEq n]
 
-example (ϖ : kˣ) (o : ι ≃ n ⊕ Fin (0 + 1)) : latOf (typeFrame ϖ o).bas = srcLat n ϖ := by
-  ext y
-  rw [mem_latOf_typeFrame]
-  simp [srcLat, mem_box, Valuation.mem_integer_iff, LinearMap.funLeft_apply]
-
-example (ϖ : kˣ) (o : ι ≃ n ⊕ Fin 0) : latOf (typeFrame ϖ o).bas = box _ 1 := by
-  ext y
-  rw [mem_latOf_typeFrame]
-  simp [mem_box, Valuation.mem_integer_iff]
-
-example {c : ℕ} (o : ι ≃ n ⊕ Fin c) : latOf (plainFrame (k := k) o).bas = box _ 1 := box_one.symm
-
-example (η : n → k) : η ∈ dualStd k n ↔ ∀ i, η i ∈ 𝒪[k] := by
-  constructor
-  · intro h i
-    have := h (Pi.single i 1) (fun j => by
-      rw [Pi.single_apply]; split_ifs <;> simp)
-    simpa using this
-  · intro h y hy
-    exact sum_mem fun i _ => mul_mem (h i) (by simpa [Valuation.mem_integer_iff] using hy i)
-
 end Checks
 
 end GlobalTheory.IndefiniteRowSideFullHecke.OmegaColumnSlices

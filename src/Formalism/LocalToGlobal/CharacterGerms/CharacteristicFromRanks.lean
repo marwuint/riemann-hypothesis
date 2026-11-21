@@ -33,9 +33,6 @@ def CHProp {V : VF C} {d : ℕ} {I J : Fin 2 → Type} [∀ g, Fintype (I g)] [�
         V.v (Matrix.of fun ρ c : Fin n => ∑ x, y ρ x * u c x).det ≤
           ((((j : ℝ) + j') / ((V.l : ℝ) - 1) : ℝ) : WithTop ℝ))
 
-example {V : VF C} {d : ℕ} [NeZero d] {I J : Fin 2 → Type} [∀ g, Fintype (I g)]
-    [∀ g, Fintype (J g)] (X : RowData C V d I J) : CHProp X.G X.n X.j X.j' X.big := X.CH
-
 def intR (V : VF C) : Subring C where
   carrier := {x | V.Ge 0 x}
   mul_mem' {_ _} ha hb := VF.Ge.mul_int (V := V) ha hb

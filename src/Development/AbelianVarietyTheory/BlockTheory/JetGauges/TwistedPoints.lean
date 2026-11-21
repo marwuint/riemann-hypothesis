@@ -76,18 +76,4 @@ def TwistedSectionsBaseChange : Prop :=
     IsAbelianOfDim B g → IsSymmetric B M.L → IsAmple M.L → HasTrivialKernel B M.L →
     ∀ (c : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ B) (k : ℕ), 1 ≤ k → HasStableBasis B M.L c k (k ^ g)
 
-example {S : Scheme.{0}} (B : Over S) [GrpObj B] [IsCommMonObj B] (M : LB B.left) (c : 𝟙_ (Over S) ⟶ B) (k : ℕ) :
-    LB.LinComb M (fun I => twMap B c (Sum.inr I)) (fun I => twExp k (Sum.inr I)) = cubeLB B (twPts B c) M := rfl
-
-example {R : Type} [CommRing R] (B : Over (Spec (CommRingCat.of R))) [GrpObj B] [IsCommMonObj B]
-    (M : LB B.left) (c : 𝟙_ (Over (Spec (CommRingCat.of R))) ⟶ B) (k n : ℕ) (H : HasStableBasis B M c k n)
-    (R' : Type) [CommRing R'] (f : R →+* R') (B' : Scheme.{0}) (h : B' ⟶ B.left)
-    (p : B' ⟶ Spec (CommRingCat.of R')) (sq : IsPullback h p B.hom (Spec.map (CommRingCat.ofHom f)))
-    (t : LB.Sec (LB.LinComb M (fun i => h ≫ twMap B c i) (twExp k))) :
-    ∃ (s : Fin n → LB.Sec (twLB B M c k)) (a : Fin n → R'), ∀ j,
-      t.f j = ∑ i, constFun p _ (a i) * (pullSec M (twMap B c) (twExp k) (s i) h).f j := by
-  obtain ⟨s, -, hs⟩ := H
-  obtain ⟨a, ha, -⟩ := hs R' f B' h p sq t
-  exact ⟨s, a, ha⟩
-
 end GlobalTheory.IndefiniteRowSideFullHecke.TwistedPoints

@@ -466,17 +466,6 @@ theorem Lam_vac : abelian₂ sysEx alEx G₁ G₂ vac = fun _ => ((Real.sqrt 2 :
   funext t
   rcases zmod2 t with rfl | rfl <;> simp [ha, a, sysEx, rhoEx, vac, alEx, r0, r1, h11, e_zero]
 
-example : sysEx.c (1, 0) (0, 1) ^ 2 = -1 := by simp [sysEx, e_one]
-
-example : ip sysEx (Complex.I • vac) vac = Complex.I ∧ sysEx.B (Complex.I • vac) vac = -Complex.I := by
-  have h := unitVac_vac.2
-  constructor
-  · rw [ip_smul_left, ip_apply, h, mul_one]
-  · rw [← ip_apply, ip_smul_right, ip_apply, h]; simp
-
-example : ip sysEx (abelian₂ sysEx alEx G₁ G₂ vac) vac = ((Real.sqrt 2 : ℝ) : ℂ)⁻¹ := by
-  rw [Lam_vac]; simp [sysEx, BEx_apply, vac]
-
 end Inh
 
 end GlobalTheory.CompanionTheory.FinHeis

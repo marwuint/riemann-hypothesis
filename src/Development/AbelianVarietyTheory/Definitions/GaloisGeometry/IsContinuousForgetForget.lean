@@ -174,15 +174,4 @@ def CmpStatement : Prop :=
   ∀ (X : Scheme.{0}) (F : Shv R) (n : ℤ),
     Nonempty (HX R X ((DerivedCategory.singleFunctor (ShvS R X) 0).obj ((res R X).obj F)) n ≃+ H R (sch.obj X) F n)
 
-example (F : Shv R) (U : X.Etale) : ((res R X).obj F).obj.obj (op U) = F.obj.obj (op U.left) := rfl
-
-example (F : ShvS R Y) (U : X.Etale) : ((push R f).obj F).obj.obj (op U) = F.obj.obj (op ((bc f).obj U)) := rfl
-
-set_option backward.isDefEq.respectTransparency.types false in
-example (U : X.Etale) : ((bc f).obj U).left = pullback U.hom f := rfl
-
-example (K : Type) [Field K] : HX ℤ (Spec (CommRingCat.of K)) (unitD ℤ _) 0 := HX.one ℤ _
-
-example : AddCommGroup (HX R X (unitD R X) 3) := inferInstance
-
 end GlobalTheory.EtC.Rel

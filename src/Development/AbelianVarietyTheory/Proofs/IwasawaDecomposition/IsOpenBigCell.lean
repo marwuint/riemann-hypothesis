@@ -96,8 +96,4 @@ theorem isOpen_bigCell (k : Type) [Field k] (ι : Type) [Fintype ι] (V : ι →
   exact isOpen_iInter_of_finite fun i => isOpen_iInter_of_finite fun m =>
     isOpen_generateFrom_of_mem ⟨_, det_cellMat_mem_regFns b i m _, rfl⟩
 
-example : ∀ (k : Type) [Field k] (ι : Type) [Fintype ι] (V : ι → Type) [∀ i, AddCommGroup (V i)]
-    [∀ i, Module k (V i)] [∀ i, FiniteDimensional k (V i)] (b : Frames k V), IsOpen (bigCell b) :=
-  fun k _ ι _ V _ _ _ b => isOpen_bigCell k ι V b
-
 end GlobalTheory.FlagPts

@@ -87,7 +87,4 @@ theorem map_maximalIdeal_localization_eq_of_formallyUnramified_quotient
   rw [map_mul] at h2
   exact (Ideal.unit_mul_mem_iff_mem _ htu).1 h2
 
-example : ∀ (B S : Type) [CommRing B] [IsLocalRing B] [CommRing S] [Algebra B S] (J q : Ideal S) [q.IsMaximal], J ≤ (IsLocalRing.maximalIdeal B).map (algebraMap B S) → (IsLocalRing.maximalIdeal B).map (algebraMap B S) ≤ q → Algebra.FormallyUnramified B (S ⧸ J) → Module.Finite B (S ⧸ J) → (IsLocalRing.maximalIdeal B).map ((algebraMap S (Localization.AtPrime q)).comp (algebraMap B S)) = IsLocalRing.maximalIdeal (Localization.AtPrime q) :=
-  @map_maximalIdeal_localization_eq_of_formallyUnramified_quotient
-
 end GlobalTheory

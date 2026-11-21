@@ -99,15 +99,4 @@ def Statement : Prop :=
   ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     LiftUnderSupport k ∧ LiftForProducts k ∧ MultiplicityOne k
 
-example (n : ℕ) {μ : kˣ →* ℂˣ} (h : IsUnitaryCharacter μ) : IsIrredUnitary (detRep (Fin n) μ) :=
-  ⟨(isSmooth_ofChar_iff _).2 h.1.detChar, isIrreducible_ofChar _,
-    (isUnitarisable_ofChar_iff _).2 fun _ => h.2 _⟩
-
-example (t : ℕ) (μ : kˣ →* ℂˣ) : ¬ SupportCondition t μ (detRep (Fin (t + 2)) μ) := fun h => by
-  refine (h 0).2 ?_
-  have := inSupport_detRep (N := t + 2) μ 0
-  convert this using 3
-  simp
-  ring
-
 end GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorLiftConclusion

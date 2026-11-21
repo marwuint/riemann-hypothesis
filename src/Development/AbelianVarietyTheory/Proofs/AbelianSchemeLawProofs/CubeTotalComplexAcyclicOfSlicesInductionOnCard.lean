@@ -962,15 +962,6 @@ end Three
 
 section Examples
 
-example : ¬ IsZero ((cubeComplex (Cube.trunc₂
-    (Cube.const (Fin 1 ⊕ₗ Fin 1) (ModuleCat.of ℤ ℤ)))).homology 2) := fun h => by
-  have h' := h.of_iso (trunc₂HomologyIsoFst (Cube.const (Fin 1 ⊕ₗ Fin 1) (ModuleCat.of ℤ ℤ))
-    (fun s _ => cubeComplex_acyclic_of_bijective _ 0 fun _ _ => Function.bijective_id) 0).symm
-  rw [← exactAt_iff_isZero_homology, cochainComplex_exactAt_zero_iff, cechComplex_d _ 0] at h'
-  have h0 : Cube.aug (Cube.sliceFst (Cube.const (Fin 1 ⊕ₗ Fin 1) (ModuleCat.of ℤ ℤ)) ∅)
-      (1 : ℤ) = 0 := h' ((Cube.d_aug _ _).trans (map_zero _).symm)
-  exact (one_ne_zero : (1 : ℤ) ≠ 0) (congrFun h0 ⟨{0}, rfl⟩)
-
 end Examples
 
 end GlobalTheory

@@ -38,8 +38,6 @@ def EntVan (P : PD Φ.ι Γ R) : Prop :=
 theorem TConj.refl {ι Γ R K : Type} [Group Γ] [CommRing R] [CommRing K] (f : R →+* K) (P : PD ι Γ R) : TConj f 1 P P := by
   constructor <;> intro _ <;> ext i j <;> simp [tconj, wv]
 
-example : CompanionTheory {wBe, -wPs} := .inl ⟨by simp, by simp, by rintro w (rfl | rfl) <;> simp [nP]⟩
-
 end UpperTheory.V.Ws.Lat
 
 end

@@ -421,30 +421,4 @@ theorem IsQuasiRegularSeq.powers {R : Type u} [CommRing R] {n : ℕ} {f : Fin n 
   have := h.nonempty_basis_quot_pow_self b k
   rwa [Fintype.card_fin] at this
 
-example : (MvPolynomial.idealOfVars (Fin 2) ℤ ^ 3).IsPrimary := by
-  have : (Ideal.span (Set.range (MvPolynomial.X : Fin 2 → MvPolynomial (Fin 2) ℤ))).IsPrime := by
-    have hk : Ideal.span (Set.range (MvPolynomial.X : Fin 2 → MvPolynomial (Fin 2) ℤ)) =
-        RingHom.ker MvPolynomial.constantCoeff := by
-      ext p
-      rw [← pow_one (Ideal.span _), RingHom.mem_ker]
-      refine (MvPolynomial.mem_pow_idealOfVars_iff' _ _).trans ?_
-      simp [Finsupp.degree_eq_zero_iff, MvPolynomial.constantCoeff_eq]
-    rw [hk]
-    exact RingHom.ker_isPrime _
-  exact (isQuasiRegularSeq_X (R := ℤ) (Fin 2)).isPrimary_pow (by norm_num)
-
-example : Nonempty (Module.Basis (Fin 6) ℤ
-    (MvPolynomial (Fin 2) ℤ ⧸ MvPolynomial.idealOfVars (Fin 2) ℤ ^ 3)) := by
-  have hk : Ideal.span (Set.range (MvPolynomial.X : Fin 2 → MvPolynomial (Fin 2) ℤ)) =
-      RingHom.ker (MvPolynomial.aeval (R := ℤ) fun _ : Fin 2 => (0 : ℤ)) := by
-    ext p
-    rw [← pow_one (Ideal.span _), RingHom.mem_ker]
-    refine (MvPolynomial.mem_pow_idealOfVars_iff' _ _).trans ?_
-    simp [Finsupp.degree_eq_zero_iff, MvPolynomial.constantCoeff_eq]
-  have e := (Ideal.quotientEquivAlgOfEq ℤ hk).trans
-    (Ideal.quotientKerAlgEquivOfSurjective (f := MvPolynomial.aeval (R := ℤ) fun _ : Fin 2 => (0 : ℤ))
-      fun z => ⟨MvPolynomial.C z, by simp⟩)
-  exact (isQuasiRegularSeq_X (R := ℤ) (Fin 2)).powers.2.2 ℤ 1 2
-    ⟨(Module.Basis.singleton (Fin 1) ℤ).map e.symm.toLinearEquiv⟩
-
 end GlobalTheory

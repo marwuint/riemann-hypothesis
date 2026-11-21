@@ -293,11 +293,6 @@ theorem chernCoeff_one (z : Fin 1 → ℂ) :
   field_simp
   ring
 
-example : fsMeasure 1 univ = 1 := fsMeasure_univ
-
-example : restrictForm (coordForm 0) (chartInv (N := 1) 0 0) ≠ 0 :=
-  restrictForm_coordForm_ne_zero 0 (chartInv_mem 0 0)
-
 end CP
 
 end

@@ -144,12 +144,6 @@ theorem eq_zero_of_sum_re_eq_zero (δ : Φ → ℂ)
 
 end NumberField
 
-example {E : Type*} [Field E] [NumberField E] (Φ : CMType E) : Φ.conjugate ≠ Φ := by
-  intro h
-  obtain ⟨τ⟩ : Nonempty Φ := inferInstance
-  have h1 : τ.1 ∈ Φ.conjugate := by rw [h]; exact τ.2
-  exact (Φ.mem_iff_conjugate_notMem _).mp τ.2 h1
-
 end CMType
 
 end GlobalTheory

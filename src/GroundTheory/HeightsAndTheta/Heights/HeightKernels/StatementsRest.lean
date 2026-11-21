@@ -208,8 +208,6 @@ def RestCutCaseSharp.Statement : Prop :=
         |∑' p : primesAbove P B₀, restAt f j k I vol φ Q p.1| ≤
           1.6 * ((f * j * k : ℕ) + 1) * vol * |I (degreeInput f j k)|
 
-example : (1 : ℕ) ≤ 2 ∧ (1 : ℕ) < 2 := ⟨by norm_num, by norm_num⟩
-
 theorem restPsumIdeal_example : RestTerms.blockPowerSum 1 (1 + 1) 1 0 ∈ restPsumIdeal 1 (1 + 1) :=
   Ideal.subset_span ⟨1, 0, le_rfl, by norm_num, rfl⟩
 
@@ -220,11 +218,6 @@ theorem restPsum_example_isHomogeneous :
   exact IsHomogeneous.sum _ _ _ fun i _ => by
     simpa using isHomogeneous_X_pow (R := ℚ) ((0 : Fin 1), i) 1
 
-example : IsFlagIntegral 1 1 1 flagIntegralOne ∧
-    RestTerms.blockPowerSum 1 (1 + 1) 1 0 ∈ restPsumIdeal 1 (1 + 1) ∧
-    (RestTerms.blockPowerSum 1 (1 + 1) 1 0).IsHomogeneous (flagDim 1 1 1) :=
-  ⟨isFlagIntegral_one, restPsumIdeal_example, restPsum_example_isHomogeneous⟩
-
 theorem restStair_one_two : restStair 1 (1 + 1) = X ((0 : Fin 1), (1 : Fin (1 + 1))) := by
   simp [restStair, Fin.prod_univ_two]
 
@@ -233,37 +226,6 @@ theorem flagIntegral_restStair_one_two : RestTerms.flagIntegral 1 (1 + 1) (restS
   rw [RestTerms.fibreDegree, RestTerms.inh_mu_eq, RestTerms.inh_fib_eq] at h
   rw [restStair_one_two]
   simpa using h
-
-example : (X ((0 : Fin 1), (1 : Fin (1 + 1))) : RestTerms.RootRing 1 (1 + 1)).IsHomogeneous
-      (RestTerms.topDegree 1 (1 + 1)) ∧
-    RestTerms.flagIntegral 1 (1 + 1) (X ((0 : Fin 1), (1 : Fin (1 + 1)))) ≠ 0 ∧
-    IsFlagIntegral 1 1 1 flagIntegralOne ∧
-    RestTerms.flagIntegral 1 (1 + 1) (restStair 1 (1 + 1)) ≠ 0 := by
-  refine ⟨?_, ?_, isFlagIntegral_one, by rw [flagIntegral_restStair_one_two]; norm_num⟩
-  · have h : RestTerms.topDegree 1 (1 + 1) = 1 := by decide
-    rw [h]
-    exact isHomogeneous_X _ _
-  · rw [← restStair_one_two, flagIntegral_restStair_one_two]
-    norm_num
-
-example : RestTerms.IsPowerSumDecomposition 1 (1 + 1) (RestTerms.restPolynomial 1 1 1 .last)
-      (fun k _ => if k = 1 then C (2⁻¹) * (RestTerms.flagTwoSecondRoot - RestTerms.flagTwoFirstRoot)
-        else if k = 2 then C (2⁻¹) else 0) ∧
-    (RestTerms.restPolynomial 1 1 1 .last).IsHomogeneous 2 ∧ 1 + 1 ≤ 2 := by
-  refine ⟨RestTerms.inh_decomp, ?_, le_rfl⟩
-  rw [RestTerms.inh_F_eq]
-  exact isHomogeneous_X_pow _ _
-
-example : ∑ l ∈ Finset.Icc 1 (1 + 1), ∑ σ : Fin 1,
-      map (algebraMap ℚ ℝ) (RestTerms.blockPowerSum 1 (1 + 1) l σ) *
-        (fun (l : ℕ) (σ : Fin 1) => if l = 1 then map (algebraMap ℚ ℝ) (RestTerms.blockPowerSum 1 (1 + 1) 2 σ)
-          else if l = 2 then -map (algebraMap ℚ ℝ) (RestTerms.blockPowerSum 1 (1 + 1) 1 σ) else 0) l σ = 0 ∧
-    (1 : RestTerms.RootRing 1 (1 + 1)).IsHomogeneous (1 - 1) := by
-  refine ⟨?_, isHomogeneous_one _ _⟩
-  have hI : Finset.Icc 1 (1 + 1) = ({1, 2} : Finset ℕ) := by decide
-  rw [hI]
-  simp
-  ring
 
 end
 

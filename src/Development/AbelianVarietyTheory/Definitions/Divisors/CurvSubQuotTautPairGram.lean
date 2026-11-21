@@ -191,14 +191,4 @@ theorem curv_sub_quot_tautPairGram (ξ η : ℂ) :
     secondForm_tautPairGram, secondFormAdj_tautPairGram]
   simp [blockSS, blockQQ, mul_apply, trace, mul_comm]
 
-example : wedge (fun ξ η : Fin 2 → ℂ => ξ 0 * conj (η 0)) (fun ξ η => ξ 1 * conj (η 1))
-      ![1, 0] ![1, 0] ![0, 1] ![0, 1] = 1 ∧
-    wedge (fun ξ η : Fin 2 → ℂ => ξ 0 * conj (η 0)) (fun ξ η => ξ 1 * conj (η 1))
-      ![1, 0] ![0, 1] ![0, 1] ![1, 0] = -1 := by
-  simp [wedge]
-
-example (C : ℝ) : ¬ OneFormBound {0} (fun _ : Fin 1 → ℂ => (0 : Matrix (Fin 1) (Fin 1) ℂ))
-    (fun _ => 1) (fun _ _ => 1) C := fun h => by
-  simpa using (h 0 rfl).1.diag_pos (i := 0)
-
 end GlobalTheory.HermFrame.Model

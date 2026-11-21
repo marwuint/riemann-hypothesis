@@ -208,12 +208,4 @@ def Statement : Prop :=
     StepWellDefined ψ ν ∧ ChainFinite ψ ν ∧ CosetMeasure ν ∧ VolumeCancels ν ∧ TargetLaw ψ ν ∧ SourceLaw ψ ν ∧
       ChainInvariant ψ ν ∧ ChainInvariantLast ψ ν ∧ FirstVertexChains ψ ν
 
-example {F : Type} [Field F] (M : Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) F) :
-    superSum (framePos 1 1) M = M (.inl 0) (.inr 0) := by
-  simp [superSum, framePos, Fintype.sum_sum_type]
-
-example {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
-    {n : Type} [Fintype n] [DecidableEq n] (g : GL n k) : deltaR 1 g = 1 := by
-  simp [deltaR]
-
 end GlobalTheory.IndefiniteRowSideFullHecke.FramePositiveSum

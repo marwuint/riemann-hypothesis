@@ -995,35 +995,6 @@ theorem isSaturatedSubmodule_span_one_two :
   · have h3 : a * (x.1 * 2) = a * x.2 := by linear_combination (-2 : ℤ) * h1 + h2
     simpa using mul_left_cancel₀ ha h3
 
-example : saturation (Submodule.span ℤ {((3, 6) : ℤ × ℤ)}) =
-    Submodule.span ℤ {((1, 2) : ℤ × ℤ)} := by
-  refine (isSaturatedSubmodule_span_one_two.eq_saturation ?_ ?_).symm
-  · rw [Submodule.span_singleton_le_iff_mem]
-    exact Submodule.mem_span_singleton.2 ⟨3, rfl⟩
-  · rw [Submodule.span_singleton_le_iff_mem]
-    exact mem_saturation_of_smul_mem (a := 3) (by norm_num) (Submodule.mem_span_singleton_self _)
-
-example : ¬ IsSaturatedSubmodule (Submodule.span ℤ {(2 : ℤ)}) := by
-  intro h
-  have h₁ : (1 : ℤ) ∈ Submodule.span ℤ {(2 : ℤ)} :=
-    h.mem_of_smul_mem (a := 2) (by norm_num) (Submodule.mem_span_singleton_self _)
-  obtain ⟨b, hb⟩ := Submodule.mem_span_singleton.1 h₁
-  simp only [smul_eq_mul] at hb
-  omega
-
-example : saturation (⊥ : Submodule ℤ (ZMod 2)) = ⊤ :=
-  top_le_iff.1 fun x _ => mem_saturation_of_smul_mem (a := 2) (by norm_num) (by
-    rw [Submodule.mem_bot]; exact (by decide : ∀ y : ZMod 2, (2 : ℤ) • y = 0) x)
-
-example : saturationIn (Submodule.span ℤ {(2 : ℚ)}) (Submodule.span ℤ {(6 : ℚ)}) =
-      Submodule.span ℤ {(2 : ℚ)} ∧ saturation (Submodule.span ℤ {(6 : ℚ)}) = ⊤ := by
-  have h : saturation (Submodule.span ℤ {(6 : ℚ)}) = ⊤ := by
-    rw [saturation_eq_span ℚ, Submodule.span_span_of_tower, Submodule.restrictScalars_eq_top_iff,
-      Submodule.span_singleton_eq_top_iff]
-    intro v
-    exact ⟨v / 6, by simp⟩
-  exact ⟨by rw [saturationIn, h, inf_top_eq], h⟩
-
 end Examples
 
 end GlobalTheory

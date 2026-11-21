@@ -24,10 +24,6 @@ def IsResidue (P : Ideal (𝓞 K)) (x : K) (r : 𝓞 K ⧸ P) : Prop :=
   ∃ a b : 𝓞 K, b ∉ P ∧ x * (b : K) = (a : K) ∧
     r * Ideal.Quotient.mk P b = Ideal.Quotient.mk P a
 
-example (P : Ideal (𝓞 K)) [hP : P.IsMaximal] (a : 𝓞 K) :
-    IsResidue P (a : K) (Ideal.Quotient.mk P a) :=
-  ⟨a, 1, (Ideal.ne_top_iff_one P).mp hP.ne_top, by simp, by simp⟩
-
 end Residue
 
 section CM

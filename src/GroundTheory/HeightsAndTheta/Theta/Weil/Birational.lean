@@ -247,16 +247,4 @@ end Group
 
 end IsWeilCell
 
-example : (isWeilCell_GL_two ℚ).extendGroupHom (T := id) (fun _ _ _ _ _ => rfl) =
-    MonoidHom.id _ := by
-  apply (isWeilCell_GL_two ℚ).monoidHom_ext
-  intro x hx
-  exact (isWeilCell_GL_two ℚ).extendGroupHom_apply_of_mem _ hx
-
-example : (isWeilCell_GL_two ℚ).extendGroupHom (T := fun g => Matrix.GeneralLinearGroup.det g)
-    (fun x _ y _ _ => (map_mul _ x y).symm) = Matrix.GeneralLinearGroup.det := by
-  apply (isWeilCell_GL_two ℚ).monoidHom_ext
-  intro x hx
-  exact (isWeilCell_GL_two ℚ).extendGroupHom_apply_of_mem _ hx
-
 end GroundTheory.Heights₂.Theta

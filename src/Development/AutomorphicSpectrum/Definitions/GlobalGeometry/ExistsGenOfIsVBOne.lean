@@ -183,32 +183,4 @@ theorem OrderAt.ratio_unique (h0 : ϖ ≠ 0) (hϖ : ϖ ∈ regAt ξ p) (hp : ¬ 
 
 end Order
 
-example {e : E} (he : e ≠ 0) {ϖ : Ω} (h0 : ϖ ≠ 0) (n : ℤ) (p : Cpt ξ) :
-    OrderAt (fun p => Submodule.span (regAt ξ p) {e} : Lat ξ E) (ϖ ^ n • e) ϖ 1 n p :=
-  ⟨e, ϖ ^ n, he, rfl, rfl, by rw [pow_one, div_self (zpow_ne_zero n h0)]; exact ZUnit.one⟩
-
-example {e : E} (he : e ≠ 0) {ϖ : Ω} (h0 : ϖ ≠ 0) (p : Cpt ξ) :
-    OrderAt (fun p => Submodule.span (regAt ξ p) {e} : Lat ξ E) (ϖ ^ 3 • e) (ϖ ^ 2) 2 3 p :=
-  ⟨e, ϖ ^ 3, he, rfl, rfl, by
-    rw [show (ϖ ^ 3) ^ 2 / (ϖ ^ 2) ^ (3 : ℤ) = 1 by rw [zpow_ofNat]; field_simp]; exact ZUnit.one⟩
-
-example (σ : E) (ϖ : Ω) (M : ℕ) (a : ℤ) (p : Cpt ξ) : ¬ OrderAt (fun _ => ⊥ : Lat ξ E) σ ϖ M a p :=
-  fun ⟨_, _, he, h, _⟩ => he (Submodule.span_singleton_eq_bot.1 h.symm)
-
-example (ϖ : Ω) (M : ℕ) (a : ℤ) (p : Cpt ξ) :
-    ¬ OrderAt (fun p => Submodule.span (regAt ξ p) {((1 : Ω), (0 : Ω))} : Lat ξ (Ω × Ω)) (0, 1) ϖ M a p := by
-  rintro ⟨e, c, he, h, hσ, -⟩
-  obtain ⟨u, -, rfl⟩ := ZUnit.exists_of_span_eq he h.symm
-  simpa using congrArg Prod.snd hσ
-
-example {ϖ : Ω} {p : Cpt ξ} (hp : ¬ unitAt ξ p ϖ) : ¬ TrivRed (fun _ => ⊥ : Lat ξ E) ϖ := by
-  rintro ⟨t, ht⟩
-  obtain ⟨U, hU, h⟩ := ht p hp
-  obtain ⟨h0, h1, -⟩ := h p hU hp
-  exact h0 (Submodule.span_singleton_eq_bot.1 h1.symm)
-
-example : zeroSet ξ 1 = ∅ ∧ zeroSet ξ 0 = {q | genPt ξ ⤳ q} :=
-  ⟨Set.eq_empty_of_forall_notMem fun _ ⟨_, h⟩ => h ZUnit.one,
-    Set.ext fun _ => ⟨fun ⟨h, _⟩ => h, fun h => ⟨h, fun hu => hu.1 rfl⟩⟩⟩
-
 end GlobalTheory.CompanionTheory.Ar.Flat

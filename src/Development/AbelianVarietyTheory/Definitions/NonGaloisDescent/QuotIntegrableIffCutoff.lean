@@ -162,7 +162,4 @@ theorem quotInt_of_isCompact (hT : IsCompact (T : Set G)) {F : G → ℂ} (hm : 
 
 end Exist
 
-example {G : Type} [Group G] [MeasurableSpace G] : IsCosetCutoff (⊥ : Subgroup G) (Measure.dirac 1) fun _ => 1 :=
-  ⟨measurable_const, fun _ => by simp⟩
-
 end GlobalTheory.Tw

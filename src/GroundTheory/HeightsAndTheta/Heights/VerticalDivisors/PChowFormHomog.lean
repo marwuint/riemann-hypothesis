@@ -45,8 +45,4 @@ theorem ChowFormHomog.proof : ChowFormHomog.Statement := by
 
 theorem chowFormHomog : ChowFormHomog.Statement := ChowFormHomog.proof
 
-example : IsMultiHomog (chowDegree (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) 1)
-    (X (0, 0) : MvPolynomial (Fin 1 × Fin 1) ℚ) :=
-  ChowFormHomog.proof ℚ 1 1 ⊥ _ (isChowForm_point ℚ)
-
 end GroundTheory.Heights₂.Heights.Vertical

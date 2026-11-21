@@ -744,15 +744,4 @@ theorem eigenBundle {E : Type*} [Field E] [NumberField E]
     (conjugateHom_injective Function.injective_id (card_embeddings_of_splits hL))
     (card_embeddings_of_splits hL) ρ
 
-open EigenSplit in
-
-example (E : Type) [Field E] [NumberField E] :
-    ∃ r : (E →+* ℂ) → ℕ, ∀ i, Module.rank (𝓞 ℂ) (eigenSub (baseChangeAction (𝓞 ℂ)
-      (Algebra.lmul ℤ (𝓞 E)).toRingHom) (conjugateHom ℂ (𝓞 ℂ) i)) = r i := by
-  classical
-  have : Module.Flat ℤ (𝓞 ℂ) := flat_int_iff_charZero.2 inferInstance
-  obtain ⟨r, hr, -⟩ := eigenBundle.{0, 0} (L := ℂ) (A := 𝓞 ℂ) (fun _ => IsAlgClosed.splits _)
-    (baseChangeAction (𝓞 ℂ) (Algebra.lmul ℤ (𝓞 E)).toRingHom)
-  exact ⟨r, hr⟩
-
 end GlobalTheory

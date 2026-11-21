@@ -153,31 +153,6 @@ theorem isScalarTower_poly_rat (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) :
 theorem isScalarTower_mdl (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) (S : Subgroup (Ω ≃ₐ[ℚ] Ω)) :
     IsScalarTower (mdl X Γ' S) (lev X Γ') X.K := IsScalarTower.of_algebraMap_eq fun _ => rfl
 
-example (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) :
-    ((algebraMap (RatFunc Ω) (lev X Γ') RatFunc.X : lev X Γ') : X.K) = X.jK :=
-  coe_jRat_X X Γ'
-
-example (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) (c : Ω) :
-    ((algebraMap Ω (lev X Γ') c : lev X Γ') : X.K) = algebraMap Ω X.K c := rfl
-
-example (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) :
-    ((algebraMap (RatFunc Ω) (lev X Γ') RatFunc.X⁻¹ : lev X Γ') : X.K) = X.jK⁻¹ := by
-  rw [map_inv₀, Subfield.coe_inv]
-  show ((jRat X Γ' RatFunc.X : lev X Γ') : X.K)⁻¹ = _
-  rw [coe_jRat_X]
-
-example (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) (S : Subgroup (Ω ≃ₐ[ℚ] Ω)) (x : mdl X Γ' S) :
-    ((algebraMap (mdl X Γ' S) (lev X Γ') x : lev X Γ') : X.K) = x := rfl
-
-example (X : Tower Ω ε) (Γ' : Subgroup SL(2, ℤ)) :
-    algebraMap (Polynomial Ω) (lev X Γ') (Polynomial.X ^ 2 - Polynomial.C 1) ≠ 0 := by
-  rw [← map_zero (algebraMap (Polynomial Ω) (lev X Γ'))]
-  intro h
-  have := jPoly_injective X Γ' h
-  have h2 := congrArg (Polynomial.natDegree) this
-  rw [Polynomial.natDegree_X_pow_sub_C, Polynomial.natDegree_zero] at h2
-  exact absurd h2 (by norm_num)
-
 end Instances
 
 end GlobalTheory.K4

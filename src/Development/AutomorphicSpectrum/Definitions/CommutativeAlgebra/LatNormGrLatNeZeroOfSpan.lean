@@ -162,25 +162,6 @@ theorem grLat_diag {n : ℕ} (b : Basis (Fin n) C V) (c : Fin n → C) (i : Fin 
     refine ⟨c i • b i, ⟨Submodule.subset_span ⟨i, rfl⟩, ?_⟩, by simp⟩
     exact Submodule.smul_mem (b.flag i.succ) _ (b.self_mem_flag Fin.castSucc_lt_succ)
 
-example (hv : v.Integers O) {n : ℕ} (b : Basis (Fin n) C V) (c : Fin n → C) (i : Fin n)
-    (hc : c i ≠ 0) :
-    grLog v (Submodule.span O (Set.range fun j => c j • b j)) b i = -Real.log (v (c i)) :=
-  grLog_of_eq_span v hv hc (grLat_diag b c i)
-
-example {c : C} (hc : c ≠ 0) :
-    dualLat (LinearMap.mul C C) (Submodule.span O {c}) = Submodule.span O {c⁻¹} := by
-  ext y
-  constructor
-  · intro h
-    obtain ⟨o, ho⟩ := h c (Submodule.mem_span_singleton_self c)
-    refine Submodule.mem_span_singleton.2 ⟨o, ?_⟩
-    rw [Algebra.smul_def, ho]; simp; field_simp
-  · intro h x hx
-    obtain ⟨o, rfl⟩ := Submodule.mem_span_singleton.1 h
-    obtain ⟨o', rfl⟩ := Submodule.mem_span_singleton.1 hx
-    refine ⟨o' * o, ?_⟩
-    simp [Algebra.smul_def]; field_simp
-
 end Norms
 
 section Eigen
@@ -327,20 +308,6 @@ theorem isFreeOn_reg :
     congr 1
     ext x
     simp
-
-example (σ : E →+* K) : eigProj (regAct K E) σ 1 ≠ 0 := by
-  intro h
-  let φ : K ⊗[ℤ] 𝓞 E →ₐ[K] K := Algebra.TensorProduct.lift (AlgHom.id K K)
-    (σ.comp (algebraMap (𝓞 E) E)).toIntAlgHom (fun _ _ => Commute.all _ _)
-  have h1 := congrArg φ h
-  simp only [eigProj, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, regAct_basis,
-    Algebra.TensorProduct.basis_apply, map_zero] at h1
-  have h2 : ∑ k, σ (dualInt E k * integralBasis E k) = 0 := by
-    simpa [φ] using h1
-  rw [← map_sum, sum_dualInt_mul, map_one] at h2
-  exact one_ne_zero h2
-
-omit [NumberField E] in
 
 theorem val_le_one (v : Valuation K NNReal) (σ : E →+* K) (x : 𝓞 E) : v (σ (x : E)) ≤ 1 :=
   (Valuation.integer.integers v).isIntegral_iff_v_le_one.1

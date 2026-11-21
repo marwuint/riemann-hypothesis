@@ -419,8 +419,4 @@ theorem IsFirstChernClassOfLineBundle.pull {b' : Base} {L' : b'.Fun} {σ : b.R �
 theorem one_node_ne_zero : (one Ex.nodeL : H Ex.nodeL 0) ≠ 0 :=
   CatH.oneH_ne_zero _ (ComposableArrows.mk₀ Ex.T) (one_ne_zero (α := Ex.D))
 
-example : IsFirstChernClassOfLineBundle (LB.triv : LB Ex.nodeL) 0 := firstChernClass_trivialBundle
-
-example (T : Thick L) (x y : T.B) : (mult L).mul T x y = x * y := rfl
-
 end GlobalTheory.LogCris

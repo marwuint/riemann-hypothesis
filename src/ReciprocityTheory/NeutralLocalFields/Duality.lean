@@ -1507,17 +1507,4 @@ theorem contAction_trivial {R G M : Type*} [CommRing R] [Group G] [TopologicalSp
     ContAction (Representation.trivial R G M) :=
   continuous_snd
 
-example (p : ℕ) [Fact p.Prime] : FiniteDimensional ℚ_[p] (⊥ : IntermediateField ℚ_[p] (PadicAlgCl p)) :=
-  inferInstance
-
-example (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]
-    (j : Ω →+* ℂ) : Finite (DecInf F j) ∧ DiscreteTopology (DecInf F j) :=
-  ⟨inferInstance, inferInstance⟩
-
-example (F : Type) [Field F] [NumberField F] : PTCase F 1 := Or.inl odd_one
-
-example (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p)) (n : ℕ) [NeZero n] :
-    ContAction (Representation.trivial (ZMod n) (GK p K) (ZMod n)) :=
-  contAction_trivial
-
 end Neutral.B1

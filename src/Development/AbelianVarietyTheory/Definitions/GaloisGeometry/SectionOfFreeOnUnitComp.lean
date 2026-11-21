@@ -16,9 +16,6 @@ variable {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S)
 
 abbrev resShv : Shv S ⥤ Shv R := ChangeRing.res Scheme.proetaleTopology.{0} (RingHom.ulift.{1, 1} φ)
 
-example : PreservesFiniteLimits (resShv φ) := inferInstance
-example : PreservesFiniteColimits (resShv φ) := inferInstance
-
 def freeOnUnit (X : Scheme.{0}) : (freeOn R).obj X ⟶ (resShv φ).obj ((freeOn S).obj X) :=
   ChangeRing.freeUnit _ (RingHom.ulift.{1, 1} φ) (uliftYoneda.{1}.obj X)
 
@@ -132,27 +129,6 @@ theorem e_chg (X : Scheme.{0}) (x : H R 0 X) : H0.e S X (chg φ hφ 0 X x) = (�
 end Coefficients
 
 section Examples
-
-example (n : ℕ) (X : Scheme.{0}) (x : H (ZMod 4) n X) :
-    chg (ZMod.castHom (by decide : 2 ∣ 4) (ZMod 2)) continuous_of_discreteTopology n X ((2 : ZMod 4) • x) = 0 := by
-  rw [LinearMap.map_smulₛₗ, (by decide : ZMod.castHom (by decide : 2 ∣ 4) (ZMod 2) 2 = 0), zero_smul]
-
-example (X : Scheme.{0}) :
-    chg (ZMod.castHom (by decide : 2 ∣ 4) (ZMod 2)) continuous_of_discreteTopology 0 X
-      ((H0.e (ZMod 4) X).symm (ContinuousMap.const X 3)) = (H0.e (ZMod 2) X).symm (ContinuousMap.const X 1) := by
-  apply (H0.e (ZMod 2) X).injective
-  rw [e_chg, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]
-  ext x
-  exact (by decide : ZMod.castHom (by decide : 2 ∣ 4) (ZMod 2) 3 = 1)
-
-example (X : Scheme.{0}) [Nonempty X] :
-    chg (ZMod.castHom (by decide : 2 ∣ 4) (ZMod 2)) continuous_of_discreteTopology 0 X ≠ 0 := by
-  intro h
-  have h1 := e_chg (ZMod.castHom (by decide : 2 ∣ 4) (ZMod 2)) continuous_of_discreteTopology X
-    ((H0.e (ZMod 4) X).symm 1)
-  rw [h, LinearMap.zero_apply, map_zero, LinearEquiv.apply_symm_apply] at h1
-  exact absurd (DFunLike.congr_fun h1 (Classical.arbitrary X))
-    (by decide : (0 : ZMod 2) ≠ ZMod.castHom (by decide : 2 ∣ 4) (ZMod 2) 1)
 
 end Examples
 

@@ -72,6 +72,3 @@ theorem psCNL : ∀ (O : Type) [CommRing O] [IsLocalRing O] (C : TR O) (n : ℕ)
         rw [← residue_eq_zero_iff, map_sub, ha', sub_self] }
 
 end GlobalTheory.PsCNL
-
-open Formalism.BasicNotions.V1 IsLocalRing in
-example : ∀ (O : Type) [CommRing O] [IsLocalRing O] (C : TR O) (n : ℕ), ∃ (_ : IsLocalRing (MvPowerSeries (Fin n) C.C)), IsCNL O (MvPowerSeries (Fin n) C.C) ∧ ∀ x : MvPowerSeries (Fin n) C.C, x ∈ maximalIdeal (MvPowerSeries (Fin n) C.C) ↔ MvPowerSeries.constantCoeff x ∈ maximalIdeal C.C := GlobalTheory.PsCNL.psCNL

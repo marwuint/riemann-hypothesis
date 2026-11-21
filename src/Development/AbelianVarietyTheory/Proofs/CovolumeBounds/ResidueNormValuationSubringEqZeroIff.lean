@@ -394,11 +394,4 @@ theorem norm_coeff_le_of_hasSum_of_isAlgClosed {C : Type*} [NontriviallyNormedFi
   norm_coeff_le_of_hasSum exists_lt_norm_lt_one_of_isAlgClosed (fun _ hx z hz =>
     ⟨_, hf z fun i => (hz i).trans_lt hx, h z fun i => (hz i).trans_lt hx⟩) t
 
-example (p : ℕ) [Fact p.Prime] (n : ℕ) (z : Fin n → ℂ_[p]) (hz : ∀ i, ‖z i‖ < 1) :
-    ‖seriesValue (fun _ => 1 : MvPowerSeries (Fin n) ℂ_[p]) z‖ ≤ 1 := by
-  have h : ∀ t, ‖coeff t (fun _ => 1 : MvPowerSeries (Fin n) ℂ_[p])‖ ≤ 1 := fun t =>
-    norm_one.le
-  exact ((bounded_series_integral _ fun r h0 h1 => (isRestricted_const_iff _ r).1
-    (isRestricted_of_norm_coeff_le h h0 h1)).2.2.1 1).2 h z hz
-
 end GlobalTheory

@@ -142,16 +142,6 @@ theorem lineProj_finite : IsFiniteProjection lineIdeal lineProj := by
     rw [lineEquiv_projAlgHom]
   exact ⟨hinj, RingHom.Finite.of_surjective _ hsurj⟩
 
-example : lineIdeal.IsPrime ∧ ringKrullDim (MvPolynomial (Fin 2) ℂ ⧸ lineIdeal) = (1 : ℕ) :=
-  ⟨inferInstance, lineIdeal_dim⟩
-
-example : lineIdeal.IsPrime ∧ ringKrullDim (MvPolynomial (Fin 2) ℂ ⧸ lineIdeal) = (1 : ℕ) ∧
-    IsFiniteProjection lineIdeal lineProj ∧ (X 0 : MvPolynomial (Fin 1) ℂ) ≠ 0 :=
-  ⟨inferInstance, lineIdeal_dim, lineProj_finite, X_ne_zero _⟩
-
 def originIdeal (n : ℕ) : Ideal (MvPolynomial (Fin n) ℂ) := RingHom.ker (eval (0 : Fin n → ℂ))
-
-example : X 0 ∈ originIdeal 1 ∧ (1 : MvPolynomial (Fin 1) ℂ) ∉ originIdeal 1 := by
-  simp [originIdeal]
 
 end GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.ComplexSets

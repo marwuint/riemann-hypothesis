@@ -258,21 +258,6 @@ theorem isDatum_detRep (r : ℕ) {χ χW χV : kˣ →* ℂˣ} (h : IsUnram χ) 
   ⟨⟨isIrreducible_ofChar _, (isSmooth_ofChar_iff _).2 (isSmoothChar_of_isUnram h).detChar,
     (isUnitarisable_ofChar_iff _).2 fun _ => hu _⟩, hW, hV, ht, hr⟩
 
-example (r : ℕ) : IsDatum (detRep (Fin r) (1 : kˣ →* ℂˣ)) 1 1 :=
-  isDatum_detRep r (fun _ _ => rfl) (fun _ => by simp) (fun _ => by simp) (fun _ => by simp)
-    (fun _ _ => rfl) (fun _ _ => by simp)
-
-example (r t : ℕ) : HasBlocks (k := k) (r := r) (t := t) 1 1 1 := by
-  refine ⟨fun i j => ?_, fun i j => ?_, fun i j => ?_⟩
-  · simp [Matrix.one_apply]
-  · simp [Matrix.one_apply]
-  · rw [Units.val_one, Matrix.one_apply_ne]
-    · exact zero_mem _
-    · intro e
-      have := congrArg Fin.val e
-      simp at this
-      omega
-
 end Examples
 
 end GlobalTheory.IndefiniteRowSideFullHecke.CuspidalSupportClasses

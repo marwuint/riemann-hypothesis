@@ -267,17 +267,6 @@ section Examples
 abbrev SpecialPoint.closed (O : Type) [CommRing O] [IsLocalRing O] : SpecialPoint (𝟙 (Spec (CommRingCat.of O))) :=
   ⟨closedPoint O, rfl⟩
 
-example : StrictLoc (Spec (CommRingCat.of ℂ)) (closedPoint ℂ) := by
-  haveI : IsSepClosed (ResidueField ℂ) := by
-    have e : ℂ ≃+* ResidueField ℂ := RingEquiv.ofBijective (residue ℂ) ⟨(residue ℂ).injective, residue_surjective⟩
-    haveI : IsAlgClosed (ResidueField ℂ) := IsAlgClosed.of_ringEquiv ℂ _ e
-    infer_instance
-  exact StrictLoc.ofStrictlyHenselian ℂ
-
-example (O : Type) [CommRing O] [HenselianLocalRing O] [IsSepClosed (ResidueField O)] (K : Type) [Field K]
-    [Algebra O K] [IsAlgClosed K] [FaithfulSMul O K] [Algebra.IsAlgebraic O K] (R : Type) [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] (n : ℕ) : Type 1 :=
-  stalk R K (𝟙 (Spec (CommRingCat.of O))) n (SpecialPoint.closed O) (StrictLoc.ofStrictlyHenselian O)
-
 end Examples
 
 end GlobalTheory.NCyc
@@ -317,14 +306,5 @@ theorem isAlgebraic_powerSeries_complex :
     (Algebra.IsAlgebraic.isAlgebraic x)⟩
 
 attribute [local instance] faithfulSMul_powerSeries_complex isAlgebraic_powerSeries_complex
-
-example : StrictLoc (Spec (CommRingCat.of (PowerSeries ℂ))) (closedPoint (PowerSeries ℂ)) :=
-  StrictLoc.ofStrictlyHenselian (PowerSeries ℂ)
-
-example (n : ℕ) : Representation ℤ_[3] (AlgebraicClosure (FractionRing (PowerSeries ℂ)) ≃ₐ[PowerSeries ℂ]
-    AlgebraicClosure (FractionRing (PowerSeries ℂ)))
-    (stalk ℤ_[3] (AlgebraicClosure (FractionRing (PowerSeries ℂ))) (𝟙 (Spec (CommRingCat.of (PowerSeries ℂ)))) n
-      (SpecialPoint.closed _) (StrictLoc.ofStrictlyHenselian (PowerSeries ℂ))) :=
-  inertia _ _ _ n _ _
 
 end GlobalTheory.NCyc

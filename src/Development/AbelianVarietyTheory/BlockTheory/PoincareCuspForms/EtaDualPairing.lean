@@ -119,13 +119,4 @@ def HtStatement : Prop :=
       B.tr2 (nsmul_constPt B hy) (B.nsmul2 u N) =
         B.smul (onePlusEta R (-pair B R v h)) (B.zero2 (etaPt B R v)))
 
-example (R : LAlg R₀) (a : R) :
-    (onePlusEta R (-a) : dual R) = 1 - eta R * (incl R).1 a := by
-  simp [onePlusEta, sub_eq_add_neg]
-
-example (R : LAlg R₀) : eta R ≠ 0 := fun h => by
-  have := congrArg (fun x : DualNumber R => TrivSqZeroExt.snd x) h
-  simp [eta] at this
-  exact one_ne_zero (α := R) this
-
 end GlobalTheory.IndefiniteRowSideFullHecke.EtaDualPairing

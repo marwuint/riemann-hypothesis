@@ -58,13 +58,6 @@ def shiftSer (a : ℤ) (F : Submodule L M) : Submodule L (ℤ → M) where
 
 def gradedSer (F : ℤ → Submodule L M) : Submodule L (ℤ → M) := ⨆ a : ℤ, shiftSer a (F a)
 
-example (a : ℤ) (F : Submodule L M) (d : M) (hd : d ∈ F) :
-    (Pi.single (-a) d : ℤ → M) ∈ shiftSer a F := by
-  refine ⟨fun k hk => Pi.single_eq_of_ne (ne_of_lt hk) _, fun k => ?_⟩
-  by_cases h : k = -a
-  · subst h; simpa using hd
-  · simp [Pi.single_eq_of_ne h]
-
 end Series
 
 section Generic

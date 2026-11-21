@@ -100,12 +100,4 @@ def pull (n : ℕ) : H F n →ₛₗ[σ] H F' n :=
 
 end Mor
 
-example (n : ℕ) (f : Cn F n) (s : ComposableArrows C n) : (Mor.id F).pullC n f s = f s := rfl
-
-example : Bn F 0 = ⊥ := rfl
-
-example (f : Cn F 0) (s : ComposableArrows C 1) :
-    d F 0 f s = (F.map (toLast 0 s)).hom (f (face 0 s)) - (F.map (toLast 1 s)).hom (f (face 1 s)) := by
-  simp [d, Fin.sum_univ_two, sub_eq_add_neg]
-
 end GlobalTheory.CatH

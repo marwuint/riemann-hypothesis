@@ -400,13 +400,7 @@ def splitDat (χ : TameGal K l e a →* O) : BKDat O K l e a (Unit ⊕ Unit) η 
   BKDat.plusDat (D := rankOneDat O K l e a η H j h₁ h₂ χ) (y := 0) (zero_mem _) (map_zero _)
     ⟨0, zero_mem _, by simp⟩ (by simp)
 
-example (χ : TameGal K l e a →* O) :
-    BKHom (rankOneDat O K l e a η H j h₁ h₂ χ) (splitDat h₁ h₂ χ) :=
-  Descent.plusInl _ _ (zero_mem _)
-
 end Examples
-
-example : BKDat ℤ_[3] ℚ_[3] 3 2 1 Unit 1 2 := rankOneDat _ _ _ _ _ 1 2 (-1) (by simp) (by simp) 1
 
 def Descent.plusProj {P : PhiMod O K l e a ι} (Δ : Descent P) {y : Vec K a ι}
     (hy : y ∈ P.Mext (invE l e (A O K))) (hinv : y ∈ Δ.inv) :

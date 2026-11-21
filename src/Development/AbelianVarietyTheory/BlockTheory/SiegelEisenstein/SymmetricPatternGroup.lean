@@ -199,13 +199,6 @@ def symChain {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) {ϖ : kˣ} (hϖ :
 def fCoset (ϖ : kˣ) (κ τ s : ℕ) : Set (XIx (Fin κ) (Fin τ) (s + 1) → k) :=
   {y | (ϖ : k) • y - Pi.single (.inl (.inr 0)) 1 ∈ box (XIx (Fin κ) (Fin τ) (s + 1)) ϖ}
 
-example (ϖ : kˣ) (κ τ s : ℕ) : (ϖ : k)⁻¹ • Pi.single (.inl (.inr 0)) (1 : k) ∈ fCoset ϖ κ τ s := by
-  simp [fCoset, smul_smul]
-
-example {ϖ : kˣ} (hϖ : IsUnif ϖ) (κ τ s : ℕ) : (fun _ => (0 : k)) ∉ fCoset ϖ κ τ s := fun h => by
-  have := (hϖ _).2 (mem_box.1 h (.inl (.inr 0)))
-  simp at this
-
 variable [MeasurableSpace k] [BorelSpace k]
 
 def AtMostOneCosetAt {ψ : AddChar k Circle} (hψ : HasConductor ψ 1) {ϖ : kˣ} (hϖ : IsUnif ϖ) (ν : Measure k)

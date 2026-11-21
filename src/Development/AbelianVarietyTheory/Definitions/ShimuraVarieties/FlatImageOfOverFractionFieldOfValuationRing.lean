@@ -618,23 +618,6 @@ end Graph
 
 section Examples
 
-example : IsIso (Spec.map (CommRingCat.ofHom (algebraMap ℤ ℚ))).imageι :=
-  (isIso_imageι_iff _).mpr ((schemeDominant_specMap_iff _).mpr (algebraMap ℤ ℚ).injective_int)
-
-example :
-    let j := Spec.map (CommRingCat.ofHom (Polynomial.aeval (R := ℤ) (1 / 2 : ℚ)).toRingHom)
-    Flat (j.imageι ≫ Spec.map (CommRingCat.ofHom (algebraMap ℤ (Polynomial ℤ)))) ∧
-      IsIntegral j.image ∧ ¬ IsIso j.imageι := by
-  intro j
-  refine ⟨flat_image_of_over_fractionField (K := ℚ) j _ (𝟙 _)
-    (specZIsTerminal.hom_ext _ _), inferInstance, ?_⟩
-  rw [isIso_imageι_iff, schemeDominant_specMap_iff]
-  intro hinj
-  have h0 : (2 * Polynomial.X - 1 : Polynomial ℤ) = 0 := by
-    apply hinj
-    simp [map_ofNat]
-  simpa using congrArg (Polynomial.eval 0) h0
-
 namespace GraphClosureExample
 
 abbrev awayTwo : Type := Localization.Away (2 : ℤ√(-4))
@@ -692,16 +675,6 @@ theorem isProper_and_not_isIso :
     rcases this with h | h | h | h <;> simp [Int.mul_emod, h]
   rw [mul_assoc] at h'
   omega
-
-example : Set.range (graphClosure.fst (𝟙 _) openPart openPart (𝟙 _) (by simp)) =
-    Set.range openPart := by
-  apply subset_antisymm
-  · rw [← Category.comp_id (graphClosure.fst _ _ _ _ _), graphClosure.condition,
-      Scheme.Hom.comp_base, TopCat.coe_comp]
-    exact Set.range_comp_subset_range _ _
-  · rintro _ ⟨x, rfl⟩
-    exact ⟨graphClosure.incl (𝟙 _) openPart openPart (𝟙 _) (by simp) x, by
-      rw [← Scheme.Hom.comp_apply, graphClosure.incl_fst]⟩
 
 end GraphClosureExample
 

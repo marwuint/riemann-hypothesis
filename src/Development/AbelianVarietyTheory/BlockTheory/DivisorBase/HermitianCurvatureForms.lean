@@ -139,21 +139,4 @@ theorem isPosFrame_tautPairGram : IsPosFrame Set.univ tautPairGram := by
       simpa [h] using h'
     · exact add_pos_of_pos_of_nonneg (normSq_pos.2 h) (normSq_nonneg _)
 
-example (ξ η : ℂ) : extTrace tautPairGram 0 ξ η = kappa * (ξ * conj η) := by
-  have hf := isPosFrame_tautPairGram.isHermFrame
-  have h : tautPairGram 0 = 1 := by
-    rw [← fromBlocks_one]; ext (a | a) (b | b) <;> simp [tautPairGram]
-  have hb : ∀ ξ : ℂ, secondForm tautPairGram 0 ξ () () = ξ := fun ξ => by
-    rw [secondForm_eq, conn, h, transpose_one, inv_one, Matrix.one_mul]
-    change del (fun x : ℂ => x) 0 ξ = ξ
-    rw [del_eq_fderiv differentiableAt_fun_id]; simp
-  have hs : subGram (tautPairGram 0) = 1 := by rw [h]; ext; simp [subGram, toBlocks₁₁]
-  have hq : quotGram (tautPairGram 0) = 1 := by
-    rw [h]; ext; simp [quotGram, toBlocks₂₂, toBlocks₂₁, mul_apply]
-  have hu : IsUnit (subGram (tautPairGram 0)).det := by simp [hs]
-  rw [extTrace, extFormAdj_eq_neg_secondForm (hf.one trivial) (hf.eventually_herm trivial)
-      (hf.isUnit 0 trivial) hu, extForm_eq_neg_secondFormAdj (hf.one trivial)
-      (hf.eventually_herm trivial) (hf.isUnit 0 trivial) hu, secondFormAdj, adj, hs, hq]
-  simp [trace, mul_apply, hb]
-
 end GlobalTheory.IndefiniteRowSideFullHecke.HermitianCurvatureForms

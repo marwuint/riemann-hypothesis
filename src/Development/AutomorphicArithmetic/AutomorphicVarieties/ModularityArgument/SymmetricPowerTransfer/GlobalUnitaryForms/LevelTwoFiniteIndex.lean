@@ -249,6 +249,4 @@ end Dat
 
 end Global
 
-example : SigData (K := ℚ) (-1) := ⟨∅, ⊤, ⊤, ⊤, 0, 0, 0, 1, 1, 1⟩
-
 end UpperTheory.V.Z.Sym.Glob

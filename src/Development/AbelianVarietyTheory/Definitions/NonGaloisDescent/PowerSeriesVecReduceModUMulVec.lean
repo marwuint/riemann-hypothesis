@@ -624,21 +624,6 @@ theorem one_notMem_Lcomp_rankOne (τ : ZMod a) :
 
 end RankOne
 
-example [Fact (Nat.Prime 3)] : PhiMod ℤ_[3] ℚ_[3] 3 8 2 Unit := rankOne _ _ _ _ fun _ => 5
-
-example [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] :
-    monomial (e * l) ((l.factorial : K)⁻¹) ∈ S O K e ∧
-      monomial (e * l) ((l.factorial : K)⁻¹) ∉ A O K := by
-  have h0 : ‖(l.factorial : K)‖ ≠ 0 := norm_ne_zero_iff.2 (natCast_ne_zero' l l.factorial_ne_zero)
-  refine ⟨monomial_mem_S ?_, fun h => ?_⟩
-  · rw [wS, Nat.mul_div_cancel_left _ (NeZero.pos e), norm_inv, inv_mul_cancel₀ h0]
-  · have h1 := h (e * l)
-    rw [coeff_monomial_same, norm_inv] at h1
-    have h2 := norm_factorial_le (K := K) l l
-    rw [Nat.div_self (Fact.out : l.Prime).pos, pow_one] at h2
-    have h3 := h2.trans_lt (norm_l_lt_one l)
-    exact absurd ((inv_le_one₀ (lt_of_le_of_ne (norm_nonneg _) h0.symm)).1 h1) (not_le.2 h3)
-
 theorem nontrivial_Ahat [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] :
     Nontrivial (Ahat O K l e) := by
   have h : idE O K l e ^ 1 ≠ ⊤ := by

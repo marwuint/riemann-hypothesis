@@ -113,9 +113,6 @@ theorem LocalIndex.witness :
           Set (v.adicCompletion K ⊗[K] (Fin 2 → K))) = localSmul v (two_ne_zero (α := 𝓞 K)) '' localLattice v (FullLattice.standard K 2).carrier :=
   ⟨smulSub_le _ _, fun v ↦ localLattice_smulSub v _ _⟩
 
-example := LocalIndex.witness ℚ
-example := LocalIndex.witness GaussianField
-
 end Witness
 
 end

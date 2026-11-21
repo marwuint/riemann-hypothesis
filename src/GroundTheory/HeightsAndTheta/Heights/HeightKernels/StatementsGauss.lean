@@ -94,20 +94,6 @@ def GaussShellSum.Statement : Prop :=
 def GaussConstant.Statement : Prop :=
   ∀ (n : ℕ), 1 ≤ n → √2 ^ n * (2 * gaussShellConst n) ≤ (72 * Real.exp 4 * n) ^ ((n : ℝ) / 2)
 
-example : (1 : Matrix (Fin 1) (Fin 1) ℝ).PosDef ∧ (1 : Matrix (Fin 1) (Fin 1) ℝ).det ≠ 0 :=
-  ⟨Matrix.PosDef.one, by simp⟩
-
-example : ((2 : ℝ) • (1 : Matrix (Fin 2) (Fin 2) ℝ)).det ≠ 0 := by simp
-
-example : (1 : Matrix (Fin 1) (Fin 1) ℝ).PosDef ∧
-    ((√2)⁻¹ • (1 : Matrix (Fin 1) (Fin 1) ℝ))ᵀ * ((√2)⁻¹ • (1 : Matrix (Fin 1) (Fin 1) ℝ)) =
-      (1 / 2 : ℝ) • (1 : Matrix (Fin 1) (Fin 1) ℝ) := by
-  refine ⟨Matrix.PosDef.one, ?_⟩
-  rw [transpose_smul, transpose_one, smul_mul_smul_comm, mul_one]
-  congr 1
-  rw [← mul_inv, Real.mul_self_sqrt (by norm_num)]
-  norm_num
-
 abbrev gaussUnit : EuclideanSpace ℝ (Fin 1) := WithLp.toLp 2 (Pi.single 0 1)
 
 theorem gaussUnit_norm : ‖gaussUnit‖ = 1 := by
@@ -128,46 +114,6 @@ theorem gaussLattice_one_min : ∀ v ∈ gaussLattice (1 : Matrix (Fin 1) (Fin 1
   have ha : a ≠ 0 := by rintro rfl; exact hv0 (zero_smul _ _)
   rw [← Int.cast_smul_eq_zsmul ℝ, norm_smul, gaussUnit_norm, mul_one, Real.norm_eq_abs]
   exact_mod_cast Int.one_le_abs ha
-
-example : 1 ≤ 1 ∧ (0 : ℝ) < 1 ∧
-    ∀ v ∈ gaussLattice (1 : Matrix (Fin 1) (Fin 1) ℝ), v ≠ 0 → (1 : ℝ) ≤ ‖v‖ :=
-  ⟨le_rfl, one_pos, gaussLattice_one_min⟩
-
-example : (1 : Matrix (Fin 1) (Fin 1) ℝ).det ≠ 0 ∧
-    gaussUnit ∈ GroundTheory.Global.dualLattice (gaussLattice (1 : Matrix (Fin 1) (Fin 1) ℝ)) ∧
-    gaussUnit ≠ 0 := by
-  refine ⟨by simp, ?_, ?_⟩
-  · rw [GroundTheory.Global.mem_dualLattice]
-    intro x hx
-    obtain ⟨a, rfl⟩ := mem_gaussLattice_one.1 hx
-    refine ⟨a, ?_⟩
-    rw [← Int.cast_smul_eq_zsmul ℝ, inner_smul_right, real_inner_self_eq_norm_sq, gaussUnit_norm]
-    simp
-  · intro h
-    have := gaussUnit_norm
-    rw [h, norm_zero] at this
-    exact zero_ne_one this
-
-example : ∀ x ∈ ({0, gaussUnit} : Finset (EuclideanSpace ℝ (Fin 1))),
-    ∀ y ∈ ({0, gaussUnit} : Finset (EuclideanSpace ℝ (Fin 1))), x ≠ y → (1 : ℝ) ≤ ‖x - y‖ := by
-  intro x hx y hy hxy
-  simp only [Finset.mem_insert, Finset.mem_singleton] at hx hy
-  rcases hx with rfl | rfl <;> rcases hy with rfl | rfl
-  · exact absurd rfl hxy
-  · simp
-  · simp
-  · exact absurd rfl hxy
-
-example : ∀ x ∈ ({0, gaussUnit} : Finset (EuclideanSpace ℝ (Fin 1))), ‖x‖ ≤ (1 : ℝ) := by
-  intro x hx
-  simp only [Finset.mem_insert, Finset.mem_singleton] at hx
-  rcases hx with rfl | rfl
-  · simp
-  · simp
-
-example : (1 : Matrix (Fin 1) (Fin 1) ℝ).PosDef ∧ (0 : ℝ) < 1 ∧
-    ∀ l : Fin 1 → ℤ, l ≠ 0 → (1 : ℝ) ^ 2 ≤ qf (1 : Matrix (Fin 1) (Fin 1) ℝ)⁻¹ (intVec l) :=
-  ⟨Matrix.PosDef.one, one_pos, isReducedImaginaryPart_one.min⟩
 
 end
 

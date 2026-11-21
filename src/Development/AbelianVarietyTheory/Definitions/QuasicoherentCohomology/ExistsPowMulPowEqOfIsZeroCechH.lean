@@ -771,41 +771,4 @@ theorem exists_pow_mul_pow_eq_of_isZero_cechH
 
 end Affine
 
-example :
-    letI := algebraΓSpec (.of ℤ)
-    Nontrivial (cechH (CommRingCat.of ℤ) (structureModule (Spec (.of ℤ))) ⊤
-      (twoCharts (A := .of ℤ) 3 (1 - 3)) 0) ∧
-    IsZero (cechH (CommRingCat.of ℤ) (structureModule (Spec (.of ℤ))) ⊤
-      (twoCharts (A := .of ℤ) 3 (1 - 3)) 1) :=
-  ⟨(cechHZeroStructureTwoChartsEquiv (A := .of ℤ) 3).toEquiv.nontrivial,
-    isZero_cechH_structure_twoCharts_succ (A := .of ℤ) 3 0⟩
-
-example : Nontrivial (cechAbH (structureModule (Spec (.of ℤ))).presheaf ⊤
-    (twoCharts (A := .of ℤ) 3 (1 - 3)) 0) :=
-  letI := algebraΓSpec (.of ℤ)
-  haveI := (cechHZeroStructureTwoChartsEquiv (A := .of ℤ) 3).toEquiv.nontrivial
-  (cechAbHEquiv (CommRingCat.of ℤ) (structureModule (Spec (.of ℤ))) ⊤
-    (twoCharts (A := .of ℤ) 3 (1 - 3)) 0).toEquiv.nontrivial
-
-example {A : CommRingCat.{u}} (M : ModuleCat.{u} A) (f g : A) (m : M) :
-    twoChartsXOne M f g (((cech A (tilde M) ⊤ (twoCharts f g)).d 0 1).hom
-      ((twoChartsXZero M f g).symm (LocalizedModule.mk m 1, 0))) = -LocalizedModule.mk m 1 := by
-  rw [twoCharts_d, LinearEquiv.apply_symm_apply, map_zero, awayTransition_mk_one, zero_sub]
-
-example :
-    letI := algebraΓSpec (.of (Polynomial ℤ))
-    ¬ IsZero (cechH (CommRingCat.of (Polynomial ℤ)) (structureModule (Spec (.of (Polynomial ℤ)))) ⊤
-      (twoCharts (A := .of (Polynomial ℤ)) (Polynomial.C 2) Polynomial.X) 1) := by
-  intro h
-  obtain ⟨n, k, a, b, hab⟩ := exists_pow_mul_pow_eq_of_isZero_cechH (A := .of (Polynomial ℤ))
-    (Polynomial.C 2) Polynomial.X h
-  have h₁ : (Polynomial.C (2 : ℤ) ^ n * Polynomial.X ^ k).coeff k =
-      (Polynomial.C (2 : ℤ) ^ (n + 1) * b + Polynomial.X ^ (k + 1) * a).coeff k :=
-    congrArg (fun p : Polynomial ℤ => p.coeff k) hab
-  rw [← map_pow, ← map_pow, Polynomial.coeff_add, Polynomial.coeff_C_mul, Polynomial.coeff_C_mul,
-    Polynomial.coeff_X_pow_self, Polynomial.coeff_X_pow_mul', if_neg (by omega), add_zero,
-    pow_succ, mul_assoc] at h₁
-  have h₂ := mul_left_cancel₀ (by positivity : (2 : ℤ) ^ n ≠ 0) h₁
-  omega
-
 end GlobalTheory

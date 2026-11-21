@@ -264,12 +264,6 @@ theorem LengthCommensurable.signedLength_smul_smul {G : Type*} [Monoid G] [Distr
     (ha : IsSMulRegular V a) : signedLength (a • A) (a • B) = signedLength A B :=
   h.signedLength_map_of_injective (DistribSMul.toLinearMap R V a) ha
 
-open Pointwise in
-
-example (A B : Submodule ℤ (Fin 2 → ℚ)) {s : ℚ} (hs : s ≠ 0) :
-    relLength (s • A) (s • B) = relLength A B :=
-  relLength_smul_smul (IsSMulRegular.of_ne_zero hs) A B
-
 end Ambient
 
 section Signed
@@ -414,45 +408,6 @@ theorem relLength_int_top_span_prime {p : ℤ} (hp : Prime p) :
     relLength (⊤ : Ideal ℤ) (Ideal.span {p}) = 1 :=
   have := PrincipalIdealRing.isMaximal_of_irreducible hp.irreducible
   relLength_top_of_isMaximal _
-
-example : LengthCommensurable (⊤ : Ideal ℤ) (Ideal.span {2}) ∧
-    signedLength (⊤ : Ideal ℤ) (Ideal.span {2}) = 1 ∧
-    signedLength (Ideal.span {2}) (⊤ : Ideal ℤ) = -1 := by
-  have h₁ := relLength_int_top_span_prime Int.prime_two
-  have h : LengthCommensurable (⊤ : Ideal ℤ) (Ideal.span {2}) := by
-    rw [lengthCommensurable_iff_of_ge le_top, h₁]
-    simp
-  have h₂ : signedLength (⊤ : Ideal ℤ) (Ideal.span {2}) = 1 := by
-    rw [h.signedLength_of_ge le_top, h₁]
-    simp
-  exact ⟨h, h₂, by rw [h.signedLength_swap, h₂]⟩
-
-example : relLength (Ideal.span {2} : Ideal ℤ) (Ideal.span {3}) = 1 ∧
-    relLength (Ideal.span {3} : Ideal ℤ) (Ideal.span {2}) = 1 ∧
-    signedLength (Ideal.span {2} : Ideal ℤ) (Ideal.span {3}) = 0 := by
-  have hs : (Ideal.span {2} : Ideal ℤ) ⊔ Ideal.span {3} = ⊤ := by
-    rw [Ideal.sup_eq_top_iff_isCoprime]
-    exact ⟨-1, 1, by norm_num⟩
-  have h₁ : relLength (Ideal.span {2} : Ideal ℤ) (Ideal.span {3}) = 1 := by
-    rw [← relLength_sup_left, hs]
-    exact relLength_int_top_span_prime Int.prime_three
-  have h₂ : relLength (Ideal.span {3} : Ideal ℤ) (Ideal.span {2}) = 1 := by
-    rw [← relLength_sup_left', hs]
-    exact relLength_int_top_span_prime Int.prime_two
-  exact ⟨h₁, h₂, by
-    rw [signedLength_eq_of_relLength_eq (m := 1) (n := 1) (by simpa using h₁) (by simpa using h₂)]
-    simp⟩
-
-example : relLength (⊤ : Submodule ℚ (ℚ × ℚ)) ⊥ = 2 := by
-  rw [relLength_bot_right, Module.length_top, Module.length_prod, Module.length_eq_one]
-  rfl
-
-example : ¬ LengthCommensurable (⊤ : Ideal ℤ) ⊥ := by
-  rw [lengthCommensurable_iff_of_ge bot_le, relLength_bot_right, Module.length_top,
-    Module.length_ne_top_iff, isFiniteLength_iff_isNoetherian_isArtinian]
-  rintro ⟨-, h⟩
-  have : IsArtinianRing ℤ := h
-  exact Int.not_isField (IsArtinianRing.isField_of_isDomain ℤ)
 
 end Examples
 

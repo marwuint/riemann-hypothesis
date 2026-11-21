@@ -121,16 +121,4 @@ def JetFrame : Prop :=
                 (∀ u, HasSum (fun e => c e * mono u e) (Θ (ofUnitCoord ξ b₀ b₁ u))) →
                 polyJet (letterUnit D b₀ b₁) Rc Θ = liftBlock c Rc lam
 
-example (ξ D : ℂ) : period ξ D = 1 / (π * (2 * ‖ξ‖ * ‖D‖ ^ 2)) := by
-  have : lineForm ξ D D = ((2 * ‖ξ‖ * ‖D‖ ^ 2 : ℝ) : ℂ) := by
-    simp [lineForm, Complex.mul_conj, Complex.normSq_eq_norm_sq]
-  rw [period, this, Complex.ofReal_re]
-
-example {E κ : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [Fintype κ] (v : κ → E) (F : E → ℂ) :
-    monoDeriv v 0 F = F := by
-  unfold monoDeriv
-  induction (univ : Finset κ).toList with
-  | nil => rfl
-  | cons a l ih => simpa using ih
-
 end GlobalTheory.IndefiniteRowSideFullHecke.TaylorCoefficientForms

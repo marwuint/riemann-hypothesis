@@ -58,10 +58,6 @@ def UnitAt (E : EtTie W RA RW inclR φR gR πA) : Prop :=
       W.φD W.one e = e ∧ (∀ g : W.Gam, W.γD W.one g e = e) ∧
       W.N W.one = Submodule.span (LetA O n) {e}
 
-example (E : EtTie W RA RW inclR φR gR πA) : ∃ e₀ : ↥W.one.L.T, Submodule.span O {e₀} = ⊤ := by
-  obtain ⟨_, e₀, h, _⟩ := E.one_e
-  exact ⟨e₀, h⟩
-
 def SumAt : Prop :=
   ∀ (T T' T'' : LocLat G Qp LL O) (i : LatHom T.L T''.L) (i' : LatHom T'.L T''.L),
     IsCrys PD T.ρ → IsCrys PD T'.ρ → IsSumLat i i' →

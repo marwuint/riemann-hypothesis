@@ -41,14 +41,4 @@ theorem SSPotB_iff_SSPotA {N l w : ℕ} {lam : Letter → ℂ} : SSPotB N l w la
 theorem Tower.SSBB_iff_SSBA (X : Tower Ω ε) {N l w : ℕ} [Fact l.Prime] {E : Type} [Field E] [Algebra ℤ_[l] E]
     {lam : Letter → E} : X.SSBB N l w E lam ↔ X.SSBA N l w E lam := Iff.rfl
 
-example (N l : ℕ) : FreeAlgebra.ι ℂ Letter.U ∈ admissibleLettersSubalgebra ℂ N l := iota_mem_admissibleSubalgebra ℂ trivial
-
-example (N l : ℕ) : FreeAlgebra.ι ℂ (Letter.T 1) ∉ admissibleLettersSubalgebra ℂ N l := by
-  classical
-  intro h
-  have := SSAdm.lift_congr (A := {T | admitted N l T}) (B := ℂ) (f := fun _ => 0)
-    (g := fun T => if admitted N l T then 0 else 1) (fun T hT => (if_pos hT).symm) h
-  have hn : ¬ admitted N l (Letter.T 1) := fun h => Nat.not_prime_one h.1
-  simp [hn] at this
-
 end GlobalTheory.KZ

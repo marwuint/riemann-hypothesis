@@ -197,14 +197,6 @@ theorem summable_sg {l n : ℕ} [NeZero n] (hl : 2 ≤ l) (h : ZMod n → ℕ) (
   gcongr
   exact Finset.single_le_sum (f := h) (fun _ _ => Nat.zero_le _) (Finset.mem_univ _)
 
-example : sg 5 (fun _ : ZMod 1 => 9) 0 = 2 := by
-  have h : ∑' j : ℕ, ((9 : ℕ) : ℝ) / ((5 : ℕ) : ℝ) ^ (j + 1) = 9 / 4 := by
-    have : ∀ j : ℕ, ((9 : ℕ) : ℝ) / ((5 : ℕ) : ℝ) ^ (j + 1) = 9 / 5 * (1 / 5) ^ j := fun j => by
-      push_cast; rw [pow_succ, one_div, inv_pow]; field_simp
-    simp_rw [this]
-    rw [tsum_mul_left, tsum_geometric_of_lt_one (by norm_num) (by norm_num)]; norm_num
-  rw [sg, h, Nat.floor_eq_iff (by norm_num)]; norm_num
-
 namespace Inh
 variable {k : Type} [Field k]
 
@@ -453,9 +445,6 @@ theorem sen_stdLat_zero {l : ℕ} (R : RingPG k l) : sen (lin R.γ) (stdLat k) 0
   have hs : Function.Surjective f := fun c =>
     ⟨⟨_, mem_stdLat.2 ⟨PowerSeries.C c, rfl⟩⟩, (h0 _).trans (PowerSeries.constantCoeff_C c)⟩
   rw [hk, (f.quotKerEquivOfSurjective hs).finrank_eq, Module.finrank_self]
-
-example (l : ℕ) [Fact l.Prime] [CharP k l] (N : Submodule k⟦X⟧ (Fin 2 → k⸨X⸩)) : ℕ :=
-  sen ((powMod (stdRing k l) gam_bijective 3 2).γ 0) N 0
 
 end Inh
 

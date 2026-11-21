@@ -24,8 +24,6 @@ theorem mem_shifts {U : Finset ℤ} {η : ℕ} {n : ℤ} :
   rw [shifts, Finset.mem_image₂]
   simp only [Finset.mem_Icc]
 
-example : shifts {-1, 0} 1 = {0, 1} := by decide
-
 section Clauses
 
 variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Algebra O K]
@@ -98,17 +96,6 @@ section Basic₂
 variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [CompleteSpace K] [Algebra O K]
   [IsUnitBall O K] {l e a : ℕ} [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a]
   [TameDescentExponentData K l e a] {η H : ℕ}
-
-example {j : ℤ} (h₁ : -(η : ℤ) ≤ j) (h₂ : j ≤ H) (hη : 1 ≤ η) :
-    (rankOneDat O K l e a η H j h₁ h₂ 1).jumps ⊆ (({j} : Finset ℤ) : Set ℤ) ∧
-      j + 1 ∈ shifts {j} η ∧
-      (rankOneDat O K l e a η H j h₁ h₂ 1).LcZ.HasEigenvalue (((j + 1) * e * l : ℤ) : K) := by
-  refine ⟨by rw [Finset.coe_singleton]; exact (jumps_rankOne j).le, mem_shifts.2 ⟨j, by simp, 1, ⟨le_rfl, by omega⟩, rfl⟩, ?_⟩
-  obtain ⟨h, h0⟩ := cls_mem_Z_rankOneDat (O := O) (K := K) (l := l) (e := e) (a := a) h₁ h₂ hη
-  refine Module.End.hasEigenvalue_of_hasEigenvector
-    (x := ⟨_, Descent.mem_Zl_of_mem_Z _ h⟩) ⟨?_, fun h' => h0 (congrArg Subtype.val h')⟩
-  rw [Module.End.mem_eigenspace_iff]
-  exact Subtype.ext (Lc_rankOneDat h₁ h₂ 1)
 
 end Basic₂
 

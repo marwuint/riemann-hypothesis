@@ -145,8 +145,6 @@ variable (M : Type) [AddCommGroup M] [Module (Poly S N) M] [Module S M] [IsScala
 
 abbrev LocM (I : Finset (Fin (N + 1))) : Type := LocalizedModule (denoms S N I) M
 
-example (I : Finset (Fin (N + 1))) : IsScalarTower S (Poly S N) (LocM S N M I) := inferInstance
-
 def locFrac (I : Finset (Fin (N + 1))) (m : M) (n : ℕ) : LocM S N M I :=
   LocalizedModule.mk m ⟨Xprod S N I ^ n, pow_mem (Xprod_mem_denoms S N I) n⟩
 

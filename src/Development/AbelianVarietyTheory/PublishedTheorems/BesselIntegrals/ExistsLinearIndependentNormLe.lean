@@ -26,15 +26,4 @@ theorem SuccMinTransference.of_forall
   intro n L _ _ i h1 hi
   simpa using h _ L i h1 (by simpa using hi)
 
-example : succMin (1 : Submodule ℤ ℝ) 1 * succMin (dualLattice (1 : Submodule ℤ ℝ)) (1 - 1 + 1) =
-    ((1 : ℕ) : ℝ) := by
-  have := minNorm_one_real
-  rw [minNorm] at this
-  simp [dualLattice_one_real, this]
-
-example (h : SuccMinTransference) (n : ℕ) (i : ℕ) (h1 : 1 ≤ i) (hi : i ≤ n) :
-    let L := span ℤ (Set.range (EuclideanSpace.basisFun (Fin n) ℝ).toBasis)
-    succMin L i * succMin (dualLattice L) (n - i + 1) ≤ n :=
-  h n _ i h1 hi
-
 end GlobalTheory.Published

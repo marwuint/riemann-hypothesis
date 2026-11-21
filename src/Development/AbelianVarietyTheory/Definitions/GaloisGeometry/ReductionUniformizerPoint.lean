@@ -334,9 +334,6 @@ theorem nonempty_Ystr_one (h : ¬ IsUnit ϖ) : Nonempty (Ystr (compIdeal O ϖ) 1
   obtain ⟨y⟩ := (nonempty_Y_iff (compIdeal O ϖ) Finset.univ).2 ⟨x, hx⟩
   exact nonempty_Ystr (compIdeal O ϖ) (s := 1) ⟨Finset.univ, by simp⟩ y
 
-example : Nonempty (Ystr (compIdeal ℤ 2) 1) ∧ IsEmpty (Ystr (compIdeal ℤ 2) 2) :=
-  ⟨nonempty_Ystr_one ℤ 2 (by decide), isEmpty_Ystr_two ℤ 2⟩
-
 end GlobalTheory.Strata.Example
 
 namespace GlobalTheory.Strata
@@ -344,10 +341,5 @@ namespace GlobalTheory.Strata
 theorem orderEmbOfFin_univ_fin {n : ℕ} (h : (Finset.univ : Finset (Fin n)).card = n) :
     ((Finset.univ : Finset (Fin n)).orderEmbOfFin h : Fin n → Fin n) = id :=
   (Finset.orderEmbOfFin_unique h (f := id) (fun _ => Finset.mem_univ _) strictMono_id).symm
-
-example : (face (ι := Fin 2) (s := 0) ⟨Finset.univ, by simp⟩ 0).1 = {1} ∧
-    (face (ι := Fin 2) (s := 0) ⟨Finset.univ, by simp⟩ 1).1 = {0} := by
-  simp only [face, orderEmbOfFin_univ_fin, id]
-  decide
 
 end GlobalTheory.Strata

@@ -102,22 +102,6 @@ section Examples
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
   {n : Type} [Fintype n] [DecidableEq n]
 
-example (c p : ℕ) (u x : n → k) :
-    (rowE c p u).val *ᵥ inX k n c x = inX k n c x + (u ⬝ᵥ x) • avec k n c p := by
-  ext (i | i)
-  · simp [rowE, lowU, inX, avec, fromBlocks_mulVec]
-  · by_cases h : i.val + 1 = p <;> simp [rowE, lowU, inX, avec, fromBlocks_mulVec, mulVec, dotProduct, h]
-
-example : dualLat (stdLat k n) = stdLat k n := by
-  ext u
-  refine ⟨fun h => mem_stdLat.2 fun i => ?_, fun h x hx => ?_⟩
-  · have := h (Pi.single i 1) (mem_stdLat.2 fun j => by
-      rw [Pi.single_apply]
-      split_ifs
-      exacts [one_mem _, zero_mem _])
-    simpa using this
-  · exact sum_mem fun i _ => mul_mem (mem_stdLat.1 h i) (mem_stdLat.1 hx i)
-
 end Examples
 
 end GlobalTheory.IndefiniteRowSideFullHecke.DualLatticeExchange

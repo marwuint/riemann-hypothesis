@@ -312,41 +312,4 @@ theorem Lat.mem_predualIn_iff {L : Lat ξ (Module.Dual Ω E)} {V : Submodule Ω 
 
 end API
 
-example : InChart PModel.twoThree.ξ (fun j => algebraMap ℤ ℚ ((![2, 3] : Fin 2 → ℤ) j)) 1 CptModel.two ∧
-    ¬ InChart PModel.twoThree.ξ (fun j => algebraMap ℤ ℚ ((![2, 3] : Fin 2 → ℤ) j)) 0 CptModel.two := by
-  have hx : Ideal.span (Set.range (![2, 3] : Fin 2 → ℤ)) = ⊤ := by
-    rw [Ideal.eq_top_iff_one]
-    have h := Ideal.sub_mem (Ideal.span (Set.range (![2, 3] : Fin 2 → ℤ)))
-      (Ideal.subset_span ⟨1, rfl⟩) (Ideal.subset_span ⟨0, rfl⟩)
-    simpa using h
-  refine ⟨(CoordInhab.inChart_iff _ hx 1 CptModel.two).2 fun h => ?_,
-    fun h => (CoordInhab.inChart_iff _ hx 0 CptModel.two).1 h (Ideal.mem_span_singleton_self _)⟩
-  exact absurd (Ideal.mem_span_singleton.1 h) (by decide)
-
-example : ¬ IsCtrOf (RingHom.id ℚ) CptModel.two (CptModel.self (CptModel.pt (algebraMap ℤ ℚ))) := fun h => by
-  have e := IsCtrOf.unique_spec (IsFractionRing.injective ℤ ℚ) h (IsCtrOf.refl _)
-  apply CptModel.half_notMem
-  rw [e, CptModel.regAt_self CptModel.isCptGen_int]
-  trivial
-
-example (p : Cpt (CptModel.pt (RingHom.id ℝ))) :
-    NormAt (CptModel.pt (RingHom.id ℂ)) (CptModel.pt (algebraMap ℝ ℂ)) (algebraMap ℝ ℂ) p ∧
-      ¬ IsoAt (CptModel.pt (RingHom.id ℂ)) (CptModel.pt (algebraMap ℝ ℂ)) (algebraMap ℝ ℂ) p :=
-  ⟨NormAt.of_isAlgebraic p, fun h => by
-    obtain ⟨b, hb⟩ := ((IsoAt.field_iff _ _ p).1 h).2 Complex.I
-    simpa using congrArg Complex.im hb⟩
-
-example (p : Cpt (CptModel.pt (RingHom.id ℂ))) :
-    IsoAt (CptModel.pt (RingHom.id ℂ)) (CptModel.pt (starRingEnd ℂ)) (starRingEnd ℂ) p ∧
-      ¬ IsoAt (CptModel.pt (RingHom.id ℂ)) (CptModel.pt (starRingEnd ℂ)) (RingHom.id ℂ) p :=
-  ⟨(IsoAt.field_iff _ _ p).2 ⟨rfl, fun a => ⟨starRingEnd ℂ a, Complex.conj_conj a⟩⟩, fun h => by
-    have := congrArg (fun g : ℂ →+* ℂ => (g Complex.I).im) ((IsoAt.field_iff _ _ p).1 h).1
-    norm_num at this⟩
-
-example : CptModel.two ∈ invFib _ 3 ∧ CptModel.two ∉ invFib _ 2 ∧ CptModel.two ∉ locFib _ 3 ∧
-    CptModel.two ∉ genFib _ :=
-  ⟨by simpa [invFib] using CptModel.unitAt_three, fun h => CptModel.not_unitAt_two (by simpa [invFib] using h),
-    fun h => CptModel.not_unitAt_two (by simpa using h 2 (by norm_num)),
-    fun h => CptModel.not_unitAt_two (by simpa using h 2 two_pos)⟩
-
 end GlobalTheory.CompanionTheory.Ar

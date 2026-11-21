@@ -339,10 +339,6 @@ theorem powerSeries_completeDVR (O : Type*) [CommRing O] [IsDomain O] [IsDiscret
     map_algebraMap_injective K,
     fun f => ⟨order_map_algebraMap K f, addVal_algebraMap_atPrime_X _ f⟩⟩
 
-example (p : ℕ) [Fact p.Prime] :
-    RingHom.ker (ev (PadicInt.irreducible_p (p := p))) = Ideal.span {X - C (p : ℤ_[p])} :=
-  (powerSeries_completeDVR ℤ_[p] ℚ_[p] PadicInt.irreducible_p).2.2.2.1.2.2.2.2.1
-
 end DVR
 
 end GlobalTheory.ChartRing

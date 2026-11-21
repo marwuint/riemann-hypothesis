@@ -17,17 +17,6 @@ def ChartEnergySwapInvariant.Statement : Prop :=
     chartMixedEnergy ((swapFirstTwo e)ᴴ * M * swapFirstTwo e) ((swapFirstTwo e)ᴴ * N * swapFirstTwo e) k =
       chartMixedEnergy M N k
 
-example : (Matrix.diagonal ![(4 : ℂ), 1] : Matrix (Fin (0 + 1 + 1)) (Fin (0 + 1 + 1)) ℂ).PosDef ∧
-    (1 : Matrix (Fin (0 + 1 + 1)) (Fin (0 + 1 + 1)) ℂ).PosDef :=
-  ⟨Matrix.posDef_diagonal_iff.mpr fun j => by fin_cases j <;> norm_num, Matrix.PosDef.one⟩
-
-example (w : ℂ) : swapFirstTwo 0 *ᵥ ![1, w] = ![w, 1] := by
-  ext i
-  fin_cases i <;> simp [swapFirstTwo, PEquiv.toMatrix_toPEquiv_mulVec]
-
-example (e : ℕ) : swapFirstTwo e 0 1 = 1 := by
-  simp [swapFirstTwo, PEquiv.toMatrix_apply]
-
 end
 
 end GroundTheory.Heights₂.Heights

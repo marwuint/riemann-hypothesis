@@ -154,20 +154,4 @@ def Shape : Prop :=
     (L' : Submodule 𝒪[k] (n' → k)) (_ : Submodule.IsLattice k L'),
     OneClass ϖ ψ ν n hc L' ∧ OneCoset ϖ ψ ν n c L' ∧ FunMod ϖ ψ ν n c L' ∧ InjSupp ϖ ψ ν n c L'
 
-example (d : ℕ) : expo 2 d = 3 * d + 1 := by
-  simp [expo, Finset.sum_Icc_succ_top]; ring
-
-open Classical in
-
-example {ι κ : Type} [Fintype ι] [DecidableEq ι] [Fintype κ] [DecidableEq κ] (ϖ : 𝒪[k])
-    (M' : Submodule 𝒪[k] (ι → k)) (M : Submodule 𝒪[k] (κ → k)) :
-    SuppIn (fun x => if MapsInto x M' M then 1 else 0) M' M ∧
-      PeriodicMod ϖ (fun x => if MapsInto x M' M then 1 else 0) M' M := by
-  refine ⟨fun x hx => by by_contra h; simp [h] at hx, fun x y hy => ?_⟩
-  have : MapsInto (x + (ϖ : k) • y) M' M ↔ MapsInto x M' M := by
-    refine forall₂_congr fun v hv => ?_
-    rw [Matrix.add_mulVec, Matrix.smul_mulVec]
-    exact M.add_mem_iff_left (M.smul_mem ϖ (hy v hv))
-  simp only [this]
-
 end GlobalTheory.IndefiniteRowSideFullHecke.ExponentTerms

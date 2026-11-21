@@ -253,9 +253,4 @@ theorem flat_spanBaseChange_inf_subspace.{u, v} {R : Type*} (K S : Type*) (L : T
   ⟨spanBaseChange_inf_subspace K S L M W, lift_rank_spanBaseChange K S L M,
     lift_rank_baseChange L W, finrank_spanBaseChange K S L M, finrank_baseChange L W⟩
 
-example (p : ℕ) [Fact p.Prime] (M : Submodule ℤ (Fin 2 → ℚ)) (W : Submodule ℚ (Fin 2 → ℚ)) :
-    spanBaseChange ℚ ℤ_[p] ℚ_[p] (M ⊓ W.restrictScalars ℤ) =
-      spanBaseChange ℚ ℤ_[p] ℚ_[p] M ⊓ (W.baseChange ℚ_[p]).restrictScalars ℤ_[p] :=
-  (flat_spanBaseChange_inf_subspace ℚ ℤ_[p] ℚ_[p] M W).1
-
 end GlobalTheory

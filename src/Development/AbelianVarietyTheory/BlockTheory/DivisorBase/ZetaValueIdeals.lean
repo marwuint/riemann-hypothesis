@@ -85,19 +85,6 @@ theorem LocalBound.mMin_eq {k : ℕ} {z : ClassGroup (𝓞 F) → ℚ} {l : ℕ}
   · exact h.2.2.1 h1 h2
   · exact h.2.1 h1 h2
 
-example : denomExp 2 (-1 / 24) = 3 ∧ denomExp 3 (-1 / 24) = 1 ∧ denomExp 2 0 = 0 := by
-  have h2 : padicValNat 2 24 = 3 := by
-    rw [show 24 = 2 ^ 3 * 3 by norm_num, padicValNat.mul (by norm_num) (by norm_num), padicValNat.prime_pow,
-      padicValNat.eq_zero_of_not_dvd (by norm_num)]
-  have h3 : padicValNat 3 24 = 1 := by
-    rw [show 24 = 3 ^ 1 * 8 by norm_num, padicValNat.mul (by norm_num) (by norm_num), padicValNat.prime_pow,
-      padicValNat.eq_zero_of_not_dvd (by norm_num)]
-  have hn : (-1 / 24 : ℚ).num = -1 := by norm_num
-  have hd : (-1 / 24 : ℚ).den = 24 := by norm_num
-  refine ⟨?_, ?_, by simp [denomExp]⟩
-  · simp only [denomExp, padicValRat, hn, hd, h2]; simp [padicValInt]
-  · simp only [denomExp, padicValRat, hn, hd, h3]; simp [padicValInt]
-
 theorem pir_rat : IsPrincipalIdealRing (𝓞 ℚ) :=
   IsPrincipalIdealRing.of_surjective Rat.ringOfIntegersEquiv.symm.toRingHom Rat.ringOfIntegersEquiv.symm.surjective
 
@@ -139,12 +126,5 @@ theorem isClassZeta_rat (C : ClassGroup (𝓞 ℚ)) : IsClassZeta C riemannZeta 
   refine (hg.hasSum_iff (f := fun n : ℕ => (n : ℂ) ^ (-s)) hr).2 ?_
   rw [zeta_eq_tsum_one_div_nat_cpow hs]
   simpa only [Complex.cpow_neg, one_div] using (Complex.summable_one_div_nat_cpow.2 hs).hasSum
-
-example : IsZetaValues (F := ℚ) 2 (fun _ => -1 / 12) := fun C => ⟨_, isClassZeta_rat C, by
-  have h := riemannZeta_neg_nat_eq_bernoulli 1
-  have hb : bernoulli 2 = 1 / 6 := by rw [bernoulli_eq_bernoulli'_of_ne_one (by decide), bernoulli'_two]
-  rw [show (1 + 1 : ℕ) = 2 from rfl, hb] at h
-  rw [show (1 - ((2 : ℕ) : ℂ)) = -((1 : ℕ) : ℂ) by norm_num, h]
-  norm_num⟩
 
 end GlobalTheory.IndefiniteRowSideFullHecke.ZetaValueIdeals

@@ -77,10 +77,4 @@ theorem self_mem_iwahoriDoubleCoset {F : Type} [Field F] [Valued F (WithZero (Mu
     {r : ℕ} (t : Matrix (Fin r) (Fin r) F) : t ∈ iwahoriDoubleCoset t :=
   ⟨1, one_mem _, 1, one_mem _, by simp⟩
 
-example (h : IwahoriEigenvalues) (K : Type) [Field K] [NumberField K]
-    (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers K))
-    (ϖ : v.adicCompletion K) (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) (r : ℕ) (a : Fin r → ℤ)
-    (ha : StrictAnti a) : (diagPow ϖ a).charpoly.Separable :=
-  (h _ ϖ hϖ r a ha _ (self_mem_iwahoriDoubleCoset _)).2
-
 end GlobalTheory.IndefiniteRowSideFullHecke.IwahoriSubgroup

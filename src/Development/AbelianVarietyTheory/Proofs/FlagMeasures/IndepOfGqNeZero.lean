@@ -231,11 +231,4 @@ theorem indep_of_Gq_ne_zero (hσ : ∀ x, σ (σ x) = x) (hJ : cT σ J = J) {T T
 
 end Gram
 
-example (σ : E →+* E) {g : ℕ} (hg : g ≠ 0) :
-    IsHermU σ (!![1, 0; 0, -1] : Matrix (Fin 2) (Fin 2) E) ∧
-      Gq (r := 0) σ 1 (1 + 2 * g) !![-1 - (g : E)] ≠ 0 ∧
-      (GenConf (r := 0) σ !![1, 0; 0, -1] 1 (1 + 2 * g) g !![-1 - (g : E)]).Nonempty :=
-  ⟨⟨by ext i j; fin_cases i <;> fin_cases j <;> simp [cT], by simp [Matrix.det_fin_two]⟩,
-    by rw [Inhab.gq_zero]; exact pow_ne_zero _ (Nat.cast_ne_zero.2 hg), _, Inhab.mem_genConf_zero σ hg⟩
-
 end GlobalTheory.SgGlob.Iota

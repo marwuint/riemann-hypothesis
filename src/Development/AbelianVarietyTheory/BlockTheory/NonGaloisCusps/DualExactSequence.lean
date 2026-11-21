@@ -193,22 +193,4 @@ def DeRhamComparisonAllFields : Prop :=
 
 end Good
 
-example (P : LocPrime l) {K LL : FinExt l} (T : Lat K LL) (τ : Emb K LL) (a : ℤ) :
-    FildR (P.PD K) T.ρ τ a ≤ filD P T a :=
-  inf_le_inf_right _ inf_le_left
-
-example (P : LocPrime l) {K LL : FinExt l} (T : Lat K LL) :
-    (Dcris (P.PD K) T.ρ).map (iota P T) ≤ DdR (P.PD K) T.ρ := by
-  rintro _ ⟨x, hx, rfl⟩
-  have key : ∀ g y, actVdR (P.PD K) T.ρ g (iota P T y) = iota P T (actVB (P.PD K) T.ρ g y) := by
-    intro g y
-    induction y using TensorProduct.induction_on with
-    | zero => simp
-    | tmul v b => simp [actVdR, actVB, ιV, (P.PD K).ι_comm]
-    | add a b ha hb => simp only [map_add, ha, hb]
-  simp only [Dcris, DdR, SetLike.mem_coe, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply,
-    LinearMap.id_apply, sub_eq_zero] at hx ⊢
-  intro g
-  rw [key, hx]
-
 end GlobalTheory.IndefiniteRowSideFullHecke.DualExactSequence

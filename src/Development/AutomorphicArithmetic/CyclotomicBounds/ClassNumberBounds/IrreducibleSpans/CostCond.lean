@@ -25,10 +25,4 @@ theorem IsCost.dvd_of_forall {ℓ a : A} {E : G → A} (h : IsCost ℓ E) (ha : 
     a ∣ ℓ :=
   Ideal.mem_span_singleton.mp (h _ fun g => Ideal.mem_span_singleton.mpr (ha g))
 
-example : IsCost (2 : ℤ) (fun _ : Unit => (3 : ℤ)) := isCost_of_dvd () (by norm_num)
-
-example : ¬ IsCost (1 : ℤ) (fun _ : Unit => (3 : ℤ)) := fun h => by
-  have := h.dvd_of_forall (a := 2) fun _ => by norm_num
-  norm_num at this
-
 end KStar.Schema

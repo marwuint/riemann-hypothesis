@@ -255,14 +255,4 @@ def OperatorRules : Prop :=
 
 def KernelsCommute : Prop := IndicatorIdentity ∧ OperatorRules
 
-example (hμ : IsUnram μ) (hθ : IsEquivTheta μ π' π θ) (P₀ : Pair k n') (Q₀ : Pair k n) (φ : EqForm π') :
-    (K hμ hθ P₀ Q₀ φ).1 Q₀ = θ (φ.1 P₀) (phiOneSB P₀ Q₀) := by
-  simpa using K_apply hμ hθ P₀ Q₀ φ 1
-
-example (t : ℕ) : scal k t ^ 2 = (resCard k : ℂ) ^ (t + 1) := by
-  rw [scal, ← Complex.ofReal_pow, ← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg _)]
-  rw [show ((t : ℝ) + 1) / 2 * (2 : ℕ) = ((t + 1 : ℕ) : ℝ) by push_cast; ring, Real.rpow_natCast]
-  push_cast
-  rfl
-
 end GlobalTheory.IndefiniteRowSideFullHecke.IndicatorFunctionIdentity

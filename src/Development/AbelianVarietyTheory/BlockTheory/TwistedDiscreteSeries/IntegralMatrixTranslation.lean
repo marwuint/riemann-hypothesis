@@ -144,13 +144,4 @@ theorem redRank_le (O : Type) [CommRing O] [IsLocalRing O] {r n : ℕ} (u₀ : M
     redRank O u₀ ≤ r := by
   simpa [redRank] using Matrix.rank_le_height (u₀.map (IsLocalRing.residue O))
 
-example {F : Type} [Field F] (p : Fˣ) (n : ℕ) : tDiag p n 0 = 1 := by
-  ext a b
-  simp [tDiag]
-
-example (k : Type) [Field k] (m : ℕ) : gaussCount k m 0 = 1 := by
-  unfold gaussCount
-  rw [Nat.card_eq_one_iff_exists]
-  exact ⟨⟨⊥, finrank_bot _ _⟩, fun W => Subtype.ext (Submodule.finrank_eq_zero.mp W.2)⟩
-
 end GlobalTheory.IndefiniteRowSideFullHecke.IntegralMatrixTranslation

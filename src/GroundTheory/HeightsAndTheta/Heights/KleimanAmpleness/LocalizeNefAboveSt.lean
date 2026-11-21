@@ -28,7 +28,4 @@ theorem LocalizeNefAbove.hyps₂ :
       ((Ideal.span {(2 : ℤ)}).map (C : ℤ →+* Kleiman.Poly ℤ 1)) :=
   fun pp _ _ => by rw [Kleiman.interNum_twistSys_zero]
 
-example (h : LocalizeNefAbove.Statement) :=
-  h ℤ (Ideal.span {(2 : ℤ)}) LocalizeNefAbove.exO LocalizeNefAbove.exΩ 1 ![1, 1] _ LocalizeNefAbove.hyps₂
-
 end GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization

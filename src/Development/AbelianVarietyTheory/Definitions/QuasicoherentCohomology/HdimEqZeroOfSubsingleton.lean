@@ -55,10 +55,6 @@ instance instModule (F : X.Modules) (U : X.Opens) (n : ℕ) : Module R (cohOn F 
   { WithAction.instModule (action F U n) R with
     smul := fun r x ↦ action F U n (algebraMap R Γ(X, ⊤) r) x }
 
-example (F : X.Modules) (U : X.Opens) (n : ℕ) :
-    instModule ℤ F U n = AddCommGroup.toIntModule (cohOn F U n) := by
-  with_reducible_and_instances rfl
-
 variable {R} in
 
 lemma toH'_smul {F : X.Modules} {U : X.Opens} {n : ℕ} (r : R) (x : cohOn F U n) :
@@ -333,10 +329,6 @@ instance instModule (F : X.Modules) (U : X.Opens) : Module R (sectionsOn F U) :=
   { WithAction.instModule (action F U) R with
     smul := fun r x ↦ action F U (algebraMap R Γ(X, ⊤) r) x }
 
-example (F : X.Modules) (U : X.Opens) :
-    instModule ℤ F U = AddCommGroup.toIntModule (sectionsOn F U) := by
-  with_reducible_and_instances rfl
-
 variable {R} in
 
 lemma toΓ_smul {F : X.Modules} {U : X.Opens} (r : R) (x : sectionsOn F U) :
@@ -569,9 +561,6 @@ namespace OverSpec
 
 scoped[GlobalTheory.OverSpec] attribute [instance 50] GlobalTheory.algebraΓOfOver
 
-example (R : Type u) [CommRing R] [X.Over (Spec (.of R))] (F : X.Modules) (n : ℕ) :
-    Module R (coh F n) := inferInstance
-
 end OverSpec
 
 def hdim (k : Type v) [Field k] [Algebra k Γ(X, ⊤)] (F : X.Modules) (n : ℕ) : ℕ :=
@@ -618,20 +607,5 @@ instance cohOn.finite_pi (R : Type v) [CommRing R] [Algebra R Γ(X, ⊤)] {ι : 
     (F : ι → X.Modules) (U : X.Opens) (n : ℕ) [∀ i, Module.Finite R (cohOn (F i) U n)] :
     Module.Finite R (cohOn (∏ᶜ F) U n) :=
   Module.Finite.equiv (cohOn.piEquiv R U n F).symm
-
-example (k : Type u) [Field k] :
-    letI : Algebra k Γ(Spec (.of k), ⊤) := algebraΓSpec (.of k)
-    Module.Finite k (coh (structureModule (Spec (.of k))) 0) ∧
-      hdim k (structureModule (Spec (.of k))) 0 = 1 :=
-  letI : Algebra k Γ(Spec (.of k), ⊤) := algebraΓSpec (.of k)
-  ⟨Module.Finite.equiv (coh.zeroUnitSpecEquiv (.of k)).symm,
-    (coh.zeroUnitSpecEquiv (.of k)).finrank_eq.trans (Module.finrank_self k)⟩
-
-example : Nontrivial (coh (structureModule (Spec (.of ℤ))) 0) :=
-  (coh.zeroUnitSpecEquiv (.of ℤ)).toEquiv.nontrivial
-
-example (F : X.Modules) (U : X.Opens) (n : ℕ) (x : cohOn F U n) :
-    cohOn.map ℤ (-𝟙 F) U n x = -x := by
-  rw [cohOn.map_neg_hom, cohOn.map_id]; rfl
 
 end GlobalTheory

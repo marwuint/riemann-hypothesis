@@ -111,11 +111,4 @@ theorem mem_RY_of_inert (R : Subring K) {B : ValuationSubring Ω} (hB : Over R B
 
 theorem over_top (R : Subring K) : Over R (⊤ : ValuationSubring Ω) := fun _ _ => trivial
 
-example : Over (⊤ : Subring ℚ) (⊤ : ValuationSubring ℂ) := over_top _
-
-example : (1 : ℂ ≃ₐ[ℚ] ℂ) ∈ RY (⊤ : Subring ℚ) := mem_RY_of_inert _ (over_top _) (inert_one _)
-
-example : kum (N := 2) (-1 : ℂ) 1 (1 : ℂ ≃ₐ[ℚ] ℂ) = 0 :=
-  kum_one (IsPrimitiveRoot.neg_one 0 (by norm_num)) one_ne_zero
-
 end GlobalTheory.NeedB

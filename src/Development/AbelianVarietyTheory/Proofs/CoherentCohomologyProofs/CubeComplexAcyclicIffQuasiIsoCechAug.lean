@@ -959,13 +959,6 @@ theorem cube_cone_of_faces {κ : Type} [LinearOrder κ] {e : κ ↪o ι} {i : ι
     cubeComplex_acyclic_of_bijective A i, fun _ φ => quasiIso_cubeComplexMap_of_faces he φ,
     cubeComplex_acyclic_iff_cech A⟩
 
-example (A : Cube.{v} ι R) (i : ι) : (cubeFaceSequence (range_otherDirections i) A).ShortExact :=
-  cubeFaceSequence_shortExact _ A
-
-example {n : ℕ} (A : Cube.{v} (Fin (n + 1)) R) (i : Fin (n + 1)) :
-    (cubeFaceSequence (e := Fin.succAboveOrderEmb i) (Fin.range_succAbove i) A).ShortExact :=
-  cubeFaceSequence_shortExact _ A
-
 end Main
 
 end GlobalTheory

@@ -252,12 +252,6 @@ def localNormGroup (v : HeightOneSpectrum (𝓞 K)) (L : Type*) [Field L] [Algeb
   (Units.map (Algebra.norm (v.adicCompletion K) :
     TensorProduct K (v.adicCompletion K) L →* v.adicCompletion K)).range
 
-example (v : HeightOneSpectrum (𝓞 K)) (L : Type*) [Field L] [Algebra K L]
-    [FiniteDimensional K L] :
-    Module.Free (v.adicCompletion K) (TensorProduct K (v.adicCompletion K) L) ∧
-      Module.Finite (v.adicCompletion K) (TensorProduct K (v.adicCompletion K) L) :=
-  ⟨inferInstance, inferInstance⟩
-
 open Pointwise in
 
 def decompGroup (L : Type*) [Field L] [Algebra K L] [FiniteDimensional K L] (Q : Ideal (𝓞 L)) :

@@ -101,23 +101,6 @@ def HermLattice.standard (K : Type*) [Field K] [NumberField K] (n : ℕ) : HermL
   posDef := fun _ => Matrix.PosDef.one
   conj := fun _ => by simp
 
-example : 1 ≤ 2 ∧ (0 : ℝ) < 1 ∧ (HermLattice.standard ℚ 2).metric = fun _ => 1 :=
-  ⟨by norm_num, one_pos, rfl⟩
-
-example :
-    let a : Fin 2 → FractionalIdeal (𝓞 ℚ)⁰ ℚ := fun _ => 1
-    let d : (ℚ →+* ℂ) → Fin 2 → ℝ := fun _ _ => 1
-    let deg : Fin 2 → ℝ := fun x => normalise ℚ (subDegree (idealLattice a) (diagMetric d)
-      (fun _ : Fin 1 => (Pi.single x 1 : Fin 2 → ℚ)))
-    (∀ x, a x ≠ 0) ∧ (∀ σ x, 0 < d σ x) ∧ (∀ σ x, d (conjugate σ) x = d σ x) ∧
-      ∀ x, min (deg 0) (deg 1) ≤ deg x := by
-  intro a d deg
-  refine ⟨fun _ => one_ne_zero, fun _ _ => one_pos, fun _ _ => rfl, ?_⟩
-  intro x
-  fin_cases x
-  · exact min_le_left _ _
-  · exact min_le_right _ _
-
 end
 
 end GroundTheory.Heights₂.Heights

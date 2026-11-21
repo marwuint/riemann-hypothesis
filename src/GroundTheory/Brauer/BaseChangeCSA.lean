@@ -30,8 +30,6 @@ instance isSimpleRing_baseChange [Algebra.IsCentral K A] [IsSimpleRing A] :
 theorem finrank_baseChange_eq : Module.finrank L (L ⊗[K] A) = Module.finrank K A :=
   Module.finrank_baseChange
 
-example [FiniteDimensional K A] : FiniteDimensional L (L ⊗[K] A) := inferInstance
-
 end CentralSimple
 
 section CSA

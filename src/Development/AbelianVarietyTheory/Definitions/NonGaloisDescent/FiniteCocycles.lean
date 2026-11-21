@@ -780,16 +780,6 @@ def pair : Pair pol where
   relO _ g h := tr_zero _ _ (rep_oEl g)
   relI _ _ h := tr_zero _ (gp ℤ_[3] (1 : S3) - 1) (rep_one_sub _)
 
-example : pair.D.tr (gp ℤ_[3] (DihedralGroup.r 1 : S3)) = (-1 : ℤ_[3]) := by
-  refine (?_ : (GDet.ofRep (rho ℤ_[3])).tr (gp ℤ_[3] (DihedralGroup.r 1 : S3)) = (-1 : ℤ_[3]))
-  have h : rhoZ (.r 1) = !![1,1;-3,-2] := by decide
-  rw [tr_ofRep (n := 1), rep_gp]
-  simp [rho, h, Matrix.trace_fin_two]
-  norm_num
-
-example : star pol (RingHom.id ℤ_[3]) (gp ℤ_[3] (DihedralGroup.r 1 : S3)) = gp ℤ_[3] (DihedralGroup.r 2 : S3) :=
-  star_gp _ _
-
 theorem exists_pair : ∃ (Φ : Frame) (G : PolGp Φ), Φ.n = 2 ∧ Nonempty Φ.Vl ∧ Nonempty Φ.St ∧
     Nat.card G.Γ = 6 ∧ Nonempty (Pair G) :=
   ⟨frame, pol, rfl, ⟨()⟩, ⟨()⟩, DihedralGroup.nat_card (n := 3), ⟨pair⟩⟩

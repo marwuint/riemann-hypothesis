@@ -20,8 +20,4 @@ abbrev LocalizeBundle.exΩ : Type := FractionRing LocalizeBundle.exO
 instance LocalizeBundle.exTower : @IsScalarTower ℤ LocalizeBundle.exO LocalizeBundle.exΩ Algebra.toSMul Algebra.toSMul Algebra.toSMul :=
   IsScalarTower.of_algebraMap_eq' (RingHom.ext_int _ _)
 
-example (h : LocalizeBundle.Statement) :=
-  h ℤ (Ideal.span {(2 : ℤ)}) LocalizeBundle.exO LocalizeBundle.exΩ 1 ![1, 1]
-    (Kleiman.twistBundle ℤ ![1, 1] 1)
-
 end GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization

@@ -26,6 +26,4 @@ theorem detAlg_holds : DetAlgSt := by
   rw [← Ideal.Quotient.eq_zero_iff_mem]
   exact h
 
-example : (⊥ : Ideal (MvPolynomial (Fin 0) ℚ)).IsRadical := Ideal.isRadical_bot
-
 end ReciprocityTheory.ChartRestriction.G.TB

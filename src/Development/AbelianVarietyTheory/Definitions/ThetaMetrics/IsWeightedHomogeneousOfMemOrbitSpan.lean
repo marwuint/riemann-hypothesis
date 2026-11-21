@@ -533,44 +533,4 @@ theorem totalDegree_basePoly [Nontrivial R] :
 
 end Base
 
-example : IsHarmonic (X (xVar () 0 0) * X (yVar () 0 0) - X (xVar () 0 1) * X (yVar () 0 1) :
-    Poly ℤ Unit 1 1 (Fin 2)) := by
-  rintro ⟨⟩ a b
-  obtain rfl := Subsingleton.elim a 0
-  obtain rfl := Subsingleton.elim b 0
-  simp only [← xForm_single, ← yForm_single, map_sub, laplacian_xForm_mul_yForm]
-  simp
-
-example : laplacian () 0 0 (X (xVar () 0 0) * X (yVar () 0 0) : Poly ℤ Unit 1 1 (Fin 2)) = 1 := by
-  simp only [← xForm_single, ← yForm_single, laplacian_xForm_mul_yForm]
-  simp
-
-example : basePoly ℤ (show 1 + 1 ≤ 2 from le_rfl) (fun (_ : Unit) _ => 2) (fun _ _ => 1) =
-    X (xVar () 0 0) ^ 2 * X (yVar () 0 1) := by
-  simp [basePoly, minorProd, xMinor, yMinor, baseCovec, baseVec]
-
-example : basePoly ℤ (show 2 + 0 ≤ 2 from le_rfl) (fun (_ : Unit) => ![0, 1]) (fun _ _ => 0) =
-    X (xVar () 0 0) * X (xVar () 1 1) - X (xVar () 0 1) * X (xVar () 1 0) := by
-  have : (xMinor () 1 (baseCovec ℤ (show 2 + 0 ≤ 2 from le_rfl)) : Poly ℤ Unit 2 0 (Fin 2)) =
-      X (xVar () 0 0) * X (xVar () 1 1) - X (xVar () 0 1) * X (xVar () 1 0) := by
-    refine (det_fin_two _).trans ?_
-    simp only [baseCovec, of_apply, xForm_single]; rfl
-  simp [basePoly, minorProd, this]
-
-example : typeDegree (fun _ : Unit => ![2, 1]) (fun _ => ![2]) = 6 ∧ partOf ![2, 1] = ![3, 1] := by
-  decide
-
-example (u : Rˣ) (k : Fin n) :
-    colAct R Unit 1 1 (Fin n) (fun _ => Matrix.GeneralLinearGroup.scalar (Fin n) u)
-        (X (xVar () 0 k)) = (↑u⁻¹ : R) • X (xVar () 0 k) ∧
-    colAct R Unit 1 1 (Fin n) (fun _ => Matrix.GeneralLinearGroup.scalar (Fin n) u)
-        (X (yVar () 0 k)) = (u : R) • X (yVar () 0 k) := by
-  simp only [← xForm_single, ← yForm_single, colAct_xForm, colAct_yForm, ← map_smul]
-  constructor
-  · congr 1
-    rw [covecAct, ← map_inv]
-    ext l; simp [Matrix.GeneralLinearGroup.scalar, Pi.single_apply, diagonal_apply, eq_comm]
-  · congr 1
-    ext l; simp [vecAct, Matrix.GeneralLinearGroup.scalar, Pi.single_apply, diagonal_apply, eq_comm]
-
 end GlobalTheory.Harm

@@ -81,9 +81,6 @@ def strand (N : End ℂ V) (S : Submodule ℂ V) (m : ℕ) : Submodule ℂ V :=
 def lowPart (U : ℤ → Submodule ℂ V) (N : End ℂ V) (m : ℕ) : Submodule ℂ V :=
   ⨆ k : ℤ, U k ⊓ LinearMap.ker (N ^ (((m : ℤ) - k + 1) / 2).toNat)
 
-example (a : WDRep h V) : IsSubWD a ⊤ ∧ IsSubWD a ⊥ :=
-  ⟨⟨fun _ _ _ => trivial, fun _ _ => trivial⟩, ⟨fun _ v hv => by simp_all, fun v hv => by simp_all⟩⟩
-
 theorem le_strand (N : End ℂ V) (S : Submodule ℂ V) (m : ℕ) : S ≤ strand N S m := by
   intro v hv
   exact Submodule.mem_iSup_of_mem (0 : Fin (m + 1)) ⟨v, hv, by simp⟩

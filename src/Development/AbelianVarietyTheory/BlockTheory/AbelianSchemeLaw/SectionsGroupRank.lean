@@ -220,11 +220,4 @@ def VVRank (S : Scheme.{0}) : Prop :=
     Nonempty (Level P (m ^ 2) ze) →
     ∀ T : Over S, VVLocallyFree P (m ^ 2) m ((m ^ 2) ^ P.g) T
 
-example (P : PolAV S) (N m : ℕ) {T : Over S} (ho : Odd N) (hi : IsUnit (N : Γ(T.left, ⊤))) :
-    VVWeight P N m ho hi (I := Empty) Empty.elim (fun i => i.elim) Empty.elim = VV P N m T :=
-  inf_eq_left.2 fun _ _ _ i => i.elim
-
-example (P : PolAV S) (N m : ℕ) {T : Over S} (s : Secs P.A P.L N T) (hs : InVV P N m s) :
-    s ∈ VV P N m T := Submodule.subset_span hs
-
 end GlobalTheory.IndefiniteRowSideFullHecke.SectionsGroupRank

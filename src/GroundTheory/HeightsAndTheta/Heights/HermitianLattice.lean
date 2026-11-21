@@ -207,8 +207,6 @@ end Examples
 
 abbrev GaussianField : Type := CyclotomicField 4 ℚ
 
-example : NumberField GaussianField := inferInstance
-
 def ratIntegers : HermitianBundle ℚ := HermitianBundle.integers ℚ
 
 def ratStandard (n : ℕ) : HermitianBundle ℚ := HermitianBundle.standard ℚ n
@@ -231,11 +229,6 @@ theorem HermitianMetric.standard_inner_single (K : Type*) [Field K] [NumberField
   · simp
 
 def ratEmbedding : ℚ →+* ℂ := Rat.castHom ℂ
-
-example : ((HermitianMetric.standard ℚ (Fin 2)).form ratEmbedding).inner
-    ((1 : ComplexAt ratEmbedding) ⊗ₜ[𝓞 ℚ] (Pi.single 0 1 : Fin 2 → 𝓞 ℚ))
-    ((1 : ComplexAt ratEmbedding) ⊗ₜ[𝓞 ℚ] (Pi.single 0 1 : Fin 2 → 𝓞 ℚ)) = 1 :=
-  HermitianMetric.standard_inner_single ℚ 2 ratEmbedding 0
 
 end
 

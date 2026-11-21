@@ -248,12 +248,4 @@ theorem finite_projective_of_constant_fiber_rank {R : Type*} [CommRing R] [IsRed
       (IsLocallyConstant.of_constant _ fun p q => (h p).trans (h q).symm)
   exact ⟨h1, h2, h3, h4, h5, fun p => (h6 p).trans (h p), fun S N _ _ _ _ _ _ => (h7 S N).1, h8⟩
 
-example (p : PrimeSpectrum ℤ) : finrank p.asIdeal.ResidueField (LinearMap.range
-    (((LinearMap.lsmul ℤ ℤ 2).coprod (LinearMap.lsmul ℤ ℤ 3)).baseChange
-      p.asIdeal.ResidueField)) = 1 := by
-  have hs : Surjective ((LinearMap.lsmul ℤ ℤ 2).coprod (LinearMap.lsmul ℤ ℤ 3)) :=
-    fun z => ⟨(-z, z), by simp; ring⟩
-  rw [← baseChange_range, LinearMap.range_eq_top.2 hs, Submodule.baseChange_top, finrank_top,
-    Module.finrank_baseChange, Module.finrank_self]
-
 end GlobalTheory

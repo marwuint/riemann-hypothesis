@@ -46,11 +46,6 @@ def ExpInj (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) (i : ZMod n) (ζ : L
     (∀ k : ℕ, ∑ a, serSMul (f a) (fun r : ℕ => ex (x a) (r : ℤ)) k = 0) →
       (∑ a, f a ⊗ₜ[LetA O n] x a : PowerSeries LL ⊗[LetA O n] ↥(W.N T)) = 0
 
-example (W : LocWach PD LL O v n) (T : LocLat G Qp LL O) :
-    (∀ y : ↥(W.N T), W.cmp T ((letπ : LetA O n) • y) = 0) ∧
-    Submodule.span LL (Set.range fun x : ↥(W.N T) => W.cmp T x) ≤ Dcris PD T.ρ :=
-  ⟨W.cmp_π T, Submodule.span_le.mpr (by rintro _ ⟨x, rfl⟩; exact W.cmp_mem T x)⟩
-
 end Generic
 
 def WachCrisComparison (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (H : LocHW l P)

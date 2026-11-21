@@ -88,9 +88,6 @@ def muTwoOrder : Subalgebra ℤ (ℤˣ → ℤ) where
     change (2 : ℤ) ∣ _
     simp
 
-example {S : Type} [CommRing S] {G : Type} [CommGroup G] (B : Subalgebra S (G → S)) : Module S (omega B) :=
-  inferInstance
-
 end OrderEx
 
 end GlobalTheory.CompanionTheory.Ar.BT

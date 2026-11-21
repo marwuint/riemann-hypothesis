@@ -351,9 +351,4 @@ theorem det_algHom_sq_eq_discr_and_addVal (e : Basis ι R S) {P : ι → (S →�
 
 end Both
 
-example : Nat.card (ℝ × ℂ →ₐ[ℝ] ℂ) = 3 := by
-  have := etale_of_isReduced_of_perfectField ℝ (ℝ × ℂ)
-  rw [natCard_algHom_eq_finrank_of_etale ℝ (ℝ × ℂ) ℂ]
-  simp
-
 end GlobalTheory

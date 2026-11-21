@@ -293,13 +293,6 @@ def PairConv (f c : H → ℂ) : Prop := Integrable (fun g => f g * starRingEnd 
 
 end ZetaNonvanishing₂
 
-example {X : Type} [NormedAddCommGroup X] [InnerProductSpace ℂ X] (x y : X) (c : ℂ) :
-    coef (fun _ : Unit => id) (c • x) y () = c * coef (fun _ : Unit => id) x y () := inner_smul_right _ _ _
-
-example {G : Type} [Group G] (δ : (⊤ : Subgroup G) →* ℝ≥0) : IsIwasawa δ ⊥ :=
-  ⟨fun g => ⟨⟨g, trivial⟩, 1, one_mem _, (mul_one g).symm⟩, fun p hp => by
-    rw [show p = 1 from Subtype.ext hp, map_one]⟩
-
 end GlobalTheory.Doubling
 
 end

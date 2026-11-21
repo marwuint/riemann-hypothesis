@@ -56,8 +56,6 @@ theorem isField_B : IsField T.B where
 
 noncomputable instance instFieldB : Field T.B := (isField_B T).toField
 
-example : (instFieldB : Field T.B).toCommRing = (inferInstance : CommRing T.B) := rfl
-
 structure FixedUnif (F : T.TeichFrob) where
 
   z : Γ

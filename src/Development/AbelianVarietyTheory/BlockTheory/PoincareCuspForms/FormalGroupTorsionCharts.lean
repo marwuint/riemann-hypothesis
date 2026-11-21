@@ -42,14 +42,6 @@ theorem evalNil_eq_finsum [Finite σ] (F : MvPowerSeries σ A) (x : σ → R)
     (hx : ∀ i, IsNilpotent (x i)) : evalNil F x hx = ∑ᶠ d, evalTerm F x d :=
   (finsum_eq_sum _ (evalTerm_finite F x hx)).symm
 
-example [Finite σ] (x : σ → R) (hx : ∀ i, IsNilpotent (x i)) (j : σ) :
-    evalNil (MvPowerSeries.X j : MvPowerSeries σ A) x hx = x j := by
-  classical
-  rw [evalNil_eq_finsum, finsum_eq_single _ (Finsupp.single j 1)]
-  · simp [evalTerm, MvPowerSeries.coeff_X]
-  · intro d hd
-    simp [evalTerm, MvPowerSeries.coeff_X, hd]
-
 end Eval
 
 open MvPowerSeries in
@@ -252,16 +244,5 @@ structure ChartData (B : BX R₀) {g : ℕ} (gb : Module.Basis (Fin g) R₀ B.gg
   smooth : LiftsFromResidue B W
 
   fin : FiniteTorsion B p g O C
-
-example (hk : IsField (k : Type u)) : NilAlg k where
-  alg := k
-  res := LHom.id k
-  res_surj := fun a => ⟨a, rfl⟩
-  res_ker := by
-    rw [IsLocalRing.isField_iff_maximalIdeal_eq.1 hk]
-    exact (RingHom.injective_iff_ker_eq_bot _).1 fun _ _ h => h
-  nil := fun x hx => by
-    rw [IsLocalRing.isField_iff_maximalIdeal_eq.1 hk, Ideal.mem_bot] at hx
-    exact hx ▸ IsNilpotent.zero
 
 end GlobalTheory.IndefiniteRowSideFullHecke.FormalGroupTorsionCharts

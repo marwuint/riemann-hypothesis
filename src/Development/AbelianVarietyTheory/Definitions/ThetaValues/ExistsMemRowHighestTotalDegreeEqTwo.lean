@@ -520,43 +520,4 @@ theorem exists_mem_rowHighest_totalDegree_eq_two :
     by simp [basePoly, minorProd, xMinor, yMinor, baseCovec, baseVec],
     by rw [totalDegree_basePoly]; decide⟩
 
-example : (X (xVar () 0 0) * X (yVar () 0 0) : Poly ℤ Unit 1 1 (Fin 2)) ∉
-    rowHighest ℤ (fun _ _ => 1) (fun _ _ => 1) := fun hP => by
-  have := isHarmonic_of_mem_rowHighest hP () 0 0
-  simp only [← xForm_single, ← yForm_single, laplacian_xForm_mul_yForm] at this
-  simp at this
-
-example : (X (xVar () 0 0) * X (xVar () 1 1) - X (xVar () 0 1) * X (xVar () 1 0) :
-    Poly ℤ Unit 2 0 (Fin 2)) ∈ rowHighest ℤ (fun _ => ![0, 1]) (fun _ _ => 0) := by
-  have : (xMinor () 1 (baseCovec ℤ (show 2 + 0 ≤ 2 from le_rfl)) : Poly ℤ Unit 2 0 (Fin 2)) =
-      X (xVar () 0 0) * X (xVar () 1 1) - X (xVar () 0 1) * X (xVar () 1 0) := by
-    refine (det_fin_two _).trans ?_
-    simp only [baseCovec, of_apply, xForm_single]; rfl
-  simpa [basePoly, minorProd, this] using basePoly_mem_rowHighest (R := ℤ)
-    (show 2 + 0 ≤ 2 from le_rfl) (fun _ : Unit => ![0, 1]) (fun _ _ => 0)
-
-example : (X (xVar () 0 0) * X (xVar () 1 0) : Poly ℤ Unit 2 0 (Fin 2)) ∉
-    rowHighest ℤ (fun _ => ![0, 1]) (fun _ _ => 0) := fun hP => by
-  have := (mem_rowHighest_iff.1 hP).2.2.2.1 () 0 1 (by decide) 1
-  rw [map_mul, rowAddX_X_self, rowAddX_X_of_ne _ _ _ (by decide), mul_add] at this
-  simp at this
-
-example (k : Fin n) : (X (xVar () 0 k) : Poly ℤ Unit 2 0 (Fin n)) ∈
-    rowHighest ℤ (fun _ => ![1, 0]) (fun _ _ => 0) := by
-  simpa [minorProd, xMinor] using minorProd_mem_rowHighest (R := ℤ) (fun _ : Unit => ![1, 0])
-    (fun _ (_ : Fin 0) => 0) (ε := fun _ _ => Pi.single k 1) (φ := fun _ _ => 0)
-    fun _ _ b => b.elim0
-
-example : (X (yVar () 0 0) * X (yVar () 1 0) : Poly ℤ Unit 0 2 (Fin 2)) ∉
-    rowHighest ℤ (fun _ _ => 0) (fun _ => ![0, 1]) := fun hP => by
-  have := (mem_rowHighest_iff.1 hP).2.2.2.2 () 0 1 (by decide) 1
-  rw [map_mul, rowAddY_X_self, rowAddY_X_of_ne _ _ _ (by decide), mul_add] at this
-  simp at this
-
-example : (X (xVar () 0 0) : Poly ℤ Unit 1 1 (Fin 2)) ∉
-    rowHighest ℤ (fun _ _ => 2) (fun _ _ => 0) := fun hP => by
-  have := (isHomogeneous_of_mem_rowHighest hP).totalDegree (X_ne_zero _)
-  rw [totalDegree_X] at this
-  revert this; decide
-
 end GlobalTheory.Harm

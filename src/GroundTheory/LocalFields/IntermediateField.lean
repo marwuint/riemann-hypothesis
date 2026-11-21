@@ -104,17 +104,6 @@ instance intermediateField_isNonarchimedeanLocalField : IsNonarchimedeanLocalFie
     exact hb.false
   exact { hvt, hlc, hnt with }
 
-example : IsNonarchimedeanLocalField E := inferInstance
-example : ValuativeExtension E L := inferInstance
-example : Algebra 𝒪[E] 𝒪[L] := inferInstance
-example : Algebra 𝓀[E] 𝓀[L] := inferInstance
-example (σ : L ≃ₐ[E] L) (x : L) : valuation L (σ x) = valuation L x :=
-  valuation_algEquiv_apply E L σ x
-example (F : IntermediateField K L) (h : E ≤ F) :
-    letI := (IntermediateField.inclusion h).toRingHom.toAlgebra
-    ValuativeExtension E F :=
-  valuativeExtension_algHom (K := K) (IntermediateField.inclusion h)
-
 end Topological
 
 end GroundTheory.LocalField

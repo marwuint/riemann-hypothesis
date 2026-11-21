@@ -863,8 +863,6 @@ instance algZlWCb : Algebra ℤ_[l] (WCb l) := (zlW l (Cb l)).toAlgebra
 
 instance algZlAinf : Algebra ℤ_[l] (Ainf l) := (zlW l (OCb l)).toAlgebra
 
-example : algebraMap ℤ_[l] (WCb l) ((l : ℕ) : ℤ_[l]) = ((l : ℕ) : WCb l) := map_natCast _ _
-
 theorem map_zlW {R S : Type} [CommRing R] [CommRing S] [CharP R l] [CharP S l] (f : R →+* S)
     (x : ℤ_[l]) : WittVector.map f (zlW l R x) = zlW l S x := by
   simp only [zlW, RingHom.comp_apply]

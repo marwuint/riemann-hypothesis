@@ -312,17 +312,6 @@ def decompOne : Fin 1 → ℕ → Roots 1 1 1 := fun _ m =>
       C (-1 / 2) * X ((0 : Fin 1), (0 : Fin (1 + 1)))
   else if m = 2 then C (1 / 2) else 0
 
-example : (0 : ℝ) < 1 ∧ (∀ p ∈ {p : ℕ | p.Prime}, p.Prime) ∧
-    4 * ((1 : ℕ) : ℝ) * ((1 + 1 : ℕ) : ℝ) ^ 2 ≤ 16 :=
-  ⟨one_pos, fun _ h => h, by norm_num⟩
-
-example : IsPart (![2, 1] : Fin 2 → ℕ) := by decide
-
-example : ∀ i l, ∃ m : ℕ, 0 < m ∧ (Matrix.of fun (_ : Fin 1) (_ : Fin 2) => (1 : ℂ)) i l ^ m = 1 :=
-  fun _ _ => ⟨1, one_pos, by simp⟩
-
-example : 2 ≤ 2 ∧ 2 ^ 4 ≤ 16 ∧ 16 ≤ 16 ∧ 2 ≤ 2 := by decide
-
 end
 
 end GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.RestTerms

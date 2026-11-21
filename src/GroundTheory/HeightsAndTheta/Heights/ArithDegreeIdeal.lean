@@ -21,9 +21,6 @@ instance submodule_projective {E : Type*} [AddCommGroup E] [Module (𝓞 K) E]
   have : Module.IsTorsionFree (𝓞 K) F := inferInstance
   exact projective_of_isTorsionFree F
 
-example (I : Ideal (𝓞 K)) : Module.Projective (𝓞 K) I := inferInstance
-example (I : Ideal (𝓞 K)) : Module.Finite (𝓞 K) I := inferInstance
-
 section Comap
 
 variable {E E' : Type*} [AddCommGroup E] [Module (𝓞 K) E] [Module.Finite (𝓞 K) E]
@@ -133,9 +130,6 @@ theorem arithDegree_ideal {I : Ideal (𝓞 K)} (hI : I ≠ ⊥) :
   · ring
   · exact_mod_cast Int.natAbs_ne_zero.mpr (Algebra.norm_ne_zero_iff.mpr ha)
   · exact hN.ne'
-
-example : (HermitianBundle.ideal (⊤ : Ideal (𝓞 K))).arithDegree = 0 := by
-  rw [arithDegree_ideal top_ne_bot, Ideal.absNorm_top, Nat.cast_one, Real.log_one, neg_zero]
 
 theorem HermitianBundle.degree_eq_arithDegree (E : HermitianBundle K)
     (F : Submodule (𝓞 K) E.carrier) :

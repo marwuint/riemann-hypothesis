@@ -80,43 +80,4 @@ theorem nodeGapGe_of_noncompactGapGe (r k : ℕ) (hk : 1 ≤ k) (v : Fin (k - 1)
   simp only [param_node] at h1 h2
   rwa [abs_of_pos (by linarith)] at h2
 
-example : List.ofFn (sign 1 2 (by norm_num)) = [true, true, false, true, false] := by decide
-
-example :
-    IsDecreasing 0 2 (by norm_num) ![1] ![8, 10] ∧
-    Interlaces 0 2 (param 0 2 (by norm_num) ![1] ![8, 10]) ![5 / 2, -1 / 2] ∧
-    Parity 0 2 (param 0 2 (by norm_num) ![1] ![8, 10]) ![5 / 2, -1 / 2] ∧
-    NodeGapGe 0 ![8, 10] 2 := by
-  have hp : param 0 2 (by norm_num) ![1] ![8, 10] = ![1, -8, -10] := by
-    funext s
-    fin_cases s <;> rfl
-  refine ⟨?_, ⟨?_, ?_⟩, ?_, ?_⟩
-  · unfold IsDecreasing
-    rw [hp]
-    intro s t hst
-    fin_cases s <;> fin_cases t <;> simp_all <;> norm_num
-  · rw [hp]
-    intro i
-    fin_cases i <;> simp <;> norm_num
-  · rw [hp]
-    intro i hi
-    obtain rfl : i = 0 := by omega
-    simp
-    norm_num
-  · apply parity_of_isShiftedIntegral
-    · rw [hp]
-      intro s
-      fin_cases s
-      · exact ⟨0, by simp; norm_num⟩
-      · exact ⟨-9, by simp; norm_num⟩
-      · exact ⟨-11, by simp; norm_num⟩
-    · intro s
-      fin_cases s
-      · exact ⟨2, by simp; norm_num⟩
-      · exact ⟨-1, by simp; norm_num⟩
-  · intro i hi
-    obtain rfl : i = 0 := by omega
-    simp
-    norm_num
-
 end GlobalTheory.IndefiniteRowSideFullHecke.DecreasingNodeGaps

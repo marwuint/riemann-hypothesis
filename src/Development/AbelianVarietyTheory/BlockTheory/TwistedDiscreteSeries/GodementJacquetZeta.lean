@@ -125,12 +125,6 @@ section Examples
 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
-example {N : ℕ} (μ : kˣ →* ℂˣ) : ¬ NoUnramTwist (detRep (Fin (N + 1)) μ) μ := fun h =>
-  h _ (isUnram_absPow k _) (inSupport_detRep μ 0)
-
-example {N : ℕ} {μ : kˣ →* ℂˣ} (h : ¬ IsUnram μ) : TwistPlace (detRep (Fin N) (1 : kˣ →* ℂˣ)) μ :=
-  ⟨isSpherical_detRep fun _ _ => rfl, h⟩
-
 end Examples
 
 end GlobalTheory.IndefiniteRowSideFullHecke.TameConstituentPlaces

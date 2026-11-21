@@ -67,13 +67,4 @@ theorem weighted_mean_claimU (ι : Type*) [Fintype ι] [Nonempty ι] : LemmaU ι
   exact weighted_mean_lemma_ge ι d muMaxN muN muMaxM muM h dr BE Sg0 hd hdr
     ⟨hS2.1, fun u => (hS2.2 u).symm.le⟩
 
-example : ∃ (d muMaxN muN muMaxM muM h dr BE : Bool → ℝ) (Sg0 A A' V : ℝ),
-    (∀ u, 0 < d u) ∧ (∀ u, 0 ≤ dr u) ∧ Slopes2ge muMaxN muN muMaxM muM dr BE Sg0 ∧
-    (∀ u, muMaxM u ≤ A) ∧ (∀ u, -A' ≤ muM u) ∧ (∀ u u', |h u - h u'| ≤ V) ∧ (∃ u, h u ≠ h (!u)) :=
-  ⟨fun u => if u then 1 else 2, fun _ => 0, fun _ => -1, fun _ => 0, fun _ => 0,
-    fun u => if u then 1 else 0, fun _ => 0, fun _ => 1, 0, 0, 0, 1,
-    fun u => by cases u <;> norm_num, fun _ => le_rfl,
-    ⟨fun _ => by norm_num, fun _ => by norm_num⟩, fun _ => le_rfl, fun _ => by norm_num,
-    fun u u' => by cases u <;> cases u' <;> norm_num, ⟨true, by norm_num⟩⟩
-
 end Formalism.LFunctionChainParameters.WeightedMeanLemmas

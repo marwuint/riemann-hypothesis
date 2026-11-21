@@ -31,8 +31,6 @@ def IsHeckeIdeal (𝔪 : Ideal (𝓞 E)) (inf : Eˣ →* ℂˣ) (fin : (𝓞 E �
   ∀ (α : Eˣ) (hα : toPrincipalIdeal (𝓞 E) E α ∈ primeToMod 𝔪) (r : (𝓞 E ⧸ 𝔪)ˣ),
     IsResMod 𝔪 (α : E) r → ψ ⟨_, hα⟩ * fin r * inf α = 1
 
-example (𝔪 : Ideal (𝓞 E)) : IsHeckeIdeal 𝔪 1 1 1 := fun _ _ _ _ => by simp
-
 variable (E) in
 
 abbrev Idele := (AdeleRing (𝓞 E) E)ˣ
@@ -89,9 +87,6 @@ structure IsHeckeIdele (𝔪 : Ideal (𝓞 E)) (inf : (InfiniteAdeleRing E)ˣ �
   principal : ∀ α : Eˣ, χ (principalIdele E α) = 1
   units : ∀ x ∈ unitsAt Set.univ, ∀ r : (𝓞 E ⧸ 𝔪)ˣ, IsIdeleRes 𝔪 x r →
     χ x = inf (infPart E x) * fin r
-
-example (𝔪 : Ideal (𝓞 E)) : IsHeckeIdele 𝔪 1 1 1 :=
-  ⟨continuous_const, fun _ => rfl, fun _ _ _ _ => by simp⟩
 
 def HeckeCompat (𝔪 : Ideal (𝓞 E)) (inf : (InfiniteAdeleRing E)ˣ →* ℂˣ)
     (fin : (𝓞 E ⧸ 𝔪)ˣ →* ℂˣ) (χ : Idele E →* ℂˣ) (ψ : primeToMod 𝔪 →* ℂˣ) : Prop :=

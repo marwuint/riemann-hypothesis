@@ -476,15 +476,6 @@ instance {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Measu
     [BorelSpace G] (K : Subgroup G) (ho : IsOpen (K : Set G)) (hc : IsCompact (K : Set G)) :
     normHaar K ho hc K = 1 := haarMeasure_self
 
-example {Y : Type} [MeasurableSpace Y] (ν μ : Measure Y) :
-    IsCylProd (W := Unit) (V := Empty) (Ya := fun _ => Y) (Yf := fun _ => Y) (fun _ => id) (fun _ => id)
-      (fun _ => univ) (fun _ => ν) (fun _ => ν) μ ↔ μ = ν := by
-  refine ⟨fun h => Measure.ext fun s hs => ?_, ?_⟩
-  · simpa [cyl] using h.2 ∅ (fun v => v.elim) (fun _ => s) (fun _ => s) (fun _ => hs) fun v => v.elim
-  · rintro rfl
-    refine ⟨Eventually.of_forall fun v => v.elim, fun S _ A B _ _ => ?_⟩
-    simp [cyl, Finset.eq_empty_of_isEmpty S, Unique.forall_iff]
-
 end GlobalTheory.RestrMeas
 
 end

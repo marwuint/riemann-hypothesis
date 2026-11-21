@@ -218,8 +218,6 @@ def HeightOfCycle.Statement : Prop :=
 
 section Inhabitants
 
-example : IsUltrametricDist ℚ_[2] ∧ CompleteSpace ℚ_[2] := ⟨inferInstance, inferInstance⟩
-
 theorem gaussNormBasic_hyps :
     (∀ i j, ‖(1 : Matrix (Fin 2) (Fin 2) ℚ_[2]) i j‖ ≤ 1) ∧ (∀ i, ‖(0 : Fin 2 → ℚ_[2]) i‖ ≤ 1) ∧
     IsUnit (1 : Matrix (Fin 2) (Fin 2) ℚ_[2]).det ∧

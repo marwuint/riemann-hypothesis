@@ -101,12 +101,4 @@ def FreenessLemma : Prop :=
             d (eigenProj C τ _ (exteriorPower.ιMulti _ N h)) =
               exteriorPower.ιMulti _ N (fun i => eigenProj C τ H (h i))
 
-example (l : ℕ) [Fact l.Prime] (k : Type) [Field k] [IsAlgClosed k] [CharP k l] :
-    IsLocalRing (WittVector l k) ∧
-    Function.Surjective
-      (WittVector.constantCoeff.comp (RingHom.id (WittVector l k)) : WittVector l k →+* k) ∧
-    (l : WittVector l k) ∈ (WittVector l k)⁰ := by
-  refine ⟨inferInstance, fun x => ⟨WittVector.teichmuller l x, by simp⟩, ?_⟩
-  exact mem_nonZeroDivisors_of_ne_zero (WittVector.p_nonzero l k)
-
 end GlobalTheory.IndefiniteRowSideFullHecke.TensorProductAction

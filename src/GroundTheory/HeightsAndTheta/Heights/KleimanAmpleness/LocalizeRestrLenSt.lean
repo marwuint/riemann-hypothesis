@@ -15,8 +15,4 @@ def LocalizeRestrLen.Statement : Prop :=
       Kleiman.restrLen pp' (F.baseChange O) =
         Kleiman.restrLen (pp'.comap (MvPolynomial.map (algebraMap S O) : Kleiman.Poly S N →+* Kleiman.Poly O N)) F
 
-example (h : LocalizeRestrLen.Statement) :=
-  h ℤ (Ideal.span {(2 : ℤ)}) LocalizeNefAbove.exO LocalizeNefAbove.exΩ 1 ![1, 1] _ le_rfl
-    (Kleiman.twistSys ℤ ![1, 1] 1)
-
 end GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization

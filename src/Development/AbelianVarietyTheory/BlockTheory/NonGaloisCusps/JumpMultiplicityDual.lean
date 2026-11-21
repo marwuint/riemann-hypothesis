@@ -26,16 +26,11 @@ variable {LL : Type} [Field LL] [Algebra Qp LL]
 def mulPeriod (b : BdR) : V ⊗[Qp] BdR →ₗ[LL] V ⊗[Qp] BdR :=
   AlgebraTensorModule.map LinearMap.id (LinearMap.mulLeft Qp b)
 
-example (c : K) : mulPeriod (Qp := Qp) (LL := LL) (V := V) (algebraMap K BdR c) =
-    mulVdR (Qp := Qp) (LL := LL) (V := V) (BdR := BdR) c := rfl
-
 def mapdR {V' : Type} [AddCommGroup V'] [Module LL V'] [Module Qp V'] [IsScalarTower Qp LL V']
     (f : V →ₗ[LL] V') : V ⊗[Qp] BdR →ₗ[LL] V' ⊗[Qp] BdR :=
   AlgebraTensorModule.map f (LinearMap.id : BdR →ₗ[Qp] BdR)
 
 def tdR : BdRˣ := (PD.t_unit.map PD.ι).unit
-
-example : ((tdR PD : BdRˣ) : BdR) = PD.ι PD.t := rfl
 
 variable (ρ : Representation LL G V)
 

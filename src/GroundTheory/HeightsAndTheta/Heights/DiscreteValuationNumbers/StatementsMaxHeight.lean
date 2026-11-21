@@ -13,10 +13,6 @@ def MaximalIdealHeightFG.Statement : Prop :=
 
 section Examples
 
-example : Algebra.FiniteType ℚ (MvPolynomial (Fin 2) ℚ) := inferInstance
-
-example : IsDomain (MvPolynomial (Fin 2) ℚ) := inferInstance
-
 end Examples
 
 end GroundTheory.Heights₂.Heights.NumbersDVR

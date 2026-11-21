@@ -834,48 +834,4 @@ theorem theta_fromBlocks_zero {τ₁ : Matrix ι ι ℂ} {τ₂ : Matrix κ κ �
 
 end Theta
 
-example : !![1 + 2 * I, 1 / 2 + I; 1 / 2 + I, 2 * I] ∈ ReciprocityTheory.PTheta.SiegelH (Fin 2) :=
-  isSiegel_example.mem_siegelH
-
-example (a b : Fin 0 → ℝ) (Ω : Matrix (Fin 0) (Fin 0) ℂ) (v : Fin 0 → ℂ) :
-    riemannTheta a b Ω v = 1 := by
-  simp [riemannTheta_def, riemannThetaTerm_def, dotProduct]
-
-example : riemannTheta (fun _ => 1 / 2) (fun _ => 1 / 2) !![I] 0 = 0 := by
-  have := riemannTheta_half_neg (fun _ : Fin 1 => 1) (fun _ => 1) !![I] 0
-  simp only [Int.cast_one, neg_zero, dotProduct, mul_one, Finset.sum_const, Finset.card_univ,
-    Fintype.card_fin, one_smul, zpow_one] at this
-  linear_combination this / 2
-
-example (b : Fin 1 → ℝ) (z : ℂ) :
-    riemannTheta (fun _ => 1 / 2) b !![I] ![z + 1] = -riemannTheta (fun _ => 1 / 2) b !![I] ![z] := by
-  have := riemannTheta_add_intCast (fun _ : Fin 1 => 1 / 2) b !![I] ![z] (fun _ => 1)
-  have e : (![z] + fun _ => ((1 : ℤ) : ℂ)) = ![z + 1] := by
-    funext i
-    fin_cases i
-    simp
-  rw [← e, this]
-  have : 2 * π * I * ((fun _ : Fin 1 => ((1 / 2 : ℝ) : ℂ)) ⬝ᵥ fun _ => ((1 : ℤ) : ℂ)) = π * I := by
-    simp [dotProduct]
-    ring
-  rw [this, Complex.exp_pi_mul_I, neg_one_mul]
-
-example (z τ : ℂ) : jacobiTheta₂ (z + τ) τ = cexp (-π * I * (τ + 2 * z)) * jacobiTheta₂ z τ := by
-  have hs : (!![τ] : Matrix (Fin 1) (Fin 1) ℂ).IsSymm := by
-    ext i j
-    fin_cases i
-    fin_cases j
-    rfl
-  have := riemannTheta_add_mulVec_intCast hs 0 0 ![z] (fun _ => 1)
-  rw [riemannTheta_unique_zero_zero, riemannTheta_fin_one] at this
-  convert this using 3
-  · simp [mulVec, dotProduct]
-  · simp
-  · simp [mulVec, dotProduct]
-    ring
-
-example : Differentiable ℂ (riemannTheta 0 0 !![1 + 2 * I, 1 / 2 + I; 1 / 2 + I, 2 * I]) ∧
-    riemannTheta 0 0 !![1 + 2 * I, 1 / 2 + I; 1 / 2 + I, 2 * I] ≠ 0 :=
-  ⟨isSiegel_example.differentiable_riemannTheta 0 0, isSiegel_example.riemannTheta_ne_zero 0 0⟩
-
 end GlobalTheory

@@ -93,11 +93,4 @@ theorem dim_eq {s : Closeds (Flags k V)} {n : ℕ} (h : topologicalKrullDim (s :
   rw [dim, h]
   rfl
 
-example (n : ℕ) : between (k := k) (V := V) n ⊥ ⊤ = ⊤ := Closeds.ext (Set.eq_univ_of_forall fun _ _ => ⟨bot_le, le_top⟩)
-
-example (n : ℕ) (i : ι) (h : n < finrank k (V i)) (F : Flags k V) : F ∉ between n ⊤ ⊤ := fun hF => by
-  have := finrank_step F i n
-  rw [top_le_iff.1 (hF i).1, finrank_top] at this
-  omega
-
 end GlobalTheory.FlagPts

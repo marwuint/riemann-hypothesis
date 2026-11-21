@@ -244,9 +244,4 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization.latPt_
       · exact hb ((map_eq_zero τ).mp h1)
       · exact (hz τ).ne' h1
 
-example (z : Unit → ℂ) : wirt () false (fun w => w ()) z = 1 ∧ wirt () true (fun w => w ()) z = 0 := by
-  have h : fderiv ℝ (fun w : Unit → ℂ => w ()) z = ContinuousLinearMap.proj () :=
-    (ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Unit => ℂ) ()).fderiv
-  constructor <;> simp [wirt, h]
-
 end GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization

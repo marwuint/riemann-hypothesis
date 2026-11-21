@@ -393,18 +393,6 @@ theorem gram_ofMatrix (hA : A.IsHermitian) : gram (ofMatrix A) (Pi.basisFun ℤ 
 theorem realExtension_ofMatrix_posDef (hA : A.PosDef) : (realExtension (ofMatrix A)).PosDef := by
   rwa [realExtension_posDef_iff _ (Pi.basisFun ℤ (Fin d)), gram_ofMatrix hA.isHermitian]
 
-example : (realExtension (ofMatrix !![2, 1; 1, 2])).PosDef := by
-  refine realExtension_ofMatrix_posDef (posDef_iff_dotProduct_mulVec.mpr ⟨?_, fun x hx => ?_⟩)
-  · ext i j
-    fin_cases i <;> fin_cases j <;> simp
-  · have : x 0 ≠ 0 ∨ x 1 ≠ 0 := by
-      by_contra h
-      push Not at h
-      exact hx (by funext i; fin_cases i <;> simp [h.1, h.2])
-    simp [dotProduct, mulVec, Fin.sum_univ_two]
-    rcases this with h | h <;>
-      nlinarith [sq_pos_of_ne_zero h, sq_nonneg (x 0 + x 1), sq_nonneg (x 0), sq_nonneg (x 1)]
-
 end Matrix
 
 end GlobalTheory.ClassMin

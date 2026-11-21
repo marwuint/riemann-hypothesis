@@ -49,11 +49,6 @@ def probMeasure (μ : Measure H) (D : Set H) (hD : IsFundamentalDomain Γ D μ) 
   ⟨(μ D)⁻¹ • quotMeasure Γ μ D hD,
     ⟨by rw [Measure.smul_apply, quotMeasure_univ, smul_eq_mul, ENNReal.inv_mul_cancel h0 h1]⟩⟩
 
-example (μ : Measure H) : IsFundamentalDomain (⊥ : Subgroup H) Set.univ μ where
-  nullMeasurableSet := MeasurableSet.univ.nullMeasurableSet
-  ae_covers := Eventually.of_forall fun _ => ⟨1, Set.mem_univ _⟩
-  aedisjoint := fun a b hab => absurd (Subsingleton.elim a b) hab
-
 end General
 
 def unitaryOf {R : Type} [CommRing R] (s : R →+* R) {n : ℕ} (J : Matrix (Fin n) (Fin n) R) :
@@ -129,9 +124,6 @@ theorem emb_cj (τ : E →+* ℂ) (x : E) : τ (cj E x) = starRingEnd ℂ (τ x)
 variable {E} {n : ℕ}
 
 def IsHermGram (G : Matrix (Fin n) (Fin n) E) : Prop := (∀ a b, G b a = cj E (G a b)) ∧ G.det ≠ 0
-
-example : IsHermGram (1 : Matrix (Fin n) (Fin n) E) :=
-  ⟨fun a b => by by_cases h : a = b <;> simp [Matrix.one_apply, h, eq_comm], by simp⟩
 
 variable (G : Matrix (Fin n) (Fin n) E)
 

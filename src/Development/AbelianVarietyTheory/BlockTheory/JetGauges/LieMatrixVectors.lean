@@ -164,13 +164,6 @@ lemma isHCTypeU_trivial (k : ℕ) :
       linear_combination h2 / 2
     simp [hlow, hμ]
 
-example (r : ℕ) : IsHCTypeW 1 r (negVec 1 r) (PI.UpqRep.rhoC (PI.UpqRep.allPos 1))
-    (fun _ => (1 : ℂ →L[ℂ] ℂ)) := by
-  obtain ⟨h1, h2, h3⟩ := isFrameFor_negVec 1 r
-  refine ⟨h1, h2, ⟨Subsingleton.strictAnti _, fun a => ⟨0, ?_⟩⟩, 1, h3, isHCTypeU_trivial 1⟩
-  obtain rfl : a = 0 := Subsingleton.elim _ _
-  simp [PI.UpqRep.rhoC]
-
 end GlobalTheory.IndefiniteRowSideFullHecke.LieMatrixVectors
 
 end

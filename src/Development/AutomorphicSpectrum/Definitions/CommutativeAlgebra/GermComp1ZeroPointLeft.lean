@@ -364,25 +364,4 @@ theorem rhoH_gauge (B : FB R d O) (h : PS k 2 d) (hc : B.IsCanonGauge k h) (a : 
 
 end Gauge
 
-example (G : FGLaw R 1) (A : OAct O G) : pairH (FB.triv G A) (![1], 0) (0, ![1]) = 1 := by
-  simp [pairH]
-
-example (G : FGLaw R 1) (A : OAct O G) : pairH (FB.triv G A) (0, ![1]) (![1], 0) = -1 := by
-  simp [pairH]
-
-example (G : FGLaw R d) (A : OAct O G) (p : ℕ) (hp : p ≠ 0) (y : (Fin d → R) × (Fin d → R)) :
-    beta (FB.triv G A) p y = (hw (FB.triv G A) p).transpose.mulVec y.2 ∧
-      alpha (FB.triv G A) p y.1 = ((hw (FB.triv G A) p).mulVec y.1, 0) := by
-  have h1 : am (FB.triv G A) p = 0 := by
-    have : pow1 (FB.triv G A) p = 1 := by simp [pow1, FB.triv]
-    rw [am, this, bil_one_eq_zero hp]
-  have h2 : bil (FB.triv G A).sy 1 1 = 0 := bil_one_eq_zero one_ne_zero 1
-  simp [beta_apply, alpha_apply, h1, h2]
-
-example (c : R) : bil (1 + C c * X ((0 : Fin 2), (0 : Fin 1)) * X ((1 : Fin 2), (0 : Fin 1)) : PS R 2 1) 1 1 0 0 = c := by
-  have := congrFun (congrFun (bil_one_eq_zero (R := R) (d := 1) one_ne_zero 1) 0) 0
-  rw [bil] at this ⊢
-  rw [map_add, this, mul_assoc, coeff_C_mul, X_def, X_def, monomial_mul_monomial, coeff_monomial_same]
-  simp
-
 end GlobalTheory.CompanionTheory.Ar.Conj

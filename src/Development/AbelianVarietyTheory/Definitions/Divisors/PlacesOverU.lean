@@ -148,13 +148,4 @@ instance : FiniteDimensional F D.B :=
 
 end HTDatum
 
-example : HermSig (1 : Matrix (Fin 1) (Fin 1) ℂ) 1 :=
-  ⟨le_rfl, 1, by ext i j; fin_cases i; fin_cases j; simp⟩
-
-example : HermSig (-1 : Matrix (Fin 2) (Fin 2) ℂ) 0 :=
-  ⟨Nat.zero_le _, 1, by ext i j; fin_cases i <;> fin_cases j <;> simp⟩
-
-example (K : Type) [Field K] [NumberField K] [IsCMField K] (σ : K →+* ℂ) : embOver K K σ = {σ} := by
-  ext τ; simp [embOver, Algebra.algebraMap_self]
-
 end GlobalTheory.UPel.HT

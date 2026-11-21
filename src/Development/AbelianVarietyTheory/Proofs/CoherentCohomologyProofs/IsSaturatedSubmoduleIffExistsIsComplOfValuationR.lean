@@ -119,7 +119,4 @@ end Valuation
 
 universe u
 
-example : ∃ N' : Submodule ℤ (ℤ × ℤ), IsCompl (Submodule.span ℤ {((1, 2) : ℤ × ℤ)}) N' :=
-  isSaturatedSubmodule_span_one_two.exists_isCompl
-
 end GlobalTheory

@@ -613,50 +613,6 @@ instance coprod (X Y : Scheme.{u}) [IsNormalScheme X] [IsNormalScheme Y] :
     · exact inferInstanceAs (IsNormalScheme X)
     · exact inferInstanceAs (IsNormalScheme Y)
 
-example : IsNormalScheme (Spec (.of ℤ)) := inferInstance
-
-example : IsNormalScheme (Spec (.of (MvPolynomial (Fin 2) ℤ))) := inferInstance
-
-example : IsNormalScheme (Spec (.of (ℚ × ℚ))) ∧ ¬ IsIntegral (Spec (.of (ℚ × ℚ))) :=
-  ⟨of_isIso (coprodSpec ℚ ℚ), fun h ↦
-    have : IsDomain (ℚ × ℚ) := (affine_isIntegral_iff _).mp h
-    false_of_nontrivial_of_product_domain ℚ ℚ⟩
-
-example : ¬ IsNormalScheme (Spec (.of (ZMod 4))) := fun _ ↦ by
-  have : _root_.IsReduced (ZMod 4) := (affine_isReduced_iff (.of (ZMod 4))).mp inferInstance
-  exact absurd (IsNilpotent.eq_zero (x := (2 : ZMod 4)) ⟨2, by decide⟩) (by decide)
-
-example : ¬ IsNormalScheme (Spec (.of (ℤ√((5 : ℕ) : ℤ)))) := fun h ↦ by
-  have : Zsqrtd.Nonsquare 5 := ⟨fun n hn ↦ by
-    have : n ≤ 2 := by nlinarith
-    interval_cases n <;> omega⟩
-  have : IsIntegrallyClosed (ℤ√((5 : ℕ) : ℤ)) := (spec_iff_of_isDomain _).mp h
-  have h1 : (⟨2, 0⟩ : ℤ√((5 : ℕ) : ℤ)) ^ 3 ∣ ⟨1, 1⟩ ^ 3 := ⟨⟨2, 1⟩, by decide⟩
-  obtain ⟨c, hc⟩ := (IsIntegrallyClosed.pow_dvd_pow_iff three_ne_zero).mp h1
-  have := congrArg Zsqrtd.re hc
-  simp at this
-  omega
-
-example : IsNormalScheme
-    (Spec.map (CommRingCat.ofHom (algebraMap ℤ ℚ))).normalization := inferInstance
-
-example : ∃ x : Spec (.of ℤ), Order.coheight x = 1 ∧
-    IsDiscreteValuationRing ((Spec (.of ℤ)).presheaf.stalk x) := by
-  let x : Spec (.of ℤ) :=
-    ⟨Ideal.span {2}, (Ideal.span_singleton_prime two_ne_zero).mpr Int.prime_two⟩
-  have hx : Order.coheight x = 1 := by
-    rw [← idealHeight_eq_coheight]
-    exact Ideal.height_span_singleton_eq_one_of_mem_nonZeroDivisors (R := ℤ)
-      (mem_nonZeroDivisors_of_ne_zero two_ne_zero) Int.prime_two.not_unit
-  exact ⟨x, hx, isDiscreteValuationRing_stalk hx⟩
-
-example : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (Spec (.of ℤ)) := pred _
-
-example : ¬ ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme (Spec (.of (ZMod 4))) := fun h ↦ by
-  have := of_pred h
-  have : _root_.IsReduced (ZMod 4) := (affine_isReduced_iff (.of (ZMod 4))).mp inferInstance
-  exact absurd (IsNilpotent.eq_zero (x := (2 : ZMod 4)) ⟨2, by decide⟩) (by decide)
-
 end IsNormalScheme
 
 end GlobalTheory

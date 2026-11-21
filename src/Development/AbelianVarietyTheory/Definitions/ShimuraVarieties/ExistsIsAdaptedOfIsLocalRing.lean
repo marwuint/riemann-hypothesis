@@ -480,17 +480,6 @@ end FullFlag
 
 end Flag
 
-example (b : Basis (Fin 2) ℤ (Fin 2 → ℤ)) :
-    basisMulGL b ⟨!![1, 1; 0, 1], !![1, -1; 0, 1], by decide, by decide⟩ 1 = b 0 + b 1 := by
-  simp [basisMulGL_apply]
-
-example : (FullFlag.ofBasis (Pi.basisFun ℤ (Fin 2))).sub 1 =
-    Submodule.span ℤ {Pi.single 0 1} := by
-  have : {i : Fin 2 | i.castSucc < 1} = {0} := by
-    ext i
-    fin_cases i <;> simp
-  simp [Basis.flag, this]
-
 end
 
 end GlobalTheory

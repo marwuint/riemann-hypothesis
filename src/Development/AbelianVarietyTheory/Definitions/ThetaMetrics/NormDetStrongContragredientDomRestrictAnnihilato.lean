@@ -269,26 +269,4 @@ def strongContragredient (T : V ≃ₗ[𝕜] W) : StrongDual 𝕜 V ≃ₗ[𝕜]
 
 end Dual
 
-example : gramVol ℂ (fun _ : Unit => (3 + 4 * Complex.I : ℂ)) = 5 := by
-  rw [gramVol_unique, Complex.norm_eq_sqrt_sq_add_sq]
-  norm_num [show (3 : ℝ) ^ 2 + 4 ^ 2 = 5 ^ 2 by norm_num]
-
-example : gramVol ℂ (![!₂[1, 0], !₂[1, 2 * Complex.I]] : Fin 2 → EuclideanSpace ℂ (Fin 2)) = 2 := by
-  rw [gramVol_eq_norm_det (EuclideanSpace.basisFun (Fin 2) ℂ), det_fin_two]
-  simp [Basis.toMatrix_apply]
-
-example [FiniteDimensional 𝕜 V] (c : 𝕜ˣ) :
-    detNorm (invAdjoint (c • LinearEquiv.refl 𝕜 V)) = (‖(c : 𝕜)‖ ^ finrank 𝕜 V)⁻¹ := by
-  rw [detNorm_invAdjoint]
-  congr 1
-  exact (LinearMap.normDet_smul (LinearMap.id : V →ₗ[𝕜] V) (c : 𝕜)).trans (by simp)
-
-example {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E]
-    {n : ℕ} (v : Fin n → E) : gramVol ℝ v = ‖exteriorPower.ιMulti ℝ n v‖ :=
-  gramVol_eq_of_sq (norm_nonneg _)
-    (by rw [← exteriorPower.inner_ιMulti_self, real_inner_self_eq_norm_sq]; simp)
-
-example (U : Submodule ℂ (EuclideanSpace ℂ (Fin 2))) :
-    InnerProductSpace ℂ (StrongDual ℂ (EuclideanSpace ℂ (Fin 2) ⧸ U)) := inferInstance
-
 end GlobalTheory

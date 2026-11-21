@@ -95,12 +95,4 @@ def Roots {F Ω : Type*} [Field F] [Field Ω] [Algebra F Ω] {S : Type*} [MulAct
 
 @[simp] theorem fam_apply {S : Type*} (f : S → M →ₗ[R] M') (m : S → M) (s : S) : fam f m s = f s (m s) := rfl
 
-example (ρ : Representation R G M) (H : Subgroup G) : IsTwoCocycleOnSubgroup ρ H 0 ∧ Cob ρ H 0 0 :=
-  ⟨fun _ _ _ _ _ _ => by simp, fun _ _ _ _ => by simp [d1]⟩
-
-example (ρ : Representation R G M) (H : Subgroup G) (b : G → M) : Cob ρ H (d1 ρ b) b := fun _ _ _ _ => rfl
-
-example {F Ω : Type*} [Field F] [Field Ω] [Algebra F Ω] {S : Type*} [MulAction (Ω ≃ₐ[F] Ω) S] (N : ℕ) :
-    Roots (F := F) N (fun _ : S => (1 : Ω)) := ⟨fun _ => one_ne_zero, fun g s => by simp⟩
-
 end GlobalTheory.KCoh

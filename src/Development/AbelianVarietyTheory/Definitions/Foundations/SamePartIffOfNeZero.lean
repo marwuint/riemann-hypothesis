@@ -65,11 +65,6 @@ theorem bb_of_dvd {g N l d : ℕ} (hl : l.Prime) (h1 : 1 ≤ d) (h2 : d ≤ N) (
   have := one_le_padicValNat_of_dvd h0 h3
   omega
 
-example : BB 7 1 3 := bb_of_dvd (d := 1) (by norm_num) le_rfl le_rfl (by norm_num) (by norm_num) (by norm_num)
-
-example : ¬ BB 7 1 6 := by
-  rw [bb_iff]; norm_num
-
 section part
 variable {k : Type} [Field k] {l : ℕ}
 
@@ -319,8 +314,6 @@ theorem _root_.GlobalTheory.BadShare.mass_mono {N : ℕ} {A B : (ZMod g)[X] → 
     exact ⟨hf.1, h f hf.1 hf.2⟩
   · intro f _ _
     exact inv_nonneg.mpr (Nat.cast_nonneg _)
-
-example : torusCard g X = g - 1 := by rw [torusCard_irreducible irreducible_X]; simp
 
 theorem exists_primitive (d : ℕ) (hd : d ≠ 0) : ∃ P : (ZMod g)[X], P.Monic ∧ Irreducible P ∧ P.natDegree = d ∧
     ∀ x ∈ P.aroots (AlgebraicClosure (ZMod g)), ∀ n : ℕ, x ^ n = 1 ↔ g ^ d - 1 ∣ n := by

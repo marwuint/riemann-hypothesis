@@ -48,9 +48,6 @@ theorem rootCoord_mem {f j m : ℕ} (ζ : Fin f → Matrix (Fin j) (Fin m) ℂ) 
     simp only [RingHom.comp_apply, RingHom.coe_coe, h, map_zero] at this
     exact this.symm
 
-example : IsMultiHomogIdeal (⊥ : Ideal (MRing (fun _ : Unit => Unit))) :=
-  ⟨∅, by simp, by simp⟩
-
 theorem finite_mcClasses_bot_unit : Finite (McClasses (⊥ : Ideal (MRing (fun _ : Unit => Unit)))) := by
   haveI : Subsingleton (McClasses (⊥ : Ideal (MRing (fun _ : Unit => Unit)))) := by
     constructor

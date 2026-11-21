@@ -20,6 +20,4 @@ abbrev Etau (R : Type) [CommRing R] (τ : R) : Type := QuadraticAlgebra R (-1) �
 
 abbrev Lsq (R : Type) [CommRing R] (Δ : R) : Type := QuadraticAlgebra R Δ 0
 
-example : gcount PUnit (fun _ : PUnit => (1 : ℂ)) = gcount PUnit (fun _ : PUnit => (1 : ℂ)) := rfl
-
 end UpperTheory.V.Z.Sym

@@ -105,25 +105,4 @@ def LongOrbitColengthAnyCoeff (l : ℕ) [Fact l.Prime] (P : LocPrime l) : Prop :
     WordHyp n size w S η b j →
     Concl P F n size w S η b j
 
-example : WordHyp 3 (fun i => if i = 2 then 0 else 80) 0 0 0 80 1 := by
-  have ht : ∀ i : ZMod 3, Thick (fun i => if i = 2 then 0 else 80) 80 0 i ↔ i ≠ 2 := by
-    unfold Thick; decide
-  refine ⟨le_rfl, ?_, fun _ => by simp [parG], by norm_num, {{0, 1}}, ?_, ?_⟩
-  · intro i hi
-    rw [ht, not_not] at hi
-    simp [hi]
-  · rintro c rfl
-    refine ⟨0, ⟨(ht _).2 (by decide), Or.inr ⟨1, by decide, (ht _).2 (by decide), rfl, ?_, by decide⟩⟩, ?_⟩
-    · intro q h0 h1
-      have : ((1 : ZMod 3) - 0).val = 1 := by decide
-      omega
-    · intro q h0 h1
-      obtain rfl : q = 1 := by omega
-      rw [ht]; decide
-  · intro i hi
-    rw [ht] at hi
-    refine ⟨{0, 1}, ⟨rfl, ?_⟩, fun c hc => hc.1⟩
-    simp only [Set.mem_insert_iff, Set.mem_singleton_iff]
-    revert i; decide
-
 end GlobalTheory.IndefiniteRowSideFullHecke.JumpWindowClusters

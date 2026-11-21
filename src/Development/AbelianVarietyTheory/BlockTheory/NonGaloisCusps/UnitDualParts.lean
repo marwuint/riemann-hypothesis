@@ -97,28 +97,6 @@ def DualFor (E : EtTie W RA RW inclR φR gR πA) : Prop :=
           ∀ (x : ↥(W.N T)) (y : ↥(W.N T')),
             b (x : W.DD T) (y : W.DD T') = algebraMap (LetA O n) W.EE (δ y x)
 
-example {T T' T'' : LocLat G Qp LL O} (μ : W.DD T →ₗ[W.EE] W.DD T' →ₗ[W.EE] W.DD T'')
-    (ν : ↥(W.N T) ⊗[LetA O n] ↥(W.N T') ≃ₗ[LetA O n] ↥(W.N T''))
-    (hν : ∀ (x : ↥(W.N T)) (y : ↥(W.N T')),
-      ((ν (x ⊗ₜ[LetA O n] y) : ↥(W.N T'')) : W.DD T'') = μ (x : W.DD T) (y : W.DD T')) :
-    W.N T'' = Submodule.span (LetA O n) {z | ∃ x ∈ W.N T, ∃ y ∈ W.N T', z = μ x y} := by
-  apply le_antisymm
-  · intro z hz
-    obtain ⟨w, hw⟩ := ν.surjective ⟨z, hz⟩
-    have hz' : z = ((ν w : ↥(W.N T'')) : W.DD T'') := by rw [hw]
-    rw [hz']
-    clear hw hz' hz
-    induction w using TensorProduct.induction_on with
-    | zero => simp
-    | tmul x y => rw [hν]; exact Submodule.subset_span ⟨x, x.2, y, y.2, rfl⟩
-    | add a b ha hb => rw [map_add, Submodule.coe_add]; exact Submodule.add_mem _ ha hb
-  · rw [Submodule.span_le]
-    rintro z ⟨x, hx, y, hy, rfl⟩
-    have := hν ⟨x, hx⟩ ⟨y, hy⟩
-    simp only at this
-    rw [← this]
-    exact (ν _).2
-
 end Generic
 
 def UnitPart (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (H : LocHW l P)

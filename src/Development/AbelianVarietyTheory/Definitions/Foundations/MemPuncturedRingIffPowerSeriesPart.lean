@@ -1081,19 +1081,4 @@ theorem exists_chart_of_isLocalRing {Y : Scheme.{0}} (s : Y ⟶ Spec (.of ℂ))
 
 end Scheme
 
-example (ε : ℝ) (u₀ : ℂ) (h : u₀ ∈ puncturedDisc ε) :
-    evalAt ε u₀ h ⟨HahnSeries.single (-1) 1, single_mem_puncturedRing ε _ _⟩ = u₀⁻¹ := by
-  simp
-
-example : IsUnit (1 + u) ∧ ¬ IsUnit u := by
-  simp [isUnit_iff]
-
-example : ∃ a : convSeries, a ^ 2 = 1 + u ∧ evalZero a = 1 := by
-  obtain ⟨a, ha, ha'⟩ := exists_isRoot (Polynomial.X ^ 2 - Polynomial.C (1 + u)) 1
-    (by simp) (by simp)
-  exact ⟨a, by simpa [sub_eq_zero] using ha, ha'⟩
-
-example (ε : ℝ) : ValuationRing convSeries ∧ CharZero convLaurent ∧ IsDomain (puncturedRing ε) :=
-  ⟨inferInstance, inferInstance, inferInstance⟩
-
 end GlobalTheory.Conv

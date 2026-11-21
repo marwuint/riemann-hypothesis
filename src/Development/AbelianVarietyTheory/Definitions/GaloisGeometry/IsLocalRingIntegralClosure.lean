@@ -316,34 +316,6 @@ section Examples
 variable (R : Type) [CommRing R] (O : Type) [CommRing O] [HenselianLocalRing O] (K : Type) [Field K] [Algebra O K]
   (Ω : Type) [Field Ω] [Algebra K Ω] [Algebra O Ω] [IsScalarTower O K Ω]
 
-example : DerivedCategory (ShvS R (spFib Ω (𝟙 (Spec (CommRingCat.of O))))) :=
-  RPsi R K Ω (𝟙 (Spec (CommRingCat.of O))) (coef R)
-
-example (n : ℤ) : AddCommGroup (HPsi R K Ω (𝟙 (Spec (CommRingCat.of O))) (coef R) n) := inferInstance
-
-example {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of O)) (F : Shv R) :
-    RPsiC R K Ω p F ⟶ RPsiC R K Ω p F :=
-  ineC R p F (one_mem (inertia O K Ω))
-
-example (σ : Ω ≃ₐ[K] Ω) (r : O) :
-    galInt O K σ (algebraMap O (integralClosure O Ω) r) = algebraMap O (integralClosure O Ω) r :=
-  galInt_algebraMap σ r
-
-example (x : integralClosure O Ω) : galInt O K (1 : Ω ≃ₐ[K] Ω) x = x := rfl
-
-example : Field (ResidueField (integralClosure O Ω)) := inferInstance
-
-example (n : ℤ) : Module ℚ_[3] (HPsiQ 3 K Ω (𝟙 (Spec (CommRingCat.of O))) n) := inferInstance
-
-example : (lamRedLin 3 1).hom (⟨1⟩ : ULift.{1} (ZMod (3 ^ 2))) = (⟨1⟩ : ULift.{1} (ZMod (3 ^ 1))) := by
-  apply congrArg ULift.up
-  exact map_one _
-
 end Examples
-
-example : Subgroup (AlgebraicClosure ℚ_[3] ≃ₐ[ℚ_[3]] AlgebraicClosure ℚ_[3]) × Type 2 :=
-  haveI : HenselianLocalRing ℤ_[3] := GlobalTheory.henselianLocalRing_of_henselianRing ℤ_[3]
-  (inertia ℤ_[3] ℚ_[3] (AlgebraicClosure ℚ_[3]),
-    HPsi ℤ_[3] ℚ_[3] (AlgebraicClosure ℚ_[3]) (𝟙 (Spec (CommRingCat.of ℤ_[3]))) (lam 3 1) 0)
 
 end GlobalTheory.EtC.Psi

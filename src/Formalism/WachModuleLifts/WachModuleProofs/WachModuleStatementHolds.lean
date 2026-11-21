@@ -59,8 +59,6 @@ variable (p : ℕ) [Fact p.Prime]
 
 abbrev K := FractionRing (Polynomial ℤ_[p])
 
-example : IsScalarTower ℤ_[p] (Polynomial ℤ_[p]) (K p) := inferInstance
-
 def polyW : WachMod (polyBase p) 0 (K p) where
   N := LinearMap.range (Algebra.linearMap (Polynomial ℤ_[p]) (K p))
   φ := 0

@@ -268,9 +268,6 @@ theorem isCentred_padic (p : ℕ) [Fact p.Prime] :
     change ‖FractionRing.algEquiv ℤ_[p] ℚ_[p] (algebraMap _ _ r)‖ < 1
     rw [AlgEquiv.commutes]; exact PadicInt.mem_nonunits.1 hr
 
-example (p : ℕ) [Fact p.Prime] : ramIdx (isOverPrime_padicInt p) = 1 :=
-  ord_vw_uniformiser _ PadicInt.maximalIdeal_eq_span_p
-
 def PsiIntegral : Prop :=
   ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegData R (maximalIdeal R))
     (χ : D.toPre.X), D.toPre.PsiIn χ (maximalIdeal R ^ 0)

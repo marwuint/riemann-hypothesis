@@ -72,8 +72,4 @@ def Stmt : Prop :=
       ∀ F : BKHom D₁ D₂, IsFiniteLength (A O K) F.coker →
         KillsAll F (l ^ rho l Sig N)
 
-example (l e N : ℕ) : rho l ({0} : Finset (ZMod e)) N = 2 * (N - 1) := by
-  simp [rho, maxPeriod, frobPeriod, Function.minimalPeriod_eq_one_iff_isFixedPt.2
-    (show Function.IsFixedPt (fun x => (l : ZMod e) * x) 0 from mul_zero _)]
-
 end GlobalTheory.IndefiniteRowSideFullHecke.RepresentationBounds

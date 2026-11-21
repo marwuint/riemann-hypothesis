@@ -737,40 +737,6 @@ theorem grid_squares_bound : GridValuationBoundSquares := by
 
 section tests
 
-example : (6 : ℚ) = ((∏ j ∈ range 1, (if j = 0 then (2 : ℚ) else 3)) * ∏ _i ∈ range 1, (3 : ℚ)) * 1 *
-    (∏ k ∈ Icc 1 1, (((6 : ℤ) + (1 : ℕ) - (k : ℕ) + 1 : ℤ) : ℚ)) / ∏ k ∈ Icc 1 1, (((6 : ℤ) + (k : ℕ) : ℤ) : ℚ) := by
-  have := tower_bound ℚ (fun s => (s : ℚ))
-    (fun i j => if i = 0 ∧ j = 0 then 6 else if i = 0 ∧ j = 1 then 21 else 1)
-    (fun _ j => if j = 0 then 2 else 3) 1 1 6
-    (by intro k h1 h2; obtain rfl : k = 1 := by omega
-        norm_num)
-    (by intro j hj; obtain rfl : j = 0 := by omega
-        norm_num)
-    (by intro i hi; obtain rfl : i = 0 := by omega
-        norm_num)
-  simpa using this
-
-example : ((6 : ℤ) : ℝ) ≤ |((0 : ℤ) : ℝ)| + |((0 : ℤ) : ℝ)| +
-      4 * (∑ _s ∈ Icc (1 : ℤ) ((12 : ℕ) : ℤ), (|((0 : ℤ) : ℝ)| + |((0 : ℤ) : ℝ)|)) +
-      ((24 : ℕ) : ℝ) * ((0 : ℝ) + 0) + 6 * (1 : ℝ) + ((1 + 1 : ℕ) : ℝ) * (0 : ℝ) ∧
-    |((0 : ℤ) : ℝ)| + |((0 : ℤ) : ℝ)| +
-      4 * (∑ _s ∈ Icc (1 : ℤ) ((12 : ℕ) : ℤ), (|((0 : ℤ) : ℝ)| + |((0 : ℤ) : ℝ)|)) +
-      ((24 : ℕ) : ℝ) * ((0 : ℝ) + 0) + 6 * (1 : ℝ) + ((1 + 1 : ℕ) : ℝ) * (0 : ℝ) = ((6 : ℤ) : ℝ) := by
-  refine ⟨?_, by simp⟩
-  exact valuation_ratio_bound (Multiplicative ℤ) (fun x => ((Multiplicative.toAdd x : ℤ) : ℝ))
-    (by intro x y; simp) 18 6 24 12 1 1 6 rfl rfl rfl (by norm_num) (by norm_num)
-    (fun _ => 1) (fun _ => 1) (fun _ => 1) (fun _ => 1) (fun _ => 1) 0 0 1 0 le_rfl le_rfl
-    (by intro s _ _; simp) (by intro s _ _; simp)
-    (Multiplicative.ofAdd 3) (Multiplicative.ofAdd (-3)) 1 1 1 (by simp) (by simp) (by simp)
-    (fun _ => 1) (fun _ => 1) (by simp) (by simp) (Multiplicative.ofAdd 6)
-    (by simp only [prod_const_one, one_mul, mul_one, inv_one]; rfl)
-
-example : (2 : ℝ) ^ (1 * 1 * 1) * (∏ i ∈ Icc 1 (1 + 1), (1 - ((2 : ℝ) ^ i)⁻¹)) /
-    ((∏ i ∈ Icc 1 1, (1 - ((2 : ℝ) ^ i)⁻¹)) * ∏ i ∈ Icc 1 1, (1 - ((2 : ℝ) ^ i)⁻¹)) = 3 := by
-  rw [Finset.prod_Icc_succ_top (by norm_num)]
-  simp only [Icc_self, prod_singleton]
-  norm_num
-
 def trivialValuationRat : AddValuation ℚ (WithTop ℝ) :=
   AddValuation.of (fun x => if x = 0 then ⊤ else 0) (by simp) (by simp)
     (by
@@ -787,43 +753,6 @@ def trivialValuationRat : AddValuation ℚ (WithTop ℝ) :=
       · by_cases hy : y = 0
         · simp [hy]
         · simp [hx, hy])
-
-example : trivialValuationRat (1 : ℚ) ≤ trivialValuationRat (∑ _x ∈ ({()} : Finset Unit), ∑ _k : Unit, ∑ _l : Unit,
-    (1 : ℚ) * (RingHom.id ℚ) 1 * 1) + ((3 * 0 : ℝ) : WithTop ℝ) :=
-  (lemma_c_gauss_sum ℚ trivialValuationRat trivialValuationRat (RingHom.id ℚ) (fun _ => rfl) Unit Unit {()} (fun _ _ => 1)
-    (fun _ _ => 1) (fun _ _ _ => 1) 1 0 one_ne_zero (by simp) (by simp) (by simp)).1
-
-example : ∑ _w ∈ ({()} : Finset Unit), Real.log 2 * |(1 : ℝ)| =
-    (∑ _σ : Unit, Real.log 2) / Fintype.card Unit + 2 * ∑ _w ∈ ({()} : Finset Unit), Real.log 2 * max 0 (-(1 : ℝ)) :=
-  (height_bound_alt Unit Unit (fun _ => Real.log 2) (fun _ => 1) (fun _ => 0) (fun _ => 2) {()} 0
-    (fun _ => Real.log_nonneg (by norm_num)) (by simp) (by simp)).1
-
-example : ∑ _w ∈ ({()} : Finset Unit), Real.log 2 * ∑ _ij : Fin 1 × Fin 1, (1 / 2 : ℝ) ≤
-    (∑ _ij : Fin 1 × Fin 1, ∑ _b : Bool, ∑ _x ∈ (∅ : Finset Empty), (0 : ℝ)) +
-      ((1 : ℕ) : ℝ) ^ 2 * (2 * ((1 : ℕ) : ℝ) * 1 + 6 * 0 +
-        4 * ((1 : ℕ) : ℝ) * ∑ _s ∈ (∅ : Finset Empty), (((0 : ℕ)) : ℝ) * Real.log ((0 : ℕ) : ℝ)) :=
-  (grid_bound Unit Empty Empty 1 1 (fun _ => Real.log 2) (fun _ => 0) (fun _ => 2) (fun _ => 0)
-    (fun _ _ => 1 / 2) (fun _ x => x.elim) (fun _ _ => ∅) (fun _ => true) (fun _ => 2) (fun _ => 0) ∅
-    (fun _ => 0) (fun _ => 0) (fun _ => 0) (fun _ s => s.elim) (fun _ => 0) 0 1 0 {()}
-    (fun _ => Real.log_nonneg (by norm_num)) (fun _ => le_rfl) (fun _ => le_rfl) (fun _ s => s.elim)
-    (fun _ => Nat.prime_two)
-    (by
-      intro l F hF
-      rcases F.eq_empty_or_nonempty with rfl | ⟨w, hw⟩
-      · simpa using Real.log_natCast_nonneg l
-      · rw [← hF w hw, sum_const, nsmul_eq_mul]
-        have h1 : (F.card : ℝ) ≤ 1 := by exact_mod_cast (Finset.card_le_univ F)
-        have h2 : 0 ≤ Real.log 2 := Real.log_nonneg (by norm_num)
-        push_cast
-        nlinarith)
-    (by simp) (by simp) (by simp) (by intro w _ ij; norm_num) (by intro x; exact x.elim)
-    (by
-      intro P hP
-      have := prime_sum_bound P hP
-      refine le_of_lt (lt_of_eq_of_lt (sum_congr rfl ?_) this)
-      intro l _
-      rw [zero_add, div_eq_mul_inv, mul_comm])
-    (by simp) (by simp)).1
 
 def twoAdicValuationRat : AddValuation ℚ (WithTop ℝ) :=
   AddValuation.of (fun x => if x = 0 then ⊤ else (((padicValRat 2 x : ℤ) : ℝ) : WithTop ℝ)) (by simp) (by simp)
@@ -855,86 +784,6 @@ lemma two_adic_valuation_half : twoAdicValuationRat (1 / 2 : ℚ) = ((-1 : ℝ) 
     rw [this]
   show (if (1 / 2 : ℚ) = 0 then ⊤ else (((padicValRat 2 (1 / 2 : ℚ) : ℤ) : ℝ) : WithTop ℝ)) = _
   rw [if_neg (by norm_num), h]; norm_num
-
-example : twoAdicValuationRat (1 : ℚ) ≤ twoAdicValuationRat (∑ _x ∈ ({()} : Finset Unit), ∑ _k : Unit, ∑ _l : Unit,
-      (1 / 2 : ℚ) * (RingHom.id ℚ) (1 / 2) * (1 / 2)) + ((3 * 1 : ℝ) : WithTop ℝ) ∧
-    twoAdicValuationRat (1 : ℚ) = twoAdicValuationRat (∑ _x ∈ ({()} : Finset Unit), ∑ _k : Unit, ∑ _l : Unit,
-      (1 / 2 : ℚ) * (RingHom.id ℚ) (1 / 2) * (1 / 2)) + ((3 * 1 : ℝ) : WithTop ℝ) := by
-  constructor
-  · exact (lemma_c_gauss_sum ℚ twoAdicValuationRat twoAdicValuationRat (RingHom.id ℚ) (fun _ => rfl) Unit Unit {()} (fun _ _ => 1 / 2)
-      (fun _ _ => 1 / 2) (fun _ _ _ => 1 / 2) 1 1 one_ne_zero (by simp)
-      (by intro x _ k; simp only [two_adic_valuation_half]; simp)
-      (by intro x _ k l; simp only [two_adic_valuation_half]; simp)).1
-  · simp only [sum_singleton, univ_unique, RingHom.id_apply, AddValuation.map_mul, two_adic_valuation_half,
-      AddValuation.map_one]
-    rw [← WithTop.coe_add, ← WithTop.coe_add, ← WithTop.coe_add, ← WithTop.coe_zero]
-    congr 1; norm_num
-
-example : ∑ x : (ZMod 4)ˣ,
-    (((((ZMod.χ₄.ringHomComp (Int.castRingHom ℂ)).toUnitHom) x)⁻¹ : ℂˣ) : ℂ) *
-      (AddChar.zmodChar 4 (ζ := Complex.I) Complex.I_pow_four) (x : ZMod 4) =
-    (Nat.card (Ideal.span ({2} : Set (ZMod 4))) : ℂ) *
-      ((((((ZMod.χ₄.ringHomComp (Int.castRingHom ℂ)).toUnitHom) 1)⁻¹ : ℂˣ) : ℂ) *
-        (AddChar.zmodChar 4 (ζ := Complex.I) Complex.I_pow_four) ((1 : (ZMod 4)ˣ) : ZMod 4)) := by
-  have hu : ∀ u : (ZMod 4)ˣ, (u : ZMod 4) = 1 ∨ (u : ZMod 4) = 3 := by decide
-  refine (gauss_sum_ratio (ZMod 4) (Ideal.span {2}) (AddChar.zmodChar 4 (ζ := Complex.I) Complex.I_pow_four)
-    ((ZMod.χ₄.ringHomComp (Int.castRingHom ℂ)).toUnitHom) 1 1 1 ?_ ?_ ?_ ?_ ?_).1
-  · intro y hy y' hy'
-    rw [Ideal.mem_span_singleton] at hy hy'
-    obtain ⟨k, rfl⟩ := hy
-    obtain ⟨k', rfl⟩ := hy'
-    revert k k'; decide
-  · intro z hz
-    have h2 := hz 2 (Ideal.mem_span_singleton_self 2)
-    rw [AddChar.zmodChar_apply] at h2
-    rw [Ideal.mem_span_singleton]
-    have h4 : ∀ z : ZMod 4, z = 0 ∨ z = 1 ∨ z = 2 ∨ z = 3 := by decide
-    rcases h4 z with rfl | rfl | rfl | rfl
-    · exact ⟨0, by decide⟩
-    · exfalso
-      have : ((1 : ZMod 4) * 2).val = 2 := by decide
-      rw [this, Complex.I_sq] at h2
-      norm_num at h2
-    · exact ⟨1, by decide⟩
-    · exfalso
-      have : ((3 : ZMod 4) * 2).val = 2 := by decide
-      rw [this, Complex.I_sq] at h2
-      norm_num at h2
-  · intro u _
-    rw [MulChar.coe_toUnitHom, AddChar.zmodChar_apply, MulChar.ringHomComp_apply]
-    rcases hu u with h | h <;> rw [h]
-    · simp
-    · have e1 : ((1 : ZMod 4) * (3 - 1)).val = 2 := by decide
-      have e2 : ZMod.χ₄ 3 = -1 := by decide
-      rw [e1, e2, Complex.I_sq]; simp
-  · intro u _; rfl
-  · simp
-
-example : ∑ _w ∈ ({()} : Finset Unit), Real.log 2 * ∑ _ij : Fin 1 × Fin 1, (1 / 2 : ℝ) ≤
-    ((1 : ℕ) : ℝ) ^ 2 * (2 * (2 + 8 * ((1 : ℕ) : ℝ)) * 0 + 2 * ((1 : ℕ) : ℝ) * 1 + 6 * 0 +
-        4 * ((1 : ℕ) : ℝ) * ∑ _s ∈ (∅ : Finset Empty), (((0 : ℕ)) : ℝ) * Real.log ((0 : ℕ) : ℝ)) :=
-  grid_squares_bound Unit Empty 1 1 (fun _ => Real.log 2) (fun _ => 0) (fun _ => 2) (fun _ => 0)
-    (fun _ _ => 1 / 2) (fun _ _ => 0) (fun _ _ => 0) (fun _ _ _ => 0) (fun _ _ _ _ => 0) (fun _ => true)
-    (fun _ => 2) (fun _ => 1) (fun _ => 0) ∅
-    (fun _ => 0) (fun _ => 0) (fun _ => 0) (fun _ s => s.elim) 0 1 0 {()}
-    (fun _ => Real.log_nonneg (by norm_num)) (fun _ => le_rfl) (fun _ => le_rfl) (fun _ s => s.elim)
-    (fun _ => Nat.prime_two)
-    (by
-      intro l F hF
-      rcases F.eq_empty_or_nonempty with rfl | ⟨w, hw⟩
-      · simpa using Real.log_natCast_nonneg l
-      · rw [← hF w hw, sum_const, nsmul_eq_mul]
-        have h1 : (F.card : ℝ) ≤ 1 := by exact_mod_cast (Finset.card_le_univ F)
-        have h2 : 0 ≤ Real.log 2 := Real.log_nonneg (by norm_num)
-        push_cast
-        nlinarith)
-    (by simp) (by simp) (by simp) (by simp) (by intro w _ ij; norm_num)
-    (by simp) (by simp) (by simp) (by simp)
-    (by
-      intro P hP
-      have := prime_budget_bound (fun _ => 0) 0 (by simp) P hP
-      linarith)
-    (by simp) (by simp)
 
 end tests
 

@@ -107,6 +107,4 @@ def GlobOfCharts : Prop :=
       ((∀ P : PrimeSpectrum R, P.asIdeal ∈ minimalPrimes R → P ∈ L.TI) → ∃ Y, M.CompI Y ∧ x ∈ Y) ∧
       ((∃ I ∈ L.Good, I ∈ L.TI ∧ (L.D1 : WithBot ℕ∞) ≤ qdim I.asIdeal) → ∃ Y, M.CompI Y ∧ Y ⊆ M.Good)
 
-example : (⟨∅, ∅, ∅, ∅, ∅⟩ : GlobData PUnit).Cl ⊆ (⟨∅, ∅, ∅, ∅, ∅⟩ : GlobData PUnit).Core := subset_rfl
-
 end UpperTheory.V.Pr

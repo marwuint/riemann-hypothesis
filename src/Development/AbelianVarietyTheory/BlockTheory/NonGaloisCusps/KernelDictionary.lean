@@ -94,12 +94,6 @@ def JumpCmp [IsDomain O] (β : ∀ i, Fin R.e ≃ EmbOver K (W.emb i)) (T : LocL
     (S.IsJump i τ a ↔ IsJumpV PD T.ρ (β i τ).1 a) ∧
       (S.count i τ a a : ℤ) = multV PD T.ρ (β i τ).1 a
 
-example (T : LocLat G Qp LL O) (i : ZMod n) : KillsN W (latId T) i 1 := fun y hy =>
-  ⟨y, hy, by rw [W.map_id]; exact (one_smul (LetA O n) y).symm⟩
-
-example {T : LocLat G Qp LL O} {r : ℕ} (b : ZMod n → Fin r → W.DD T) : vec W jE b 0 = 0 := by
-  simp [vec]
-
 end Generic
 
 variable {l : ℕ} [Fact l.Prime]

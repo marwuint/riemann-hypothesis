@@ -122,7 +122,4 @@ def ProductFrame : Prop :=
 def GaugeBelowResChar : Prop :=
   LogIntegral ∧ GaugeIntegral ∧ AdjointGauge ∧ ProductFrame
 
-example : CompleteSpace ℂ_[3] ∧ IsAlgClosed ℂ_[3] ∧ CharZero ℂ_[3] ∧ IsUltrametricDist ℂ_[3] :=
-  ⟨inferInstance, inferInstance, inferInstance, inferInstance⟩
-
 end GlobalTheory.IndefiniteRowSideFullHecke.AdjointCanonicalGauge

@@ -132,8 +132,6 @@ instance (F : Shv R) : PreservesFiniteColimits (tensorRight F) :=
 abbrev freePre (X : Scheme.{0}) : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R) :=
   uliftYoneda.{1}.obj X ⋙ ModuleCat.free (ULift.{1} R)
 
-example (X : Scheme.{0}) : (freeOn R).obj X = (presheafToSheaf _ _).obj (freePre R X) := rfl
-
 instance (X : Scheme.{0}) : PreservesFiniteLimits (tensorLeft ((freeOn R).obj X)) :=
   preservesFiniteLimits_tensorLeft_sheafify _ _ (freePre R X) (fun U =>
     inferInstanceAs (Module.Flat (ULift.{1} R) (ULift.{1} (U.unop ⟶ X) →₀ ULift.{1} R)))
@@ -161,10 +159,6 @@ instance [IsDomain R] [IsBezout R] : FlatCoef R := by
   have hu := congrArg (fun g : C(U, R) => g u) ha
   simp only [Submonoid.smul_def, ContinuousMap.smul_apply, smul_eq_mul, ContinuousMap.zero_apply] at hu
   exact (mul_eq_zero.1 hu).resolve_left (nonZeroDivisors.ne_zero a.2)
-
-example : FlatCoef ℚ := inferInstance
-example (p : ℕ) [Fact p.Prime] : FlatCoef ℤ_[p] := inferInstance
-example (p : ℕ) [Fact p.Prime] : FlatCoef ℚ_[p] := inferInstance
 
 def coefMulPre : coefPre R ⊗ coefPre R ⟶ coefPre R where
   app U := ModuleCat.ofHom (TensorProduct.lift (LinearMap.mk₂ (ULift.{1} R)
@@ -420,20 +414,6 @@ end One
 section Examples
 
 variable (X : Scheme.{0})
-
-example (p : ℕ) [Fact p.Prime] : cup ℚ_[p] X 0 0 (one ℚ_[p] X) (one ℚ_[p] X) = (H0.e ℚ_[p] X).symm 1 := by
-  apply (H0.e ℚ_[p] X).injective
-  rw [e_cup, e_one, LinearEquiv.apply_symm_apply, one_mul]
-
-example (p : ℕ) [Fact p.Prime] [Nonempty X] : one ℤ_[p] X ≠ 0 := by
-  intro h
-  have h1 := e_one ℤ_[p] X
-  rw [h, map_zero] at h1
-  exact zero_ne_one (DFunLike.congr_fun h1 (Classical.arbitrary X))
-
-example (p : ℕ) [Fact p.Prime] (f g : C(X, ℤ_[p])) :
-    H0.e ℤ_[p] X (cup ℤ_[p] X 0 0 ((H0.e ℤ_[p] X).symm f) ((H0.e ℤ_[p] X).symm g)) = f * g := by
-  rw [e_cup, LinearEquiv.apply_symm_apply, LinearEquiv.apply_symm_apply]
 
 end Examples
 

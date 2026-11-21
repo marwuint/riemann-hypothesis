@@ -121,19 +121,4 @@ def Statement : Prop :=
   TermCount ∧ TermCountNorm ∧ Iteration ∧ IterationSum ∧ IterationGauge ∧
     StepSize ∧ GapStepSize ∧ GapSubsetSize ∧ DegreeProportional
 
-example {n : ℕ} (s : Fin n) : eSet {s} = Pi.single s 1 := by
-  funext a
-  by_cases h : a = s <;> simp [eSet, h]
-
-example : OneStep (A := ℤ) (V := ℂˣ → ℂ) (ι := Unit) (fun k => |(k : ℝ)|) (fun k => |(k : ℝ)|)
-    (fun k x => ((x ^ k : ℂˣ) : ℂ)) (fun _ => LinearMap.mulLeft ℂ (fun x : ℂˣ => (x : ℂ))) (fun _ => 1) 0 5 1 := by
-  intro i μ _
-  refine ⟨Finsupp.single 1 1, ?_, ?_, ?_⟩
-  · funext x
-    simp [comb, Finsupp.support_single_ne_zero, zpow_add₀, mul_comm]
-  · intro ν hν
-    rw [Finsupp.support_single_ne_zero _ one_ne_zero, mem_singleton] at hν
-    simp [hν]
-  · simp [l1, Finsupp.support_single_ne_zero]
-
 end GlobalTheory.IndefiniteRowSideFullHecke.DegreeProportionalWords

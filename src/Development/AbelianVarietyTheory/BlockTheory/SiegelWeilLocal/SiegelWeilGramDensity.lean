@@ -87,14 +87,4 @@ def SiegelFormula : Prop :=
 
 def SiegelWeilConvergent : Prop := VolumeFinite ∧ SiegelFormula
 
-example {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ) :
-    IsHermND σ (1 : Matrix (Fin M) (Fin M) E) := by
-  refine ⟨fun i j => ?_, by simp⟩
-  by_cases h : i = j
-  · subst h; simp
-  · simp [Matrix.one_apply, h, Ne.symm h]
-
-example (M n r : ℕ) (h1 : 1 ≤ n) (h : 2 * n < M) (hr : 2 * r ≤ M) : n + 2 ≤ M ∧ n + r < M := by
-  omega
-
 end GlobalTheory.IndefiniteRowSideFullHecke.SiegelWeilGramDensity

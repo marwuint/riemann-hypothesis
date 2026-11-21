@@ -195,7 +195,4 @@ theorem g₂_eq (L : PeriodPair) : g₂ L.lattice.toAddSubgroup = L.g₂ := by
 theorem g₃_eq (L : PeriodPair) : g₃ L.lattice.toAddSubgroup = L.g₃ := by
   rw [g₃, eisSum_eq_G L (by norm_num), PeriodPair.g₃]
 
-example {p : ℕ} [Fact p.Prime] (W : WeierstrassCurve 𝓞_ℂ_[p]) (h : IsUnit W.Δ) :
-    IsModel (W.map (incl p)) W 1 := ⟨one_smul _ _, h⟩
-
 end GlobalTheory.IndefiniteRowSideFullHecke.NodalSeriesPeriods

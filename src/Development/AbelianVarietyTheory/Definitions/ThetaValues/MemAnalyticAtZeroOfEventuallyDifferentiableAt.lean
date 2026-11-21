@@ -461,29 +461,6 @@ end Coord
 
 section Examples
 
-example : taylor (fun z : Fin 2 → ℂ => z 0 * z 1 + 3) =
-    MvPowerSeries.X 0 * MvPowerSeries.X 1 + MvPowerSeries.C 3 := by
-  have h := taylor_eval (MvPolynomial.X 0 * MvPolynomial.X 1 + MvPolynomial.C 3 :
-    MvPolynomial (Fin 2) ℂ)
-  simpa using h
-
-example : ReciprocityTheory.ChartRestriction.G.I2.polyDeriv (MvPolynomial.monomial (Finsupp.single 0 2) 1)
-    (fun i : Fin 1 => (Pi.single i 1 : Fin 1 → ℂ)) (fun z => z 0 ^ 2) 0 = 2 := by
-  have h := taylor_eval (MvPolynomial.X 0 ^ 2 : MvPolynomial (Fin 1) ℂ)
-  simp only [map_pow, MvPolynomial.eval_X] at h
-  rw [dirPolyDeriv_monomial_eq_coeff, ← taylor_eq_taylorDir, h, MvPolynomial.coeff_coe,
-    MvPolynomial.coeff_X_pow]
-  simp
-
-example : MvPowerSeries.pderiv ℂ 0 (taylor fun z : Fin 1 → ℂ => Complex.exp (z 0)) =
-    taylor fun z : Fin 1 → ℂ => Complex.exp (z 0) := by
-  have hd : ∀ z : Fin 1 → ℂ, HasFDerivAt (fun z : Fin 1 → ℂ => Complex.exp (z 0))
-      (Complex.exp (z 0) • ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : Fin 1 => ℂ) 0) z :=
-    fun z => (hasFDerivAt_apply 0 z).cexp
-  rw [← taylor_fderiv (SCV.analyticAt_iff_eventually_differentiableAt.2
-    (Eventually.of_forall fun z => (hd z).differentiableAt))]
-  simp [fun z => (hd z).fderiv]
-
 end Examples
 
 end GlobalTheory

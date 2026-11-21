@@ -313,7 +313,4 @@ theorem pic_groupAlgebra_of_isIntegrallyClosed.{u, v, w} (A : Type u) [CommRing 
     exact TensorProduct.AlgebraTensorModule.congr (.refl _ _) (Pic.mk.linearEquiv A M) ≪≫ₗ e ≪≫ₗ
       TensorProduct.AlgebraTensorModule.congr (.refl _ _) (Pic.mk.linearEquiv A M').symm
 
-example : Subsingleton (Pic (AddMonoidAlgebra ℤ (Fin 2 → ℤ))) :=
-  subsingleton_pic_groupAlgebra ℤ (Fin 2 → ℤ)
-
 end GlobalTheory

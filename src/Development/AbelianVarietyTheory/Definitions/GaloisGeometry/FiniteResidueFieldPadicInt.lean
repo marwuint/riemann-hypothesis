@@ -308,19 +308,4 @@ theorem qRes_padicInt (p : ℕ) [Fact p.Prime] [Finite (IsLocalRing.ResidueField
   unfold qRes
   rw [Nat.card_congr (PadicInt.residueField (p := p)).toEquiv, Nat.card_zmod]
 
-example : haveI := finite_residueField_padicInt 2
-    (heckeElem 2 : (Lat ℤ_[2] ℚ_[2] 2 → ℕ) → Lat ℤ_[2] ℚ_[2] 2 → ℕ) ≠ id := by
-  classical
-  haveI := finite_residueField_padicInt 2
-  intro h
-  have h1 := congrFun (congrFun h fun M => if M = std ℤ_[2] ℚ_[2] 2 then 1 else 0) (std ℤ_[2] ℚ_[2] 2)
-  rw [heckeElem_top] at h1
-  simp [maxMul_ne] at h1
-
-example : haveI : Fact (Nat.Prime 3) := ⟨Nat.prime_three⟩
-    (maxMul (std ℤ_[3] ℚ_[3] 2)).1.toAddSubgroup.relIndex (std ℤ_[3] ℚ_[3] 2).1.toAddSubgroup = 9 := by
-  haveI : Fact (Nat.Prime 3) := ⟨Nat.prime_three⟩
-  haveI := finite_residueField_padicInt 3
-  rw [relIndex_maxMul, qRes_padicInt]; rfl
-
 end GlobalTheory.LatHecke

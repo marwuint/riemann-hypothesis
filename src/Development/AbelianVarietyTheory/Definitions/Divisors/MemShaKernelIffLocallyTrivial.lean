@@ -57,12 +57,4 @@ def ker1 {L : Type} [CommRing L] [Algebra ℚ L] (c : L →ₐ[ℚ] L) : Subgrou
 
 end Localisation
 
-example : Subgroup (H1 ℚ (AlgHom.id ℚ (ℚ × ℚ))) := ker1 (AlgHom.id ℚ (ℚ × ℚ))
-
-example {L : Type} [CommRing L] [Algebra ℚ L] (c : L →ₐ[ℚ] L) : (1 : H1 ℚ c) ∈ ker1 c := (ker1 c).one_mem
-
-example (a : fixU ℚ (AlgHom.id ℚ ℚ)) :
-    fixMap (AlgHom.id ℚ ℚ) (AlgHom.id ℚ ℚ) (RingHom.id ℚ) (fun _ => rfl) a = a := by
-  ext; rfl
-
 end GlobalTheory.LKTorus

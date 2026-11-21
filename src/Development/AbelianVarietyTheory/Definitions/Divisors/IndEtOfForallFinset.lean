@@ -195,12 +195,6 @@ def descMod (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (u : (B ⊗[A] 
   LinearMap.eqLocus ((LinearMap.mulLeft A (u : B ⊗[A] B)) ∘ₗ (Algebra.TensorProduct.includeRight : B →ₐ[A] B ⊗[A] B).toLinearMap)
     (Algebra.TensorProduct.includeLeft : B →ₐ[A] B ⊗[A] B).toLinearMap
 
-example (A : Type) [CommRing A] : IndFEt A A := indFEt_of_finite_etale A A
-
-example (A : Type) [CommRing A] : IndEt A A := (indFEt_of_finite_etale A A).indEt
-
-example : IndEt ℝ ℂ := GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.isStrictHenselisation_real_complex.2.2.2
-
 def idCone (E : Spc) : Cone (Functor.fromPUnit.{0} E) where
   pt := E
   π := { app := fun _ => 𝟙 E, naturality := fun _ _ _ => by simp }

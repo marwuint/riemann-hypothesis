@@ -214,9 +214,6 @@ def LevelGroupStatement : Prop :=
 
 def Statement : Prop := IdeleNormStatement ∧ LevelGroupStatement
 
-example (K : Type) [Field K] [NumberField K] : NormUnitCond (1 : Idele K) 1 :=
-  ⟨1, one_mem _, by simp⟩
-
 theorem simLevel_mono {E : Type} [Field E] [NumberField E]
     {W : Type} [AddCommGroup W] [Module ℚ W] [Module E W] [IsScalarTower ℚ E W]
     [Module (𝓞 E) W] (h : LinearMap.BilinMap ℚ W E) (ξ : E) (Λ : Submodule (𝓞 E) W)

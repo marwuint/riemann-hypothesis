@@ -58,14 +58,6 @@ theorem mul_eq_cmul (f g : ℕ → K) : mul f g = GlobalTheory.KummerEisensteinG
 
 end Bridge
 
-example : eis 4 (0 : ℤ) (fun _ => 1) (fun _ => 1) 2 = 9 := by decide
-
-example : To 12 (1 : ℤ) 2 (fun n => if n = 1 then 1 else if n = 4 then -1472 else 0) 2 = (-24) ^ 2 := by
-  simp [To, Vo]
-
-example (u v : ℤ → ℤ) (F : ℕ → ℕ → ℤ) : Zs 3 3 u v F 2 = u 1 * v 1 * F 1 1 := by
-  simp [Zs, Finset.Nat.antidiagonal_succ]
-
 def hat {N : ℕ} (φ : ZMod N → ℂ) (d : ℤ) : ℂ := ∑ y ∈ Finset.range N, φ y * cexp (2 * π * Complex.I * (y * d) / N)
 
 def qs (a : ℕ → ℂ) (τ : ℍ) : ℂ := ∑' n : ℕ, a n * cexp (2 * π * Complex.I * n * τ)

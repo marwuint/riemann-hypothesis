@@ -106,10 +106,6 @@ def Had.Data.identity (n : ℕ) : Had.Data K where
   lam_pos _ := one_pos
   family := SmallFamily.standard K n
 
-example : Had.Data ℚ := Had.Data.identity ℚ 2
-
-example : Had.Data GaussianField := Had.Data.identity GaussianField 2
-
 end HadExamples
 
 def unitBallVolume (R : ℕ) : ℝ :=
@@ -171,8 +167,6 @@ def LatticeCount.Data.standard (R : ℕ) : LatticeCount.Data R where
   indep := standardLatticeVec_indep R
   norm_le i := by
     simp [standardLatticeVec, OrthonormalBasis.coe_toBasis]
-
-example : LatticeCount.Data 3 := LatticeCount.Data.standard 3
 
 end LatticeExamples
 

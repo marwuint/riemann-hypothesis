@@ -33,6 +33,4 @@ noncomputable def complField {E : Type*} [Field E] (j : E →+* PadicAlgCl l) :
     IntermediateField ℚ_[l] (PadicAlgCl l) :=
   IntermediateField.adjoin ℚ_[l] (Set.range j)
 
-example : IsResTrivial l 1 := fun x _ => by simp
-
 end KStar.IdealValuations

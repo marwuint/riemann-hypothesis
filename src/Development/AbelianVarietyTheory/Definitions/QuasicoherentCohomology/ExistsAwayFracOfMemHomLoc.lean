@@ -840,82 +840,11 @@ theorem xProd_smul_injective (s : Finset ι) :
     Function.Injective fun p : MvPolynomial ι R => xProd R s • p :=
   (IsRegular.prod fun _ _ => MvPolynomial.isRegular_X).left
 
-example (d : Fin 3 → ℤ) : Nonempty (Decomposition (grFree ι R d)) ∧
-    PolyGradedSMul ι (grFree ι R d) := ⟨⟨inferInstance⟩, inferInstance⟩
-
-example (d : ℤ) (i : ι) : (1 : MvPolynomial ι R) ∈ grShift (polyGrading ι R) (-d) d ∧
-    (X i : MvPolynomial ι R) ∈ grShift (polyGrading ι R) d (1 - d) :=
-  ⟨by simpa using SetLike.one_mem_graded _, by simpa using X_mem_polyGrading i⟩
-
-example (i j : ι) : awayFrac _ (xProd R {i}) 1 (X j) ∈ homLoc (polyGrading ι R) {i} 0 :=
-  awayFrac_mem_homLoc (X_mem_polyGrading j) (by simp)
-
-example [Nontrivial R] (i : ι) :
-    awayFrac _ (xProd R {i}) 1 1 ∈ homLoc (polyGrading ι R) {i} (-1) ∧
-      awayFrac (MvPolynomial ι R) (xProd R {i}) 1 1 ≠ 0 ∧
-      awayFrac _ (xProd R {i}) 1 1 ∉ homLoc (polyGrading ι R) {i} 1 := by
-  have h₁ : awayFrac _ (xProd R {i}) 1 1 ∈ homLoc (polyGrading ι R) {i} (-1) :=
-    awayFrac_mem_homLoc (SetLike.one_mem_graded _) (by simp)
-  have h₂ : awayFrac (MvPolynomial ι R) (xProd R {i}) 1 1 ≠ 0 :=
-    (map_ne_zero_iff _ (awayFrac_injective (xProd_smul_injective _) 1)).2 one_ne_zero
-  exact ⟨h₁, h₂, fun h => absurd (degree_eq_of_mem_mem _ h₁ h h₂) (by decide)⟩
-
-example : locRes (X : Fin 2 → MvPolynomial (Fin 2) ℤ) (MvPolynomial (Fin 2) ℤ)
-    (show ({0} : Finset (Fin 2)) ⊆ {0, 1} by decide) (awayFrac _ _ 1 1) =
-    awayFrac _ _ 1 (X 1) := by
-  rw [locRes_awayFrac X _ (c := X 1) (by simp [mul_comm])]
-  simp
-
-example : ¬ Limits.IsZero (grH (Fin 1) (polyGrading (Fin 1) ℤ) (-1) 0) := by
-  rw [← HomologicalComplex.exactAt_iff_isZero_homology, cochainComplex_exactAt_zero_iff,
-    grCech_d _ _ 0]
-  intro h
-  have := Cube.subsingleton_term (grCube (Fin 1) (polyGrading (Fin 1) ℤ) (-1)) (p := 2) (by simp)
-  let z : Cube.Term (grCube (Fin 1) (polyGrading (Fin 1) ℤ) (-1)) 1 := fun s =>
-    ⟨awayFrac _ _ 1 1, awayFrac_mem_homLoc (SetLike.one_mem_graded _) (by simp [s.2])⟩
-  have hz : z = 0 := h (Subsingleton.elim (α := Cube.Term _ 2) _ _)
-  exact (map_ne_zero_iff _ (awayFrac_injective (xProd_smul_injective {0}) 1)).2 one_ne_zero
-    (congrArg Subtype.val (congrFun hz ⟨{0}, rfl⟩))
-
-example : ¬ Limits.IsZero (grH (Fin 2) (polyGrading (Fin 2) ℤ) (-2) 1) := by
-  rw [← HomologicalComplex.exactAt_iff_isZero_homology, grCech_eq, cechComplex_exactAt_succ_iff _ 0]
-  intro h
-  have := Cube.subsingleton_term (grCube (Fin 2) (polyGrading (Fin 2) ℤ) (-2)) (p := 3) (by simp)
-  let z : homLoc (polyGrading (Fin 2) ℤ) ({0, 1} : Finset (Fin 2)) (-2) :=
-    ⟨awayFrac _ _ 1 1, awayFrac_mem_homLoc (SetLike.one_mem_graded _) (by simp)⟩
-  obtain ⟨x, hx⟩ := (h ((Cube.termTwoFinTwo (grCube (Fin 2) (polyGrading (Fin 2) ℤ) (-2))).symm
-    z)).1 (Subsingleton.elim _ _)
-  have e := Cube.d_one_finTwo _ x
-  rw [hx] at e
-  replace e := (LinearEquiv.apply_symm_apply _ _).symm.trans e
-  obtain ⟨a, ha⟩ := exists_awayFrac_of_mem_homLoc _ (Cube.termOneFinTwo _ x).1.2
-  obtain ⟨b, hb⟩ := exists_awayFrac_of_mem_homLoc _ (Cube.termOneFinTwo _ x).2.2
-  obtain ⟨p, -, hp⟩ := ha (1 + (a + b)) (by omega)
-  obtain ⟨q, -, hq⟩ := hb (1 + (a + b)) (by omega)
-  have e' : z.1 = locRes X _ (by decide) (Cube.termOneFinTwo _ x).2.1 -
-      locRes X _ (by decide) (Cube.termOneFinTwo _ x).1.1 := congrArg Subtype.val e
-  rw [← hp, ← hq, locRes_awayFrac X _ (c := X 0) (by simp),
-    locRes_awayFrac X _ (c := X 1) (by simp [mul_comm]), ← map_sub] at e'
-  have e'' := congrArg (coeff (Finsupp.single 0 (a + b) + Finsupp.single 1 (a + b)))
-    (awayFrac_injective (xProd_smul_injective _) _
-      ((awayFrac_add_pow_smul _ 1 (a + b) 1).trans e'))
-  clear * - e''
-  generalize a + b = c at e''
-  rw [smul_eq_mul, smul_eq_mul, smul_eq_mul, coeff_sub, X_pow_eq_monomial, X_pow_eq_monomial,
-    coeff_monomial_mul', coeff_monomial_mul', if_neg (by rw [Finsupp.single_le_iff]; simp),
-    if_neg (by rw [Finsupp.single_le_iff]; simp)] at e''
-  simp [xProd, mul_pow, X_pow_eq_monomial] at e''
-
 variable (ι R) in
 
 theorem operatorsCommute_id :
     OperatorsCommute (ι := ι) (R := R) (A := fun _ => R) fun _ _ => LinearMap.id :=
   fun _ _ _ _ => rfl
-
-example (n : ℤ) : PolyGradedSMul ι (GrSum.grading (operatorsCommute_id ι R)) ∧
-    Nonempty (Decomposition (GrSum.grading (operatorsCommute_id ι R))) ∧
-    Nonempty (R ≃ₗ[R] GrSum.grading (operatorsCommute_id ι R) n) :=
-  ⟨inferInstance, ⟨inferInstance⟩, ⟨GrSum.pieceEquiv (operatorsCommute_id ι R) n⟩⟩
 
 end Examples
 

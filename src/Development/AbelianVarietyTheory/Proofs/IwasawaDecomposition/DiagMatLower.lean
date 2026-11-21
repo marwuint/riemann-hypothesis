@@ -74,16 +74,4 @@ def bigCell (b : Frames k V) : Set (Flags k V) :=
 def Adapted (A B : ∀ i, Submodule k (V i)) (b : Frames k V) : Prop :=
   ∀ i (a : Fin (finrank k (V i))), ((a : ℕ) = 0 → b i a ∈ A i) ∧ ((a : ℕ) + 1 < finrank k (V i) → b i a ∈ B i)
 
-example (j : ℕ) (b : Frames k V) : locChart j b 0 = b.flags := by
-  have h0 (i : ι) (c a : Fin (finrank k (V i))) : LocIdx.ent (0 : LocIdx k V j → k) i c a = 0 := by
-    unfold LocIdx.ent; split_ifs <;> rfl
-  have h1 (i : ι) : offMat (0 : LocIdx k V j → k) i = 1 := by
-    ext c a; simp only [offMat, h0, Matrix.one_apply]; split_ifs <;> rfl
-  have h2 (i : ι) : diagMat (0 : LocIdx k V j → k) i = 1 := by
-    ext c a; simp only [diagMat, h0, Matrix.one_apply]; split_ifs <;> rfl
-  have h (i : ι) : chartGL (0 : LocIdx k V j → k) i = 1 :=
-    Units.ext (by simp [chartGL, Matrix.GeneralLinearGroup.mkOfDetNeZero, h1, h2])
-  unfold locChart
-  simp only [h, GlobalTheory.basisMulGL_one]
-
 end GlobalTheory.FlagPts

@@ -130,38 +130,4 @@ theorem Tower.SSBA.eigen_of_two_step {X : Tower Ω ε} {N l w : ℕ} [Fact l.Pri
   rw [Submodule.mem_bot, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply] at this
   exact sub_eq_zero.1 this
 
-example (N l : ℕ) : ¬ admitted N l (Letter.T 1) := fun h => Nat.not_prime_one h.1
-
-example : admitted 5 3 (Letter.T 2) ∧ admitted 5 3 Letter.U ∧ admitted 5 3 (Letter.D 2) ∧
-    ¬ admitted 5 3 (Letter.T 3) ∧ ¬ admitted 5 3 (Letter.T 5) ∧ ¬ admitted 5 3 (Letter.D 5) := by
-  simp only [admitted]
-  norm_num
-
-example (N l w : ℕ) (lam : Letter → ℂ) (c : ℂ) :
-    SSPotA N l w lam ↔
-      SSPotA N l w (fun T => match T with | Letter.T 1 => c | T => lam T) := by
-  refine SSPotA_congr fun T hT => ?_
-  split
-  · exact absurd hT.1 Nat.not_prime_one
-  · rfl
-
-example (N l : ℕ) (f : Letter → Module.End ℂ (ℂ × ℂ)) (lam : Letter → ℂ)
-    (hU : f Letter.U = LinearMap.inl ℂ ℂ ℂ ∘ₗ LinearMap.snd ℂ ℂ ℂ)
-    (hf : ∀ T, admitted N l T → T ≠ Letter.U → f T = 0) (hl : ∀ T, admitted N l T → lam T = 0) :
-    ¬ ∃ P ∈ Algebra.adjoin ℂ (FreeAlgebra.ι ℂ '' {T : Letter | admitted N l T}), FreeAlgebra.lift ℂ lam P = 1 ∧
-      ∀ x : ℂ × ℂ, ∀ T, admitted N l T →
-        (f T - lam T • (1 : Module.End ℂ (ℂ × ℂ))) (FreeAlgebra.lift ℂ f P x) = 0 := by
-  rintro ⟨P, hP, h1, hk⟩
-  have hcase : ∀ T, admitted N l T → f T = 0 ∨ f T = LinearMap.inl ℂ ℂ ℂ ∘ₗ LinearMap.snd ℂ ℂ ℂ := fun T hT => by
-    by_cases h : T = Letter.U
-    · exact Or.inr (h ▸ hU)
-    · exact Or.inl (hf T hT h)
-  have := SSAdm.eigen_of_two_step (A := {T | admitted N l T}) (Z := ⊥) (f := f) (lam := lam)
-    (fun T _ z hz => by rw [(Submodule.mem_bot ℂ).1 hz, map_zero]; exact Submodule.zero_mem _) hP h1 (x := (0, 1))
-    (fun T hT => (Submodule.mem_bot ℂ).2 (hk _ T hT))
-    (fun S hS T hT => by
-      rcases hcase S hS with a | a <;> rcases hcase T hT with b | b <;> simp [a, b, hl S hS, hl T hT])
-    Letter.U trivial
-  simp [hU, hl Letter.U trivial] at this
-
 end GlobalTheory.KZ

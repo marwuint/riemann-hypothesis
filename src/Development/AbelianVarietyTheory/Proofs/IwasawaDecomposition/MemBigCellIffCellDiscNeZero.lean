@@ -117,8 +117,4 @@ theorem mem_bigCell_iff_cellDisc_ne_zero (k : Type) [Field k] (ι : Type) [Finty
       rw [heq]
       exact h i ⟨finrank k (V i), by omega⟩
 
-example : ∀ (k : Type) [Field k] (ι : Type) [Fintype ι] (V : ι → Type) [∀ i, AddCommGroup (V i)]
-    [∀ i, Module k (V i)] [∀ i, FiniteDimensional k (V i)] (b g : Frames k V),
-    g.flags ∈ bigCell b ↔ cellDisc b g ≠ 0 := mem_bigCell_iff_cellDisc_ne_zero
-
 end GlobalTheory.FlagPts

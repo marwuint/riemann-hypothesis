@@ -173,8 +173,6 @@ def WD {R I : Type} [CommRing R] [Fintype I] (em : I → R →+* ℂ) (n : ℕ) 
 
 def chi {R I : Type} [CommRing R] [Fintype I] (em : I → R →+* ℂ) (j : ℕ) (τ : R) : ℂ := ∏ w, hq (em w τ) 1 j
 
-example : (1 : MvPolynomial (Unit × Fin 2) ℂ) ∈ MH 2 (fun _ : Unit => 0) := fun s x => by simp
-
 end UpperTheory.V.Z.Sym.Wt
 
 end

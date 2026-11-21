@@ -25,11 +25,6 @@ instance instSCSL (N : ℕ) : SecondCountableTopology (SpecialLinearGroup (Fin N
 
 variable (L : Type) [Field L] [NumberField L] (N : ℕ)
 
-example : LocallyCompactSpace (Sp L N) := inferInstance
-example : SecondCountableTopology (Sp L N) := inferInstance
-example : IsTopologicalGroup (Sp L N) := inferInstance
-example : T2Space (Sp L N) := inferInstance
-
 variable {L N} in
 
 abbrev mt (x : Sp L N) (w : InfinitePlace L) : Matrix (Fin N) (Fin N) ℂ :=

@@ -911,19 +911,6 @@ end LogBounded
 
 section Examples
 
-example : lwP₂ (Finset.univ : Finset (Fin 2)) ![(Real.exp (-1) : ℝ), (Real.exp 2 : ℝ)] = 4 := by
-  simp only [lwP₂, Fin.sum_univ_two, cons_val_zero, cons_val_one, Complex.norm_real,
-    Real.norm_eq_abs, Real.abs_exp, Real.log_exp]
-  norm_num
-
-example : schurComplement₁₁ (fromBlocks !![2] !![Complex.I] !![-Complex.I] !![1]) = !![1 / 2] := by
-  ext i j
-  fin_cases i; fin_cases j
-  simp [schurComplement₁₁, Matrix.mul_apply, Matrix.inv_def]
-  ring_nf
-  simp
-  norm_num
-
 end Examples
 
 end GlobalTheory

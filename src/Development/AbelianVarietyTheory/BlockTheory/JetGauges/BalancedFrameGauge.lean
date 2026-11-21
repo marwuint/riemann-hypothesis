@@ -45,8 +45,6 @@ def DPolyCols (F : Fin d → PS k 2 d) {ι : Type} [Fintype ι] (u : ι → Fin 
   ∑ m ∈ P.support, C (P.coeff m) *
     (Finset.univ : Finset (ι × Fin n)).toList.foldr (fun p g => (DCol F (u p.1) p.2)^[m p] g) f
 
-example (F : Fin d → PS k 2 d) (u : Fin d → k) (f : PS k 1 d) : DCol F u 0 f = Dof F u f := rfl
-
 end Columns
 
 section Value
@@ -86,19 +84,6 @@ def IsHarmonic {k : Type} [Field k] (r : (E →+* k) → ℕ) {n : ℕ}
   ∀ (τ : E →+* k) (i : Fin (r τ)) (i' : Fin (r (conjType E τ))),
     ∑ b : Fin n, MvPolynomial.pderiv ((⟨τ, i⟩ : Σ τ : E →+* k, Fin (r τ)), b)
       (MvPolynomial.pderiv ((⟨conjType E τ, i'⟩ : Σ τ : E →+* k, Fin (r τ)), b) P) = 0
-
-example {k : Type} [Field k] (r : (E →+* k) → ℕ) {n : ℕ} (c : k) :
-    IsHarmonic r (n := n) (MvPolynomial.C c) := by
-  intro τ i i'
-  simp
-
-example {k : Type} [Field k] (r : (E →+* k) → ℕ) {n : ℕ} (p : (Σ τ : E →+* k, Fin (r τ)) × Fin n) :
-    IsHarmonic r (n := n) (MvPolynomial.X p) := by
-  classical
-  intro τ i i'
-  refine Finset.sum_eq_zero fun b _ => ?_
-  rw [MvPolynomial.pderiv_X, Pi.single_apply]
-  split_ifs <;> simp
 
 end Letters
 

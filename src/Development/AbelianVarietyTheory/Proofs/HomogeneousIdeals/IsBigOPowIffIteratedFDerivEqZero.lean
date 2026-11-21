@@ -91,23 +91,6 @@ variable {V : Type*} [NormedAddCommGroup V] [NormedSpace ℂ V] [FiniteDimension
 
 end Lattice
 
-example (z : ℂ) : quadPart (fun z : ℂ => z ^ 2 + z ^ 4) z = z ^ 2 := by
-  have h1 : deriv (fun z : ℂ => z ^ 2 + z ^ 4) = fun z => 2 * z + 4 * z ^ 3 := by
-    funext z; simp
-  have h2 : deriv (fun z : ℂ => 2 * z + 4 * z ^ 3) 0 = 2 := by
-    have := (((hasDerivAt_id (0 : ℂ)).const_mul 2).fun_add ((hasDerivAt_pow 3 0).const_mul 4)).deriv
-    simpa using this
-  rw [quadPart, iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod, iteratedDeriv_succ,
-    iteratedDeriv_one, h1, h2]
-  simp [sq]
-  ring
-
-example (z : ℂ) : cexp (π * (z + I) ^ 2 / 2) * jacobiTheta₂ (z + I) I =
-    1 * cexp (π * (z * conj I) + π * (I * conj I) / 2) * (cexp (π * z ^ 2 / 2) * jacobiTheta₂ z I) := by
-  rw [jacobiTheta₂_add_left', ← mul_assoc, ← mul_assoc, one_mul, ← exp_add, ← exp_add, conj_I]
-  congr 2
-  linear_combination ((π : ℂ) / 2 - π + π / 2) * I_sq
-
 end
 
 end GlobalTheory.Doubling

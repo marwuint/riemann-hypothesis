@@ -380,12 +380,4 @@ def Charts.tangentHom {F : Fam I g Λ} (K : Charts F) (k : K.K) (a : Fin g) (p :
         RingHom.ext fun f ↦ congrArg (K.dualAt k p hp).ρ (Charts.sh_refl _ f)]
       exact Relation.ReflTransGen.single (step_tangentAt a p hp))
 
-example : ∃ (T T' : ellFam.allCharts.Obj) (f : T ⟶ T'), T'.J ≠ ⊥ ∧ f.deg = (0, 1) :=
-  ⟨_, _, ellFam.transl (0, 1) ≫
-      ellFam.allCharts.tangentHom ellFam.totChart 0 (fun _ ↦ Complex.I, 0) ellFam_nontrivial.1,
-    Charts.dualAt_J_ne_bot _ _ _ _, add_zero _⟩
-
-example (F : Fam I g Λ) (per : Λ →+ Hol F.V) (l : Λ) :
-    (F.allCharts.perZ per).1 _ _ (F.transl l) = F.allCharts.cst F.totChart (per l) := rfl
-
 end GlobalTheory.AnPer

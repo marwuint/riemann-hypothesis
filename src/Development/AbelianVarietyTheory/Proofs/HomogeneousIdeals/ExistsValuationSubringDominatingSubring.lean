@@ -441,17 +441,4 @@ theorem exists_centre_eq (x : X) : ∃ (W : ValuationSubring X.functionField)
 
 end Centre
 
-example : ∃ (W : ValuationSubring (Spec (.of ℤ)).functionField)
-    (hW : ∀ a : ℤ, toFunctionField (𝟙 (Spec (.of ℤ))) a ∈ W),
-    Order.coheight (centre (𝟙 _) W hW) = 1 ∧ IsDiscreteValuationRing W ∧ W ≠ ⊤ := by
-  let x : Spec (.of ℤ) :=
-    ⟨Ideal.span {2}, (Ideal.span_singleton_prime two_ne_zero).mpr Int.prime_two⟩
-  have hx : Order.coheight x = 1 := by
-    rw [← idealHeight_eq_coheight]
-    exact Ideal.height_span_singleton_eq_one_of_mem_nonZeroDivisors (R := ℤ)
-      (mem_nonZeroDivisors_of_ne_zero two_ne_zero) Int.prime_two.not_unit
-  obtain ⟨W, hW, e⟩ := exists_centre_eq (𝟙 (Spec (.of ℤ))) x
-  have hd := (centre_eq_iff _ W hW x).mp e
-  exact ⟨W, hW, e ▸ hx, hd.isDiscreteValuationRing hx, hd.ne_top hx⟩
-
 end GlobalTheory

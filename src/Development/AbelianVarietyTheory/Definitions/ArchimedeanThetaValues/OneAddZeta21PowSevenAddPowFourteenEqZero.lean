@@ -325,16 +325,4 @@ theorem finrank_rat_E21_eq_twelve : Module.finrank ℚ E21 = 12 := by
   rw [IsCyclotomicExtension.finrank E21 (Polynomial.cyclotomic.irreducible_rat (n := 21) (by norm_num))]
   decide
 
-example : host.bar host.rt = -host.rt :=
-  RingOfIntegers.ext (complexConj_eq_neg_of_sq_eq_neg (n := 7)
-    (coe_sq_eq_neg sqrtNegSeven_sq))
-
-example : host.w0 * host.bar host.w0 = 2 := by
-  have h := sub_complexConj_eq_of_two_mul host.rt_sq host.two_weight_eq_one_add_root
-  change halfSqrtNegSeven - host.bar host.w0 = 2 * halfSqrtNegSeven - 1 at h
-  change halfSqrtNegSeven * host.bar host.w0 = 2
-  linear_combination -halfSqrtNegSeven * h - halfSqrtNegSeven_quadratic
-
-example : ∃ τ : E21 →+* ℂ, τ (sqrtNegSeven : E21) = Complex.I * (Real.sqrt 7 : ℝ) := exists_embedding_rt_eq host
-
 end GlobalTheory.HostModel

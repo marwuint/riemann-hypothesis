@@ -51,13 +51,4 @@ def GaussFormula : Prop :=
 
 def Statement : Prop := SubspaceCount ∧ OverspaceCount ∧ GaussFormula
 
-example : gaussBinom 2 2 1 = 3 ∧ gaussBinom 2 3 1 = 7 ∧ gaussBinom 2 3 2 = 7 ∧
-    gaussBinom 2 4 2 = 35 ∧ gaussBinom 3 4 2 = 130 := by decide
-
-example (Y : ℤ) : ∑ j ∈ Finset.range (3 + 1),
-    (-1 : ℤ) ^ j * ((3 : ℕ) : ℤ) ^ (j * (j - 1) / 2) * (gaussBinom 3 3 j : ℤ) * Y ^ j =
-      ∏ i ∈ Finset.range 3, (1 - ((3 : ℕ) : ℤ) ^ i * Y) := by
-  simp [Finset.sum_range_succ, Finset.prod_range_succ, gaussBinom_succ_succ]
-  ring
-
 end GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula

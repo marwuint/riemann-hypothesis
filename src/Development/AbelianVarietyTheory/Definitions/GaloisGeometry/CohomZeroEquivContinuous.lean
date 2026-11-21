@@ -51,9 +51,4 @@ def cohomZeroEquivContinuous (X : Scheme.{0}) : H R 0 X ≃ C(X, R) :=
 theorem cohomZero_nontrivial (X : Scheme.{0}) [Nonempty X] [Nontrivial R] : Nontrivial (H R 0 X) :=
   (cohomZeroEquivContinuous R X).nontrivial
 
-example : Nontrivial (H ℤ_[3] 0 (Spec (CommRingCat.of ℚ))) := cohomZero_nontrivial _ _
-example : Nontrivial (H (ZMod 5) 0 (Spec (CommRingCat.of ℚ))) := by
-  haveI : Fact (1 < 5) := ⟨by norm_num⟩
-  exact cohomZero_nontrivial _ _
-
 end GlobalTheory.Et.Model

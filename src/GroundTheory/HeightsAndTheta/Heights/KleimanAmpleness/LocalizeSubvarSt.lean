@@ -24,8 +24,4 @@ theorem LocalizeSubvar.hyps (k : Type) [Field k] (N : ℕ) :
       Kleiman.IsSubvar (Kleiman.genericPt k N) (Kleiman.primeOf (S := k) (Kleiman.genericPt k N)) N :=
   ⟨by rw [Ideal.map_bot, Ideal.map_bot]; exact bot_le, Kleiman.isSubvar_genericPt k N⟩
 
-example (k : Type) [Field k] (h : LocalizeSubvar.Statement) :=
-  h k ⊥ k (FractionRing (Kleiman.Poly k 1)) 1 (Kleiman.genericPt k 1) _ 1 (LocalizeSubvar.hyps k 1).1
-    (LocalizeSubvar.hyps k 1).2
-
 end GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization

@@ -367,12 +367,6 @@ private noncomputable def hyp : (ℂ × ℂ) →ₗ[ℂ] (ℂ × ℂ) →ₗ⋆[
     (by intros; simp; ring) (by intros; simp; ring) (by intros; simp; ring)
     (by intros; simp; ring)
 
-example (b : ℂ) : (∀ u v, hyp v u = star (hyp u v)) ∧
-    isoTransvection hyp (1, 0) (by simp [hyp]) b (0, 1) = (b, 1) := by
-  refine ⟨fun u v => ?_, ?_⟩
-  · simp [hyp]; ring
-  · simp [isoTransvection.apply, hyp]
-
 end Example
 
 end GlobalTheory

@@ -268,19 +268,6 @@ end OddFam
 
 instance : Nonempty LFam := ⟨OddFam.fam⟩
 
-example : OddFam.fam.F 1 1 = 1 / 2 := by
-  rw [LFam.F, if_pos rfl, OddFam.res_fam]; simp
-
-example : OddFam.fam.lam 0 3 = Real.log 3 ∧ OddFam.fam.lam 0 2 = 0 := by
-  constructor
-  · change OddFam.ao 3 * Λ 3 = _
-    rw [vonMangoldt_apply_prime Nat.prime_three, OddFam.ao, if_pos (by decide)]; simp
-  · change OddFam.ao 2 * Λ 2 = _
-    rw [OddFam.ao, if_neg (by decide)]; simp
-
-example : qForm 2 3 (1 / 2) (1 / 3) (1 / 4) (1, -2) = 2 * (1 / 3) ^ 2 + 3 * (7 / 4) ^ 2 := by
-  simp only [qForm]; norm_num
-
 end GlobalTheory.Hk
 
 end

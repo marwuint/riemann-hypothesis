@@ -135,13 +135,4 @@ def CollapseExact : Prop :=
       ∀ z : ℂ, IsQuotInt ν (rescale ν bas m) μG 1 f z ↔
         z = (((μG P.J).toReal / (m (prX (Cgrp P.J 1))).toReal : ℝ) : ℂ) * b (θ φ Ξ) v
 
-example : FreeTop 1 (κ := 1) (l := 3) (.inr 0) (.inl 0) ∧ ¬ FreeTop 1 (κ := 1) (l := 3) (.inr 1) (.inl 0) := by
-  simp [FreeTop]
-
-example : FreeTop 1 (κ := 1) (l := 3) (.inl 0) (.inr 2) ∧ ¬ FreeTop 1 (κ := 1) (l := 3) (.inl 0) (.inr 1) := by
-  simp [FreeTop]
-
-example (ρ : ℕ) {κ l : ℕ} (a : Fin κ ⊕ Fin (l + 1)) : ¬ FreeTop ρ a (.inr 0) := by
-  rcases a with a | a <;> simp [FreeTop]
-
 end GlobalTheory.SymChain

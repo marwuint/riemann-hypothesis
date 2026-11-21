@@ -48,7 +48,4 @@ theorem volumeConstant_le (r : ℕ) (hr : 2 ≤ r) :
         nlinarith
     _ = 2^(r*(r-1)/2) * (2*π)^(r-1) * √r := by ring
 
-example : ∀ r : ℕ, 2 ≤ r → √r * ∏ i ∈ Finset.Icc 2 r, (∑' n : ℕ, 1/((n:ℝ)+1)^i) ≤ 2^(r*(r-1)/2) * (2*π)^(r-1) * √r :=
-  volumeConstant_le
-
 end GlobalTheory

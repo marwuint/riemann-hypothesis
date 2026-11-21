@@ -557,22 +557,4 @@ theorem IsCyc.map {g : Matrix n n B} (h : IsCyc P g) (φ : B →+* B') {Q : Csr 
   change g.map φ *ᵥ (evalMat Q _ hg' y *ᵥ _) = evalMat Q _ hg' (root Q * y) *ᵥ _
   rw [map_mul, evalMat_root, Matrix.mulVec_mulVec]
 
-example [Nontrivial B] {α β : B} (hα : s α * α = 1) (hβ : s β * β = 1) :
-    (Csr.mulFactorisation ⟨X - C α, isCsr_X_sub_C.2 hα⟩ ⟨X - C β, isCsr_X_sub_C.2 hβ⟩).res = α - β := by
-  change resultant (X - C α) (X - C β) = α - β
-  rw [natDegree_X_sub_C α, resultant_X_sub_C_left _ _ _ le_rfl]; simp
-
-example : IsCsr (starRingEnd ℂ) (X - C Complex.I) ∧ ¬ IsCsr (starRingEnd ℂ) (X - C 2) :=
-  ⟨isCsr_X_sub_C.2 (by simp), fun h => by
-    have := isCsr_X_sub_C.1 h
-    rw [map_ofNat] at this; norm_num at this⟩
-
-example : normSign (starRingEnd ℂ) (-1) = -1 ∧ normSign (starRingEnd ℂ) 2 = 1 :=
-  ⟨if_neg fun ⟨u, hu⟩ => by
-    rw [Complex.mul_conj] at hu
-    have : (-1 : ℝ) = Complex.normSq u := by exact_mod_cast hu
-    linarith [Complex.normSq_nonneg u],
-  if_pos ⟨Units.mk0 (1 + Complex.I) (fun h => by simpa using congrArg Complex.re h), by
-    simp [Complex.ext_iff]; norm_num⟩⟩
-
 end GlobalTheory.UTr

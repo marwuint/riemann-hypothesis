@@ -456,18 +456,6 @@ theorem parPhi_mem_SB [Fintype s'] {δ : kˣ →* ℂˣ} (hδ : IsTame δ) :
 
 end Parahoric
 
-example (P : TypeDatum k a) (μ : kˣ →* ℂˣ) : P.Phi t μ (fromRows 1 0) = 1 := by
-  rw [P.Phi_of_mem μ 1 (by simp) (by simpa using maxM_zero)]; simp
-
-example [Nonempty a] (P : TypeDatum k a) (μ : kˣ →* ℂˣ) : P.Phi t μ 0 = 0 := by
-  by_contra h
-  obtain ⟨⟨g, -, e⟩, -⟩ := (P.Phi_ne_zero_iff μ).1 h
-  exact g.ne_zero (e.trans (by ext; simp))
-
-example (μ : kˣ →* ℂˣ) (u : GL a k) (hu : u ∈ KO k a) :
-    (TypeDatum.full k a).Phi t μ (fromRows u.val 0) = ((μ (Matrix.GeneralLinearGroup.det u))⁻¹ : ℂˣ) := by
-  rw [TypeDatum.Phi_of_mem _ μ ⟨u, hu⟩ (by simp) (by simpa using maxM_zero)]; exact one_mul _
-
 end Local
 
 section Frames
@@ -824,16 +812,6 @@ theorem cosetInd_mem_SB (c : kˣ) (yb : (n → k) ⧸ box n c) : cosetInd (box n
   rw [e]
   exact ⟨(LocallyConstant.charFn ℂ ⟨hc'.isClosed, ho.preimage (Homeomorph.continuous _)⟩).isLocallyConstant,
     HasCompactSupport.intro hc' fun x hx => Set.indicator_of_notMem hx _⟩
-
-example (hν : IsUnitVol ν) : hat ψ ν ε (cosetInd (box n 1) 0) 0 = 1 := by
-  have := hν.1
-  have := secondCountable k
-  have e : {y : n → k | Submodule.Quotient.mk (p := box n 1) y = 0} = Set.pi Set.univ fun _ => (𝒪[k] : Set k) := by
-    ext y; simp [mem_box, Valuation.mem_integer_iff]
-  simp only [hat, cosetInd, e, zero_dotProduct, mul_zero, AddChar.map_zero_eq_one, Circle.coe_one, mul_one]
-  rw [integral_indicator_const _ (MeasurableSet.univ_pi fun _ => (isOpen_int k).measurableSet), Measure.real,
-    Measure.pi_pi]
-  simp [hν.2]
 
 end Couple
 

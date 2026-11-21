@@ -58,9 +58,6 @@ theorem den_dvd {M N : ℕ} (h : M ∣ N) (k : ℕ) : den M k ∣ den N k := by
   unfold den
   exact Nat.mul_dvd_mul_right h _
 
-example : bcoef 1 1 1 = 1 / 2 := by norm_num [bcoef]
-example : bcoef 3 1 1 - bcoef 3 1 2 = -1 / 3 := by norm_num [bcoef]
-
 end UpperTheory.V.Bern
 
 end

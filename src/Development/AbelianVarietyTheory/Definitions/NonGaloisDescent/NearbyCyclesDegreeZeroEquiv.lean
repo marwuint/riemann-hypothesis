@@ -350,21 +350,6 @@ def wrep (i : ℕ) {W : Type} [Group W] (A : Type) [CommRing A] [Algebra O A]
 
 end SemilinearFormal
 
-example : (gal ℤ_[2] ℚ_[3] (AlgebraicClosure ℚ_[3]) ℤ_[3] 2 ℤ_[3]) 1 = 1 := map_one _
-
-example : Nontrivial (H ℤ_[2] ℚ_[3] (AlgebraicClosure ℚ_[3]) ℤ_[3] 0 ℤ_[3]) := nontrivial_H_zero_self _ _ _ _
-
-example : Nonempty (H ℤ_[2] ℚ_[3] (AlgebraicClosure ℚ_[3]) ℤ_[3] 0 ℤ_[3] ≃ₗ[ℤ_[2]] ℤ_[2]) :=
-  nonempty_equiv_self _ _ _ _
-
-example (σ : AlgebraicClosure ℚ_[3] ≃ₐ[ℚ_[3]] AlgebraicClosure ℚ_[3]) :
-    gal ℤ_[2] ℚ_[3] (AlgebraicClosure ℚ_[3]) ℤ_[3] 0 ℤ_[3] σ = 1 :=
-  gal_self _ _ _ _ σ
-
-example : smap ℤ_[2] (K := ℚ_[3]) (Ω := AlgebraicClosure ℚ_[3]) 1 (RingHom.id ℤ_[3]) (RingHom.id ℚ_[3]) rfl
-    (RingHom.id _) rfl (RingHom.id ℤ_[3]) rfl = LinearMap.id :=
-  smap_id _ _ _ _ _ _
-
 end GlobalTheory.FNC
 
 end

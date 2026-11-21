@@ -543,14 +543,6 @@ theorem AdaptedFrame.map_notMem_step (al : U →ₗ[C] U') {U₁ : Submodule C U
     exact sub_self _
   exact F.notMem_step i (by simpa using Submodule.add_mem _ (step_mono F.f hi h1) hy)
 
-example (p : ℕ) (v : Valuation C ℝ≥0) (hv : v.Integers O) (h0 : v (p : C) ≠ 0) (h1 : v (p : C) < 1)
-    (x : U) (hx : x ≠ 0) :
-    1 * logAbs_vp p v (latNorm v (Submodule.span O {(p : C)⁻¹ • x}) x) = -Real.log p := by
-  have hp : (p : C) ≠ 0 := fun h => h0 (by rw [h, map_zero])
-  have h2 := latNorm_span_singleton hv (smul_ne_zero (inv_ne_zero hp) hx) (p : C)
-  rw [smul_smul, mul_inv_cancel₀ hp, one_smul] at h2
-  rw [h2, one_mul, logAbs_vp_self p v h0 h1]
-
 end Frames
 
 end GlobalTheory.HTLat

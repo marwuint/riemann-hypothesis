@@ -356,34 +356,6 @@ end Loc
 
 section Examples
 
-example (p : ℕ) : (cubeComplex (locCube ![(2 : ℤ), 3] ℤ)).ExactAt p := by
-  refine locCube_exactAt ℤ ((Ideal.eq_top_iff_one _).2 ?_) p
-  have := Ideal.sub_mem _ (Ideal.subset_span (s := Set.range ![(2 : ℤ), 3]) ⟨1, rfl⟩)
-    (Ideal.subset_span ⟨0, rfl⟩)
-  exact this
-
-example : ¬ (cubeComplex (locCube (fun _ : Fin 1 => (2 : ℤ)) ℤ)).ExactAt 1 := by
-  rw [cubeComplex_exactAt_one_iff]
-  intro h
-  haveI := Cube.subsingleton_term (locCube (fun _ : Fin 1 => (2 : ℤ)) ℤ) (p := 2) (by simp)
-  have hl := isLocalizedModule_toLocCube_singleton (fun _ : Fin 1 => (2 : ℤ)) ℤ 0
-  let y := IsLocalizedModule.mk' (toLocCube (fun _ : Fin 1 => (2 : ℤ)) ℤ {0}) 1
-    (⟨2, 1, pow_one 2⟩ : Submonoid.powers (2 : ℤ))
-  obtain ⟨a, ha⟩ := (h (Cube.termOneEquiv _ (Fin.cases y fun i => i.elim0))).1
-    (Subsingleton.elim _ _)
-  obtain ⟨m, rfl⟩ := (toLocCube_empty_bijective _ ℤ).2 a
-  have h1 := congrFun ha ⟨{0}, Finset.card_singleton _⟩
-  rw [Cube.aug_apply, res_toLocCube, Cube.termOneEquiv_apply] at h1
-  have h2 : toLocCube (fun _ : Fin 1 => (2 : ℤ)) ℤ {0} 1 =
-      toLocCube (fun _ : Fin 1 => (2 : ℤ)) ℤ {0} ((2 : ℤ) • m) :=
-    (IsLocalizedModule.mk'_eq_iff.1 (show y = _ from h1.symm)).trans
-      ((toLocCube (fun _ : Fin 1 => (2 : ℤ)) ℤ {0}).map_smul (2 : ℤ) m).symm
-  obtain ⟨n, hn⟩ := IsLocalizedModule.Away.exists_of_eq (2 : ℤ) h2
-  simp only [smul_eq_mul, mul_eq_mul_left_iff] at hn
-  rcases hn with hn | hn
-  · omega
-  · exact absurd hn (by positivity)
-
 end Examples
 
 end GlobalTheory

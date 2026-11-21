@@ -70,7 +70,4 @@ def ConjIn (X : Subgroup (DirichletCharacter ℂ N)) (D : Subgroup (ZMod N)ˣ) :
 def vdFormula (l a e : ℕ) : ℚ :=
   (a : ℚ) - 1 / ((l : ℚ) - 1) + 1 / (((l : ℚ) - 1) * (l : ℚ) ^ (a - 1)) - 1 / (e : ℚ)
 
-example : vdFormula 3 2 3 = 4 / 3 := by norm_num [vdFormula]
-example : vdFormula 7 2 21 = 38 / 21 := by norm_num [vdFormula]
-
 end KStar.Ram

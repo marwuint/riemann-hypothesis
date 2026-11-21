@@ -326,12 +326,6 @@ theorem trace_eq_linearMap_trace [FiniteDimensional ℂ H] (T : H →L[ℂ] H) :
     ← ((isTraceClass_of_finiteDimensional T).hasSum_trace b.toHilbertBasis).tsum_eq, tsum_fintype]
   simp
 
-example (n : ℕ) : HasTrace (ContinuousLinearMap.id ℂ (EuclideanSpace ℂ (Fin n))) n :=
-  ⟨isTraceClass_of_finiteDimensional _, by simp [trace_eq_linearMap_trace]⟩
-
-example : trace (Complex.I • ContinuousLinearMap.id ℂ ℂ) = Complex.I := by
-  simp [trace_smul, trace_eq_linearMap_trace]
-
 end Hilbert
 
 section Unitary

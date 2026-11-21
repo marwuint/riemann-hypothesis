@@ -29,8 +29,6 @@ def CurvatureMinus.Statement : Prop :=
         (((1 - ‖z 0‖ ^ 2) ^ (-2 : ℤ) : ℝ) : ℂ) ∧
       0 < (1 - ‖z 0‖ ^ 2) ^ (-2 : ℤ)
 
-example : ‖(fun _ : Fin 1 => (1 / 2 : ℂ)) 0‖ < 1 := by norm_num
-
 def TopPowerDiagonal.Statement : Prop :=
   ∀ (R : Type) [CommRing R] (D : ℕ) (e a : Fin D → R), (∀ j, e j ^ 2 = 0) →
     (∑ j, a j * e j) ^ D = (D.factorial : R) * (∏ j, a j) * ∏ j, e j
@@ -65,9 +63,6 @@ theorem prod_sqZeroGen_ne_zero {σ : Type} [Fintype σ] : ∏ i : σ, sqZeroGen 
   have := hle j
   simp [Finsupp.finsetSum_apply, Finsupp.single_apply] at this
 
-example (D : ℕ) : (∀ j : Fin D, sqZeroGen j ^ 2 = 0) ∧ ∏ j : Fin D, sqZeroGen j ≠ 0 :=
-  ⟨sqZeroGen_sq, prod_sqZeroGen_ne_zero⟩
-
 def pairDiffProd {ι R : Type} [CommRing R] (P : Finset (ι × ι)) (lam : ι → R) : R :=
   ∏ p ∈ P, (lam p.1 - lam p.2)
 
@@ -87,10 +82,6 @@ def TopPowerPairs.Statement : Prop :=
       (∑ p ∈ increasingPairs N, (lam p.1 - lam p.2) * e p) ^ N.choose 2 =
         ((N.choose 2).factorial : R) * vandermondeDesc N lam * ∏ p ∈ increasingPairs N, e p)
 
-example : (∀ p ∈ increasingPairs 3, p.1 < p.2) ∧
-    (∀ p ∈ increasingPairs 3, sqZeroGen p ^ 2 = 0) ∧ ∏ p : Fin 3 × Fin 3, sqZeroGen p ≠ 0 :=
-  ⟨fun _p hp => (Finset.mem_filter.mp hp).2, fun q _ => sqZeroGen_sq q, prod_sqZeroGen_ne_zero⟩
-
 def linForm {n : ℕ} (lam : Fin n → ℝ) : MvPolynomial (Fin n) ℝ :=
   ∑ i, MvPolynomial.C (lam i) * MvPolynomial.X i
 
@@ -98,13 +89,6 @@ def PolarisationPowers.Statement : Prop :=
   ∀ (n D : ℕ) (A B : MvPolynomial (Fin n) ℝ →ₗ[ℝ] ℝ),
     (∀ lam : Fin n → ℝ, A (linForm lam ^ D) = B (linForm lam ^ D)) →
       ∀ p ∈ MvPolynomial.homogeneousSubmodule (Fin n) ℝ D, A p = B p
-
-example : (∀ lam : Fin 2 → ℝ,
-      MvPolynomial.constantCoeff (linForm lam ^ 1) = (0 : MvPolynomial (Fin 2) ℝ →ₗ[ℝ] ℝ)
-        (linForm lam ^ 1)) ∧
-    MvPolynomial.constantCoeff (1 : MvPolynomial (Fin 2) ℝ) ≠ 0 := by
-  refine ⟨fun lam => ?_, by simp⟩
-  simp [linForm]
 
 structure UICoreData where
 
@@ -209,13 +193,6 @@ def AmplePerturbation.Statement : Prop :=
           ((ε : ℝ) • ((2 : ℝ) • H + b))) <
         I (fun _ => L + (ε : ℝ) • H)
 
-example (D : ℕ) : (∀ (σ : Equiv.Perm (Fin D)) (v : Fin D → ℝ),
-      MultilinearMap.mkPiAlgebra ℝ (Fin D) ℝ (v ∘ σ) = MultilinearMap.mkPiAlgebra ℝ (Fin D) ℝ v) ∧
-    0 < MultilinearMap.mkPiAlgebra ℝ (Fin D) ℝ (fun _ => (1 : ℝ)) := by
-  refine ⟨fun σ v => ?_, by simp⟩
-  simp only [MultilinearMap.mkPiAlgebra_apply, Function.comp_apply]
-  exact Equiv.prod_comp σ v
-
 section Reflection
 
 variable {M : Type} [AddCommGroup M] [Module ℝ M]
@@ -244,8 +221,6 @@ def ReflectionWeights.Statement : Prop :=
       reflInvPart N y lam i + diffCoeff N lam i • reflXi y i ∧
     reflInvPart N y lam i = ∑ l ∈ (Finset.Icc 1 N).erase i, reflInvCoeff N lam i l • y l ∧
     ∀ l, l ≠ i → reflInvCoeff N (lam ∘ Equiv.swap i (i + 1)) i l = reflInvCoeff N lam i l
-
-example : (fun l : ℕ => (l : ℝ)) 0 = 0 ∧ 2 ≤ 3 ∧ 1 ≤ 1 ∧ 1 < 3 := by norm_num
 
 end Reflection
 

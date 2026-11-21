@@ -256,8 +256,4 @@ theorem nonempty_unrPlace_five : Nonempty (UnrPlace 5 GaussianInt) := by
 
 end Gauss
 
-example (E : Type) [Field E] [NumberField E] (p : ℕ) [Fact p.Prime]
-    (w : Place p (NumberField.RingOfIntegers E)) (vd : ℝ) : Prop :=
-  w.IsDiffVal_vp vd ∧ 0 < w.degree
-
 end GlobalTheory.IndefiniteRowSideFullHecke.SplitUnramifiedPlaces

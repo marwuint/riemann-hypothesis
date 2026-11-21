@@ -125,9 +125,6 @@ theorem IsChowForm.exists_multiHomog {P : Ideal (MvPolynomial (Fin n) F)}
   rw [hC, aeval_C, map_eq_zero_iff _ (algebraMap F (AlgebraicClosure F)).injective] at hz
   exact hf.1 (by rw [hC, hz, C_0])
 
-example : ∃ δ, 1 ≤ δ ∧ IsMultiHomog δ (X (0, 0) : MvPolynomial (Fin 1 × Fin 1) ℚ) :=
-  (isChowForm_point ℚ).exists_multiHomog (isProjPrime_point ℚ)
-
 end
 
 end GroundTheory.Heights₂.Heights

@@ -399,6 +399,4 @@ theorem flatTensor_vacuum (hψ : ∀ a ∈ 𝒪[k], ψ a = 1) (hν : IsUnitVol �
   exact ⟨(integrable_indicator_iff hm).2 (integrableOn_const (by simp [hv])), by
     rw [integral_indicator hm]; simp [Measure.real, hv]⟩
 
-example : topRank (⟨2, 3, 1, 1, 1, 1, 1⟩ : Grid k) 2 = (⟨2, 3, 1, 1, 1, 1, 1⟩ : Grid k).rank (2, 2) + 1 := rfl
-
 end GlobalTheory.FunObj

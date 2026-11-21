@@ -192,13 +192,6 @@ def RankStrata : Prop :=
     (a t : ℕ), 1 ≤ a → 1 ≤ t → ∀ μ : kˣ →* ℂˣ, IsSmoothChar μ → IsUnitaryChar μ →
       (OpenClosedSeq a t μ ∧ RankFiltration a t μ) ∧ LowerStrata a t μ ∧ OpenStratum a t μ
 
-example (a t : ℕ) (μ : kˣ →* ℂˣ) : filt (Fin a) (Fin (a + t)) μ (Set.Iio a) 0 = ⊤ :=
-  eq_top_iff.2 fun _ _ _ hx => absurd hx (Nat.not_lt_zero _)
-
-example (a t : ℕ) (μ : kˣ →* ℂˣ) : filt (Fin a) (Fin (a + t)) μ (Set.Iio a) a = ⊥ :=
-  Subrepresentation.toSubmodule_injective <|
-    eq_bot_iff.2 fun _ hΦ => Subtype.ext (funext fun x => hΦ x x.2)
-
 end Statement
 
 end GlobalTheory.IndefiniteRowSideFullHecke.OpenClosedSequences

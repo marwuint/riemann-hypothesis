@@ -665,21 +665,6 @@ theorem not_tempered_diag_spEig : ¬ (WD.mk (WDRep.diag h (WDRep.spEig w 2))).te
     Real.rpow_right_inj (zero_lt_one.trans hq) hq.ne'] at this
   norm_num at this
 
-example : ((WD.mk (WDRep.diag h fun _ : Fin 1 => 1)).lpTw 1).frobEig = {((normV w : ℕ) : ℂ)} := by
-  have : ((WDRep.diag h fun _ : Fin 1 => 1).tw 1).ρ (frob h) =
-      diagEnd fun _ => ((normV w : ℕ) : ℂ) := by
-    refine LinearMap.ext fun v => funext fun i => ?_
-    simp
-  rw [WD.lpTw_mk, WD.frobEig_mk, this, charpoly_diagEnd, Fin.prod_univ_one, roots_X_sub_C]
-
-example : (WD.lpZero h).lpDim = 0 := by simp [WD.lpZero]
-
-omit [IsAlgClosure E Ω] in
-
-example (v : HeightOneSpectrum (𝓞 E)) : ∃ (B : ValuationSubring (AlgebraicClosure E))
-    (hB : IsPlaceOver B v) (x : WD hB), ¬ x.mono0 ∧ x.tempered :=
-  ⟨_, isPlaceOver_placeOf _ v, WD.lpSp _ 2, WD.not_mono0_lpSp le_rfl, WD.tempered_lpSp 2⟩
-
 end Examples
 
 end GlobalTheory.WeilDeligne

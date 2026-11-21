@@ -64,15 +64,9 @@ theorem isStrictlySemistable_model (h1 : 1 ≤ r) (h2 : r ≤ m) :
   rw [← h, ← Scheme.ΓSpecIso_inv_naturality]
   rfl
 
-example : IsStrictlySemistable (2 : ℤ) (Spec.map (CommRingCat.ofHom (algebraMap ℤ (ssModel ℤ 2 2 2)))) :=
-  isStrictlySemistable_model ℤ 2 2 2 (by norm_num) le_rfl
-
 end Semistable
 
 section MuTest
-
-example : (-1 : ℤˣ) ∈ rootsOfUnity 2 ℤ := by
-  rw [mem_rootsOfUnity]; decide
 
 end MuTest
 

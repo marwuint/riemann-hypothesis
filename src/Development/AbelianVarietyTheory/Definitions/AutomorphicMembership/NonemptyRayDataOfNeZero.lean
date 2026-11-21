@@ -389,14 +389,6 @@ theorem cls_two_ne_one (D : RayData ℚ 5) : D.cls (Ideal.span {2}) ≠ 1 := by
 
 end RayData
 
-example : Nontrivial (rayData ℚ 5 (by norm_num)).G := ⟨_, _, RayData.cls_two_ne_one _⟩
-
-example (K : Type) [Field K] [NumberField K] : Fintype.card (rayData K 1 one_ne_zero).G = classNumber K :=
-  RayData.card_eq_classNumber _
-
-example : (rayData ℚ 5 (by norm_num)).cls (Ideal.span {6}) = 1 :=
-  RayData.cls_span _ (by norm_num) (Ideal.mem_span_singleton.2 ⟨1, by push_cast; norm_num⟩)
-
 end GlobalTheory.Mem
 
 end

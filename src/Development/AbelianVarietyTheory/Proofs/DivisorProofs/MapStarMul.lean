@@ -66,10 +66,6 @@ structure Grading (p r q θ : R) : Prop where
   θθ : θ * θ = 1
   θp : θ * p = q * θ
 
-example : Grading (R := Matrix (Fin 3) (Fin 3) ℤ) !![1, 0, 0; 0, 0, 0; 0, 0, 0] !![0, 0, 0; 0, 1, 0; 0, 0, 0]
-    !![0, 0, 0; 0, 0, 0; 0, 0, 1] !![0, 0, 1; 0, 1, 0; 1, 0, 0] := by
-  constructor <;> decide
-
 namespace Grading
 
 variable {p r q θ : R} (h : Grading p r q θ)
@@ -214,9 +210,6 @@ structure Hyp (c : A →+* A) (J : Matrix m m A) (x y : m → A) (ι : Matrix m 
   right : ι * ι' = 1 - prX c J x y - prY c J x y
 
 variable {c : A →+* A} {c' : A' →+* A'} {J : Matrix m m A} {x y : m → A} {ι : Matrix m n A} {ι' : Matrix n m A}
-
-example : Hyp (RingHom.id ℤ) !![0, 1; -1, 0] ![1, 0] ![0, 1] (0 : Matrix (Fin 2) (Fin 0) ℤ) 0 := by
-  constructor <;> first | decide | (intro a; rfl)
 
 theorem map_mulVec' (f : A →+* A') (hf : ∀ a, f (c a) = c' (f a)) (J : Matrix m m A) (x : m → A) :
     f ∘ (J *ᵥ (c ∘ x)) = J.map f *ᵥ (c' ∘ (f ∘ x)) := by

@@ -213,25 +213,6 @@ def trivSub (R : Type) [CommRing R] (w : ℕ) (Γ : Subgroup SL(2, ℤ)) : Submo
 
 end Slash
 
-example : slP (R := ℤ) !![1, 2; 0, 3] (MvPolynomial.X 0) = MvPolynomial.X 0 + 2 * MvPolynomial.X 1 := by
-  simp [slP_X, MvPolynomial.smul_eq_C_mul]
-
-example : admitted 5 3 (Letter.T 2) ∧ ¬ admitted 5 3 (Letter.T 0) ∧ ¬ admitted 5 3 (Letter.T 1) ∧ ¬ admitted 5 3 (Letter.T 3) ∧
-    ¬ admitted 5 3 (Letter.T 4) ∧ admitted 5 3 (Letter.D 3) ∧ ¬ admitted 5 3 (Letter.D 0) := by
-  simp only [admitted]; decide
-
-example : FreeAlgebra.ι ℂ (Letter.T 0) ∉ LetAlg ℂ (admitted 5 3) := by
-  intro h
-  have := lift_congr (f := fun _ => (0 : ℂ)) (g := fun T => match T with | Letter.T 0 => 1 | _ => 0) (fun T hT => by
-    rcases T with (_ | q) | _ | d
-    · exact absurd hT.1 Nat.not_prime_zero
-    all_goals rfl) h
-  simp at this
-
-example (s : Ω ≃ₐ[ℚ] Ω) : ¬ FrobAt 1 s := by
-  rintro ⟨V, h, -⟩
-  simp [ValuationSubring.mem_nonunits_iff] at h
-
 end Betti
 
 end GlobalTheory.KZ

@@ -86,9 +86,6 @@ structure IsCoeffRing (ϖ : kˣ) (ψ : AddChar k Circle) (α β : kˣ →* ℂˣ
   units : ∀ x : kˣ, valuation k (x : k) = 1 → (α x : ℂ) ∈ R ∧ (β x : ℂ) ∈ R ∧ ((α / β) x : ℂ) ∈ R
   unif : ((α / β) ϖ : ℂ) ∈ R ∧ ((α / β) ϖ⁻¹ : ℂ) ∈ R
 
-example (ϖ : kˣ) (ψ : AddChar k Circle) (α β : kˣ →* ℂˣ) (e : ℕ) : IsCoeffRing ϖ ψ α β e ⊤ :=
-  ⟨trivial, fun _ _ => trivial, fun _ _ => ⟨trivial, trivial, trivial⟩, trivial, trivial⟩
-
 theorem IsRightTranslationIsometric.inv {ϖ : kˣ} {ψ : AddChar k Circle} {α β : kˣ →* ℂˣ} {e : ℕ} (h : IsRightTranslationIsometric ϖ ψ α β e) :
     IsRightTranslationIsometric ϖ ψ⁻¹ α β e :=
   { h with cond := fun x => by simpa only [AddChar.inv_apply', inv_eq_one] using h.cond x }
@@ -904,13 +901,6 @@ def givenPath (m : ℕ) : List Edge := (List.range m).reverse.map (Edge.theta 0)
 
 def oppositePath (m : ℕ) : List Edge :=
   (List.range m).map (Edge.ex · m) ++ (List.range m).reverse.map (Edge.theta m)
-
-example : IsPath (givenPath 2) ∧ innerVertices (givenPath 2) = [(0, 1), (0, 0), (1, 0)] := by
-  unfold IsPath; decide
-
-example : CanFlip (givenPath 2) [(0, 0), (0, 1), (1, 0), (1, 1)] ∧
-    [(0, 0), (0, 1), (1, 0), (1, 1)].foldl (fun γ x => flipPath x.1 x.2 γ) (givenPath 2) = oppositePath 2 := by
-  refine ⟨.cons ?_ (.cons ?_ (.cons ?_ (.cons ?_ (.nil _)))), by decide⟩ <;> unfold PassesThrough <;> decide
 
 variable (k) in
 

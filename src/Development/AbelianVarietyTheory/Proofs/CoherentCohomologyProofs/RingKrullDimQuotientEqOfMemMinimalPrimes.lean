@@ -607,12 +607,4 @@ theorem exists_topologicalKrullDim_fibres_eq_of_isPullback
 
 end Fibres
 
-example (O : Type u) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {ϖ : O}
-    (hϖ : Irreducible ϖ) : (Ideal.span {algebraMap O (Polynomial O) ϖ}).height = 1 := by
-  have : (Ideal.span {algebraMap O (Polynomial O) ϖ}).IsPrime :=
-    (Ideal.span_singleton_prime (by simpa using hϖ.ne_zero)).mpr
-      (Polynomial.prime_C_iff.mpr hϖ.prime)
-  exact (height_eq_one_and_ringKrullDim_eq_of_flat_canonical O (Polynomial O) hϖ _
-    (by rw [Ideal.minimalPrimes_eq_subsingleton_self]; rfl)).1
-
 end GlobalTheory

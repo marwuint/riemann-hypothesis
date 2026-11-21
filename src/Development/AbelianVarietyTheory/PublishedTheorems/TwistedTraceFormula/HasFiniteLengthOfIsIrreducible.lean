@@ -159,17 +159,6 @@ theorem JacquetFiniteLength.two (h : JacquetFiniteLength k) (e : a ⊕ b ≃ n)
 
 end Two
 
-example {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) :
-    IsSmooth (detRep n χ) ∧ (detRep n χ).IsIrreducible ∧ HasFiniteLength (detRep n χ) ∧
-      IsAdmissible (detRep n χ) :=
-  have h := (isSmooth_ofChar_iff _).2 (hχ.detChar (n := n))
-  ⟨h, isIrreducible_ofChar _, hasFiniteLength_of_isIrreducible (isIrreducible_ofChar _), h,
-    fun _ _ _ => inferInstance⟩
-
-example : IsSmooth (ofChar (deltaHalf k m)) ∧ HasFiniteLength (ofChar (deltaHalf k m)) :=
-  ⟨(isSmooth_ofChar_iff _).2 (isSmoothChar_deltaHalf k),
-    hasFiniteLength_of_isIrreducible (isIrreducible_ofChar _)⟩
-
 end SmGL
 
 end GlobalTheory

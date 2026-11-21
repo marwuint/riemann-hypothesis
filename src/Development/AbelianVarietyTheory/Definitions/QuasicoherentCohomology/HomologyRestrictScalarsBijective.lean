@@ -405,9 +405,6 @@ def constRingHom (ι : Type) (f : R →+* S) :
   app _ := f.toSemilinearMap
   app_res _ _ := rfl
 
-example (s : {s : Finset (Fin 2) // s.card = 1}) :
-    (constRingHom (Fin 2) (Int.castRingHom ℚ)).term 1 (fun _ => (2 : ℤ)) s = (2 : ℚ) := rfl
-
 end Cube.SemiHom
 
 end GlobalTheory

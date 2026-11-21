@@ -639,10 +639,6 @@ theorem sim_pos_of_isEllR {γ : G.GR} (h : G.IsEllR γ) : 0 < (((γ : (ℝ ⊗[�
   rw [← hc]
   exact pow_pos (norm_pos_iff.2 hμ0) 2
 
-example : IsTopologicalGroup G.GAf := inferInstance
-example : IsTopologicalGroup G.GR := inferInstance
-example : IsTopologicalGroup G.GQp := inferInstance
-
 end HTGroup
 
 section Herm
@@ -923,12 +919,6 @@ def ex (c : ℚ) (hc : c ≠ 0) : HTGroup 5 :=
       (IsAlgClosed.lift : AlgebraicClosure ℚ →ₐ[ℚ] PadicAlgCl 5).toRingHom)
     (haveI : Algebra.IsAlgebraic ℚ (AlgebraicClosure ℚ) := AlgebraicClosure.isAlgebraic ℚ;
       (IsAlgClosed.lift : AlgebraicClosure ℚ →ₐ[ℚ] ℂ).toRingHom)
-
-example : (ex 1 one_ne_zero).n = 1 := rfl
-example : (ex (-1) (by norm_num)).IsSS 1 := HTGroup.isSS_one _
-example (γ : (ex 1 one_ne_zero).GQ) : (ex 1 one_ne_zero).StQ γ γ := HTGroup.stQ_refl _ γ
-example : (ex 1 one_ne_zero).IsEllR 1 := HTGroup.isEllR_one _
-example : Module.finrank (ex 1 one_ne_zero).F (ex 1 one_ne_zero).C = 1 := (ex 1 one_ne_zero).rankC.trans rfl
 
 end Example
 

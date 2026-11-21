@@ -231,9 +231,4 @@ theorem ht_pos : 0 < (flatFs F).ht := by
 theorem isPlaceWeight_const (c : ℝ) : IsPlaceWeight (pt F) (RingHom.id F) (fun _ => c) (fun _ => c) :=
   ⟨fun _ _ _ => rfl, contDiffOn_const, fun _ _ _ => Filter.Eventually.of_forall fun _ => rfl⟩
 
-example (c : ℝ) : meanEmb (fun _ : F →+* ℂ => c) = c := by
-  have : (Module.finrank ℚ F : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr Module.finrank_pos.ne'
-  simp only [meanEmb, Finset.sum_const, Finset.card_univ, Embeddings.card, nsmul_eq_mul]
-  field_simp
-
 end GlobalTheory.CompanionTheory.Ar.Flat.Inh

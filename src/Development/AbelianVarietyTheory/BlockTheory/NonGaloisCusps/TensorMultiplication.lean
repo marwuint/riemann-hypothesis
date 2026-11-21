@@ -178,9 +178,4 @@ end Generic
 def FontaineFormalism (l : ℕ) [Fact l.Prime] (P : LocPrime l) : Prop :=
   ∀ K LL : FinExt l, FormalismAt (P.PD K) ↥LL.1
 
-example (l : ℕ) [Fact l.Prime] (P : LocPrime l) (h : FontaineFormalism l P) (K LL : FinExt l)
-    (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (hT : IsCrys (P.PD K) T.ρ) :
-    Function.Bijective (compMap (P.PD K) T.ρ) ∧ IsCrys (P.PD K) T.ρ.dual :=
-  ⟨(h K LL).2.2.1 T.V T.ρ hT, (h K LL).2.2.2.2.2.2.2.1 T.V T.ρ hT⟩
-
 end GlobalTheory.IndefiniteRowSideFullHecke.TensorMultiplication

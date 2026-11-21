@@ -129,15 +129,4 @@ def JointHarmonicIntegral : Prop :=
   ∀ (n p q : ℕ) (h : p + q ≤ n) (ap : Fin p → ℕ) (am : Fin q → ℕ), Antitone ap → Antitone am →
     NormSqIntegral h ap am
 
-example : hookProd ![2, 1] = 3 := by
-  have h0 : Finset.Ioi (0 : Fin 2) = {1} := by decide
-  have h1 : Finset.Ioi (1 : Fin 2) = ∅ := by decide
-  simp [hookProd, Fin.prod_univ_two, h0, h1, Nat.factorial]
-  norm_num
-
-example (k m : ℕ) : del (n := 2) (p := 1) (q := 1) le_rfl ![k] ![m] =
-    X (0, Sum.inl 0) ^ k * X (1, Sum.inr 0) ^ m := by
-  simp [del, delPlus, delMinus, powProd, nextRow, topMinor, botMinor, zPlus, zMinus,
-    Matrix.det_unique]
-
 end GlobalTheory.IndefiniteRowSideFullHecke.SubstitutionPolynomials

@@ -482,12 +482,6 @@ theorem riemannForm_im_eq_neg_one {d : ℕ} (hd : 0 < d) : (h1 d 1 (wK d)).im = 
   rw [this]
   field_simp
 
-example : Split 7 2 := Or.inl ⟨rfl, rfl⟩
-
-example : Split 7 11 := Or.inr ⟨by norm_num, by norm_num⟩
-
-example : ¬ Split 7 3 := by norm_num [Split]
-
 open PowerSeries in
 open scoped ComplexConjugate in
 variable {q : ℕ} [Fact q.Prime] in

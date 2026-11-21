@@ -234,10 +234,6 @@ def eta6Frame : Frame eta6Group 4 1 where
     rw [show ((1 : Fin 4) : ℕ) = 1 from rfl, eta_six_first_coefficient] at this
     exact this
 
-example : eta6Frame.wt 0 = 3 := rfl
-example : eta6Mult ModularGroup.T = Complex.I := eta6Mult_T_eq_I
-example : (-1 : SL(2, ℤ)) ∉ eta6Group := neg_one_not_mem_eta6Group
-
 end EtaSix
 
 end GlobalTheory.HeckeFamilyMatrices

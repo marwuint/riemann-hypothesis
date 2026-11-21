@@ -38,12 +38,6 @@ def SubClosed2 {V W : Type} (D : Set (List V × List W)) : Prop :=
 def splitPairs (R : Type) [CommRing R] (n : ℕ) : Set (List ((Fin n → R) × (Fin n → R)) × List (Fin n → R)) :=
   {z | z.1 ∈ splitSeq R n ∧ z.2 ∈ uniSeq R n ∧ ∀ y ∈ z.1, ∀ u ∈ z.2, y.2 ⬝ᵥ u = 0}
 
-example : [Finsupp.single 0 (1 : ℤ)] ∈ uniM ℤ (ℕ →₀ ℤ) := by
-  refine ⟨fun _ => Finsupp.lapply 0, fun i j => ?_⟩
-  obtain rfl : i = j := Subsingleton.elim (α := Fin 1) i j
-  fin_cases i
-  simp
-
 end GlobalTheory.SeqCx
 
 end

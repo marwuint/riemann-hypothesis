@@ -78,17 +78,4 @@ def SiegelWeilUnitary : Prop :=
         Summable (fun v => ‖cv v - 1‖) ∧ Multipliable cv ∧
         meanC μ 𝓕 (theta σ J T Φ) = cinf * ∏' v, cv v
 
-example {F E : Type} [Field F] [Field E] [Algebra F E]
-    (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R]
-    (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
-    (μ : Measure (Fin n → Fin M → R ⊗[F] E)) (ν : Measure (HermR R σ n)) (T : HermR R σ n) :
-    IsGramDensityAt R σ J μ ν 0 T 0 :=
-  ⟨Set.univ, 0, isOpen_univ, trivial, ⟨continuousOn_const, fun S _ _ => by simp⟩, rfl⟩
-
-example {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
-    (σ : E →ₐ[F] E) {M n : ℕ} (J : Matrix (Fin M) (Fin M) E)
-    (T : Matrix (Fin n) (Fin n) E) (Φ : (Fin n → Fin M → AF F ⊗[F] E) → ℂ)
-    (h : HA (AF F) σ J) (X : {X : Fin n → Fin M → E // gramE σ J X = T}) :
-    thetaTerm σ J T Φ h X = Φ (h⁻¹ • ratTup (F := F) (AF F) X.1) := rfl
-
 end GlobalTheory.IndefiniteRowSideFullHecke.GramDensityRealCoordinates

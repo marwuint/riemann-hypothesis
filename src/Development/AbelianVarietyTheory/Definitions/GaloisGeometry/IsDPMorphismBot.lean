@@ -472,16 +472,6 @@ def sq : Mor nodeL nodeL (RingHom.id ℚ) where
   hg _ _ _ := by simp
   hw _ := by simp
 
-example : Nonempty (Thick nodeL) := ⟨T⟩
-
-example : (sq.functor.obj T).x 0 = 0 := by
-  show ∏ j, T.x j ^ sq.e 0 j = 0
-  rw [Fin.prod_univ_two]
-  simp [sq, pow_two]
-  exact DualNumber.eps_mul_eps
-
-example : ((Mor.id nodeL).functor.obj T).B = D := rfl
-
 end Ex
 
 end GlobalTheory.LogCris

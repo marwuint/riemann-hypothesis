@@ -39,52 +39,6 @@ def majQ (r : ℕ) : Majorant (hermQ r) where
   major := fun σ => by simp [hermQ]
   conj_compat := fun σ => by simp
 
-example (a : ℕ) : IsTriEquivariant (fun _ : Fin 1 => a) (fun x => x 0 0 ^ a) := by
-  intro x b _ _ _
-  simp [triChar, Matrix.mul_apply, mul_pow, mul_comm]
-
-example (c : ℂ) : IsTriEquivariant (fun _ : Fin 0 => 0) (fun _ => c) := by
-  intro x b _ _ _
-  simp [triChar]
-
-example (c : ℂ) : IsBW (fun _ : Fin 0 => 0) (fun _ => c) := by
-  refine ⟨differentiableOn_const c, ?_, ?_⟩
-  · intro x b _ _ _
-    simp [triChar]
-  · intro x hx
-    simp at hx
-
-example : IsOpen (Metric.ball (0 : ℂ) 1) ∧ Balanced ℂ (Metric.ball (0 : ℂ) 1) ∧
-    DifferentiableOn ℂ (fun z : ℂ => z) (Metric.ball 0 1) ∧
-    ∀ w ∈ Metric.ball (0 : ℂ) 1, ‖(fun z : ℂ => z) w‖ ≤ 1 := by
-  refine ⟨Metric.isOpen_ball, balanced_ball_zero, differentiableOn_id, fun w hw => ?_⟩
-  simpa using (Metric.mem_ball.mp hw).le
-
-example : let V := EuclideanSpace ℂ (Fin 0)
-    Differentiable ℂ (fun _ : V => (1 : ℂ)) ∧ (∃ _z : V, (1 : ℂ) ≠ 0) ∧
-    (∀ v : V, ∃ l ∈ (⊤ : AddSubgroup V), ‖v - l‖ ≤ 0) ∧ 5 * (0 : ℝ) < (1 : ℕ) := by
-  refine ⟨differentiable_const 1, ⟨0, one_ne_zero⟩, fun v => ⟨v, trivial, by simp⟩, by norm_num⟩
-
-example (x y : Fin 1 → ℂ) : jForm 1 x y = conj (x 0) * y 0 := by
-  simp [jForm, sgn]
-
-example : (Real.exp (1 / 3) + 1) * ((1 : ℕ) : ℝ) < ((4 : ℕ) : ℝ) := by
-  have h1 : Real.exp (1 / 3) ≤ Real.exp 1 := Real.exp_le_exp.mpr (by norm_num)
-  have h2 := Real.exp_one_lt_d9
-  push_cast
-  linarith
-
-example (r : ℕ) (u : Fin r → ℂ) :
-    normSq (((1 : Matrix (Fin r) (Fin r) ℂ) * (1 : Matrix (Fin r) (Fin r) ℚ).map (Rat.castHom ℂ) *
-      (1 : Matrix (Fin r) (Fin r) ℂ)⁻¹) *ᵥ u) ≤ Real.exp (2 / (3 * (r : ℝ))) * normSq u := by
-  have h0 : 0 ≤ normSq u := Finset.sum_nonneg fun k _ => by positivity
-  have h1 : 1 ≤ Real.exp (2 / (3 * (r : ℝ))) := Real.one_le_exp (by positivity)
-  simp only [Matrix.map_one, map_zero, map_one, inv_one, mul_one, one_mulVec]
-  nlinarith
-
-example (x : Matrix (Fin 1) (Fin 1) ℂ) : leadMinor x 0 = x 0 0 := by
-  simp [leadMinor, Matrix.det_unique]
-
 abbrev QI : Type := CyclotomicField 4 ℚ
 
 instance : IsCyclotomicExtension {4} ℚ QI := by
@@ -93,8 +47,6 @@ instance : IsCyclotomicExtension {4} ℚ QI := by
 
 instance : IsCMField QI :=
   IsCyclotomicExtension.Rat.isCMField QI (S := {4}) ⟨4, rfl, by norm_num⟩
-
-example : Nonempty (QI →+* ℂ) := inferInstance
 
 def hermQI : HermForm QI 1 where
   c := (IsCMField.complexConj QI : QI →+* QI)

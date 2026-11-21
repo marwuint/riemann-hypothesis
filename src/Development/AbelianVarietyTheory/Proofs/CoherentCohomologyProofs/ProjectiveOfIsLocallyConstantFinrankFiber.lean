@@ -708,12 +708,6 @@ theorem semicontinuity_finite_projective_complex (K : CochainComplex (ModuleCat.
     fun i _ h => grauert_homology K i h,
     ker_free_of_valuationRing (FractionRing R) _⟩
 
-example : UpperSemicontinuous fun p : PrimeSpectrum ℤ => finrank p.asIdeal.ResidueField
-    (LinearMap.ker ((0 : ℤ →ₗ[ℤ] ℤ).baseChange p.asIdeal.ResidueField) ⧸
-      (LinearMap.range ((LinearMap.lsmul ℤ ℤ 2).baseChange p.asIdeal.ResidueField)).submoduleOf
-        (LinearMap.ker ((0 : ℤ →ₗ[ℤ] ℤ).baseChange p.asIdeal.ResidueField))) :=
-  upperSemicontinuous_finrank_linearMap_homology _ _ (LinearMap.zero_comp _)
-
 end Main
 
 end GlobalTheory

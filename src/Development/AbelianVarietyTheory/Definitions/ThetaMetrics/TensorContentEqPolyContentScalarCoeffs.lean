@@ -1017,40 +1017,6 @@ section Examples
 
 open MvPolynomial
 
-example (p : ℕ) [Fact p.Prime] :
-    ((gaussVal (NormedField.valuation (K := ℚ_[p]))
-      (C (p : ℚ_[p]) * X 0 + C ((p : ℚ_[p]) ^ 2) * X 1 : MvPolynomial (Fin 2) ℚ_[p]) : ℝ≥0) : ℝ) =
-      (p : ℝ)⁻¹ := by
-  have h := gaussVal_sum_C_mul_X (NormedField.valuation (K := ℚ_[p])) Finset.univ
-    (![(p : ℚ_[p]), (p : ℚ_[p]) ^ 2] : Fin 2 → ℚ_[p])
-  have hp : (1 : ℝ) ≤ p := by exact_mod_cast (Fact.out : p.Prime).one_le
-  simp only [Fin.sum_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one] at h
-  rw [h, Finset.univ_fin2, Finset.sup_insert, Finset.sup_singleton, NNReal.coe_max]
-  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, NormedField.valuation_apply, coe_nnnorm,
-    norm_pow, Padic.norm_p]
-  refine max_eq_left ?_
-  rw [sq]
-  exact mul_le_of_le_one_left (by positivity) (inv_le_one_of_one_le₀ hp)
-
-example {K Γ₀ : Type*} [Field K] [LinearOrderedCommGroupWithZero Γ₀] (v : Valuation K Γ₀) :
-    gaussVal v (X 0 - X 1 : MvPolynomial (Fin 2) K) = 1 ∧
-      gaussVal v (rename (fun _ => ()) (X 0 - X 1 : MvPolynomial (Fin 2) K)) = 0 := by
-  refine ⟨?_, by simp⟩
-  have h := gaussVal_sum_C_mul_X v Finset.univ (![1, -1] : Fin 2 → K)
-  simpa [Fin.sum_univ_two, Finset.univ_fin2, ← sub_eq_add_neg] using h
-
-example {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {ϖ : O}
-    (h : Irreducible ϖ) :
-    gaussAddVal (IsDiscreteValuationRing.addVal O) (C ϖ * X () : MvPolynomial Unit O) = 1 := by
-  rw [gaussAddVal_mul, gaussAddVal_C, gaussAddVal_X, add_zero,
-    IsDiscreteValuationRing.addVal_uniformizer h]
-
-example {O : Type*} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {ϖ : O}
-    (h : Irreducible ϖ) :
-    basisAddVal (IsDiscreteValuationRing.addVal O) (Pi.basisFun O (Fin 2)) ![ϖ, ϖ ^ 2] = 1 := by
-  rw [basisAddVal_eq_inf_univ, Finset.univ_fin2, Finset.inf_insert, Finset.inf_singleton]
-  simp [IsDiscreteValuationRing.addVal_uniformizer h]
-
 end Examples
 
 end

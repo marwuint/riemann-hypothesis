@@ -261,33 +261,6 @@ theorem isNorm_one {F F' : Type} [Field F] [Field F'] [Algebra F F'] (s : F' ≃
   unfold IsNorm
   rw [this, map_one]
 
-example : ¬ Kills (fun _ : ℤˣ => (1 : ℂ)) (fun g => ((g : ℤ) : ℂ)) := by
-  intro h
-  have h1 := h ℂ (Representation.trivial ℂ ℤˣ ℂ) (by
-    rw [finsum_eq_sum_of_fintype]
-    simp [UnitsInt.univ])
-  rw [finsum_eq_sum_of_fintype] at h1
-  have h2 := congrArg (fun F : ℂ →ₗ[ℂ] ℂ => F 1) h1
-  simp [UnitsInt.univ] at h2
-
-example : ¬ Kills (fun g : ℤˣ => 1 - ((g : ℤ) : ℂ)) (fun g => 1 - ((g : ℤ) : ℂ)) := by
-  intro h
-  let ρ : Representation ℂ ℤˣ (ℂ × ℂ) :=
-    { toFun := fun g => LinearMap.prodMap LinearMap.id (((g : ℤ) : ℂ) • LinearMap.id)
-      map_one' := by ext <;> simp
-      map_mul' := fun g k => by ext <;> simp [mul_comm] }
-  have hρ : ∀ g : ℤˣ, ρ g = LinearMap.prodMap LinearMap.id (((g : ℤ) : ℂ) • LinearMap.id) := fun _ => rfl
-  have h1 := h (ℂ × ℂ) ρ (by
-    rw [finsum_eq_sum_of_fintype]
-    simp [UnitsInt.univ, hρ, LinearMap.trace_prodMap'])
-  rw [finsum_eq_sum_of_fintype] at h1
-  have h2 := congrArg (fun F : (ℂ × ℂ) →ₗ[ℂ] (ℂ × ℂ) => (F (1, 0)).1) h1
-  simp [UnitsInt.univ, hρ] at h2
-
-example : Reg 2 2 1 := by unfold Reg; intro i h1 h2; interval_cases i; decide
-
-example : liftAll 5 2 [(2, 1), (3, 2)] = [(1, 1), (1, 5), (3, 2 * (1 + 125))] := by decide
-
 end GlobalTheory.Shin
 
 end

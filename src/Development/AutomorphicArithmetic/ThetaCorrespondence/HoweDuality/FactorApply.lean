@@ -21,10 +21,6 @@ def Rad (Op : Set (Module.End ℂ M)) (Rel K : Submodule ℂ M) : Prop :=
 def RadFin (Op : Set (Module.End ℂ M)) (Rel K : Submodule ℂ M) : Prop :=
   ∃ s, Gen Op Rel s ∧ ∀ S : Finset M, (∀ k ∈ S, k ∈ K) → ∃ e ∈ Algebra.adjoin ℂ Op, e s = s ∧ ∀ k ∈ S, e k ∈ Rel
 
-example : Rad (∅ : Set (Module.End ℂ ℂ)) ⊥ ⊥ :=
-  ⟨1, fun P _ _ h => (Submodule.eq_top_iff'.2 fun x => by simpa using P.smul_mem x h),
-    fun k hk => ⟨1, one_mem _, rfl, hk⟩⟩
-
 end One
 
 section Tensor

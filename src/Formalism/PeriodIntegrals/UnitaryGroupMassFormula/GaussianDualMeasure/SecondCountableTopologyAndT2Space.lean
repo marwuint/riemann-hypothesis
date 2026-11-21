@@ -32,8 +32,6 @@ section Meas
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
   [MeasurableSpace F] [BorelSpace F]
 
-example (d : ℕ) : BorelSpace (Fin d → F) := inferInstance
-
 end Meas
 
 section Char

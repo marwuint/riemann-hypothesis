@@ -912,39 +912,8 @@ theorem curv_tautGram_zero (e : ℕ) (ξ η : Fin e → ℂ) :
   rw [h, leviForm_log_normSq_add_comp φ.contDiff.contDiffAt (by simp), φ.fderiv]
   simp [φ, PiLp.inner_apply]
 
-example (ξ : Fin 1 → ℂ) :
-    diagVal (chernOne (tautGram 1) 0) ξ = -‖ξ 0‖ ^ 2 / (2 * Real.pi) := by
-  have : -I * chernOne (tautGram 1) 0 ξ ξ = ((-‖ξ 0‖ ^ 2 / (2 * Real.pi) : ℝ) : ℂ) := by
-    simp only [chernOne, curv_tautGram_zero, kappa, Fin.sum_univ_one, mul_conj', trace_smul,
-      trace_one, Fintype.card_fin, smul_eq_mul]
-    push_cast
-    linear_combination ((‖ξ 0‖ : ℂ) ^ 2 / (2 * Real.pi)) * I_mul_I
-  rw [diagVal, this, ofReal_re]
-
-example : ¬ TwoFormBound {0} (tautGram 1) (fun _ => 1) (curv (tautGram 1)) 0 := fun h => by
-  have := h.norm_form_le rfl (fun _ => 1) fun _ => 1
-  simp [curv_tautGram_zero, form_eq_sum, tautGram, neg_mulVec] at this
-  exact absurd this (by norm_num)
-
-example : IsHermFrame Set.univ (fun z => -tautGram 1 z) ∧
-    ¬ IsPosFrame Set.univ (fun z => -tautGram 1 z) := by
-  have h := (isPosFrame_tautGram 1).isHermFrame
-  refine ⟨⟨isOpen_univ, fun a b => (h.smooth a b).neg, fun z hz => (h.herm z hz).neg,
-    fun z hz => ?_⟩, fun h' => ?_⟩
-  · rw [det_neg]; exact (isUnit_one.neg.pow _).mul (h.isUnit z hz)
-  · have := (h'.posDef 0 trivial).diag_pos (i := 0)
-    simp [tautGram] at this
-    exact absurd this (by norm_num)
-
 def tautPairGram (z : ℂ) : Matrix (Unit ⊕ Unit) (Unit ⊕ Unit) ℂ :=
   fromBlocks (of fun _ _ => 1 + z * conj z) (of fun _ _ => z) (of fun _ _ => conj z) 1
-
-example (ξ : ℂ) : secondForm tautPairGram 0 ξ () () = ξ := by
-  have h : tautPairGram 0 = 1 := by
-    rw [← fromBlocks_one]; ext (a | a) (b | b) <;> simp [tautPairGram]
-  rw [secondForm_eq, conn, h, transpose_one, inv_one, Matrix.one_mul]
-  change del (fun x : ℂ => x) 0 ξ = ξ
-  rw [del_eq_fderiv differentiableAt_fun_id]; simp
 
 end Examples
 

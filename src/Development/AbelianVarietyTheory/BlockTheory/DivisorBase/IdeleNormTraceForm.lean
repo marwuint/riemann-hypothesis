@@ -194,11 +194,4 @@ def LevelGroup : Prop :=
 
 def NormAndLevel : Prop := IdeleNormScale ∧ LevelGroup
 
-example (K : Type) [Field K] [NumberField K] : IsNormScale (1 : (Adelic K)ˣ) 1 :=
-  ⟨by simp, by simp⟩
-
-example (E : Type) [Field E] [NumberField E] {W : Type} [AddCommGroup W] [Module ℚ W]
-    (ξ₀ : E) (h : W →ₗ[ℚ] W →ₗ[ℚ] E) (x y : W) :
-    traceForm E ξ₀ h x y = Algebra.trace ℚ E (ξ₀ * h x y) := rfl
-
 end GlobalTheory.IndefiniteRowSideFullHecke.IdeleNormTraceForm

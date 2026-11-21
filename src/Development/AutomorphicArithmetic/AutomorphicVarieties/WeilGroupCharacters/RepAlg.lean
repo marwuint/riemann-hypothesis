@@ -123,6 +123,4 @@ def closureIdeal {A G : Type} [CommRing A] [Group G] [TopologicalSpace G] (I : I
   ⨅ (N : ℕ) (H : OpenNormalSubgroup G), TwoSidedIdeal.span
     (S ∪ {z | ∃ a ∈ I ^ N, z = MonoidAlgebra.single 1 a} ∪ {z | ∃ h ∈ H, z = MonoidAlgebra.single h 1 - 1})
 
-example (A G : Type) [CommRing A] [Group G] (n : ℕ) : GDet n A G := GDet.ofRep 1
-
 end UpperTheory.V.W

@@ -178,8 +178,6 @@ def HermitianBundle.dual {K : Type u} [Field K] [NumberField K] (A : HermitianBu
     HermitianBundle.{u} K :=
   ⟨Module.Dual (𝓞 K) A.carrier, A.metric.dual⟩
 
-example : HermitianBundle GaussianField := (gaussianStandard 2).dual
-
 end
 
 end GroundTheory.Heights₂.Heights

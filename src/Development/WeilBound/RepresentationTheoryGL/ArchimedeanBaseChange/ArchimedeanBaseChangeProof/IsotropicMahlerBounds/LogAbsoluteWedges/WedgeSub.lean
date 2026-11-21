@@ -53,8 +53,6 @@ def PairF : Prop := ∀ (K ι κ : Type) [NormedField K] [IsUltrametricDist K] [
 def PairI : Prop := ∀ (ι κ : Type) [Fintype ι] [Fintype κ] [DecidableEq κ] (U W : Matrix ι κ ℂ),
   ‖(Uᴴ * W).det‖ ^ 2 ≤ nI U * nI W
 
-example : nF (1 : Matrix (Fin 0) (Fin 0) ℝ) = 1 := by simp [nF]
-
 end PositivityTheory.Rg.BcB.D1
 
 end

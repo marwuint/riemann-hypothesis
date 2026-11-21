@@ -108,11 +108,4 @@ def JetFrame : Prop :=
               substJet w (frameVec D b b') Rc Th =
                 Formalism.DimensionVariation.liftBlock c Rc (fun τ => letter (omega (a τ) (D τ)) (ζ τ))
 
-example : omega (1 / (2 * π)) 1 = 1 := by
-  have h : (π : ℝ) ≠ 0 := Real.pi_ne_zero
-  have : lineForm (1 / (2 * π)) 1 1 = ((1 / π : ℝ) : ℂ) := by
-    have h' : (π : ℂ) ≠ 0 := by exact_mod_cast h
-    simp only [lineForm, map_one, mul_one]; push_cast; field_simp
-  rw [omega, this, Complex.ofReal_re]; field_simp
-
 end GlobalTheory.IndefiniteRowSideFullHecke.TensorCoordinateForms

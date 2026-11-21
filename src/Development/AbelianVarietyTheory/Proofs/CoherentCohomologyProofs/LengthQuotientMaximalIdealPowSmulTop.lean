@@ -121,9 +121,4 @@ theorem signedLength_smul_self (hA : A.FG) {a : R} (ha : a ≠ 0) :
 
 end DVR
 
-example (p : ℕ) [Fact p.Prime] :
-    relLength (⊤ : Submodule ℤ_[p] (Fin 2 → ℤ_[p])) ((p : ℤ_[p]) ^ 3 • ⊤) = 6 := by
-  rw [relLength_irreducible_pow_smul_self Module.Finite.fg_top PadicInt.irreducible_p]
-  simp
-
 end GlobalTheory

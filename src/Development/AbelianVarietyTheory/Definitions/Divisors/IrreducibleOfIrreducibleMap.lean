@@ -400,12 +400,4 @@ theorem isChowFormCycle_two_sq_add_sq :
   simpa using (isChowFormInt_sq_add_sq.single isPrime_span_sq_add_sq
     isHomogeneous_span_sq_add_sq).nsmul 2
 
-example (f : MvPolynomial (Fin (0 + 1) × Fin 2) ℚ) :
-    ¬ IsChowFormInt (Ideal.span {(X 0 ^ 2 + X 1 ^ 2 : MvPolynomial (Fin 2) ℚ)}) 0 1 f :=
-  fun h => absurd (h.unique isChowFormInt_sq_add_sq).1 (by norm_num)
-
-example (e dl : ℕ) (f : MvPolynomial (Fin (e + 1) × Fin N) k) :
-    ¬ IsChowFormCycle (Finsupp.single (⊤ : Ideal (MvPolynomial (Fin N) k)) 1) e dl f :=
-  fun h => not_isChowFormInt_top f (isChowFormCycle_single_iff.1 h).2.2
-
 end GlobalTheory.ChowHt

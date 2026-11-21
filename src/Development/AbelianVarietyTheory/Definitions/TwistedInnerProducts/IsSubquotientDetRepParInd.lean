@@ -666,21 +666,6 @@ theorem not_isCuspidal_detRep_two (χ : kˣ →* ℂˣ) : ¬ IsCuspidal (detRep 
   rw [twKer_detRep] at this
   exact bot_ne_top this
 
-example (χ : kˣ →* ℂˣ) : HasCentralChar (detRep n χ) (χ ^ Fintype.card n) := fun z v => by
-  have : GeneralLinearGroup.det (GeneralLinearGroup.scalar n z) = z ^ Fintype.card n := by
-    ext; simp [GeneralLinearGroup.scalar]
-  simp [detRep, this]
-
-example {χ : kˣ →* ℂˣ} (h : IsUnitaryChar χ) : IsUnitarisable (detRep n χ) :=
-  (isUnitarisable_ofChar_iff _).2 fun _ => h _
-
-example {G : Type} [Group G] (χ : G →* ℂˣ) : 1 ≤ jhMult (ofChar χ) (ofChar χ) := by
-  refine le_iSup₂_of_le 1 ⟨fun _ => ⊤, fun _ => ⊥, fun _ => bot_le,
-    fun i j h => absurd (Subsingleton.elim i j) h.ne, fun _ => ⟨.mk ((Submodule.quotEquivOfEqBot _
-      (by ext; simp [show (⊥ : Subrepresentation (ofChar χ)).toSubmodule = ⊥ from rfl])).trans
-        Submodule.topEquiv) fun g => ?_⟩⟩ le_rfl
-  exact Submodule.linearMap_qext _ rfl
-
 end Examples
 
 end GlobalTheory.SmGL

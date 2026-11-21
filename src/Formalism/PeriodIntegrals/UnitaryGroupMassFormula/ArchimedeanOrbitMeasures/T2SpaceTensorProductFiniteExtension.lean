@@ -137,9 +137,6 @@ instance secondCountable_completion (v : InfinitePlace F) : SecondCountableTopol
 instance secondCountable_infiniteAdeleRing : SecondCountableTopology (InfiniteAdeleRing F) :=
   inferInstanceAs (SecondCountableTopology ((v : InfinitePlace F) → v.Completion))
 
-example : LocallyCompactSpace (InfiniteAdeleRing F) := inferInstance
-example : IsTopologicalRing (InfiniteAdeleRing F) := inferInstance
-
 end Inf
 
 end PI.AprimeInfT

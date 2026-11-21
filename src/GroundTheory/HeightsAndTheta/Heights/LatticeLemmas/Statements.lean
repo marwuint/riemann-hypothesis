@@ -112,17 +112,6 @@ section Witnesses
 
 variable (K : Type u) [Field K] [NumberField K]
 
-example : HermitianBundle K := (HermitianBundle.standard K 2).sub (standardFlag K 1)
-example : HermitianBundle K :=
-  (HermitianBundle.standard K 2).quot (standardFlag K 1) (standardFlag_saturated 1)
-example : HermitianBundle ℚ := (HermitianBundle.standard ℚ 2).quot (standardFlag ℚ 1)
-  (standardFlag_saturated 1)
-example : HermitianBundle GaussianField := (HermitianBundle.standard GaussianField 2).quot
-  (standardFlag GaussianField 1) (standardFlag_saturated 1)
-example : HermitianBundle GaussianField := (HermitianBundle.standard ℚ 2).baseChange GaussianField
-example : HermitianBundle GaussianField :=
-  (HermitianNorms.standard GaussianField 2).bundle (FullLattice.standard GaussianField 2)
-
 def doubled : Submodule (𝓞 K) (HermitianBundle.standard K 2).carrier :=
   LinearMap.range ((2 : 𝓞 K) • LinearMap.id)
 
@@ -134,26 +123,17 @@ theorem Sublattice.witness :
     simp only [LinearMap.smul_apply, LinearMap.id_apply] at hxy
     exact smul_right_injective (Fin 2 → 𝓞 K) (two_ne_zero (α := 𝓞 K)) hxy)
 
-example := Sublattice.witness ℚ
-example := Sublattice.witness GaussianField
-
 theorem LatticeOfLocalisations.witness :
     (∀ v, IsLocalLattice v (localLattice v (FullLattice.standard K 2).carrier)) ∧
       {v : HeightOneSpectrum (𝓞 K) | localLattice v (FullLattice.standard K 2).carrier ≠
         localLattice v (FullLattice.standard K 2).carrier}.Finite :=
   ⟨fun v ↦ localLattice_isLocalLattice v _, Set.finite_empty.subset fun _ hv ↦ hv rfl⟩
 
-example := LatticeOfLocalisations.witness ℚ
-example := LatticeOfLocalisations.witness GaussianField
-
 theorem LocalChange.witness (v₀ : HeightOneSpectrum (𝓞 K)) :
     {v | swapAt v₀ v ≠ 1}.Finite ∧
       ∀ v, (localLattice v (FullLattice.standard K 2).carrier : Set _) =
         swapAt v₀ v '' localLattice v (FullLattice.standard K 2).carrier :=
   ⟨swapAt_finite v₀, localLattice_swapAt v₀⟩
-
-example := LocalChange.witness ℚ (nonempty_heightOneSpectrum (K := ℚ)).some
-example := LocalChange.witness GaussianField (nonempty_heightOneSpectrum (K := GaussianField)).some
 
 variable {K} in
 
@@ -174,9 +154,6 @@ theorem NormComparison.witness (σ : K →+* ℂ) (x : Fibre σ (HermitianBundle
       2 * ‖FibreSpace.equiv (HermitianBundle.standard K 2).metric σ x‖ :=
   (norm_scale _ 2 two_pos σ x).le
 
-example := NormComparison.witness ℚ
-example := NormComparison.witness GaussianField
-
 theorem DiagonalChange.witness :
     (∀ (σ : K →+* ℂ) (x : Fibre σ (HermitianBundle.standard K 2).carrier),
       ‖FibreSpace.equiv ((HermitianBundle.standard K 2).metric.scale 2 two_pos) σ x‖ =
@@ -192,14 +169,8 @@ theorem DiagonalChange.witness :
       Complex.norm_two]
   · rw [LinearMap.smul_apply, LinearMap.id_apply, map_smul, LinearEquiv.apply_symm_apply]
 
-example := DiagonalChange.witness ℚ
-example := DiagonalChange.witness GaussianField
-
 theorem ExactSequence.witness : (HermitianBundle.standard K 2).Saturated (standardFlag K 1) :=
   standardFlag_saturated 1
-
-example := ExactSequence.witness ℚ
-example := ExactSequence.witness GaussianField
 
 def flagChain : Fin 3 → Submodule (𝓞 K) (HermitianBundle.standard K 2).carrier :=
   fun i ↦ standardFlag K i.rev
@@ -209,9 +180,6 @@ theorem ChainSum.witness :
       ∀ a, (HermitianBundle.standard K 2).Saturated (flagChain K a) :=
   ⟨rfl, fun _ _ hij ↦ standardFlag_monotone (Fin.rev_le_rev.mpr hij),
     fun _ ↦ standardFlag_saturated _⟩
-
-example := ChainSum.witness ℚ
-example := ChainSum.witness GaussianField
 
 def stdVec : Fin 2 → (HermitianBundle.standard K 2).carrier := fun i ↦ Pi.single i 1
 
@@ -246,9 +214,6 @@ theorem Hadamard.witness :
         ∀ i (σ : K →+* ℂ), (HermitianBundle.standard K 2).normAt σ (stdVec K i) ≤ 1 :=
   ⟨stdVec_linearIndependent K, stdVec_card K, fun i σ ↦ (normAt_stdVec K σ i).le⟩
 
-example := Hadamard.witness ℚ
-example := Hadamard.witness GaussianField
-
 theorem HadamardQuotient.witness :
     (HermitianBundle.standard K 2).Saturated (standardFlag K 1) ∧
       Module.finrank (𝓞 K) (Submodule.span (𝓞 K) (Set.range (stdVec K))) =
@@ -256,27 +221,16 @@ theorem HadamardQuotient.witness :
         ∀ i (σ : K →+* ℂ), (HermitianBundle.standard K 2).normAt σ (stdVec K i) ≤ 1 :=
   ⟨standardFlag_saturated 1, stdVec_span K, fun i σ ↦ (normAt_stdVec K σ i).le⟩
 
-example := HadamardQuotient.witness ℚ
-example := HadamardQuotient.witness GaussianField
-
 theorem HadamardMean.witness :
     LinearIndependent (𝓞 K) (stdVec K) ∧
       Fintype.card (Fin 2) = Module.finrank (𝓞 K) (HermitianBundle.standard K 2).carrier :=
   ⟨stdVec_linearIndependent K, stdVec_card K⟩
-
-example := HadamardMean.witness ℚ
-example := HadamardMean.witness GaussianField
 
 theorem HadamardMeanQuotient.witness :
     (HermitianBundle.standard K 2).Saturated (standardFlag K 1) ∧
       Module.finrank (𝓞 K) (Submodule.span (𝓞 K) (Set.range (stdVec K))) =
         Module.finrank (𝓞 K) (HermitianBundle.standard K 2).carrier :=
   ⟨standardFlag_saturated 1, stdVec_span K⟩
-
-example := HadamardMeanQuotient.witness ℚ
-example := HadamardMeanQuotient.witness GaussianField
-
-example : Algebra ℚ GaussianField := inferInstance
 
 end Witnesses
 

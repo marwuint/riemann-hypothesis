@@ -250,10 +250,4 @@ def MassFormula : Prop :=
                 (μf (stabK σ J Λ)).toReal) *
               GlobalTheory.SgGlob.normInf (G Z) ^ (k - 1) * ∏' v, dens Z v))
 
-example {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {r : ℕ} (T T' : F)
-    (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (a b : Fin (r + 1)) :
-    gramTwo σ T T' Z (Fin.castAdd (r + 1) a) (Fin.natAdd (r + 1) b) = Z a b := by
-  simp only [gramTwo, Matrix.reindex_apply, Matrix.submatrix_apply,
-    finSumFinEquiv_symm_apply_castAdd, finSumFinEquiv_symm_apply_natAdd, Matrix.fromBlocks_apply₁₂]
-
 end GlobalTheory.IndefiniteRowSideFullHecke.HermitianGramMatrices

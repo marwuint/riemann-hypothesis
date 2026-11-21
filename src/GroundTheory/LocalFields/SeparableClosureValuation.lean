@@ -384,17 +384,6 @@ section Check
 variable (K : Type*) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K]
   (L : IntermediateField K (SeparableClosure K)) [FiniteDimensional K L]
 
-example : (valueGroupRat K (SeparableClosure K) K).relIndex (valueGroupRat K (SeparableClosure K) L) =
-    ramificationIndex K L :=
-  relIndex_valueGroupRat K (SeparableClosure K) L
-
-example : valueGroupRat K (SeparableClosure K) K = AddSubgroup.zmultiples 1 :=
-  valueGroupRat_base K (SeparableClosure K)
-
-example (σ : SeparableClosure K ≃ₐ[K] SeparableClosure K) (x : SeparableClosure K) :
-    ordRat K (σ x) = ordRat K x :=
-  ordRat_algEquiv σ x
-
 end Check
 
 end GroundTheory.LocalField

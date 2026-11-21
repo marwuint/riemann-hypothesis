@@ -112,9 +112,6 @@ abbrev Points (G : FiniteFlatGroupScheme.{u, v} R) (A : Type w) [CommRing A] [Al
     Type (max v w) :=
   WithConv (G.H →ₐ[R] A)
 
-example (G : FiniteFlatGroupScheme.{u, v} R) (A : Type w) [CommRing A] [Algebra R A] :
-    CommGroup (G.Points A) := inferInstance
-
 variable (G : FiniteFlatGroupScheme.{u, v} R)
 variable {A : Type w} {B : Type w'} {C : Type*} [CommRing A] [Algebra R A] [CommRing B]
   [Algebra R B] [CommRing C] [Algebra R C]

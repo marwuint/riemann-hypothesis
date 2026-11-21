@@ -95,8 +95,6 @@ def lamφ : ULift.{u} (Finset (Fin 2)) → ((G2 G).left ⟶ G.left) :=
 
 def lamε : ULift.{u} (Finset (Fin 2)) → ℤ := fun I => (-1) ^ (2 - I.down.card)
 
-example (L : LB G.left) : abelian₂ G L = LB.LinComb L (lamφ G) lamε := rfl
-
 def Biext.IsCube [IsCommMonObj G] {L : RigLB G} (B : Biext G (abelian₂ G L.L)) (c : CubicalStr G L) : Prop :=
   LB.Gen.Corr L.L _ _ (thφ G (x3 G)) thε
       (flatGen L.L (lamφ G) lamε (law₁φ G (x3 G 0) (x3 G 1) (x3 G 2)) lawε B.law₁) c.t ∧

@@ -28,9 +28,6 @@ def nontriviallyNormedField : NontriviallyNormedField K :=
         MonoidWithZeroHom.ValueGroup₀.embedding_strictMono }
   Valued.toNontriviallyNormedField K (ValueGroupWithZero K)
 
-example : (nontriviallyNormedField K).toUniformSpace.toTopologicalSpace = ‹TopologicalSpace K› :=
-  rfl
-
 theorem completeSpace_nontriviallyNormedField :
     @CompleteSpace K (nontriviallyNormedField K).toUniformSpace := by
   let := IsTopologicalAddGroup.rightUniformSpace K

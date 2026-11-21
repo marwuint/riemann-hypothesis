@@ -65,13 +65,4 @@ def ZeroCycleHeightFormula : Prop :=
 def ZeroCycleHeight : Prop :=
   ZeroCycleHeightFormula ∧ PointHeightScaling ∧ PointHeightExtension ∧ FormHeightExtension
 
-example : IsFramedLattice (!![2, 3] : Matrix (Fin 1) (Fin 2) ℚ) (fun _ => !![5]) where
-  pos := Nat.one_pos
-  span := fun x => ⟨![x 0 / 2, 0], by
-    funext i
-    fin_cases i
-    simp [Matrix.mulVec, dotProduct, Fin.sum_univ_two]
-    ring⟩
-  frame := fun _ => by simp
-
 end GlobalTheory.IndefiniteRowSideFullHecke.FramedLatticeZeroCycleHeight

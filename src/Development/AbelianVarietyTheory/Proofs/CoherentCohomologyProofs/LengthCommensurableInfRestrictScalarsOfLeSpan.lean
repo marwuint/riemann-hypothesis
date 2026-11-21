@@ -242,14 +242,4 @@ theorem signedLength_inf_smul_inf_zpow {ϖ : R} (hϖ : Irreducible ϖ) (M Θ : S
 
 end FractionField
 
-example (p : ℕ) [Fact p.Prime] :
-    signedLength (Submodule.span ℤ_[p] {(1 : ℚ_[p])})
-      (((1 : ℤ_[p]ˣ) • algebraMap ℤ_[p] ℚ_[p] p ^ (-1 : ℤ)) • Submodule.span ℤ_[p] {(1 : ℚ_[p])}) =
-      -1 := by
-  have : Submodule.IsLattice ℚ_[p] (Submodule.span ℤ_[p] {(1 : ℚ_[p])}) :=
-    ⟨Submodule.fg_span_singleton _, by rw [Submodule.span_span_of_tower]; simp⟩
-  have h := signedLength_inf_smul_inf_zpow (K := ℚ_[p]) (PadicInt.irreducible_p (p := p))
-    (Submodule.span ℤ_[p] {(1 : ℚ_[p])}) (Submodule.span ℤ_[p] {(1 : ℚ_[p])}) ⊤ 1 (-1)
-  simpa using h
-
 end GlobalTheory

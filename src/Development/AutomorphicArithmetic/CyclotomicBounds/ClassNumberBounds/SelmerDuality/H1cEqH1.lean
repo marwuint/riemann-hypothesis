@@ -27,10 +27,6 @@ variable (R) in
 def modFit (M : Type*) [AddCommGroup M] [Module R M] (i : ℕ) : Ideal R :=
   ⨆ (k : ℕ) (g : Fin k → M) (_ : Submodule.span R (Set.range g) = ⊤), fitGen g i
 
-example (A : Matrix m n R) : minorIdeal 0 A = ⊤ := by
-  rw [Ideal.eq_top_iff_one]
-  exact Ideal.subset_span ⟨Fin.elim0, Fin.elim0, by simp⟩
-
 end Minors
 
 section Complex
@@ -70,8 +66,6 @@ theorem isMinimal_iff [IsLocalRing R] (Φ : Matrix m n R) :
     IsMinimal Φ ↔ ∀ i j, Φ i j ∈ IsLocalRing.maximalIdeal R := by
   rw [IsMinimal, IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]
 
-example : IsMinimal (0 : Matrix m n R) := fun _ _ => Ideal.zero_mem _
-
 structure IsQis [Fintype m] [Fintype n] [Fintype n'] (Φ : Matrix m n R) (Φ' : Matrix m' n' R)
     (f₁ : Matrix n' n R) (f₂ : Matrix m' m R) : Prop where
   comm : Φ' * f₁ = f₂ * Φ
@@ -94,10 +88,6 @@ def IsHtpyEquiv [Fintype m] [Fintype n] [Fintype m'] [Fintype n'] [DecidableEq m
   Φ' * f₁ = f₂ * Φ ∧ ∃ (g₁ : Matrix n n' R) (g₂ : Matrix m m' R) (h : Matrix n m R)
     (h' : Matrix n' m' R), Φ * g₁ = g₂ * Φ' ∧ g₁ * f₁ = 1 + h * Φ ∧ g₂ * f₂ = 1 + Φ * h ∧
       f₁ * g₁ = 1 + h' * Φ' ∧ f₂ * g₂ = 1 + Φ' * h'
-
-example [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n] (Φ : Matrix m n R) :
-    IsHtpyEquiv Φ Φ 1 1 :=
-  ⟨by simp, 1, 1, 0, 0, by simp, by simp, by simp, by simp, by simp⟩
 
 structure SelfDual [Fintype m] [Fintype n] (ε : R) (Φ : Matrix m n R) where
 
@@ -187,14 +177,6 @@ def hyperbolic (β : H →ₗ[k] H' →ₗ[k] k) : LinearMap.BilinForm k (H × H
 theorem hyperbolic_apply (β : H →ₗ[k] H' →ₗ[k] k) (v w : H × H') :
     hyperbolic β v w = β v.1 w.2 + β w.1 v.2 := by
   simp [hyperbolic]
-
-example : IsHalfIsotropic (hyperbolic (LinearMap.mul k k))
-    (LinearMap.range (LinearMap.inl k k k)) := by
-  refine ⟨?_, ?_⟩
-  · rintro _ ⟨x, rfl⟩ _ ⟨y, rfl⟩
-    simp [hyperbolic_apply]
-  · rw [LinearMap.finrank_range_of_inj LinearMap.inl_injective]
-    simp
 
 end Lagrangian
 

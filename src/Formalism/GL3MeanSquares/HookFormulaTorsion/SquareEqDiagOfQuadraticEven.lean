@@ -60,20 +60,6 @@ theorem t_odd : OddOrderDetermined := by
     rw [hk, pow_succ, pow_mul, hc2, one_pow, one_mul] at a; exact a
   exact mul_inv_eq_one.mp this
 
-example : ∀ a b : ZMod 2, a.val % 2 = b.val % 2 →
-    (∑ _r : Unit, (1 : ZMod 5) * 1) = if a = b then 1 else 0 := by decide
-
-example (p : ℕ) (hp : p.Prime) : ∀ a ∈ (algebraMap ℤ ℚ).range, ∃ b ∈ (algebraMap ℤ ℚ).range,
-    (RingHom.id ℚ) a - a ^ p = (p : ℚ) * b := by
-  rintro _ ⟨n, rfl⟩
-  haveI := Fact.mk hp
-  have : (p : ℤ) ∣ n - n ^ p := by
-    rw [← (ZMod.intCast_zmod_eq_zero_iff_dvd _ p)]; push_cast; rw [ZMod.pow_card]; ring
-  obtain ⟨k, hk⟩ := this
-  refine ⟨k, ⟨k, rfl⟩, ?_⟩
-  have := congrArg (fun z : ℤ => (z : ℚ)) hk
-  simpa using this
-
 section
 variable {V : Type} [AddCommGroup V] {H : V → V → ℂ}
 
@@ -85,10 +71,6 @@ theorem sub2 (hadd : ∀ x x' y, H (x + x') y = H x y + H x' y)
     (hherm : ∀ x y, H y x = (starRingEnd ℂ) (H x y)) : ∀ x y y', H x (y - y') = H x y - H x y' := by
   intro x y y'; have := add2 hadd hherm x (y - y') y'; rw [sub_add_cancel] at this; rw [this]; ring
 end
-
-example : ∀ a : Fin 3 → ZMod 3, (∑ j, a j) ^ 2 =
-    (∑ j, (a j) ^ 2) + ∑ j, ∑ j' ∈ univ.filter (fun j' => j < j'), cob (fun x : ZMod 3 => x ^ 2) (a j) (a j') := by
-  decide +kernel
 
 theorem rv_sumexp : SumExpansion := by
   intro M Q _ _ φ hadd k

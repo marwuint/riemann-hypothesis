@@ -646,12 +646,4 @@ theorem normal_domain_height_one.{u, v, w} (A : Type u) [CommRing A] [IsDomain A
   rw [WithZero.exp_neg, ← heightOneOrdHom_eq_exp p hp hx,
     heightOneOrdHom_eq_valuation_inv p hp (primeLocalSubalgebra K p), inv_inv]
 
-example : ∃ (p : Ideal ℤ) (_ : p.IsPrime) (hp : p.height = 1),
-    0 < heightOneOrd_vw p hp (algebraMap ℤ ℚ 2) := by
-  have : (Ideal.span {(2 : ℤ)}).IsMaximal :=
-    PrincipalIdealRing.isMaximal_of_irreducible Int.prime_two.irreducible
-  exact ⟨Ideal.span {2}, inferInstance,
-    IsPrincipalIdealRing.height_eq_one_of_isMaximal _ Int.not_isField,
-    (heightOneOrd_vw_algebraMap_pos_iff _ _ two_ne_zero).mpr (Ideal.mem_span_singleton_self 2)⟩
-
 end GlobalTheory

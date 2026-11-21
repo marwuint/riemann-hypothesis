@@ -121,23 +121,4 @@ variable (k) in
 
 def LatticeClasses : Prop := NormalFormModN k ∧ LatticeBounds k ∧ ChainSizes k
 
-example (H : ChainSizes k) (hϖ : valuation k (ϖ : k) = uniformizer k) (hψ : HasConductor ψ 1)
-    [hν : ν.IsAddHaarMeasure] (κ t : Type) [Fintype κ] [DecidableEq κ] [Fintype t] [DecidableEq t]
-    (δ : kˣ →* ℂˣ) (hδ : IsTame δ) (μ₀ : ℕ → kˣ →* ℂˣ) (h₀ : ∀ j, IsUnram (μ₀ j)) :
-    ∃ A, (twistChain s t κ δ hδ μ₀).IsRepSystem A ψ ν ∧ (twistChain s t κ δ hδ μ₀).RepsNormal A ϖ :=
-  (H ϖ hϖ ψ hψ ν hν s (κ ⊕ Fin (s + 1)) t (Ix (κ ⊕ Fin (s + 1)) t (s + 2)) (XIx κ t) δ hδ μ₀ h₀
-    (fun j c h => plainFrame (stdOrd κ t j c h)) (LatFrame.refl k _) fun _ _ _ => rfl).1.2.1
-
-example {n : Type*} [Fintype n] [DecidableEq n] {c : ℕ} (i : Fin c) :
-    topCoord (latOf (1 : GL (n ⊕ Fin c) k)) i = powInt ϖ 0 := by
-  ext a
-  simp only [topCoord, powInt, mem_latOf_one, Set.mem_setOf_eq, zpow_zero, Units.val_one, map_one]
-  constructor
-  · rintro ⟨y, hy, -, rfl⟩; exact hy _
-  · intro ha
-    refine ⟨Pi.single (Sum.inr i) a, fun l => ?_, fun l hl => ?_, by simp⟩
-    · rw [Pi.single_apply]; split_ifs
-      exacts [ha, zero_mem _]
-    · rw [Pi.single_apply, if_neg]; simpa using hl.ne'
-
 end GlobalTheory.IndefiniteRowSideFullHecke.NormalRepresentationLattice

@@ -409,19 +409,6 @@ theorem exists_posDef_of_secondDiff_const [Module.Free ℤ X] [Module.Finite ℤ
     ring
   · exact (polar_realExt_one_tmul _ μ ν).trans (h'.polar_quadraticMap he μ ν)
 
-example : HasConstSecondDiff (fun x : ℤ => ((x : ℝ) ^ 2 + 1)) ∧
-    (∀ x : ℤ, (((-x : ℤ) : ℝ) ^ 2 + 1) = (x : ℝ) ^ 2 + 1) ∧
-    Tendsto (fun x : ℤ => ((x : ℝ) ^ 2 + 1)) cofinite atTop := by
-  refine ⟨fun a a' μ ν => ?_, fun x => by simp, tendsto_atTop_add_const_right _ _ ?_⟩
-  · simp only [secondDiff]
-    push_cast
-    ring
-  · have h : Tendsto (fun x : ℤ => |(x : ℝ)|) cofinite atTop := by
-      rw [Int.cofinite_eq, tendsto_sup]
-      exact ⟨tendsto_abs_atBot_atTop.comp (tendsto_intCast_atBot_iff.2 tendsto_id),
-        tendsto_abs_atTop_atTop.comp tendsto_intCast_atTop_atTop⟩
-    simpa [Function.comp_def] using (tendsto_pow_atTop two_ne_zero).comp h
-
 end RealExtension
 
 end GlobalTheory

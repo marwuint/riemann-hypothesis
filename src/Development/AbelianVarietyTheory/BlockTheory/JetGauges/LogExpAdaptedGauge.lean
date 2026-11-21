@@ -172,8 +172,4 @@ def ProductFrameSym : Prop :=
   ∀ (d : ℕ) (B : FB (Ints C) d (𝓞 E)) (ℓ ε : Pt C 1 d), IsLogExp C B.G ℓ ε →
     ∃ h : PS C 2 d, B.IsCanonGauge C h ∧ ProductFrameFor g B ε h
 
-example (p : ℕ) [Fact p.Prime] : CompleteSpace ℂ_[p] ∧ IsAlgClosed ℂ_[p] ∧ CharZero ℂ_[p] ∧
-    IsUltrametricDist ℂ_[p] :=
-  ⟨inferInstance, inferInstance, inferInstance, inferInstance⟩
-
 end GlobalTheory.IndefiniteRowSideFullHecke.LogExpAdaptedGauge

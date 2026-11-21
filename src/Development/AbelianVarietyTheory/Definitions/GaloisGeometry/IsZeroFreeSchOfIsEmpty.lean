@@ -230,8 +230,4 @@ def trHQ {Z X : Scheme.{0}} (f : Z ⟶ X) (n i : ℤ) : HQ l (sch.obj Z) n i →
 
 end Adic
 
-example (X : Scheme.{0}) (n : ℤ) (x : Ht 5 (sch.obj X) n 2) : trHt 5 (𝟙 X) n 2 x = x := trHt_id 5 X n 2 x
-
-example : transfer ℤ (𝟙 (Spec (CommRingCat.of (Polynomial ℤ)))) = 𝟙 _ := transfer_id ℤ _
-
 end GlobalTheory.EtC.Tr

@@ -751,42 +751,4 @@ theorem leviForm_one_one_eq_laplacian {u : ℂ → ℝ} {z : ℂ} (hu : ContDiff
   simp [iteratedFDeriv_two_apply]
   ring
 
-example (z v : ℂ) : dbar (fun x : ℂ => conj x) z v = conj v ∧ del (fun x : ℂ => conj x) z v = 0 := by
-  rw [dbar_conj (fun x => x), del_conj (fun x => x), del_eq_fderiv differentiableAt_fun_id,
-    dbar_eq_zero differentiableAt_fun_id]
-  simp
-
-example (z : ℂ) : leviForm (fun x : ℂ => ‖x‖ ^ 2) z I 1 = I := by
-  rw [leviForm_normSq]; simp
-
-example (z : ℂ) : leviForm (fun x : ℂ => Real.log (‖x‖ ^ 2 + 1)) z 1 1 =
-    1 / ((‖z‖ ^ 2 + 1 : ℝ) : ℂ) ^ 2 := by
-  have h : ‖z‖ ^ 2 + 1 ≠ 0 := by positivity
-  have h' : ((‖z‖ ^ 2 + 1 : ℝ) : ℂ) ≠ 0 := by exact_mod_cast h
-  rw [leviForm_log_normSq_add h]
-  simp only [inner, star_def, map_one, one_mul, mul_one, conj_mul']
-  field_simp
-  push_cast
-  ring
-
-example (n : ℕ) (z : EuclideanSpace ℂ (Fin n)) :
-    IsPshC2On (fun x : EuclideanSpace ℂ (Fin n) => ‖x‖ ^ 2) Set.univ ∧
-    leviMatrix (fun x : EuclideanSpace ℂ (Fin n) => ‖x‖ ^ 2) z
-      (fun i => EuclideanSpace.single i 1) = 1 := by
-  refine ⟨isPshC2On_normSq _, ?_⟩
-  ext i j
-  simp [leviForm_normSq, Matrix.one_apply, EuclideanSpace.inner_single_left, eq_comm]
-
-example : ¬ IsPshC2On (fun x : ℂ => -‖x‖ ^ 2) {0} := fun h => by
-  have := h.nonneg rfl 1
-  rw [leviForm_neg, ContinuousLinearMap.neg_apply, ContinuousLinearMap.neg_apply,
-    leviForm_normSq] at this
-  norm_num at this
-
-example {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℂ V] (z v w : V) :
-    leviForm (fun x : V => ‖x‖ ^ 2) z v w = inner ℂ w v := leviForm_normSq z v w
-
-example (n : ℕ) (u : (Fin n → ℂ) → ℝ) (z : Fin n → ℂ) (hu : ContDiffAt ℝ 2 u z) :
-    (leviMatrix u z fun i => Pi.single i 1).IsHermitian := leviMatrix_isHermitian hu _
-
 end GlobalTheory

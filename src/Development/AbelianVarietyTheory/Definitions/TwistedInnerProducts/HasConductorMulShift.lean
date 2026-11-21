@@ -612,19 +612,6 @@ end Spherical
 
 section Examples
 
-example [Fintype n] [DecidableEq n] (P : Pair k n) : phiOne P P 1 = 1 :=
-  if_pos (maps_iff_hasVal.2 fun y a h => by simpa using h)
-
-example [Fintype n'] (P : Pair k n') (Q : Pair k n) : phiOne P Q 0 = 0 :=
-  if_neg fun h => by
-    have h1 := maps_iff_hasVal.1 h _ _ P.hasVal_vec
-    rw [zero_mulVec] at h1
-    exact one_ne_zero (h1.unique (Pair.mem_ker.1 (zero_mem _)))
-
-example [Fintype n] (i : n) (x : n → k) :
-    x ∈ (stdPair k i).ker ↔ ∃ h : ∀ j, x j ∈ 𝒪[k], (⟨x i, h i⟩ : 𝒪[k]) ∈ maximalIdeal 𝒪[k] := by
-  simp only [Pair.mem_ker, stdPair_hasVal, residue_eq_zero_iff]
-
 theorem scalar_smul_eq [Fintype n] [DecidableEq n] (g : GL n k) (s : 𝒪[k]ˣ) (hg : ∀ x : n → k, g • x = (s : 𝒪[k]) • x)
     (P : Pair k n) : g • P = (Units.map (residue 𝒪[k]).toMonoidHom s)⁻¹ • P := by
   refine Pair.ext fun x a => ?_
@@ -645,12 +632,6 @@ theorem Mram_ne_bot [Fintype n] [Nonempty n] {c : 𝓀[k]ˣ} (hc : c ≠ 1) : Mr
   rw [h, Submodule.mem_bot] at h1
   have h2 := congrFun h1 P
   simp [dia_smul_eq_iff, hc] at h2
-
-example (P : Pair k n) (q : Unif k) (x : n → k) : inX k n 0 x ∈ P.glued q 0 1 ↔ x ∈ P.lat := by
-  rw [Pair.glued, mem_gluedLat, Pair.mem_lat_iff]
-  simp [inX, Pair.hasVal_iff P.hasVal_vec]
-
-example (r : ℕ) : Nonempty (GluePair k (Fin (r + 1))) := ⟨(stdPair k 0).toGlue⟩
 
 end Examples
 

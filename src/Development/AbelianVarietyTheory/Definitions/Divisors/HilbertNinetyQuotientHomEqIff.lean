@@ -474,18 +474,6 @@ end Top
 
 end Pair
 
-example {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) (x x₁ y : Unit → R) (φ : (Unit → R) → ℂ) :
-    schr ψ (x₁, 0) φ x = φ (x + x₁) ∧ schr ψ (0, y) φ x = ψ (x () * y ()) * φ x := by
-  simp [schr, dotProduct]
-
-example (χ : ℂˣ →* Circle) : IsTilde (Complex.conjAe : ℂ →ₐ[ℝ] ℂ) χ (Units.mk0 Complex.I Complex.I_ne_zero)
-    (χ (Units.mk0 (1 + Complex.I) (by simp [Complex.ext_iff]))) :=
-  ⟨_, by simp [Complex.ext_iff], rfl⟩
-
-example (R : Type) [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] :
-    IsModuleTopology ℝ ℂ ∧ IsModuleTopology R (R × R) :=
-  ⟨isModuleTopologyOfFiniteDimensional, inferInstance⟩
-
 end GlobalTheory.WeilM
 
 end

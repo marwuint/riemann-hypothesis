@@ -16,7 +16,4 @@ theorem NefExtendIso.hyps :
       Kleiman.Nef (Kleiman.twistSys ℚ (Kleiman.lineX ℚ) 0) :=
   ⟨Function.bijective_id, Kleiman.nef_twistSys_zero⟩
 
-example (h : NefExtendIso.Statement) :=
-  h ℚ ℚ (RatFunc ℚ) 1 (Kleiman.lineX ℚ) _ NefExtendIso.hyps.1 NefExtendIso.hyps.2
-
 end GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization

@@ -159,20 +159,4 @@ def RegularLeviNoEigenvalueOne : Prop :=
     ((γ : GL (Fin r) k) : Matrix (Fin r) (Fin r) k).charpoly.Separable →
     ¬ Module.End.HasEigenvalue (adRadical (m⁻¹ * γ * m)) 1
 
-example : (!![0, 1; 0, 0] : Matrix (Fin 2) (Fin 2) ℝ) ∈ lieRadical ℝ (fun i : Fin 2 => (i : ℕ)) := by
-  intro i j h
-  fin_cases i <;> fin_cases j <;> simp_all
-
-example (h : UnipotentChangeOfVariables) (p : ℕ) [Fact p.Prime] (r : ℕ) (b : Fin r → ℕ) :
-    (∀ δ : levi ℝ b, Function.Bijective
-      (adRadical δ - LinearMap.id : lieRadical ℝ b →ₗ[ℝ] lieRadical ℝ b) →
-        IsHomeomorph (twistedCommutator δ)) ∧
-    (∀ δ : levi ℚ_[p] b, Function.Bijective
-      (adRadical δ - LinearMap.id : lieRadical ℚ_[p] b →ₗ[ℚ_[p]] lieRadical ℚ_[p] b) →
-        IsHomeomorph (twistedCommutator δ)) := by
-  have nd : ∀ (k : Type) [NontriviallyNormedField k], ¬ DiscreteTopology k := fun k _ hk => by
-    have h0 : (nhdsWithin (0 : k) {0}ᶜ).NeBot := inferInstance
-    exact h0.ne (discreteTopology_iff_nhds_ne.1 hk 0)
-  exact ⟨fun δ hδ => (h ℝ (nd ℝ) r b δ hδ).1, fun δ hδ => (h ℚ_[p] (nd _) r b δ hδ).1⟩
-
 end GlobalTheory.IndefiniteRowSideFullHecke.AdjointRadical

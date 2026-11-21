@@ -69,13 +69,6 @@ def IsStrictlyDominant (X : Data E r) (la : Wt X.Ψ r) : Prop :=
   ∀ τ : X.Ψ, (∀ (i : ℕ) (h : i + 1 < r), i + 1 ≠ X.p0 → 0 < gap la τ i h) ∧
     ∀ (h0 : 0 < X.p0) (h1 : X.p0 < r), 0 < pairing la τ (h0.trans h1)
 
-example (X : Data E r) : IsStrictlyDominant X
-    (fun _ i => if (i : ℕ) < X.p0 then -((i : ℕ) : ℤ) else (r : ℤ) - ((i : ℕ) : ℤ)) := by
-  intro τ
-  refine ⟨fun i h hi => ?_, fun h0 h1 => ?_⟩
-  · simp only [gap]; split_ifs <;> omega
-  · simp only [pairing]; split_ifs <;> omega
-
 end
 
 end GlobalTheory.IndefiniteRowSideFullHecke.UnitriangularCharts

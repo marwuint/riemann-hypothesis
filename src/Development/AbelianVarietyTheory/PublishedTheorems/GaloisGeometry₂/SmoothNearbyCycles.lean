@@ -21,23 +21,4 @@ def SmoothNearbyCycles : Prop :=
   ∀ (L : StrictLoc Y y.1) (M : StrictLoc X x.1) (h : L.scheme ⟶ M.scheme) (hh : h ≫ M.toX = L.toX ≫ f) (n : ℕ),
     Function.Bijective (stalkPull Λ Ω f hf L M h hh n)
 
-open GlobalTheory.NCyc in
-
-example (H : SmoothNearbyCycles) (n : ℕ) : True := by
-  letI := henselian_powerSeries_complex
-  letI := isSepClosed_residueField_powerSeries_complex
-  letI := faithfulSMul_powerSeries_complex
-  letI := isAlgebraic_powerSeries_complex
-  letI : TopologicalSpace (ZMod 3) := ⊥
-  haveI : DiscreteTopology (ZMod 3) := ⟨rfl⟩
-  haveI : Fact (Nat.Prime 3) := ⟨by norm_num⟩
-  have hu : IsUnit ((3 : ℕ) : PowerSeries ℂ) := by
-    rw [← map_natCast (algebraMap ℂ (PowerSeries ℂ))]
-    exact (IsUnit.mk0 _ (by norm_num)).map _
-  have := H (PowerSeries ℂ) (AlgebraicClosure (FractionRing (PowerSeries ℂ))) 3 hu (ZMod 3) inferInstance
-    inferInstance ⟨1, by decide⟩ _ _ (𝟙 _) (𝟙 _) (𝟙 _) (Category.id_comp _) (SpecialPoint.closed _)
-    (SpecialPoint.closed _) rfl (StrictLoc.ofStrictlyHenselian _) (StrictLoc.ofStrictlyHenselian _) (𝟙 _)
-    (by rw [Category.id_comp, Category.comp_id]) n
-  trivial
-
 end GlobalTheory.Published

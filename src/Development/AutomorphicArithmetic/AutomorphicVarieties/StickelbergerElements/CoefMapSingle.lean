@@ -75,11 +75,6 @@ def IntAt (l : ℕ) [Fact l.Prime] (r : ℕ) (z : MonoidAlgebra ℚ Γ) : Prop :
 
 end Maps
 
-example : Eone 7 5 1 = 0 := by
-  have h : ((5 : ℕ) : ZMod 7)⁻¹ = 3 := ZMod.inv_eq_of_mul_eq_one 7 _ _ (by decide)
-  rw [Eone, jv, yCl, h]
-  decide
-
 end UpperTheory.V.B4
 
 end

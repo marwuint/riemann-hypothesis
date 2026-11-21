@@ -242,11 +242,6 @@ theorem fontaineFormalism_iff :
       fun K LL => (h K LL).2.2.2.2.2.2.2.1, fun K LL => (h K LL).2.2.2.2.2.2.2.2.1,
       fun K LL => (h K LL).2.2.2.2.2.2.2.2.2⟩⟩
 
-example (h : FontaineFormalism l P) (K LL : FinExt l)
-    (T : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL)) (hT : IsCrys (P.PD K) T.ρ) :
-    IsCrys (P.PD K) T.ρ.dual ∧ Function.Bijective (comparison (P.PD K) T.ρ) :=
-  ⟨h.2.2.2.2.2.2.2.1 K LL T.V T.ρ hT, h.2.2.1 K LL T.V T.ρ hT⟩
-
 end Local
 
 end GlobalTheory.IndefiniteRowSideFullHecke.CrystallineSubrepresentation

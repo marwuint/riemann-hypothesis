@@ -81,15 +81,6 @@ def BoundedInjection.id (E : HermitianBundle K) : BoundedInjection E E (fun _ �
   injective := Function.injective_id
   norm_le σ x := by rw [LinearMap.lTensor_id, LinearMap.id_apply, one_mul]
 
-example : BoundedInjection (ratStandard 2) (ratStandard 2) (fun _ ↦ 1) := BoundedInjection.id _
-example : ShortFamily (ratStandard 2) (fun _ ↦ 1) := ShortFamily.standard ℚ 2
-
-example : BoundedInjection (gaussianStandard 2) (gaussianStandard 2) (fun _ ↦ 1) :=
-  BoundedInjection.id _
-example : ShortFamily (gaussianStandard 2) (fun _ ↦ 1) := ShortFamily.standard GaussianField 2
-
-example : bundleRank (gaussianStandard 2) = 2 := bundleRank_standard GaussianField 2
-
 end HadExamples
 
 def LogDetDerivative.Statement : Prop :=
@@ -121,8 +112,6 @@ def GridSum.Statement : Prop :=
     (fun n : ℕ ↦ (∑ a ∈ Finset.range n,
         (a : ℝ) ^ i * ((n - 1 - a : ℕ) : ℝ) ^ (D - i) / ((i.factorial : ℝ) * ((D - i).factorial : ℝ))) -
       (n : ℝ) ^ (D + 1) / ((D + 1).factorial : ℝ)) =O[atTop] fun n : ℕ ↦ (n : ℝ) ^ D
-
-example : (1 : ℕ) ≤ 2 := by norm_num
 
 def Halving.Statement : Prop :=
   ∀ a : ℕ → ℝ, (∃ C : ℝ, ∀ n, |a n| ≤ C) →

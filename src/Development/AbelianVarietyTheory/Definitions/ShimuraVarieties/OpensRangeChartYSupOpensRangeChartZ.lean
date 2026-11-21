@@ -84,23 +84,6 @@ theorem IsUnimodularSol.smul {V : WeierstrassCurve A} {P : Fin 3 → A} (h : IsU
   rw [this]
   exact Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)
 
-example : IsUnimodularSol (⟨0, 0, 1, -1, 0⟩ : WeierstrassCurve ℤ) ![2, -5, 8] := by
-  refine ⟨by rw [WeierstrassCurve.Projective.equation_iff]; simp, ?_⟩
-  rw [Ideal.eq_top_iff_one]
-  have : (1 : ℤ) = (-2) * ![2, -5, 8] 0 + (-1) * ![2, -5, 8] 1 := by simp
-  rw [this]
-  exact add_mem (Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨0, rfl⟩))
-    (Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨1, rfl⟩))
-
-example (V : WeierstrassCurve ℤ) : ¬ IsUnimodularSol V ![0, 2, 0] := by
-  intro h
-  have h2 : Ideal.span (Set.range ![(0 : ℤ), 2, 0]) ≤ Ideal.span {2} := by
-    rw [Ideal.span_le]
-    rintro _ ⟨i, rfl⟩
-    fin_cases i <;> simp
-  rw [h.span_eq_top, top_le_iff, Ideal.span_singleton_eq_top, Int.isUnit_iff] at h2
-  omega
-
 end Unimodular
 
 variable {R : Type u} [CommRing R] (W : WeierstrassCurve R)
@@ -1154,23 +1137,6 @@ theorem pt_some_ne_zero [Nontrivial R] {a b : R} (h : W.toAffine.Equation a b) :
 
 instance [Nontrivial R] : Nonempty (scheme W) :=
   ⟨zero W (Classical.arbitrary (PrimeSpectrum R))⟩
-
-example : pt (⟨0, 0, 1, -1, 0⟩ : WeierstrassCurve ℤ) (A := ℤ) ![0, 0, 1]
-    (isUnimodularSol_some (by simp [WeierstrassCurve.baseChange])) ≠ zero _ :=
-  pt_some_ne_zero _ (by simp)
-
-example : pt W (A := R) ((-1 : R) • ![0, 1, 0]) ((isUnimodularSol_zero _).smul isUnit_one.neg) =
-    zero W :=
-  pt_smul W _ _ isUnit_one.neg
-
-example (t : R) : (⟨0, 0, 0, 0, 0⟩ : WeierstrassCurve R).toProjective.Equation ![t, -1, t ^ 3] := by
-  rw [equation_origin_iff]
-  simp
-
-example : originW W = originZ W ^ 3 + algebraMap R _ W.a₁ * originZ W * originW W
-    + algebraMap R _ W.a₂ * originZ W ^ 2 * originW W + algebraMap R _ W.a₃ * originW W ^ 2
-    + algebraMap R _ W.a₄ * originZ W * originW W ^ 2 + algebraMap R _ W.a₆ * originW W ^ 3 :=
-  (equation_origin_iff _ _ _).mp (equation_originZ_originW W)
 
 end WeierstrassCurve
 

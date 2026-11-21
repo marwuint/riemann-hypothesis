@@ -88,12 +88,6 @@ def NefAddBlock.Statement : Prop :=
 
 section Inhabitants
 
-example : ChartBundle ℤ (![1, 2] : Fin 2 → ℚ) 1 ℚ := lineBundle ℤ _ 1
-
-example : (Σ o, addBlockIdx (fun _ : Fin 1 => Fin 2) (Fin 2) o) → ℚ :=
-  addBlockPt (Ω := ℚ) (Ω' := ℚ) (fun p : (Σ _ : Fin 1, Fin 2) => ((p.2 : ℕ) : ℚ) + 1)
-    (fun i : Fin 2 => ((i : ℕ) : ℚ) + 1)
-
 end Inhabitants
 
 end GroundTheory.Heights₂.Heights

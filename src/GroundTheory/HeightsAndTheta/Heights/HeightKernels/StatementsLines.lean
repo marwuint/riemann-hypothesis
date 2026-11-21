@@ -240,59 +240,6 @@ theorem stdLattice_isLattice_example :
       funext i; fin_cases i; simp
     rw [hv]; exact Submodule.smul_mem _ _ h1
 
-example : Fintype.card (Fin 1) = Module.finrank ℚ (Fin 1 → ℚ) ∧
-    ((stdLattice ℚ 1).restrictScalars ℤ).FG ∧
-    Submodule.span ℚ ((stdLattice ℚ 1 : Submodule (𝓞 ℚ) (Fin 1 → ℚ)) : Set (Fin 1 → ℚ)) = ⊤ ∧
-    Submodule.IsLattice ℚ ((stdLattice ℚ 1).restrictScalars ℤ) ∧
-    (stdLattice ℚ 1).restrictScalars ℤ ≤ (stdLattice ℚ 1).restrictScalars ℤ :=
-  ⟨by simp, stdLattice_isLattice_example.fg, stdLattice_isLattice_example.span_eq_top,
-    stdLattice_isLattice_example, le_rfl⟩
-
-example : ∃ A B : AddSubgroup (Fin 2 → ℚ),
-    A = AddSubgroup.closure (Set.range (Pi.basisFun ℚ (Fin 2))) ∧
-    B = AddSubgroup.closure (Set.range ((Pi.basisFun ℚ (Fin 2)).map (LinearEquiv.smulOfNeZero ℚ _
-      (2 : ℚ) two_ne_zero))) :=
-  ⟨_, _, rfl, rfl⟩
-
-example : (Matrix.diagonal fun _ : Fin 2 => (2 : ℚ)).det ≠ 0 ∧
-    (1 : FractionalIdeal (𝓞 ℚ)⁰ ℚ) ≠ 0 ∧ (2 : ℚ) ≠ 0 ∧
-    ∀ x : Fin 2, (fun _ => (1 : FractionalIdeal (𝓞 ℚ)⁰ ℚ)) x ≠ 0 :=
-  ⟨by simp [Matrix.det_diagonal], one_ne_zero, two_ne_zero, fun _ => one_ne_zero⟩
-
-example : (1 : Matrix (Fin 2) (Fin 2) ℂ).PosDef ∧ LinearIndependent ℚ (Pi.basisFun ℚ (Fin 2)) ∧
-    (1 : Matrix (Fin 1 ⊕ Fin 1) (Fin 1 ⊕ Fin 1) ℂ).PosDef ∧
-    Function.Injective (Fin.natAdd 1 : Fin 1 → Fin (1 + 1)) :=
-  ⟨Matrix.PosDef.one, (Pi.basisFun ℚ (Fin 2)).linearIndependent, Matrix.PosDef.one,
-    Fin.natAdd_injective _ _⟩
-
-example :
-    let B := stdSumBasis ℚ 1 1
-    let b : Fin 1 → Fin (1 + 1) → ℚ := fun i => Pi.single (Fin.castAdd 1 i) 1
-    let c : Fin 1 → Fin (1 + 1) → ℚ := fun j => Pi.single (Fin.natAdd 1 j) 1
-    let τ : Fin 1 → Fin (1 + 1) := Fin.natAdd 1
-    LinearIndependent ℚ b ∧ 1 + 1 = 1 + 1 ∧ (∀ _ : Fin (1 + 1), (0 : ℝ) < 1) ∧
-    (∀ x : Fin (1 + 1), (fun _ => (1 : FractionalIdeal (𝓞 ℚ)⁰ ℚ)) x ≠ 0) ∧
-    (∀ i, B (Sum.inl i) = b i) ∧ (∀ j, B (Sum.inr j) = Pi.single (τ j) 1) ∧
-    Function.Injective τ ∧ LinearIndependent ℚ (Sum.elim b c) ∧
-    LinearIndependent ℚ (Sum.elim b fun j => (Pi.single (τ j) 1 : Fin (1 + 1) → ℚ)) := by
-  intro B b c τ
-  have hB : LinearIndependent ℚ (Sum.elim b c) := by
-    have h := (stdSumBasis ℚ 1 1).linearIndependent
-    rw [← stdSumBasis_elim] at h
-    simpa only [stdSumBasis_inl, stdSumBasis_inr] using h
-  exact ⟨hB.comp Sum.inl Sum.inl_injective, rfl, fun _ => one_pos, fun _ => one_ne_zero,
-    fun i => stdSumBasis_inl ℚ 1 1 i, fun j => stdSumBasis_inr ℚ 1 1 j,
-    Fin.natAdd_injective _ _, hB, hB⟩
-
-example : (∀ x : Fin 2, (fun _ => (1 : FractionalIdeal (𝓞 ℚ)⁰ ℚ)) x ≠ 0) ∧
-    (∀ (σ : ℚ →+* ℂ) (x : Fin 2), (0 : ℝ) < (fun _ _ => (1 : ℝ)) σ x) ∧
-    LinearIndependent ℚ (Sum.elim (fun i : Fin 1 => (Pi.single (Fin.castAdd 1 i) 1 : Fin (1 + 1) → ℚ))
-      fun j : Fin 1 => (Pi.single (Fin.natAdd 1 j) 1 : Fin (1 + 1) → ℚ)) ∧ 1 + 1 = 2 := by
-  refine ⟨fun _ => one_ne_zero, fun _ _ => one_pos, ?_, rfl⟩
-  have h := (stdSumBasis ℚ 1 1).linearIndependent
-  rw [← stdSumBasis_elim] at h
-  simpa only [stdSumBasis_inl, stdSumBasis_inr] using h
-
 end
 
 end GroundTheory.Heights₂.Heights

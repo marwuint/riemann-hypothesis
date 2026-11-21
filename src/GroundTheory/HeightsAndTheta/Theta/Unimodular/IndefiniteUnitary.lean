@@ -67,9 +67,6 @@ theorem isMulRightInvariant_indefiniteUnitary (μ : Measure (indefiniteUnitaryGr
 instance (μ : Measure (indefiniteUnitaryGroup p q)) [μ.IsHaarMeasure] : μ.IsMulRightInvariant :=
   isMulRightInvariant_indefiniteUnitary μ
 
-example : (Measure.haar : Measure (indefiniteUnitaryGroup p q)).IsMulRightInvariant :=
-  inferInstance
-
 end
 
 end GroundTheory.Heights₂.Theta

@@ -522,21 +522,6 @@ theorem points :
     fun _ Y _ _ f g => Iff.trans ⟨fun e => congrArg (·.left) e, fun e => Over.OverMorphism.ext e⟩
       (hom_eq_iff_forall_field Y.hom ((Over.w f).trans (Over.w g).symm))⟩
 
-example : pt (⟨0, 0, 1, -1, 0⟩ : WeierstrassCurve ℤ) (A := ℤ) ![0, 0, 1]
-    (isUnimodularSol_some (by simp [WeierstrassCurve.baseChange])) ≠
-    pt (⟨0, 0, 1, -1, 0⟩ : WeierstrassCurve ℤ) (A := ℤ) ![0, -1, 1]
-      (isUnimodularSol_some (by
-        simp [WeierstrassCurve.baseChange, WeierstrassCurve.Affine.equation_iff])) := by
-  intro e
-  simpa using (pt_eq_pt_iff_minors _ _ _).mp e 1 2
-
-example (k : Type) [Field k] [Algebra ℚ k] : Function.Bijective
-    (ofAffinePoint (⟨0, 0, 1, -1, 0⟩ : WeierstrassCurve ℚ) k) :=
-  have : (⟨0, 0, 1, -1, 0⟩ : WeierstrassCurve ℚ).IsElliptic := ⟨Ne.isUnit (by
-    norm_num [WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆,
-      WeierstrassCurve.b₈])⟩
-  ofAffinePoint_bijective _ k
-
 end WeierstrassCurve
 
 end GlobalTheory

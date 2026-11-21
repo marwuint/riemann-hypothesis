@@ -143,23 +143,4 @@ def MinusculeCosets : Prop :=
     [Finite (ResidueField O)] [Field F] [Algebra O F] [IsFractionRing O F]
     (ϖ : O) (hϖ : Irreducible ϖ) (n j : ℕ), j ≤ n → CosetsAt F hϖ n j
 
-example {F : Type} [Field F] (n : ℕ) (u : Fˣ) : diagUnit n u 0 = 1 := by
-  ext i j
-  simp [diagUnit]
-
-example (O F : Type) [CommRing O] [IsLocalRing O] [Field F] [Algebra O F] (n : ℕ) :
-    reduction O (latticeOf O (1 : GL (Fin n) F)) = ⊤ := by
-  rw [eq_top_iff]
-  intro w _
-  choose v hv using fun i => residue_surjective (w i)
-  refine ⟨v, (mem_latticeOf O 1 _).2 ⟨v, ?_⟩, funext hv⟩
-  rw [Units.val_one, Matrix.one_mulVec]
-  rfl
-
-example (p : ℕ) [Fact p.Prime] (h : MinusculeCosets) (n j : ℕ) (hj : j ≤ n) :
-    CosetsAt ℚ_[p] (PadicInt.irreducible_p (p := p)) n j :=
-  haveI : Finite (ResidueField ℤ_[p]) :=
-    Finite.of_equiv _ (PadicInt.residueField (p := p)).symm.toEquiv
-  h ℤ_[p] ℚ_[p] _ _ n j hj
-
 end GlobalTheory.IndefiniteRowSideFullHecke.LatticeCosetUniformizer

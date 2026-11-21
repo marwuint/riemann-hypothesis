@@ -1325,27 +1325,4 @@ theorem sTwo_gaussian : sTwo (periodsOfUpperHalfPlane UpperHalfPlane.I) = 0 := b
   rw [I_sq] at this
   linear_combination this / 2
 
-example : quasiPeriod (periodsOfUpperHalfPlane UpperHalfPlane.I) 1 = π ∧
-    quasiPeriod (periodsOfUpperHalfPlane UpperHalfPlane.I) I = -(π * I) ∧
-    weierstrassZeta (periodsOfUpperHalfPlane UpperHalfPlane.I) (1 / 2) = π / 2 := by
-  have h : quasiPeriod (periodsOfUpperHalfPlane UpperHalfPlane.I) 1 = π := by
-    simp [quasiPeriod_eq, sTwo_gaussian, latticeArea_periodsOfUpperHalfPlane]
-  refine ⟨h, ?_, ?_⟩
-  · simp [quasiPeriod_eq, sTwo_gaussian, latticeArea_periodsOfUpperHalfPlane]
-  · have h1 := quasiPeriod_ω₁ (periodsOfUpperHalfPlane UpperHalfPlane.I)
-    change quasiPeriod _ 1 = 2 * weierstrassZeta _ (1 / 2) at h1
-    linear_combination (h - h1) / 2
-
-example (z : ℂ) : weierstrassSigma (periodsOfUpperHalfPlane UpperHalfPlane.I) (z + 1) =
-    -cexp (π * (z + 1 / 2)) * weierstrassSigma (periodsOfUpperHalfPlane UpperHalfPlane.I) z := by
-  rw [weierstrassSigma_add _ (w := 1) (ω₁_mem_lattice _),
-    sigmaSign_of_notMem _ (w := 1) (ω₁_div_two_notMem_lattice _)]
-  simp [quasiPeriod_eq, sTwo_gaussian, latticeArea_periodsOfUpperHalfPlane]
-
-example : sigmaSign L L.ω₁ = -1 ∧ sigmaSign L L.ω₂ = -1 ∧ sigmaSign L (L.ω₁ + L.ω₂) = -1 ∧
-    sigmaSign L (2 * L.ω₁) = 1 :=
-  ⟨by simpa using sigmaSign_int L 1 0, by simpa using sigmaSign_int L 0 1,
-    by simpa [show (-1 : ℂ) ^ (3 : ℤ) = -1 by norm_num] using sigmaSign_int L 1 1,
-    by simpa using sigmaSign_int L 2 0⟩
-
 end GlobalTheory

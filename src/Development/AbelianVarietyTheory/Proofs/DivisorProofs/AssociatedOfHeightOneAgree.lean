@@ -32,11 +32,4 @@ theorem exists_unit_eq_mul_of_height_one_avoiding (R : Type) [CommRing R] [IsDom
   obtain ⟨u, hu⟩ := associated_of_dvd_dvd hba hab
   exact ⟨u, by rw [← hu, mul_comm]⟩
 
-example : ∀ (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R]
-    {n : ℕ} (π : Fin n → R) (J : Finset (Fin n)) (a b : R), a ≠ 0 → b ≠ 0 →
-    (∀ j ∈ J, IsUnit (π j) ∨ Prime (π j)) → (∀ j ∈ J, Prime (π j) → ¬ π j ∣ a ∧ ¬ π j ∣ b) →
-    (∀ Q : Ideal R, Q.IsPrime → Q.height = 1 → (∀ j ∈ J, π j ∉ Q) →
-      ∃ c d : R, c ∉ Q ∧ d ∉ Q ∧ a * d = b * c) → ∃ u : Rˣ, a = u * b :=
-  @exists_unit_eq_mul_of_height_one_avoiding
-
 end GlobalTheory

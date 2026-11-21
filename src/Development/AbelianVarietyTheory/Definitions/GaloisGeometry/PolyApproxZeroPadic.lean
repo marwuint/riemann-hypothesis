@@ -74,13 +74,6 @@ theorem polyApprox_zero_padic (p : ℕ) [Fact p.Prime] :
     have hp0 : (p : ℚ_[p]) ≠ 0 := by exact_mod_cast (Fact.out : p.Prime).ne_zero
     exact pow_ne_zero (n + 1) hp0 this.symm
 
-example {Γ : Type} [Group Γ] (a : ℕ) : trc (1 : Γ →* GL (Fin a) ℚ) 1 = a := by
-  simp [trc]
-
-example {Γ V : Type} [Group Γ] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ Γ V) (g : Γ) (v : V) :
-    opOf ρ (Finsupp.single g 1) v = ρ g v := by
-  simp [opOf]
-
 end GlobalTheory.Cong
 
 end

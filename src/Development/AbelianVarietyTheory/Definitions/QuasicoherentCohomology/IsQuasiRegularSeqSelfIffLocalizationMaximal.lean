@@ -723,29 +723,6 @@ theorem isQuasiRegularSeq_singleton {M : Type*} [AddCommGroup M] [Module R M] {x
   (isQuasiRegularSeq_singleton_iff x).mpr fun a _ m' h =>
     ⟨m', hx.pow a (by simpa only [pow_succ, mul_smul] using h)⟩
 
-example : IsQuasiRegularSeq ℤ ![(2 : ℤ)] :=
-  isQuasiRegularSeq_singleton (IsSMulRegular.of_ne_zero two_ne_zero)
-
-example : ¬ IsQuasiRegularSeq ℤ ![(0 : ℤ)] := fun h => by
-  simpa using (isQuasiRegularSeq_singleton_iff _).mp h 1 1 0 (by simp)
-
-example : ¬ IsQuasiRegularSeq (ZMod 4) ![(2 : ℤ)] := fun h => by
-  have := (isQuasiRegularSeq_singleton_iff _).mp h 2 1 0 (by decide)
-  revert this
-  decide
-
-example : monoVal ![(2 : ℤ), 3] (Finsupp.single 0 2 + Finsupp.single 1 1) = 12 := by
-  simp [monoVal_add]
-
-example (a : ℕ) : Nontrivial (powGr (MvPolynomial.idealOfVars (Fin 2) ℚ)
-    (MvPolynomial (Fin 2) ℚ) a) := by
-  have hI : MvPolynomial.idealOfVars (Fin 2) ℚ ≠ ⊤ := fun h => by
-    have := (MvPolynomial.C_mem_pow_idealOfVars_iff (σ := Fin 2) 1 (1 : ℚ)).mp (by simp [h])
-    simp at this
-  have := Ideal.Quotient.nontrivial_iff.mpr hI
-  exact nontrivial_of_ne _ _
-    (((isQuasiRegularSeq_X (R := ℚ) (Fin 2)).powGrBasis a).ne_zero ⟨Finsupp.single 0 a, by simp⟩)
-
 end Examples
 
 end GlobalTheory

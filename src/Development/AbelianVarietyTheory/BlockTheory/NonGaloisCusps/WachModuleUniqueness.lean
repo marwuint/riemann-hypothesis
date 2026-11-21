@@ -49,30 +49,6 @@ def phiSpan (N₁ : Submodule (LetA O n) (W.DD T)) : Submodule (LetA O n) (W.DD 
 def PhiIsoAwayQ (N₁ : Submodule (LetA O n) (W.DD T)) : Prop :=
   invSub W.Q (phiSpan W T N₁) = invSub W.Q N₁
 
-example : GammaStable W T (W.N T) := by
-  apply Set.Subset.antisymm
-  · rintro _ ⟨x, hx, rfl⟩
-    exact W.N_Γ T _ x hx
-  · intro x hx
-    refine ⟨W.γD T W.gam⁻¹ x, W.N_Γ T _ x hx, ?_⟩
-    change W.γD T W.gam (W.γD T W.gam⁻¹ x) = x
-    rw [← W.γD_mul, mul_inv_cancel, W.γD_one]
-
-example : GammaTrivModπ W T (W.N T) := fun x hx => W.N_π T W.gam x hx
-
-example : PhiIsoAwayQ W T (W.N T) := by
-  apply le_antisymm
-  · rintro x ⟨k, hk⟩
-    have h : phiSpan W T (W.N T) ≤ invSub W.Q (W.N T) := by
-      refine Submodule.span_le.2 ?_
-      rintro _ ⟨y, hy, rfl⟩
-      exact W.N_φ T y hy
-    obtain ⟨m, hm⟩ := h hk
-    exact ⟨m + k, by rw [pow_add, mul_smul]; exact hm⟩
-  · rintro x ⟨k, hk⟩
-    obtain ⟨m, hm⟩ := W.N_φinv T _ hk
-    exact ⟨m + k, by rw [pow_add, mul_smul]; exact hm⟩
-
 end Generic
 
 def WachUnique (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (H : LocHW l P)

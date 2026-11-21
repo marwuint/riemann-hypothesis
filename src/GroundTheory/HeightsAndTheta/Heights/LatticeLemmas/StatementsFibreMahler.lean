@@ -18,8 +18,6 @@ def FibreMahlerForms.Statement : Prop :=
           Real.log ‖a‖ + ∑ q, (Real.log (archDualNorm h τ (yv q)) -
             (harmonic (Module.finrank (𝓞 F) W - 1) : ℝ) / 2)
 
-example : HermitianMetric ℚ (Fin 2 → 𝓞 ℚ) := HermitianMetric.standard ℚ (Fin 2)
-
 end
 
 end GroundTheory.Heights₂.Heights

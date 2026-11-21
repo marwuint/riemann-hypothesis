@@ -117,12 +117,6 @@ def TanCorr {R' : Type} [CommRing R'] {G' : Over (Sp R')} [GrpObj G'] (f : R →
     (φ : G'.left ⟶ G.left) (v' : Tan G') (v : Tan G) : Prop :=
   v'.1.left ≫ φ = spMap (epsHom f 1) ≫ v.1.left
 
-example (v : Tan G) : TanCorr (RingHom.id R) (𝟙 G.left) (Tan.smul 1 v) v := by
-  simp [TanCorr, Tan.smul, epsScale]
-
-example (c : R) (v : Tan G) : linComb ![c] ![v] = Tan.smul c v := by
-  simp [linComb]
-
 end Lie
 
 section Input

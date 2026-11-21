@@ -87,9 +87,4 @@ theorem ratInt_span : Submodule.span ℚ (ratInt : Set ℚ) = ⊤ := by
   have := Submodule.smul_mem (Submodule.span ℚ (ratInt : Set ℚ)) x (Submodule.subset_span h1)
   simpa using this
 
-example (h1 : DiscOfProdLowerSt) (h2 : FGOfDiscSt) (h3 : IsLatticeOfDiscSt) :
-    UnifDiscrete ratNormFam ratInt ∧ ratInt.FG ∧ Submodule.IsLattice ℚ ratInt :=
-  ⟨h1 ℚ ℚ ratNormFam ratInt 0 ratInt_prodLower, h2 ℚ ℚ ratNormFam ratInt ratInt_unifDiscrete,
-    h3 ℚ ℚ ratNormFam ratInt ratInt_unifDiscrete ratInt_span⟩
-
 end ReciprocityTheory.ChartRestriction.G.TB

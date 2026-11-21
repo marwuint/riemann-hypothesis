@@ -450,27 +450,4 @@ variable [Fintype ι] {a b : ι → A} {a' b' : κ → A} {γ : ι → κ → k}
 
 end Formula
 
-example : ∃ (a b : Unit → Module.End ℚ (Polynomial ℚ)) (a' b' : Unit → Module.End ℚ (Polynomial ℚ))
-    (γ : Unit → Unit → ℚ) (v : Polynomial ℚ), v ≠ 0 ∧ γ () () = 1 ∧
-    (∀ i j, Commute (a i) (a j)) ∧ (∀ i j, Commute (a i) (b j)) ∧ (∀ i j, Commute (b i) (b j)) ∧
-    (∀ i j, Commute (a' i) (a' j)) ∧ (∀ i j, Commute (a' i) (b' j)) ∧
-    (∀ i j, Commute (b' i) (b' j)) ∧ (∀ i j, Commute (b i) (b' j)) ∧
-    (∀ i j, b i * a' j - a' j * b i = algebraMap ℚ _ (γ i j)) ∧
-    (∀ i, b i • v = 0) ∧ (∀ j, b' j • v = 0) := by
-  refine ⟨0, fun _ => Polynomial.derivative, fun _ => LinearMap.mulLeft ℚ Polynomial.X, 0,
-    fun _ _ => 1, 1, one_ne_zero, rfl, fun _ _ => Commute.refl _, fun _ _ => Commute.zero_left _,
-    fun _ _ => Commute.refl _, fun _ _ => Commute.refl _, fun _ _ => Commute.zero_right _,
-    fun _ _ => Commute.refl _, fun _ _ => Commute.zero_right _, fun _ _ => ?_, fun _ => by simp,
-    fun _ => by simp⟩
-  refine LinearMap.ext fun p => ?_
-  simp
-
-example : dividedContraction (fun _ _ : Unit => (1 : ℤ)) 2
-    (X (Sum.inl ()) * (X (Sum.inl ()) * rename Sum.inr (X () ^ 2))) = 2 := by
-  rw [dividedContraction_succ_X_inl_mul, dividedContraction_succ_X_inl_mul,
-    dividedContraction_succ_X_inl_mul]
-  simp only [dividedContraction_succ_rename_inr]
-  have h : pderiv (Sum.inr ()) (2 : MvPolynomial (Unit ⊕ Unit) ℤ) = 0 := pderiv_C (a := 2)
-  simp [rowContraction_apply, pderiv_X, h]
-
 end GlobalTheory.Wick

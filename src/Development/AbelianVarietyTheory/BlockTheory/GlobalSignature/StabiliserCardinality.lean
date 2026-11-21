@@ -27,14 +27,4 @@ def DoubleCosetCount : Prop :=
           ∑ c : DoubleCoset.Quotient (Γ : Set G) (K : Set G),
             1 / (Nat.card (stab Γ K (rep c)) : ℚ)
 
-example {G : Type} [Group G] (Γ : Subgroup G) (x : G) : stab Γ ⊥ x = ⊥ := by
-  simp [stab]
-
-example {G : Type} [Group G] (Γ : Subgroup G) (x : G) : stab Γ ⊤ x = Γ := by
-  ext γ; simp [mem_stab]
-
-example {G : Type} [Group G] (Γ K : Subgroup G) :
-    ∀ c : DoubleCoset.Quotient (Γ : Set G) (K : Set G), DoubleCoset.mk Γ K c.out = c :=
-  DoubleCoset.out_eq' Γ K
-
 end GlobalTheory.IndefiniteRowSideFullHecke.StabiliserCardinality

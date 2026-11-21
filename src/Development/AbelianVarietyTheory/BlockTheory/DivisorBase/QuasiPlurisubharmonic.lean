@@ -131,17 +131,11 @@ def GradientBound : Prop :=
 
 def Statement : Prop := Extension ∧ FlatExtension ∧ GradientBound
 
-example (lam : Fin 2 → ℝ) : coeff lam 0 + coeff lam 1 = lam 0 ∧ coeff lam 1 = lam 1 := by
-  simp [coeff]
-
 theorem exp_one_le_rad {D : ℕ} {Y : Type} [TopologicalSpace Y] {A : FinHolAtlas D Y}
     {L : LocPot Y} {s : Y → Y → ℂ} {m : ℕ} {W : Fin m → Set Y} (h : IsBoundary A L s W) (y : Y) :
     Real.exp 1 ≤ rad L s y := by
   have := Real.log_nonpos (by positivity) (h.2.2.2 y)
   unfold rad logNormSec
   linarith
-
-example {D : ℕ} : ¬ IsPshE (Set.univ : Set (Fin D → ℂ)) fun _ => ⊥ := fun h => by
-  simpa using h.2.2.1 (Set.mem_univ 0)
 
 end GlobalTheory.IndefiniteRowSideFullHecke.QuasiPlurisubharmonic

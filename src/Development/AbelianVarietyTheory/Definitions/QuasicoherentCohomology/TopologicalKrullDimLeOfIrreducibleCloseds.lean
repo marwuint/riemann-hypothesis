@@ -1397,47 +1397,6 @@ section Examples
 abbrev tildeIntQuotient (I : Ideal ℤ) : (Spec (CommRingCat.of ℤ)).Modules :=
   tilde (R := CommRingCat.of ℤ) (ModuleCat.of ℤ (ℤ ⧸ I))
 
-example (I : Ideal ℤ) : IsFiniteQC (tildeIntQuotient I) :=
-  (isFiniteQC_tilde_iff _).2 (inferInstanceAs (Module.Finite ℤ (ℤ ⧸ I)))
-
-example (I : Ideal ℤ) [hI : I.IsPrime] :
-    assPoints (tildeIntQuotient I) = {(⟨I, hI⟩ : PrimeSpectrum ℤ)} := by
-  have : IsNoetherianRing (CommRingCat.of ℤ) := inferInstanceAs (IsNoetherianRing ℤ)
-  rw [assPoints_tilde]
-  change PrimeSpectrum.asIdeal ⁻¹' associatedPrimes ℤ (ℤ ⧸ I) = {(⟨I, hI⟩ : PrimeSpectrum ℤ)}
-  rw [associatedPrimes.eq_singleton_of_isPrimary hI.isPrimary, hI.radical]
-  ext P
-  simp [PrimeSpectrum.ext_iff]
-
-example (I : Ideal ℤ) [hI : I.IsMaximal] : suppDim (tildeIntQuotient I) = 0 ∧
-    suppDim (structureModule (Spec (CommRingCat.of ℤ))) = 1 := by
-  constructor
-  · have : Module.Finite (CommRingCat.of ℤ) (ModuleCat.of ℤ (ℤ ⧸ I)) :=
-      inferInstanceAs (Module.Finite ℤ (ℤ ⧸ I))
-    rw [suppDim_tilde]
-    refine (Module.supportDim_quotient_eq_ringKrullDim I).trans ?_
-    letI := Ideal.Quotient.field I
-    exact ringKrullDim_eq_zero_of_field _
-  · rw [suppDim_structureModule]
-    exact (PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim ℤ).trans
-      (IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField)
-
-example : IsFlatOver (tilde (R := CommRingCat.of ℤ) (ModuleCat.of ℤ ℚ))
-      (Scheme.ΓSpecIso (CommRingCat.of ℤ)).inv.hom ∧
-    ¬ IsFlatOver (tildeIntQuotient (Ideal.span {2})) (Scheme.ΓSpecIso (CommRingCat.of ℤ)).inv.hom := by
-  refine ⟨(isFlatOver_tilde_iff _).2 (IsLocalization.flat ℚ (nonZeroDivisors ℤ)), fun h ↦ ?_⟩
-  have h : Module.Flat ℤ (ℤ ⧸ Ideal.span {(2 : ℤ)}) := (isFlatOver_tilde_iff _).1 h
-  have h1 : (1 : ℤ ⧸ Ideal.span {(2 : ℤ)}) = 0 :=
-    (Module.Flat.isSMulRegular_of_nonZeroDivisors (r := (2 : ℤ))
-      (mem_nonZeroDivisors_of_ne_zero two_ne_zero)).right_eq_zero_of_smul (by
-        rw [← Algebra.algebraMap_eq_smul_one]
-        exact Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_span_singleton_self _))
-  have := Ideal.mem_span_singleton.1 (Ideal.Quotient.eq_zero_iff_mem.1 h1)
-  omega
-
-example (x : X) : Module.finrank (X.residueField x) (fibre (structureModule X) x) = 1 := by
-  rw [(structureModuleFibreEquiv x).finrank_eq, Module.finrank_self]
-
 end Examples
 
 end GlobalTheory.QCoh

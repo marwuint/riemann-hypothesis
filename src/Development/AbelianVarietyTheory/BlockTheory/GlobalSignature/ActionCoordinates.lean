@@ -82,26 +82,4 @@ def QuotientMeasure : Prop :=
 
 def RealPlaceMeasures : Prop := SelfDualMeasures ∧ SphereVolume ∧ QuotientMeasure
 
-example : cM 1 = ENNReal.ofReal (2 * Real.pi) := by simp [cM]
-
-example : qf (Pi.single (Sum.inl 0) 1 : Wsp 1 1) = 1 ∧
-    qf (Pi.single (Sum.inr 0) 1 : Wsp 1 1) = -1 := by
-  constructor <;> simp [qf, herm, sgn, Pi.single_apply]
-
-example : IsPerpFrame (P := 1) (Q := 0) (P' := 0) (Q' := 0) (fun _ => 1) 0 (fun _ => 1) := by
-  have h1 : UpqT.mat (1 : UpqT 1 0) = 1 := rfl
-  refine ⟨fun v w => by simp [herm], fun y => ?_, fun g' => by simp [act, h1]⟩
-  simp only [herm, sgn, Fintype.sum_sum_type, Finset.univ_unique, Finset.sum_singleton]
-  constructor
-  · intro h
-    refine ⟨0, ?_⟩
-    funext i
-    rcases i with i | i
-    · have : i = default := Subsingleton.elim _ _
-      subst this
-      simpa [eq_comm] using h
-    · exact i.elim0
-  · rintro ⟨v, rfl⟩
-    simp
-
 end GlobalTheory.IndefiniteRowSideFullHecke.ActionCoordinates

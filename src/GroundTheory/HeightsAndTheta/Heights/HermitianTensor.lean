@@ -114,8 +114,6 @@ def HermitianMetric.tensor : HermitianMetric K (E ⊗[𝓞 K] F) where
 def HermitianBundle.tensor (A B : HermitianBundle K) : HermitianBundle K :=
   ⟨A.carrier ⊗[𝓞 K] B.carrier, A.metric.tensor B.metric⟩
 
-example : HermitianBundle GaussianField := (gaussianStandard 2).tensor (gaussianStandard 3)
-
 end
 
 end GroundTheory.Heights₂.Heights

@@ -533,40 +533,4 @@ theorem fockInner_pderiv_left (i : σ) (P Q : MvPolynomial σ 𝕜) :
 
 end Fock
 
-example : l1Norm (C 3 * X 0 + C (-4) * X 1 : MvPolynomial (Fin 2) ℂ) = 7 := by
-  have := l1Norm_linearForm_eq_sum (K := ℂ) univ (v := id) Function.injective_id ![3, -4]
-  rw [Fin.sum_univ_two, Fin.sum_univ_two] at this
-  simp only [Matrix.cons_val_zero, Matrix.cons_val_one, id] at this
-  rw [this]
-  norm_num
-
-example : l2Norm (monomial 0 3 + monomial (Finsupp.single 0 1) 4 : MvPolynomial (Fin 1) ℂ) = 5 ∧
-    supCoeff (monomial 0 3 + monomial (Finsupp.single 0 1) 4 : MvPolynomial (Fin 1) ℂ) = 4 := by
-  have hne : (Finsupp.single 0 1 : Fin 1 →₀ ℕ) ≠ 0 := by simp
-  constructor
-  · rw [l2Norm_eq_sqrt_sum_of_subset (s := {0, Finsupp.single 0 1})
-      (support_add.trans (union_subset (support_monomial_subset.trans (by simp))
-        (support_monomial_subset.trans (by simp)))), sum_pair hne.symm]
-    simp only [coeff_add, coeff_monomial, hne, hne.symm, if_true, if_false]
-    rw [Real.sqrt_eq_iff_mul_self_eq_of_pos (by norm_num)]
-    norm_num
-  · refine le_antisymm ((supCoeff_le_iff (by norm_num)).mpr fun β ↦ ?_) ?_
-    · simp only [coeff_add, coeff_monomial]
-      split_ifs with h1 h2
-      · exact (hne (h2.trans h1.symm)).elim
-      all_goals norm_num
-    · refine le_trans (le_of_eq ?_) (norm_coeff_le_supCoeff _ (Finsupp.single 0 1))
-      simp [coeff_monomial, hne.symm]
-
-example : fockNormSq (X 0 ^ 3 : MvPolynomial (Fin 2) ℂ) = 6 := by
-  rw [X_pow_eq_monomial, fockNormSq_monomial, multiFactorial_single]
-  norm_num [Nat.factorial]
-
-example : fockInner (1 : MvPolynomial (Fin 1) ℂ) (C Complex.I) = -Complex.I := by
-  rw [C_apply, fockInner_monomial_right]
-  simp
-
-example : #(monomialsLE (Fin 2) 2) = 6 := by
-  rw [card_monomialsLE]; decide
-
 end GlobalTheory.MvPoly

@@ -79,19 +79,6 @@ end Int
 
 section Inhabitant
 
-example : nuStar (2 : ℤ) {3} 1 = 1 := by
-  refine (eq_nuStar_of_forall 1 fun n => ?_).symm
-  simp only [Set.mem_singleton_iff, forall_eq, pow_one]
-  norm_num
-  constructor
-  · intro hn
-    interval_cases n <;> norm_num
-  · intro h
-    by_contra hc
-    push Not at hc
-    have : (2 : ℤ) ^ 2 ∣ 2 := (pow_dvd_pow 2 (by omega : 2 ≤ n)).trans h
-    norm_num at this
-
 end Inhabitant
 
 end KStar

@@ -29,24 +29,6 @@ def SpherePhase.Statement : Prop :=
     (sphereLaw N).map (fun z ↦ (Complex.arg (coordAlong p z), (‖coordAlong p z‖, orthoDir p z))) =
       phaseLaw.prod ((sphereLaw N).map fun z ↦ (‖coordAlong p z‖, orthoDir p z))
 
-example : ∃ U : (Fin 2 → ℂ) →ₗ[ℂ] (Fin 2 → ℂ),
-    U ≠ LinearMap.id ∧ ∀ v, ∑ j, ‖U v j‖ ^ 2 = ∑ j, ‖v j‖ ^ 2 := by
-  refine ⟨Complex.I • LinearMap.id, fun h ↦ ?_, fun v ↦ ?_⟩
-  · have := congrArg (fun U : (Fin 2 → ℂ) →ₗ[ℂ] (Fin 2 → ℂ) ↦ U (Pi.single 0 1) 0) h
-    simp [Complex.ext_iff] at this
-  · simp
-
-example : ∑ j, ‖(Pi.single 0 1 : Fin 2 → ℂ) j‖ ^ 2 = 1 := by
-  simp [Fin.sum_univ_two]
-
-example : Submodule.span ℂ {(Pi.single 0 1 : Fin 2 → ℂ)} ≠ ⊤ := by
-  intro h
-  have hmem : (Pi.single 1 1 : Fin 2 → ℂ) ∈ Submodule.span ℂ {(Pi.single 0 1 : Fin 2 → ℂ)} :=
-    h ▸ Submodule.mem_top
-  obtain ⟨c, hc⟩ := Submodule.mem_span_singleton.mp hmem
-  have := congrFun hc 1
-  simp at this
-
 end
 
 end GroundTheory.Heights₂.Heights

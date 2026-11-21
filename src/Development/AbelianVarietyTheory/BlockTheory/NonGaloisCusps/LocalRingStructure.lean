@@ -58,10 +58,6 @@ def PartB (T : LocLat G Qp LL O) : Prop :=
   ∀ (i : ZMod n) (y : W.DD T), MemInv W T i y →
     (y ∈ W.Nl T i ↔ ∀ ζ : LL, IsPrimitiveRoot ζ (PD.p ^ W.s) → MemLoc W T i ζ y)
 
-example (T : LocLat G Qp LL O) (i : ZMod n) (ζ : LL) (y : W.DD T) (hy : y ∈ W.Nl T i) :
-    MemLoc W T i ζ y :=
-  ⟨0, by simpa using hy, (1 : LocRing W i ζ) ⊗ₜ[LetA O n] (⟨y, hy⟩ : ↥(W.Nl T i)), by simp⟩
-
 variable {W} {RA RW : Type} [CommRing RA] [CommRing RW] [Algebra O RA] [Algebra O RW]
   {inclR : RA →ₐ[O] RW} {φR : RW →ₐ[O] RW} {gR : G → (RW →ₐ[O] RW)} {πA : RA}
   (E : EtTie W RA RW inclR φR gR πA)
@@ -93,15 +89,6 @@ def letterMax {l : ℕ} [Fact l.Prime] (K : FinExt l)
     (m : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → ℕ) : ℕ :=
   haveI := letters_neZero K
   Finset.univ.sup m
-
-example {l : ℕ} [Fact l.Prime] (K : FinExt l) (m : ZMod (Module.finrank ℚ_[l] ↥(K0 K)) → ℕ) :
-    IsGreatest (Set.range m) (letterMax K m) := by
-  haveI := letters_neZero K
-  refine ⟨?_, ?_⟩
-  · obtain ⟨i, -, hi⟩ := Finset.exists_mem_eq_sup Finset.univ Finset.univ_nonempty m
-    exact ⟨i, hi.symm⟩
-  · rintro _ ⟨i, rfl⟩
-    exact Finset.le_sup (f := m) (Finset.mem_univ i)
 
 def HeightsFromJumps (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (H : LocHW l P)
     (F : LocFon l P AI H) (_C : LocCmpT l P AI H F) : Prop :=

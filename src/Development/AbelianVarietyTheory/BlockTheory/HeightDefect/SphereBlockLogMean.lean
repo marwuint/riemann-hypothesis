@@ -212,26 +212,4 @@ theorem eval_hermitianLinearForm {N : ℕ} (u z : EuclideanSpace ℂ (Fin (N + 1
     eval (fun j => z j) (hermitianLinearForm u) = inner ℂ u z := by
   simp [hermitianLinearForm, PiLp.inner_apply]
 
-example (B n : ℕ) (b₀ : Fin B) (j₀ : Fin n) :
-    IsBlockHomogeneous (X (b₀, j₀) : MvPolynomial (Fin B × Fin n) ℚ) (Pi.single b₀ 1) := by
-  intro d hd b
-  rw [coeff_X'] at hd
-  have : Finsupp.single (b₀, j₀) 1 = d := by
-    by_contra h; exact hd (if_neg h)
-  subst this
-  by_cases hb : b = b₀
-  · subst hb; simp [Finsupp.single_apply, eq_comm]
-  · simp [Finsupp.single_apply, hb, Ne.symm hb]
-
-example (K : Type) [Field K] [NumberField K] (B N : ℕ) :
-    heightZero (1 : MvPolynomial (Fin B × Fin (N + 1)) K) = 0 := by
-  have h : ∀ w : FinitePlace K,
-      gaussAbsValue w (1 : MvPolynomial (Fin B × Fin (N + 1)) K) = 1 := by
-    intro w
-    obtain ⟨d, hd, e⟩ := exists_gaussAbsValue_eq w
-      (one_ne_zero : (1 : MvPolynomial (Fin B × Fin (N + 1)) K) ≠ 0)
-    rw [mem_support_iff, coeff_one] at hd
-    rw [e, coeff_one, if_pos (by by_contra h; exact hd (if_neg h)), map_one]
-  simp [heightZero, h, blockLogMean, blockLogAbs]
-
 end GlobalTheory.IndefiniteRowSideFullHecke.UnitSphereMeasure

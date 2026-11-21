@@ -28,9 +28,6 @@ theorem NefGenericDVR.hyps :
     rw [show (Kleiman.twistBundle exO (Kleiman.lineX exF) 0).toSubSystem =
       Kleiman.twistSys exO (Kleiman.lineX exF) 0 from rfl, Kleiman.interNum_twistSys_zero]
 
-example (h : NefGenericDVR.Statement) :=
-  h exO exF exΩ 1 (Kleiman.lineX exF) (Kleiman.twistBundle exO (Kleiman.lineX exF) 0) NefGenericDVR.hyps
-
 end
 
 end GroundTheory.Heights₂.Heights.Kleiman.SectionsOverLocalization

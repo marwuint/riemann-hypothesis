@@ -154,7 +154,4 @@ def SMSAssembly : Prop :=
 
 def StandardMonomialSpanOf : Prop := StandardMonomialSpanDomain → StandardMonomialSpan
 
-example : ((cmIdx 2 3 (1, 2) : Fin (3 * 2)) : ℕ) = 5 := by decide
-example : ((cmIdx 3 2 (2, 0) : Fin (2 * 3)) : ℕ) = 2 := by decide
-
 end Formalism.GradedWeylDivisibility

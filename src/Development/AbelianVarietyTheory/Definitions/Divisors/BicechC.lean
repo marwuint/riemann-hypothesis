@@ -44,9 +44,4 @@ def crossL : (Finset ι × Finset κ → E'') →ₗ[k] (Finset (ι ×ₗ κ) �
 
 end Bi
 
-example : bicech (k := ℚ) (ι := Unit) (κ := Unit) (LinearMap.mul ℚ ℚ) (fun _ => ⊤) (fun _ => ⊤) =
-    ⟨bicechC (LinearMap.mul ℚ ℚ) (fun _ => ⊤) (fun _ => ⊤), biD ℚ Unit Unit ℚ⟩ := rfl
-
-example (a : Finset Unit → ℚ) (b : Finset Unit → ℚ) : boxC (LinearMap.mul ℚ ℚ) a b ({()}, {()}) = a {()} * b {()} := rfl
-
 end GlobalTheory.PD

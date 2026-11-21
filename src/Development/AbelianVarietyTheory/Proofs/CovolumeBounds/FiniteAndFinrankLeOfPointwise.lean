@@ -336,26 +336,4 @@ theorem norm_sq_le_finrank_mul_fun {G : Type*} [Group G] [MulAction G X]
 
 end Functions
 
-example (f : Fin 2 → ℂ) (x : Fin 2) :
-    ‖f x‖ ^ 2 ≤ finrank ℂ (⊤ : Submodule ℂ (Fin 2 → ℂ)) *
-      ∫ y, ‖f y‖ ^ 2 ∂((2 : ENNReal)⁻¹ • (Measure.count : Measure (Fin 2))) := by
-  haveI : IsProbabilityMeasure ((2 : ENNReal)⁻¹ • (Measure.count : Measure (Fin 2))) :=
-    ⟨by simp [ENNReal.inv_mul_cancel]⟩
-  haveI : MeasurableConstSMul (Equiv.Perm (Fin 2)) (Fin 2) := ⟨fun _ => measurable_from_top⟩
-  haveI : SMulInvariantMeasure (Equiv.Perm (Fin 2)) (Fin 2) (Measure.count : Measure (Fin 2)) :=
-    ⟨fun g s _ => by
-      rw [Measure.count_apply MeasurableSet.of_discrete, Measure.count_apply MeasurableSet.of_discrete]
-      exact congrArg _ (Set.encard_preimage_of_bijective g.bijective s)⟩
-  refine norm_sq_le_finrank_mul_fun (G := Equiv.Perm (Fin 2)) ⊤ (fun _ _ => Integrable.of_finite)
-    (fun f _ hf => ?_) (fun _ _ _ => trivial) trivial x
-  rw [integral_smul_measure, integral_count] at hf
-  simp only [Fin.sum_univ_two, smul_eq_mul, mul_eq_zero] at hf
-  have h : ‖f 0‖ ^ 2 + ‖f 1‖ ^ 2 = 0 := hf.resolve_left (by simp)
-  have h0 : ‖f 0‖ = 0 := by nlinarith [norm_nonneg (f 0), norm_nonneg (f 1)]
-  have h1 : ‖f 1‖ = 0 := by nlinarith [norm_nonneg (f 0), norm_nonneg (f 1)]
-  ext i
-  fin_cases i
-  · simpa using h0
-  · simpa using h1
-
 end GlobalTheory.Bergman

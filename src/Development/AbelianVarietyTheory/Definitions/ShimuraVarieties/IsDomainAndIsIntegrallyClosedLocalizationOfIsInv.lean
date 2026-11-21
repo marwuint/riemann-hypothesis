@@ -277,10 +277,6 @@ theorem isAffineQuotient_spec [Finite G] (B A : Type u) [CommRing B] [CommRing A
   ⟨specAction_comp G B A, inferInstance, Scheme.Hom.app_injective _,
     mem_range_spec_app_of_isInvariant G B A⟩
 
-example (K L : Type u) [Field K] [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L] :
-    IsAffineQuotient (specAction Gal(L/K) L) (Spec.map (CommRingCat.ofHom (algebraMap K L))) :=
-  isAffineQuotient_spec K L
-
 theorem epi_of_surjective_of_app_injective (π : X ⟶ Y) [Surjective π]
     (h : ∀ W, Function.Injective (π.app W)) : Epi π := ⟨fun {Z} a b hab ↦ by
   have hb : a.base = b.base := by

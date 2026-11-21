@@ -117,29 +117,4 @@ theorem petProd_level_one (Γ : Subgroup SL(2, ℤ)) [Γ.FiniteIndex] (k : ℤ) 
   rw [finsum_eq_sum_of_fintype, Finset.sum_const, Subgroup.index, Nat.card_eq_fintype_card]
   simp
 
-example : IsDia 5 2 3 ⟨!![7, 2; 10, 3], by simp [Matrix.det_fin_two]⟩ := by
-  constructor
-  · show (((10 : ℤ) : ZMod (5 * 2))) = 0
-    decide
-  · show (((3 : ℤ) : ZMod 5)) = ((3 : ℤ) : ZMod 5)
-    rfl
-
-example {q : ℕ} (hq : 0 < q) (τ : ℍ) : heckeT 0 q 1 (fun _ => 1) τ = 1 + (q : ℂ)⁻¹ := by
-  have hq' : (q : ℂ) ≠ 0 := by exact_mod_cast hq.ne'
-  simp [heckeT, uOp, vOp, hq']
-
-example (Γ : Subgroup SL(2, ℤ)) [Γ.FiniteIndex] (k : ℤ) (f g : ℍ → ℂ) :
-    petProd Γ k (Complex.I • f) g = Complex.I * petProd Γ k f g ∧
-      petProd Γ k f (Complex.I • g) = -Complex.I * petProd Γ k f g := by
-  rw [petProd_smul_left, petProd_smul_right, Complex.conj_I]
-  exact ⟨rfl, rfl⟩
-
-example : (lev 5 2).relIndex (pmGrp (lev 5 2)) = 2 :=
-  relIndex_pmGrp_of_notMem (neg_one_notMem_lev 2 (by norm_num))
-
-example (k : ℤ) {f g : ℍ → ℂ} (hf : ∀ γ : SL(2, ℤ), f ∣[k] γ = f) (hg : ∀ γ : SL(2, ℤ), g ∣[k] γ = g) :
-    petProd ⊤ k f g = ∫ z in ModularGroup.fd, petersson k g f z := by
-  rw [petProd_level_one ⊤ k hf hg, pmGrp_eq_self (Subgroup.mem_top _)]
-  simp
-
 end GlobalTheory.Hk

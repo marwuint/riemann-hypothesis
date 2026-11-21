@@ -227,13 +227,6 @@ theorem _root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdel
   @_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap_principalIdele E E _ _ _ _
     (_root_.GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.conj F E).toRingEquiv.toRingHom.toAlgebra x
 
-example : IsCMExtension (maximalRealSubfield (CyclotomicField 4 ℚ)) (CyclotomicField 4 ℚ) :=
-  haveI : IsCyclotomicExtension {4} ℚ (CyclotomicField 4 ℚ) :=
-    CyclotomicField.isCyclotomicExtension 4 ℚ
-  haveI : IsCMField (CyclotomicField 4 ℚ) :=
-    IsCyclotomicExtension.Rat.isCMField _ (S := {4}) ⟨4, rfl, by norm_num⟩
-  inferInstance
-
 variable {E : Type} [Field E] [NumberField E]
 
 open scoped Classical in
@@ -350,11 +343,6 @@ def eulerFactor (χ : UnitaryHeckeChar E) (P : HeightOneSpectrum (𝓞 E)) (s : 
 
 def finiteL (χ : UnitaryHeckeChar E) (s : {s : ℂ // 1 < s.re}) : ℂ :=
   ∏' P : HeightOneSpectrum (𝓞 E), χ.eulerFactor P s
-
-example (P : HeightOneSpectrum (𝓞 E)) : (trivial E).valueAt P = 1 := by
-  have h : (trivial E).IsUnramifiedAt P := fun _ _ => rfl
-  rw [valueAt, if_pos h]
-  rfl
 
 theorem norm_term_le (χ : UnitaryHeckeChar E) (P : HeightOneSpectrum (𝓞 E)) (s : ℂ) :
     ‖χ.valueAt P * (Ideal.absNorm P.asIdeal : ℂ) ^ (-s)‖ ≤

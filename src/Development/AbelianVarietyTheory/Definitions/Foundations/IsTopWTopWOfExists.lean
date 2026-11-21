@@ -116,28 +116,6 @@ theorem unique [NeZero N] [IsGalois K Ω] (hζ : IsPrimitiveRoot ζ N) {σ : Ω 
   rw [zero_pow (NeZero.ne N), mul_zero] at key
   exact hw0 key
 
-example : geo ℝ ℝ ℂ = ⊤ := by
-  ext g
-  simp only [mem_geo, Subgroup.mem_top, iff_true]
-  exact fun z => g.commutes z
-
-example [NeZero N] (hζ : IsPrimitiveRoot ζ N) (σ : Ω ≃ₐ[F] Ω) : IsTopW (N := N) ζ 1 1 0 σ (1 : K) :=
-  ⟨one_ne_zero, 1, by simp, fun g _ => by
-    rw [kum_eq_of hζ one_ne_zero 0 (by simp)]
-    simp [edge]⟩
-
-example (σ : ℂ ≃ₐ[ℝ] ℂ) : ¬ IsTopW (N := 2) (-1 : ℂ) 1 1 0 σ (-1 : ℝ) := by
-  intro h
-  have hζ : IsPrimitiveRoot (-1 : ℂ) 2 := IsPrimitiveRoot.neg_one 0 (by norm_num)
-  have h1 : IsTopW (N := 2) (-1 : ℂ) 1 1 0 σ (1 : ℝ) :=
-    ⟨one_ne_zero, 1, by simp, fun g _ => by
-      rw [kum_eq_of hζ one_ne_zero 0 (by simp)]
-      simp [edge]⟩
-  haveI : IsAlgClosure ℝ ℂ := ⟨inferInstance, inferInstance⟩
-  haveI : IsGalois ℝ ℂ := {}
-  obtain ⟨c, -, hc⟩ := unique hζ h h1
-  nlinarith [sq_nonneg c]
-
 end TopW
 
 end GlobalTheory.K4

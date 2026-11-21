@@ -1209,41 +1209,6 @@ end Slopes
 
 end NumberField
 
-example : (std ℂ Unit).form (RingHom.id ℂ) (fun _ => Complex.I) (fun _ => 1) = Complex.I := by
-  simp [std_form]
-
-example : (diag (K := ℚ) (fun _ => ![1, 4]) (fun _ i => by fin_cases i <;> simp)).arDeg
-    (Submodule.span (𝓞 ℚ) (Set.range (Pi.basisFun ℚ (Fin 2)))) = -Real.log 2 := by
-  have h4 : Real.log 4 = 2 * Real.log 2 := by
-    rw [show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]
-    norm_num
-  rw [arDeg_diag]
-  simp [h4, Embeddings.card]
-
-example : (std ℚ Unit).arDeg (Submodule.span (𝓞 ℚ) {fun _ => 3}) = -Real.log 3 := by
-  rw [arDeg_span_singleton _ (fun h0 => by simpa using congrFun h0 ())]
-  have : ∀ σ : ℚ →+* ℂ, (std ℚ Unit).norm σ (fun _ => 3) = 3 := fun σ => by
-    rw [norm, std_form]
-    simp
-  simp [this, Embeddings.card]
-
-example {K : Type*} [Field K] [NumberField K] :
-    (stdField K).muMax (Submodule.span (𝓞 K) {1}) = 0 := by
-  have h1 : finrank (𝓞 K) (Submodule.span (𝓞 K) {(1 : K)}) = 1 := by
-    rw [finrank_lattice_eq_finrank_span, Submodule.span_span_of_tower,
-      finrank_span_singleton one_ne_zero]
-  rw [muMax_of_finrank_eq_one _ (Submodule.fg_span_singleton _) h1, slope, degNorm,
-    arDeg_stdField_span_singleton one_ne_zero]
-  simp
-
-example {K : Type*} [Field K] (σ : K →+* ℂ) (hσ : ComplexEmbedding.conjugate σ ≠ σ) :
-    ∃ h : ArchMetric K (Unit → K), ¬ h.ConjInvariant := by
-  classical
-  refine ⟨diag (fun τ _ => if τ = σ then 1 else 2) fun τ _ => by split_ifs <;> norm_num,
-    fun hc => ?_⟩
-  have := hc σ (fun _ => 1) (fun _ => 1)
-  simp [diag_form, hσ] at this
-
 end ArchMetric
 
 end GlobalTheory

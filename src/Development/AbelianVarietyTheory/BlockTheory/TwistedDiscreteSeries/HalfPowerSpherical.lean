@@ -290,10 +290,6 @@ theorem isChain_chainGen (α α' : kˣ) (m : ℕ) : IsChain α α' m (chainGen �
     congr 1
     push_cast; ring
 
-example (α α' : kˣ) : chainGen α α' 4 2 1 * α' / α = 1 := by
-  ext
-  simp [chainGen, zpow_ofNat]
-  field_simp
 end Basic₂
 
 end GlobalTheory.IndefiniteRowSideFullHecke.HalfPowerSpherical

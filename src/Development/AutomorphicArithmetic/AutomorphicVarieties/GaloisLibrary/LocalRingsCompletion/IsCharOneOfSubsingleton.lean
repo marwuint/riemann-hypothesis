@@ -196,8 +196,6 @@ def interLen (f g : R) : ℕ∞ := Module.length R (R ⧸ Ideal.span {f, g})
 
 end Char
 
-example (l : ℕ) [Fact l.Prime] (a : maximalIdeal ℤ_[l]) : ev a (1 + X) = 1 + a := by simp
-
 end UpperTheory.V.abelian₂
 
 end

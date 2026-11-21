@@ -101,9 +101,6 @@ def RespectsCube (L : LB G.left) (w : LB.Iso L (L.pull (GrpObj.inv (X := G)).lef
   LB.Gen.Maps (LB.linCombIso w (thφ G (x3 G)) thε) t
     ((CubeMap.ofHom (GrpObj.inv (X := G))).thetaPull L t)
 
-example (L : RigLB G) : L.IsSymmetric ↔ ∃ w, IsNormSymm L w :=
-  ⟨fun ⟨_, w, h⟩ => ⟨w, h⟩, fun ⟨w, h⟩ => ⟨eSec_inv, w, h⟩⟩
-
 end Symm
 
 namespace PowerDatum
@@ -208,10 +205,5 @@ def BoxRespectsCubeSt : Prop :=
 
 def BoxCubicalSymmetricSt : Prop :=
   BoxRigidifiedSt ∧ BoxCubicalSt ∧ BoxNormSymmSt ∧ BoxRespectsCubeSt
-
-example (G : Over S) [GrpObj G] : PowerDatum 1 G G :=
-  ⟨fun _ => 𝟙 G, fun _ => inferInstance, fun _ =>
-    ⟨fun x y h => by simpa using congrFun h 0,
-      fun z => ⟨z 0, funext fun i => by rw [Subsingleton.elim i 0]; simp⟩⟩⟩
 
 end GlobalTheory.IndefiniteRowSideFullHecke.PowerGroupDatum

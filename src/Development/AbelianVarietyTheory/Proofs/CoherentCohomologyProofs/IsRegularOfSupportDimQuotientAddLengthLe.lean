@@ -574,13 +574,6 @@ theorem flat_of_isRegularRing_of_isRegularRing [IsRegularRing A] [IsRegularRing 
     (hd : ∀ q : Ideal B, q.IsMaximal → (q.under A).height ≤ q.height) : Module.Flat A B :=
   flat_of_isRegularRing_of_isCM (fun _ _ => isCM_of_isRegularLocalRing _) hd
 
-example (p : ℕ) [Fact p.Prime] : RingTheory.Sequence.IsRegular ℤ_[p] [(p : ℤ_[p]) ^ 2] := by
-  refine isRegular_of_radical_eq_maximalIdeal ?_ ?_
-  · rw [Ideal.ofList_singleton, ← Ideal.span_singleton_pow, Ideal.radical_pow _ two_ne_zero,
-      ← PadicInt.maximalIdeal_eq_span_p, (maximalIdeal.isMaximal _).isPrime.radical]
-  · rw [IsDiscreteValuationRing.ringKrullDim_eq_one]
-    simp
-
 end Miracle
 
 end GlobalTheory

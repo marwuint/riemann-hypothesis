@@ -24,10 +24,6 @@ theorem eq_lag_iff {R E ι : Type*} [CommRing R] [Ring E] [Algebra R E] [Fintype
   rw [← hv, Ring.inverse_unit, ← Units.smul_def, ← Units.smul_def]
   exact eq_inv_smul_iff
 
-example (R : Type) [CommRing R] (a : Unit → R) (P : R) : lag a P () = 1 := by
-  have : (Finset.univ : Finset Unit).erase () = ∅ := rfl
-  simp [lag, this]
-
 def pat {ι : Type*} (R : Type*) [CommRing R] (p : ι → ι → Prop) : Submodule R (Matrix ι ι R) where
   carrier := {X | ∀ i j, ¬ p i j → X i j = 0}
   add_mem' := fun hX hY i j h => by simp [hX i j h, hY i j h]
@@ -36,8 +32,5 @@ def pat {ι : Type*} (R : Type*) [CommRing R] (p : ι → ι → Prop) : Submodu
 
 theorem mem_pat {ι R : Type*} [CommRing R] {p : ι → ι → Prop} {X : Matrix ι ι R} :
     X ∈ pat R p ↔ ∀ i j, ¬ p i j → X i j = 0 := Iff.rfl
-
-example {ι R : Type} [CommRing R] : pat R (fun _ _ : ι => True) = ⊤ := by
-  ext X; simp [mem_pat]
 
 end UpperTheory.V.AlgebraTools

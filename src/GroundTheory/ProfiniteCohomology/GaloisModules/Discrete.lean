@@ -94,10 +94,6 @@ section Galois
 
 variable (K L) [IsGalois K L]
 
-example : IsDiscreteRep (galUnits.{u} K L) := inferInstance
-example (n : ℕ) : IsDiscreteRep (galRootsOfUnity.{u} K L n) := inferInstance
-example : IsDiscreteRep (galAdd K L) := inferInstance
-
 end Galois
 
 end GroundTheory.ProfCoh

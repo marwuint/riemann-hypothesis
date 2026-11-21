@@ -134,21 +134,4 @@ def LiftVariant : Prop :=
     ∀ χ : Fin u → kˣ →* ℂˣ, (∀ i, IsSmoothChar (χ i)) → (∀ i, IsUnitaryChar (χ i)) →
       LiftConclusion t μ (charProd d hd π₀ χ)
 
-example (a b : ℕ) : ∃ φ : SB (Stratum k a b 0), φ ≠ 0 := by
-  have hs : Subsingleton (Stratum k a b 0) := ⟨fun x y => Subtype.ext (by
-    have key : ∀ z : Stratum k a b 0, z.1 = 0 := fun z => by
-      have h0 : LinearMap.range z.1.mulVecLin = ⊥ := Submodule.finrank_eq_zero.1 z.2
-      apply Matrix.toLin'.injective
-      rw [map_zero]
-      exact LinearMap.range_eq_bot.1 h0
-    rw [key x, key y])⟩
-  refine ⟨⟨fun _ => 1, IsLocallyConstant.const 1, HasCompactSupport.of_compactSpace _⟩, fun h => ?_⟩
-  simpa using congrFun (congrArg Subtype.val h) ⟨0, Matrix.rank_zero⟩
-
-example (μ : kˣ →* ℂˣ) : ¬ AvoidsExponents 1 μ (detRep (Fin 1) (μ * absPow k (-1))) := by
-  intro h
-  have := inSupport_detRep (N := 1) (μ * absPow k (-1)) 0
-  apply h 0
-  simpa using this
-
 end GlobalTheory.IndefiniteRowSideFullHecke.RankStratification

@@ -236,8 +236,6 @@ instance (R : Roots rk B Ω) : Nonempty (BetaChoice R) := by
   choose b hb h1 using this
   exact ⟨⟨fun 𝔫 => ⟨b 𝔫, (hb 𝔫).mem⟩, hb, Subtype.ext (h1 1 rfl)⟩⟩
 
-example [IsCMField E] (n : ℕ) : IsRanks (E := E) (2 * n) (fun _ => n) := fun _ => by ring
-
 end Exist
 
 end

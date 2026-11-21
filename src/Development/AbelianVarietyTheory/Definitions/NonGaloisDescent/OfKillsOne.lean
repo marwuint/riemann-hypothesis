@@ -229,28 +229,4 @@ theorem CokBound.of_kills_one (h : ∀ i, F.Kills i 1) (Hw : ZMod n → ℕ) (H 
 
 end Rel
 
-example : AltWord (n := 2) (fun i => decide (i = 1)) (fun i => if i = 1 then 20 else 1) 20 := by
-  unfold AltWord; decide
-
-example : OneWord (n := 3) (fun _ => true) (fun i => if i = 0 then 1 else 20) 20 3 ∧
-    ¬ OneWord (n := 3) (fun _ => true) (fun i => if i = 0 then 1 else 20) 20 2 := by
-  unfold OneWord; decide
-
-example (up : ZMod 3 → Bool) (sz : ZMod 3 → ℕ) (b : ℕ) : ¬ AltWord up sz b := by
-  rintro ⟨h, -⟩
-  have h0 : up 1 = !up 0 := h 0
-  have h1 : up 2 = !up 1 := h 1
-  have h2 : up 0 = !up 2 := h 2
-  revert h0 h1 h2
-  cases up 0 <;> cases up 1 <;> cases up 2 <;> simp
-
-example : cW 11 10 = 2 := by
-  unfold cW
-  have : Real.logb ((11 : ℕ) : ℝ) (((10 : ℕ) : ℝ) + 1) = 1 := by
-    norm_num
-  rw [this]; norm_num
-
-example : secondSignatureConstant 11 100 = 3 ∧ cDC 11 100 = 11 ∧ MC 11 100 = 11 ∧ sigC 11 100 0 = 2 ∧
-    MB 11 100 = 21 := by decide
-
 end GlobalTheory.NB

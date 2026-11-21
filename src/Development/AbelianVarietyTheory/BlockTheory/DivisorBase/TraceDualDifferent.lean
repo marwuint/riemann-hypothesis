@@ -92,8 +92,4 @@ theorem norm_add_ne_zero {z : (F →+* ℝ) → ℂ} (hz : ∀ τ, (z τ).im ≠
     ∏ τ : F →+* ℝ, (z τ + ((τ a : ℝ) : ℂ)) ≠ 0 :=
   Finset.prod_ne_zero_iff.2 fun τ _ h => hz τ (by simpa using congrArg Complex.im h)
 
-example (M : FractionalIdeal (𝓞 F)⁰ F) (z : (F →+* ℝ) → ℂ) (hz : ∀ τ, 0 < (z τ).im) (ν : F) :
-    ν ∈ dualCone M z ↔ ν ∈ traceDual M ∧ ∀ τ : F →+* ℝ, 0 < τ ν := by
-  simp [dualCone, hz]
-
 end GlobalTheory.IndefiniteRowSideFullHecke.TraceDualDifferent

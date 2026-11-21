@@ -690,24 +690,6 @@ theorem comodule_dual_invariants_integrals (R : Type u) [CommRing R] :
 
 section Examples
 
-example : ¬ ∀ w : CartierDual ℤ (AddMonoidAlgebra ℤ (ZMod 2)),
-    dualContraction (comul (R := ℤ)) w (AddMonoidAlgebra.single (1 : ZMod 2) (1 : ℤ)) =
-      w 1 • AddMonoidAlgebra.single (1 : ZMod 2) (1 : ℤ) := fun h => by
-  have h1 := h ((CartierDual.addMonoidAlgebraEquiv ℤ (ZMod 2)).symm (Pi.single 0 1))
-  rw [dualContraction_apply, AddMonoidAlgebra.one_def] at h1
-  simp [eq_comm] at h1
-
-open MvPowerSeries in
-
-example : ∃ ε : (MvPowerSeries Unit ℤ ⧸
-      Ideal.span (Set.range fun _ : Unit => (2 + X ()) * (X () : MvPowerSeries Unit ℤ))) →ₐ[ℤ] ℤ,
-    Ideal.Quotient.mk _ (2 + X ()) ∈ (RingHom.ker ε).annihilator ∧
-      ε (Ideal.Quotient.mk _ (2 + X ())) = 2 := by
-  have h := cramer_quotient (a := Matrix.of fun _ _ : Unit => (2 + X () : MvPowerSeries Unit ℤ))
-    (f := fun _ : Unit => (2 + X ()) * X ()) (by simp)
-  refine ⟨_, by simpa using h.2.1, ?_⟩
-  simp [map_ofNat]
-
 end Examples
 
 end GlobalTheory

@@ -511,11 +511,6 @@ theorem isOpenImmersion_lift_toNormalization_of_isLocalization
 
 end Localization
 
-example : PreservesNormalization (Spec.map (CommRingCat.ofHom (algebraMap ℤ ℚ))) :=
-  .of_isPullback_localization (nonZeroDivisors ℤ) (IsPullback.of_id_snd)
-
-example {Y S : Scheme.{u}} (g : Y ⟶ S) [Etale g] : PreservesNormalization g := inferInstance
-
 theorem isIso_toNormalization_morphismRestrict {X Y : Scheme.{u}} (f : X ⟶ Y) [QuasiCompact f]
     [QuasiSeparated f] (V : Y.Opens) [IsIntegralHom (f ∣_ V)] :
     IsIso (f.toNormalization ∣_ (f.fromNormalization ⁻¹ᵁ V)) := by
@@ -1090,9 +1085,6 @@ theorem normalization_quotient_spec (G : Type v) [Group G] [Finite G] (R A B : T
   have := isSchemeTheoreticallyDominant_spec_algebraMap A B
   normalization_quotient _ _ _ _ _ (specAction_comp G A B) _
     fun _ ↦ ⟨⊤, isAffineOpen_top _, trivial, mem_range_spec_app_of_isInvariant G A B ⊤⟩
-
-example (K L : Type) [Field K] [Field L] [Algebra K L] [FiniteDimensional K L] [IsGalois K L] :=
-  normalization_quotient_spec Gal(L/K) ℤ K L
 
 theorem normalization_trans_baseChange {X Y : Scheme.{u}} (f : X ⟶ Y) [QuasiCompact f]
     [QuasiSeparated f] :

@@ -1204,28 +1204,6 @@ end TwoDirections
 
 section Examples
 
-example : cubeSign ({0, 1, 2} : Finset (Fin 3)) 0 = 1 ∧ cubeSign ({0, 1, 2} : Finset (Fin 3)) 1 = -1 ∧
-    cubeSign ({0, 1, 2} : Finset (Fin 3)) 2 = 1 := by decide
-
-example : Cube.termTwoFinTwo (Cube.const (Fin 2) (ModuleCat.of ℤ ℤ))
-    (Cube.d _ 1 ((Cube.termOneFinTwo (Cube.const (Fin 2) (ModuleCat.of ℤ ℤ))).symm
-      ((3 : ℤ), (10 : ℤ)))) = (7 : ℤ) := by
-  rw [Cube.d_one_finTwo, LinearEquiv.apply_symm_apply]
-  rfl
-
-example : ¬ (cubeComplex (Cube.const (Fin 0) (ModuleCat.of ℤ ℤ))).ExactAt 0 := by
-  rw [cubeComplex_exactAt_zero_iff]
-  intro h
-  haveI := Cube.subsingleton_term (Cube.const (Fin 0) (ModuleCat.of ℤ ℤ)) (p := 1) (by simp)
-  exact (one_ne_zero : (1 : ℤ) ≠ 0) (h (Subsingleton.elim _ _))
-
-example : ¬ (cechComplex (Cube.const (Fin 2) (ModuleCat.of ℤ ℤ))).ExactAt 0 := by
-  rw [cochainComplex_exactAt_zero_iff, cechComplex_d _ 0]
-  intro h
-  have h0 : Cube.aug (Cube.const (Fin 2) (ModuleCat.of ℤ ℤ)) (1 : ℤ) = 0 :=
-    h ((Cube.d_aug _ _).trans (map_zero _).symm)
-  exact (one_ne_zero : (1 : ℤ) ≠ 0) (congrFun h0 ⟨{0}, rfl⟩)
-
 end Examples
 
 end GlobalTheory

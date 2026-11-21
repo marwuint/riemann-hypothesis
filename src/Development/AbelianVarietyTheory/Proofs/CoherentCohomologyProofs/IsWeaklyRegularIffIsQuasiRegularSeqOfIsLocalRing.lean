@@ -322,10 +322,6 @@ theorem IsQuasiRegularSeq.isWeaklyRegular [IsNoetherianRing R] [Module.Finite R 
     rintro _ ⟨i, rfl⟩
     exact hf i
 
-example : IsQuasiRegularSeq ℤ ![(2 : ℤ)] :=
-  isQuasiRegularSeq_of_isWeaklyRegular (by
-    simpa using IsSMulRegular.of_ne_zero (M := ℤ) (two_ne_zero (α := ℤ)))
-
 end Main
 
 end GlobalTheory

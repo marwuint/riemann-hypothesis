@@ -67,8 +67,6 @@ def Carries {L M : LB X} (u : LB.Iso L M) (s : LB.Gen L) (t : LB.Gen M) : Prop :
 def isoRefl (L : LB X) : LB.Iso L L where
   s := fun p => L.g p.1 p.2
 
-example (L : LB X) (s : LB.Gen L) : Carries (isoRefl L) s s ↔ s.IsGen := Iff.rfl
-
 def CommSq {L L' M M' : LB X} (u : LB.Iso L L') (a : LB.Iso L M) (b : LB.Iso L' M')
     (v : LB.Iso M M') : Prop :=
   ∀ (i : L.ι) (i' : L'.ι) (j : M.ι) (j' : M'.ι),

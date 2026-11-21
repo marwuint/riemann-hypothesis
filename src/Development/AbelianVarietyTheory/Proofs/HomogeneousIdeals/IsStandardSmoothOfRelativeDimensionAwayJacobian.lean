@@ -425,12 +425,6 @@ theorem proper_flat_geometricallyIntegral_smooth :
   ⟨inferInstance, inferInstance, ⟨inferInstance, inferInstance, inferInstance⟩, inferInstance,
     smoothOfRelativeDimension_toSpec_of_isUnit W⟩
 
-example : SmoothOfRelativeDimension 1 (toSpec (⟨0, 0, 1, -1, 0⟩ : WeierstrassCurve ℚ)) :=
-  smoothOfRelativeDimension_toSpec_of_isUnit _ (by
-    simp only [isUnit_iff_ne_zero, WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄,
-      WeierstrassCurve.b₆, WeierstrassCurve.b₈]
-    norm_num)
-
 end WeierstrassCurve
 
 end GlobalTheory

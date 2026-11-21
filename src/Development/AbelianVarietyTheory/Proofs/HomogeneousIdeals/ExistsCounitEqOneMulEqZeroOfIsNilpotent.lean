@@ -477,15 +477,6 @@ theorem isHopfIdeal_ker_counit (R H : Type*) [CommRing R] [CommRing H] [HopfAlge
     rw [h2, rTensor_counit_comul, TensorProduct.lid_tmul, one_smul, h1 x, hx', zero_smul,
       TensorProduct.tmul_zero]
 
-example : Algebra.Etale ℚ (AddMonoidAlgebra ℚ (ZMod 3)) := etale_of_hopfAlgebra _ _
-
-example : Algebra.Smooth ℚ (AddMonoidAlgebra ℚ ℤ) := smooth_of_hopfAlgebra _ _
-
-example : (closureIdeal (V := ℤ) ℚ
-    (RingHom.ker (counitAlgHom ℚ (ℚ ⊗[ℤ] AddMonoidAlgebra ℤ (ZMod 3))))).IsHopfIdeal ℤ :=
-  have := isHopfIdeal_ker_counit ℚ (ℚ ⊗[ℤ] AddMonoidAlgebra ℤ (ZMod 3))
-  isHopfIdeal_closureIdeal_of_isDedekindDomain _
-
 end Examples
 
 end GlobalTheory
