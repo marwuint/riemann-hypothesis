@@ -1,4 +1,5 @@
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalMassType.WField
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LevelSplitting.LevelSAllOf
 
 noncomputable section
 
@@ -35,10 +36,8 @@ section Herm
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
-theorem sigma_invol (hCM : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
-  obtain ⟨τ⟩ := (inferInstance : Nonempty (E →+* ℂ))
-  apply τ.injective
-  rw [hCM.2.2.2 τ, hCM.2.2.2 τ, star_star]
+theorem sigma_invol (hCM : IsCMExt F E σ) (x : E) : σ (σ x) = x :=
+  PI.LevelKSplit.W.sig_invol hCM x
 
 theorem hE_symm (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (x y : Fin n → E) :
     hE σ J x y = σ (hE σ J y x) := by

@@ -1,5 +1,6 @@
 import Mathlib
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasures.PushSupp
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.DensGen
 
 noncomputable section
 
@@ -27,103 +28,16 @@ theorem fib_set_nonneg [IsFiniteMeasureOnCompacts ν]
     (hff' : ∀ v, f v = ι (f' v)) (hι : Function.Injective ι)
     (ρ : V → ℝ) (hρc : Continuous ρ) (hρs : HasCompactSupport ρ) (hρU : tsupport ρ ⊆ U)
     (hρ0 : ∀ v, 0 ≤ ρ v) (S : Set X) (hS : IsCompact S) (hSB : S ⊆ B) :
-    ∫ v in f' ⁻¹' S, ρ v ∂μ = ∫ b in S, (∫ v, ρ v ∂(fib b)) ∂ν := by
-  have hSm : MeasurableSet S := hS.isClosed.measurableSet
-  have hAm : MeasurableSet (f' ⁻¹' S) := (hS.isClosed.preimage hf').measurableSet
-  have h3 := hfib.2.2 ρ hρc hρs hρU
-  rw [integral_eq_lintegral_of_nonneg_ae (Eventually.of_forall hρ0) hρc.aestronglyMeasurable,
-    integral_eq_lintegral_of_nonneg_ae
-      (Eventually.of_forall fun b => integral_nonneg fun v => hρ0 v)
-      ((h3.2.mono hSB).aestronglyMeasurable hSm)]
-  congr 1
-  have hmeas : Measurable fun v => ENNReal.ofReal (ρ v) := hρc.measurable.ennreal_ofReal
-  have hsupp : ((f' ⁻¹' S).indicator (fun v => ENNReal.ofReal (ρ v))).support ⊆ U := by
-    intro v hv
-    apply hρU
-    apply subset_tsupport
-    intro h0
-    apply hv
-    simp [h0]
-  calc ∫⁻ v in f' ⁻¹' S, ENNReal.ofReal (ρ v) ∂μ
-      = ∫⁻ v in U, (f' ⁻¹' S).indicator (fun v => ENNReal.ofReal (ρ v)) v ∂μ := by
-        rw [setLIntegral_eq_of_support_subset hsupp, lintegral_indicator hAm]
-    _ = ∫⁻ b, ∫⁻ v, (f' ⁻¹' S).indicator (fun v => ENNReal.ofReal (ρ v)) v ∂(fib b) ∂ν :=
-        hfib.2.1 _ (hmeas.indicator hAm)
-    _ = ∫⁻ b, S.indicator (fun b => ∫⁻ v, ENNReal.ofReal (ρ v) ∂(fib b)) b ∂ν := by
-        refine lintegral_congr fun b => ?_
-        by_cases hb : b ∈ S
-        · rw [Set.indicator_of_mem hb]
-          refine lintegral_congr_ae ?_
-          filter_upwards [ae_fib hfib hff' hι b] with v hv
-          have hv' : v ∈ f' ⁻¹' S := by simp [hv, hb]
-          simp [Set.indicator_of_mem hv']
-        · have e0 : S.indicator (fun b => ∫⁻ v, ENNReal.ofReal (ρ v) ∂(fib b)) b = 0 := by
-            simp [hb]
-          rw [e0]
-          have : (fun v => (f' ⁻¹' S).indicator (fun v => ENNReal.ofReal (ρ v)) v)
-              =ᵐ[fib b] fun _ => 0 := by
-            filter_upwards [ae_fib hfib hff' hι b] with v hv
-            have hv' : v ∉ f' ⁻¹' S := by simp [hv, hb]
-            simp [hv']
-          rw [lintegral_congr_ae this, lintegral_zero]
-    _ = ∫⁻ b in S, ∫⁻ v, ENNReal.ofReal (ρ v) ∂(fib b) ∂ν := lintegral_indicator hSm _
-    _ = ∫⁻ b in S, ENNReal.ofReal (∫ v, ρ v ∂(fib b)) ∂ν := by
-        refine setLIntegral_congr_fun hSm ?_
-        intro b hb
-        exact (ofReal_integral_eq_lintegral_ofReal (h3.1 b (hSB hb))
-          (Eventually.of_forall hρ0)).symm
+    ∫ v in f' ⁻¹' S, ρ v ∂μ = ∫ b in S, (∫ v, ρ v ∂(fib b)) ∂ν :=
+  PI.VolStabS.DensGen.fib_set_nonneg hfib hf' hff' hι ρ hρc hρs hρU hρ0 S hS hSB
 
 theorem fib_set [IsFiniteMeasureOnCompacts μ] [IsFiniteMeasureOnCompacts ν]
     (hfib : IsFibreFamily μ f ι U ν B fib) {f' : V → X} (hf' : Continuous f')
     (hff' : ∀ v, f v = ι (f' v)) (hι : Function.Injective ι)
     (ρ : V → ℝ) (hρc : Continuous ρ) (hρs : HasCompactSupport ρ) (hρU : tsupport ρ ⊆ U)
     (S : Set X) (hS : IsCompact S) (hSB : S ⊆ B) :
-    ∫ v in f' ⁻¹' S, ρ v ∂μ = ∫ b in S, (∫ v, ρ v ∂(fib b)) ∂ν := by
-  have hSm : MeasurableSet S := hS.isClosed.measurableSet
-  have hpc : Continuous fun v => max (ρ v) 0 := hρc.max continuous_const
-  have hnc : Continuous fun v => max (-ρ v) 0 := hρc.neg.max continuous_const
-  have hps : HasCompactSupport fun v => max (ρ v) 0 :=
-    hρs.comp_left (g := fun t : ℝ => max t 0) (by simp)
-  have hns : HasCompactSupport fun v => max (-ρ v) 0 :=
-    hρs.comp_left (g := fun t : ℝ => max (-t) 0) (by simp)
-  have hpU : tsupport (fun v => max (ρ v) 0) ⊆ U := by
-    refine (closure_mono fun v hv => ?_).trans hρU
-    intro h0
-    apply hv
-    simp [h0]
-  have hnU : tsupport (fun v => max (-ρ v) 0) ⊆ U := by
-    refine (closure_mono fun v hv => ?_).trans hρU
-    intro h0
-    apply hv
-    simp [h0]
-  have hp3 := hfib.2.2 _ hpc hps hpU
-  have hn3 := hfib.2.2 _ hnc hns hnU
-  have hsplit : ∀ v, ρ v = max (ρ v) 0 - max (-ρ v) 0 := fun v =>
-    (max_zero_sub_eq_self (ρ v)).symm
-  have hIp : IntegrableOn (fun b => ∫ v, max (ρ v) 0 ∂(fib b)) S ν :=
-    (hp3.2.mono hSB).integrableOn_compact hS
-  have hIn : IntegrableOn (fun b => ∫ v, max (-ρ v) 0 ∂(fib b)) S ν :=
-    (hn3.2.mono hSB).integrableOn_compact hS
-  calc ∫ v in f' ⁻¹' S, ρ v ∂μ
-      = ∫ v in f' ⁻¹' S, (max (ρ v) 0 - max (-ρ v) 0) ∂μ := by
-        congr 1
-        funext v
-        exact hsplit v
-    _ = ∫ v in f' ⁻¹' S, max (ρ v) 0 ∂μ - ∫ v in f' ⁻¹' S, max (-ρ v) 0 ∂μ :=
-        integral_sub (hpc.integrable_of_hasCompactSupport hps).integrableOn
-          (hnc.integrable_of_hasCompactSupport hns).integrableOn
-    _ = ∫ b in S, (∫ v, max (ρ v) 0 ∂(fib b)) ∂ν -
-          ∫ b in S, (∫ v, max (-ρ v) 0 ∂(fib b)) ∂ν := by
-        rw [fib_set_nonneg hfib hf' hff' hι _ hpc hps hpU (fun v => le_max_right _ _) S hS hSB,
-          fib_set_nonneg hfib hf' hff' hι _ hnc hns hnU (fun v => le_max_right _ _) S hS hSB]
-    _ = ∫ b in S, (∫ v, max (ρ v) 0 ∂(fib b) - ∫ v, max (-ρ v) 0 ∂(fib b)) ∂ν :=
-        (integral_sub hIp hIn).symm
-    _ = ∫ b in S, (∫ v, ρ v ∂(fib b)) ∂ν := by
-        refine setIntegral_congr_fun hSm fun b hb => ?_
-        rw [← integral_sub (hp3.1 b (hSB hb)) (hn3.1 b (hSB hb))]
-        congr 1
-        funext v
-        exact (hsplit v).symm
+    ∫ v in f' ⁻¹' S, ρ v ∂μ = ∫ b in S, (∫ v, ρ v ∂(fib b)) ∂ν :=
+  PI.VolStabS.DensGen.fib_set hfib hf' hff' hι ρ hρc hρs hρU S hS hSB
 
 theorem eq_zero_of_setIntegral [LocallyCompactSpace X] [ν.IsOpenPosMeasure]
     [IsFiniteMeasureOnCompacts ν] (D : X → ℝ) (W : Set X) (b0 : X) (hW : W ∈ 𝓝 b0)

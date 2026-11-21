@@ -7,13 +7,8 @@ namespace PI.UnitaryGroupMassFormula.DSIC
 open PI.DSInfCharCap
 open scoped InnerProductSpace Matrix
 
-theorem jm_sq {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
-  unfold Formalism.REAL.Jm
-  rw [Matrix.diagonal_mul_diagonal]
-  ext i j
-  rcases eq_or_ne i j with rfl | h
-  · cases hε : ε i <;> simp [Matrix.diagonal_apply, hε]
-  · simp [Matrix.diagonal_apply, Matrix.one_apply, h]
+theorem jm_sq {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 :=
+  Formalism.REAL.Jm_mul_self ε
 
 theorem jm_jm_mul {n : ℕ} (ε : Fin n → Bool) (M : Matrix (Fin n) (Fin n) ℂ) :
     Formalism.REAL.Jm ε * (Formalism.REAL.Jm ε * M) = M := by

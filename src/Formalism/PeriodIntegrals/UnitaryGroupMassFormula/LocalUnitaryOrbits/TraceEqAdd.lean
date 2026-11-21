@@ -1,5 +1,7 @@
 import Mathlib
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalUnitaryOrbits.ProdEta
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LevelSplitting.LevelSAllOf
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalUnitaryOrbits.GenSmulMem
 
 noncomputable section
 
@@ -94,21 +96,8 @@ theorem b_sc_mem {c : Fv F v} (hc : c ∈ v.adicCompletionIntegers F) : sc (E :=
   exact b_smul_mem v hc (b_one_mem v)
 
 theorem b_mul_mem {x y : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) (hy : y ∈ OEv (E := E) v) :
-    x * y ∈ OEv (E := E) v := by
-  induction hx using Submodule.span_induction with
-  | mem a ha =>
-    obtain ⟨a, -, rfl⟩ := ha
-    induction hy using Submodule.span_induction with
-    | mem b hb =>
-      obtain ⟨b, -, rfl⟩ := hb
-      have := b_inclR_mem (E := E) v (a * b)
-      simpa using this
-    | zero => rw [mul_zero]; exact Submodule.zero_mem _
-    | add y1 y2 _ _ h1 h2 => rw [mul_add]; exact Submodule.add_mem _ h1 h2
-    | smul c y _ h => rw [mul_smul_comm]; exact Submodule.smul_mem _ c h
-  | zero => rw [zero_mul]; exact Submodule.zero_mem _
-  | add x1 x2 _ _ h1 h2 => rw [add_mul]; exact Submodule.add_mem _ h1 h2
-  | smul c x _ h => rw [smul_mul_assoc]; exact Submodule.smul_mem _ c h
+    x * y ∈ OEv (E := E) v :=
+  (PI.OmLocU.Orb.oSub (E := E) v).2 x hx y hy
 
 theorem b_trace_mem {x : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) :
     Algebra.trace (Fv F v) (Fv F v ⊗[F] E) x ∈ v.adicCompletionIntegers F := by
@@ -165,11 +154,8 @@ theorem b_lat_smul {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) {o : Fv F v 
     rw [smul_assoc]
     exact Submodule.smul_mem _ r hy
 
-theorem b_sig_sig (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
-  obtain ⟨-, -, -, h4⟩ := h
-  let τ : E →+* ℂ := (IsAlgClosed.lift (R := ℚ) (M := ℂ) (S := E)).toRingHom
-  apply τ.injective
-  rw [h4, h4, star_star]
+theorem b_sig_sig (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (x : E) : σ (σ x) = x :=
+  PI.LevelKSplit.W.sig_invol h x
 
 theorem b_sig_nt (σ : E →ₐ[F] E) (h : IsCMExt F E σ) : ∃ x, σ x ≠ x := by
   by_contra hn

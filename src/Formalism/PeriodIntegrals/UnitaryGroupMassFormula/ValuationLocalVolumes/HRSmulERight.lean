@@ -1,6 +1,7 @@
 import Mathlib
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ValuationLocalVolumes.InclRMemOEv
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ValuationLocalVolumes.HRSmulRight
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalUnitaryOrbits.GenSmulMem
 
 noncomputable section
 
@@ -29,21 +30,8 @@ theorem hR_sum_right {ι : Type} (s : Finset ι) (x : Fin n → Fv F v ⊗[F] E)
   | insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, hR_add_right, ih]
 
 theorem oev_mul {x y : Fv F v ⊗[F] E} (hx : x ∈ OEv (E := E) v) (hy : y ∈ OEv (E := E) v) :
-    x * y ∈ OEv (E := E) v := by
-  induction hx using Submodule.span_induction with
-  | mem x hx =>
-    obtain ⟨a, _, rfl⟩ := hx
-    induction hy using Submodule.span_induction with
-    | mem y hy =>
-      obtain ⟨b, _, rfl⟩ := hy
-      rw [← map_mul]
-      exact Submodule.subset_span ⟨a * b, trivial, by simp⟩
-    | zero => rw [mul_zero]; exact Submodule.zero_mem _
-    | add y y' _ _ h1 h2 => rw [mul_add]; exact Submodule.add_mem _ h1 h2
-    | smul c y _ h => rw [mul_smul_comm]; exact Submodule.smul_mem _ c h
-  | zero => rw [zero_mul]; exact Submodule.zero_mem _
-  | add x x' _ _ h1 h2 => rw [add_mul]; exact Submodule.add_mem _ h1 h2
-  | smul c x _ h => rw [smul_mul_assoc]; exact Submodule.smul_mem _ c h
+    x * y ∈ OEv (E := E) v :=
+  (PI.OmLocU.Orb.oSub (E := E) v).2 x hx y hy
 
 end Gen
 

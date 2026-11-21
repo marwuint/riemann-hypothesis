@@ -2,6 +2,7 @@ import Mathlib
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.WittExtensionTheorem
 import Formalism.SatakeDualWeyl.AdelicIwasawaHecke.Bridge
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerVolume.VolStabFromSWS
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LevelSplitting.LevelSAllOf
 
 noncomputable section
 
@@ -153,10 +154,8 @@ theorem witt_tuple (J : Matrix (Fin M) (Fin M) E) (hJ : ∀ i j, starRingEnd E (
 end General
 
 theorem sigma_invol_cm {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-    (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
-  obtain ⟨τ⟩ := (inferInstance : Nonempty (E →+* ℂ))
-  apply τ.injective
-  rw [h.2.2.2, h.2.2.2, star_star]
+    (σ : E →ₐ[F] E) (h : IsCMExt F E σ) (x : E) : σ (σ x) = x :=
+  PI.LevelKSplit.W.sig_invol h x
 
 theorem witt_holds : Witt := by
   unfold Witt InCtx

@@ -67,27 +67,8 @@ theorem measurable_stabAct_one (g a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r +
       | continuity
   exact hc.measurable
 
-private theorem hpk_sq_lemma (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [Matrix.mul_apply, Matrix.one_apply]
-  have hs : (if r ≤ i.val ∧ i.val ≤ r + k then i.val else 2 * r + k - i.val) < 2 * r + k + 1 := by
-    split_ifs <;> omega
-  rw [Finset.sum_eq_single (⟨_, hs⟩ : Fin (2 * r + k + 1))]
-  · by_cases hij : i = j
-    · subst hij
-      rw [if_pos rfl]
-      simp only [Hpk, Fin.ext_iff, Fin.val_mk, eq_self_iff_true, and_true]
-      split_ifs <;> first | (exfalso; (try simp only [Fin.val_mk] at *); omega) | (simp_all; done) | norm_num
-    · rw [if_neg hij]
-      rw [Fin.ext_iff] at hij
-      simp only [Hpk, Fin.ext_iff, Fin.val_mk]
-      split_ifs <;> first | (exfalso; (try simp only [Fin.val_mk] at *); omega) | (simp_all; done) | norm_num
-  · intro l _ hl
-    rw [Ne, Fin.ext_iff, Fin.val_mk] at hl
-    simp only [Hpk, Fin.ext_iff]
-    split_ifs at * <;> first | (exfalso; (try simp only [Fin.val_mk] at *); omega) | (simp_all; done) | norm_num
-  · intro h
-    exact absurd (Finset.mem_univ _) h
+private theorem hpk_sq_lemma (k r : ℕ) : Hpk k r * Hpk k r = 1 :=
+  PI.AmpRootCommon.Hpk_mul_self (k := k) (r := r)
 
 private theorem isUnit_det_of_mem_UH' {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hg : g ∈ UH (Hpk k r)) :
     IsUnit g.det := by

@@ -1,5 +1,6 @@
 import Mathlib
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.StabilizerPairs.ConverseStep
+import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 
 open Matrix
 
@@ -35,25 +36,8 @@ lemma sgI_eq_iff (i : Fin (2 * r + k + 1)) : sgI k r i.val = r + k ↔ i.val = r
   unfold sgI
   split_ifs <;> constructor <;> intro <;> omega
 
-theorem hpk_mul_self : Hpk k r * Hpk k r = 1 := by
-  ext i l
-  rw [Matrix.mul_apply, Matrix.one_apply]
-  simp_rw [hpk_apply]
-  rw [Finset.sum_eq_single (⟨sgI k r i.val, sgI_lt i⟩ : Fin (2 * r + k + 1))]
-  · simp only [if_true, sgI_sgI]
-    by_cases hil : i = l
-    · subst hil
-      by_cases hi : i.val = r + k
-      · have h2 : sgI k r (r + k) = r + k := hi ▸ (sgI_eq_iff i).2 hi
-        simp [hi, h2]
-      · have h2 : ¬ sgI k r i.val = r + k := fun h => hi ((sgI_eq_iff i).1 h)
-        simp [hi, h2]
-    · have h3 : ¬ l.val = i.val := fun h => hil (Fin.ext h.symm)
-      simp [h3, hil]
-  · intro j _ hj
-    have h4 : ¬ j.val = sgI k r i.val := fun h => hj (Fin.ext h)
-    simp [h4]
-  · simp
+theorem hpk_mul_self : Hpk k r * Hpk k r = 1 :=
+  Formalism.QuantumDeterminants.GBasic.Hpk_sq k r
 
 theorem hpk_det_ne : (Hpk k r).det ≠ 0 := by
   intro h
@@ -78,12 +62,9 @@ theorem hpk_conjTranspose : (Hpk k r)ᴴ = Hpk k r := by
 
 theorem mem_GV_iff {g : B.Mat k r} : g ∈ B.GV k r ↔ gᴴ * Hpk k r * g = Hpk k r := Iff.rfl
 
-theorem mul_mem_GV {a b : B.Mat k r} (ha : a ∈ B.GV k r) (hb : b ∈ B.GV k r) : a * b ∈ B.GV k r := by
-  rw [mem_GV_iff] at *
-  rw [Matrix.conjTranspose_mul]
-  calc bᴴ * aᴴ * Hpk k r * (a * b) = bᴴ * (aᴴ * Hpk k r * a) * b := by
-        simp only [Matrix.mul_assoc]
-    _ = Hpk k r := by rw [ha, hb]
+theorem mul_mem_GV {a b : B.Mat k r} (ha : a ∈ B.GV k r) (hb : b ∈ B.GV k r) : a * b ∈ B.GV k r :=
+  (Formalism.QuantumDeterminants.unitary_group_holds _ _
+    (Matrix.isUnit_det_of_left_inverse (Formalism.QuantumDeterminants.GBasic.Hpk_sq k r))).2.1 a ha b hb
 
 theorem det_ne_of_mem_GV {g : B.Mat k r} (hg : g ∈ B.GV k r) : g.det ≠ 0 := by
   intro h0

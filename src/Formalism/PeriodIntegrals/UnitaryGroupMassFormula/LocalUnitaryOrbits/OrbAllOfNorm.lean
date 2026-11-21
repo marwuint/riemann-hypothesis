@@ -1,5 +1,6 @@
 import Mathlib
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalUnitaryOrbits.OrbAllOfUnitV
+import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LevelSplitting.LevelSAllOf
 
 noncomputable section
 
@@ -12,12 +13,8 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (ψ : AddChar (AF F) ℂ)
   (v : HeightOneSpectrum (𝓞 F)) (Λ : Set (Fin n → E))
 
-theorem sigma_invol (hcm : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
-  let τ : E →ₐ[ℚ] ℂ := IsAlgClosed.lift
-  apply τ.toRingHom.injective
-  have h1 := hcm.2.2.2 τ.toRingHom (σ x)
-  have h2 := hcm.2.2.2 τ.toRingHom x
-  rw [h1, h2, star_star]
+theorem sigma_invol (hcm : IsCMExt F E σ) (x : E) : σ (σ x) = x :=
+  PI.LevelKSplit.W.sig_invol hcm x
 
 theorem sigR_invol (hcm : IsCMExt F E σ) (z : Fv F v ⊗[F] E) : sigR (Fv F v) σ (sigR (Fv F v) σ z) = z := by
   induction z using TensorProduct.induction_on with

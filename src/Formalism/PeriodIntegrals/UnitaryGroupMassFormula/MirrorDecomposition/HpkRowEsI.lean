@@ -1,5 +1,6 @@
 import Mathlib
 import Formalism.HermitianCurvature.FiniteOrderIntersectionInSmooth
+import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 
 open Matrix
 
@@ -13,20 +14,8 @@ section Grp
 
 variable {k r : ℕ}
 
-theorem hpk_sq (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [Matrix.mul_apply, Matrix.one_apply]
-  let t : Fin (2 * r + k + 1) :=
-    ⟨if i.val < r ∨ r + k < i.val then 2 * r + k - i.val else i.val, by split_ifs <;> omega⟩
-  rw [Finset.sum_eq_single t]
-  · simp only [Hpk, t, Fin.ext_iff]
-    split_ifs <;> first | omega | norm_num
-  · intro l _ hl
-    have hl' : l.val ≠ t.val := fun h => hl (Fin.ext h)
-    simp only [t] at hl'
-    simp only [Hpk, Fin.ext_iff]
-    split_ifs at hl' ⊢ <;> first | omega | norm_num
-  · simp
+theorem hpk_sq (k r : ℕ) : Hpk k r * Hpk k r = 1 :=
+  Formalism.QuantumDeterminants.GBasic.Hpk_sq k r
 
 theorem uh_mul {a b : B.Mat k r} (ha : a ∈ UH (Hpk k r)) (hb : b ∈ UH (Hpk k r)) : a * b ∈ UH (Hpk k r) := by
   have ha' : aᴴ * Hpk k r * a = Hpk k r := ha

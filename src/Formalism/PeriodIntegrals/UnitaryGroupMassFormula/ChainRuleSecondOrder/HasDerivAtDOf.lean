@@ -1,4 +1,5 @@
 import Formalism.HermitianCurvature.FiniteOrderIntersectionInSmooth
+import Formalism.FormalDegreeBessel.FormalDegreeRatio.GBasic
 
 open Matrix Filter Topology
 
@@ -34,24 +35,8 @@ lemma sgI_eq_iff (i : Fin (2 * r + k + 1)) : sgI k r i.val = r + k ↔ i.val = r
   unfold sgI
   split_ifs <;> constructor <;> intro h <;> omega
 
-theorem hpk_mul_self : Hpk k r * Hpk k r = 1 := by
-  ext i j
-  rw [Matrix.mul_apply, Matrix.one_apply]
-  rw [Finset.sum_eq_single (⟨sgI k r i.val, sgI_lt i⟩ : Fin (2 * r + k + 1))]
-  · rw [hpk_apply, hpk_apply]
-    simp only [Fin.val_mk, sgI_sgI, sgI_eq_iff, eq_self_iff_true, if_true]
-    by_cases hij : i = j
-    · subst hij
-      simp only [eq_self_iff_true, if_true]
-      split_ifs <;> norm_num
-    · have hji : j.val ≠ i.val := fun h => hij (Fin.ext h).symm
-      simp [hij, hji]
-  · intro l _ hl
-    rw [hpk_apply i l, if_neg, zero_mul]
-    intro h
-    exact hl (Fin.ext h)
-  · intro h
-    exact absurd (Finset.mem_univ _) h
+theorem hpk_mul_self : Hpk k r * Hpk k r = 1 :=
+  Formalism.QuantumDeterminants.GBasic.Hpk_sq k r
 
 theorem hpk_det_ne : (Hpk k r).det ≠ 0 := by
   intro h
@@ -65,13 +50,9 @@ theorem hpk_ne_zero : Hpk k r ≠ 0 := by
   rw [h, Matrix.det_zero] at e
   exact e rfl
 
-theorem mul_mem_GV {a b : B.Mat k r} (ha : a ∈ B.GV k r) (hb : b ∈ B.GV k r) : a * b ∈ B.GV k r := by
-  have ha' : aᴴ * Hpk k r * a = Hpk k r := ha
-  have hb' : bᴴ * Hpk k r * b = Hpk k r := hb
-  show (a * b)ᴴ * Hpk k r * (a * b) = Hpk k r
-  rw [Matrix.conjTranspose_mul,
-    show bᴴ * aᴴ * Hpk k r * (a * b) = bᴴ * (aᴴ * Hpk k r * a) * b by simp only [Matrix.mul_assoc],
-    ha', hb']
+theorem mul_mem_GV {a b : B.Mat k r} (ha : a ∈ B.GV k r) (hb : b ∈ B.GV k r) : a * b ∈ B.GV k r :=
+  (Formalism.QuantumDeterminants.unitary_group_holds _ _
+    (Matrix.isUnit_det_of_left_inverse (Formalism.QuantumDeterminants.GBasic.Hpk_sq k r))).2.1 a ha b hb
 
 theorem inLie_neg {X : B.Mat k r} (hX : B.inLie k r X) : B.inLie k r (-X) := by
   unfold B.inLie at *
