@@ -115,20 +115,6 @@ def additive (v : AddValuation C (WithTop ℝ)) (d : ℕ) : LogFGL v d where
       subst_X (hasSubst_of_constantCoeff_zero (by simp)),
       subst_X (hasSubst_of_constantCoeff_zero (by simp))]
 
-def additiveMu (v : AddValuation C (WithTop ℝ)) (d p h : ℕ) (hph : p ^ h - 1 ≠ 0)
-    (ty : Fin d → ZMod h) : MuAction (additive v d) p h ty where
-  mul z a := (z ^ (p ^ (ty a).val)) • X a
-  mul_int z hz a α := by
-    unfold IsIntV
-    rw [coeff_smul, coeff_X]
-    split_ifs
-    · rw [mul_one, v.map_pow, v_eq_zero_of_pow_eq_one hph hz, smul_zero]
-    · simp
-  mul_const z a := by simp
-  lg_mul z hz a := by
-    simp only [additive]
-    rw [subst_X (hasSubst_of_constantCoeff_zero (by simp))]
-
 def expComp [CharZero C] (Ω : C) (lg : PowerSeries C) : PowerSeries C :=
   PowerSeries.mk fun m => ∑ n ∈ Finset.range (m + 1),
     Ω ^ n / (n.factorial : C) * PowerSeries.coeff m (lg ^ n)

@@ -58,10 +58,6 @@ def siegAt (ϖ : R) (σ : R →+* R) (ψ : ∀ k, AddChar (R ⧸ lev ϖ k) ℂ) 
   ∑' B : hermMod σ ϖ n k, ψ k (Matrix.trace (red ϖ k T * B.1)) *
     (((ε : ℂ) ^ m * (q : ℂ) ^ (-(m : ℤ))) ^ Nat.log (q ^ 2) (nuAt ϖ B.1))
 
-def OrthCount : Prop :=
-  ∀ (M X : Type) [AddCommGroup M] [Fintype M] [Fintype X] [DecidableEq M] (Q : X → M) (t : M),
-    ((Finset.univ.filter fun x => Q x = t).card : ℂ) * (Fintype.card M : ℂ) = ∑' χ : AddChar M ℂ, ∑ x, χ (Q x - t)
-
 def DensStab : Prop :=
   ∀ (R : Type) [CommRing R] (σ : R →+* R) (ϖ : R) (q : ℕ) (ε : ℤ), IsUnrQuad R σ ϖ q ε →
   ∀ (m n : ℕ) (S : Matrix (Fin m) (Fin m) R) (T : Matrix (Fin n) (Fin n) R), IsUnimod σ S → IsHermND σ ϖ T →

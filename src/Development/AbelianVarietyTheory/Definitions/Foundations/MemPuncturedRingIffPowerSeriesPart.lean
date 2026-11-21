@@ -892,24 +892,6 @@ theorem eventually_hasSum_lsum (f : convLaurent) :
     ∀ᶠ v in 𝓝[≠] (0 : ℂ), HasSum (fun n : ℤ => (f : ℂ⸨X⸩).coeff n * v ^ n) (lsum f v) :=
   (mem_convLaurent_iff_eventually.1 f.2).mono fun _ h => h.hasSum
 
-def lgerm : convLaurent →+* Germ (𝓝[≠] (0 : ℂ)) ℂ where
-  toFun f := (lsum f : Germ (𝓝[≠] (0 : ℂ)) ℂ)
-  map_one' := by
-    rw [← Germ.coe_one, Germ.coe_eq]
-    exact Eventually.of_forall fun v => by simpa using lsum_single 0 1 v
-  map_mul' f g := by
-    rw [← Germ.coe_mul, Germ.coe_eq]
-    filter_upwards [eventually_hasSum_lsum f, eventually_hasSum_lsum g, self_mem_nhdsWithin]
-      with v hf hg hv
-    exact (hasSum_mul_laurent hv hf.summable hg.summable).tsum_eq
-  map_zero' := by
-    rw [← Germ.coe_zero, Germ.coe_eq]
-    exact Eventually.of_forall fun v => by simp [lsum]
-  map_add' f g := by
-    rw [← Germ.coe_add, Germ.coe_eq]
-    filter_upwards [eventually_hasSum_lsum f, eventually_hasSum_lsum g] with v hf hg
-    simpa [lsum, add_mul] using hf.summable.tsum_add hg.summable
-
 theorem eventually_lsum_ne_zero {f : ℂ⸨X⸩} (hf : f ∈ convLaurent) (h0 : f ≠ 0) :
     ∀ᶠ v in 𝓝[≠] (0 : ℂ), lsum f v ≠ 0 := by
   obtain ⟨ε, hε, hf⟩ := hf

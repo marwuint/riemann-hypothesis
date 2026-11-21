@@ -111,12 +111,6 @@ variable {l : ℕ} {O : Type} [CommRing O] (R : Fr l O)
 
 def IsA : Prop := R.e = 1 ∧ ∀ τ, R.ϖ τ = -(l : O)
 
-def IsCyc : Prop :=
-  ∃ j γ₀ : O⟦X⟧ →ₐ[O] O⟦X⟧, Function.Injective j ∧ Associated (j X) (X ^ R.s) ∧
-    (∀ a, j (R.φ a) = (j a).subst ((1 + X : O⟦X⟧) ^ l - 1)) ∧ (∀ a, j (R.γ a) = γ₀ (j a)) ∧
-    (∀ b : O⟦X⟧, γ₀ (b.subst ((1 + X : O⟦X⟧) ^ l - 1)) = (γ₀ b).subst ((1 + X : O⟦X⟧) ^ l - 1)) ∧
-    constantCoeff (γ₀ X) = 0 ∧ coeff 1 (γ₀ X) = (R.χ : O)
-
 theorem isUnit_γX_div_X : IsUnit (1 + (R.κ : O⟦X⟧) * R.E) := by
   rw [isUnit_iff_constantCoeff, R.χ_zero]
   exact R.χ.isUnit.pow _
@@ -138,14 +132,9 @@ def toL (_R : Fr l O) : O⟦X⟧ →+* (FractionRing O)⟦X⟧ := PowerSeries.ma
 
 def γL (f : (FractionRing O)⟦X⟧) : (FractionRing O)⟦X⟧ := f.subst (R.toL (R.γ X))
 
-def φL (f : (FractionRing O)⟦X⟧) : (FractionRing O)⟦X⟧ := f.subst (R.toL (R.φ X))
-
 def levL (τ : Fin R.e) : O⟦X⟧ →+* (FractionRing O)⟦X⟧ := R.toL.comp (R.lev τ).toRingEquiv.toRingHom
 
 def φτ (τ : Fin R.e) (f : (FractionRing O)⟦X⟧) : (FractionRing O)⟦X⟧ := f.subst (R.levL τ (R.φ X))
-
-def cc (x : ℤ) : FractionRing O :=
-  (algebraMap O (FractionRing O) ((R.χ ^ (-x) : Oˣ) : O) - 1) / (-(l : FractionRing O))
 
 end Fr
 
@@ -170,46 +159,6 @@ def one (R : Fr l O) (n g : ℕ) : Sys R n g where
   G_one := fun _ => ⟨0, by simp⟩
   Φ_inv := fun _ => ⟨0, 1, by simp⟩
   comm := fun _ => by simp
-
-def twistNeg (R : Fr l O) (n : ℕ) : Sys R n 1 where
-  M := R.s
-  Φ := fun _ => ((R.u⁻¹ : (O⟦X⟧)ˣ) : O⟦X⟧) • 1
-  G := fun _ => (C ((R.χ : O) ^ R.s) * ((R.isUnit_γX_div_X.unit⁻¹ : (O⟦X⟧)ˣ) : O⟦X⟧)) • 1
-  G_one := fun _ => by
-    have hw := R.isUnit_γX_div_X.unit_spec
-    set w := R.isUnit_γX_div_X.unit
-    have h0 : constantCoeff ((w⁻¹ : (O⟦X⟧)ˣ) : O⟦X⟧) * (R.χ : O) ^ R.s = 1 := by
-      rw [← R.χ_zero, ← hw, ← map_mul]; simp
-    have : (X : O⟦X⟧) ∣ C ((R.χ : O) ^ R.s) * ((w⁻¹ : (O⟦X⟧)ˣ) : O⟦X⟧) - 1 := by
-      rw [X_dvd_iff]; simp only [map_sub, map_mul, constantCoeff_C, map_one]; rw [mul_comm, h0]; simp
-    obtain ⟨b, hb⟩ := this
-    refine ⟨b • 1, ?_⟩
-    rw [smul_smul, ← hb, sub_smul]; simp
-  Φ_inv := fun _ => ⟨0, (R.u : O⟦X⟧) • 1, by simp [smul_smul]⟩
-  comm := fun _ => by
-    have hw := R.isUnit_γX_div_X.unit_spec
-    set w := R.isUnit_γX_div_X.unit
-    have hc := R.comm X
-    rw [R.γ_X, R.φ_X, ← hw, map_mul, R.φ_X, map_mul, map_mul, map_pow, R.γ_X, ← hw] at hc
-    have h1 : (R.u : O⟦X⟧) * R.E ^ R.s * R.φ w = R.γ R.u * w * R.γ R.E ^ R.s := by
-      apply X_mul_cancel; linear_combination hc
-    have a1 : R.γ ((R.u⁻¹ : (O⟦X⟧)ˣ) : O⟦X⟧) * R.γ R.u = 1 := by rw [← map_mul]; simp
-    have a2 : R.φ ((w⁻¹ : (O⟦X⟧)ˣ) : O⟦X⟧) * R.φ w = 1 := by rw [← map_mul]; simp
-    have a3 : ((w⁻¹ : (O⟦X⟧)ˣ) : O⟦X⟧) * w = 1 := by simp
-    have a4 : ((R.u⁻¹ : (O⟦X⟧)ˣ) : O⟦X⟧) * R.u = 1 := by simp
-    have hC : R.φ (C ((R.χ : O) ^ R.s)) = C ((R.χ : O) ^ R.s) := R.φ.commutes _
-    ext1 i j
-    have hij : i = j := Subsingleton.elim _ _
-    subst hij
-    simp only [Matrix.smul_apply, Matrix.mul_apply, Matrix.map_apply, Finset.univ_unique,
-      Finset.sum_singleton, Subsingleton.elim i default, Matrix.one_apply_eq, smul_eq_mul, map_mul,
-      map_one, mul_one, hC]
-    set c := C ((R.χ : O) ^ R.s)
-    set wi := ((w⁻¹ : (O⟦X⟧)ˣ) : O⟦X⟧)
-    set ui := ((R.u⁻¹ : (O⟦X⟧)ˣ) : O⟦X⟧)
-    linear_combination (c * wi * R.γ ui * ui * R.φ wi) * h1
-      - (R.E ^ R.s * c * wi * R.γ ui) * (a4 * (R.φ wi * R.φ w)) - (R.E ^ R.s * c * wi * R.γ ui) * a2
-      + (R.γ R.E ^ R.s * c * ui * R.φ wi * (wi * w)) * a1 + (R.γ R.E ^ R.s * c * ui * R.φ wi) * a3
 
 def φl (i : ZMod n) : (Fin r → R.EE) →ₗ[O] (Fin r → R.EE) :=
   ((Ring.inverse (R.ι R.E) ^ S.M • (S.Φ i).map R.ι).mulVecLin.restrictScalars O).comp
@@ -267,8 +216,6 @@ def IsRho (c : ZMod n) (j : ℕ) (f : O⟦X⟧) (g m : ℕ) (w : Fin r → R.EE)
     (pr : DD R n r × DD R n r) : Prop :=
   ∃ (z : Fin r → R.EE) (z' : DD R n r), S.IsRel c j f g w z ∧
     S.IsCls m (Pi.single (c + (j : ZMod n)) z) z' ∧ pr - (Pi.single (c + (j : ZMod n)) z, z') ∈ S.B1
-
-def Up (i : ZMod n) (f : O⟦X⟧) : Prop := ∀ x ∈ S.P (i - 1) 1, f • x ∈ R.N0 r
 
 def Down (i : ZMod n) (f : O⟦X⟧) : Prop := ∀ x ∈ R.N0 r, f • x ∈ S.P (i - 1) 1
 
@@ -338,11 +285,6 @@ theorem map_C_smul_mulVec (c : O) (B : Matrix (Fin r') (Fin r) O⟦X⟧) (x : Fi
   have hc : R.ι (C c) = algebraMap O R.EE c := (IsScalarTower.algebraMap_apply O O⟦X⟧ R.EE c).symm
   funext k
   simp [Matrix.mulVec, dotProduct, hc, Algebra.smul_def, Finset.mul_sum, mul_assoc]
-
-def smul (c : O) (F : Hom S S') : Hom S S' where
-  F := fun i => (C c : O⟦X⟧) • F.F i
-  φ_comm := fun i x => by rw [map_C_smul_mulVec, map_C_smul_mulVec, map_smul, F.φ_comm]
-  γ_comm := fun i x => by rw [map_C_smul_mulVec, map_C_smul_mulVec, map_smul, F.γ_comm]
 
 def fl (i : ZMod n) : (Fin r → R.EE) →ₗ[R.EE] (Fin r' → R.EE) := ((F.F i).map R.ι).mulVecLin
 

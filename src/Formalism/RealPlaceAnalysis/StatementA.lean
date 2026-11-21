@@ -75,9 +75,6 @@ def WDKind : Prop :=
 def RhoStd : Prop :=
   ∀ (n : ℕ) (ε : Fin n → Bool) (a : Fin n), rhoC ε a + rhoN ε a = ((n : ℝ) - 1) / 2 - (a : ℝ)
 
-def RhoBound : Prop :=
-  ∀ (n : ℕ) (ε : Fin n → Bool), nsq (rhoC ε + rhoN ε) - nsq (rhoC ε - rhoN ε) ≤ (n : ℝ) ^ 3
-
 def WDExclude : Prop :=
   ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (n : ℕ) (ε : Fin n → Bool)
     (E : Fin n → Fin n → Module.End ℂ V) (lam : Fin n → ℝ) (w : V) (a b : Fin n),

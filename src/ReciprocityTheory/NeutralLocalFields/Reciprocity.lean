@@ -273,19 +273,6 @@ theorem exists_isUniformiserAt (v : HeightOneSpectrum (𝓞 K)) :
     exact hϖ.ne_zero (Subtype.ext h)
   exact ⟨Units.mk0 _ h0, ϖ.2, hϖ⟩
 
-def LocalGlobalCompatibility : Prop :=
-  ∀ Art : IdeleClassGroup K →* Field.absoluteGaloisGroupAbelianization K, IsGlobalArtinMap K Art →
-    ∀ (L : IntermediateField K (AlgebraicClosure K)) (h : IsFiniteAbelian K L)
-      (v : HeightOneSpectrum (𝓞 K)),
-      (localComposite K Art L h v).ker = localNormGroup K v L ∧
-      (∀ Q : Ideal (𝓞 L), Q.IsPrime → Q.LiesOver v.asIdeal →
-        haveI := h.finiteDimensional
-        (localComposite K Art L h v).range = decompGroup K L Q) ∧
-      (∀ π : (v.adicCompletion K)ˣ, IsUniformiserAt K v (π : v.adicCompletion K) →
-        ∀ Q : Ideal (𝓞 L), Q.IsPrime → Q.LiesOver v.asIdeal →
-          haveI := h.finiteDimensional
-          IsFrobAt K L (localComposite K Art L h v π) Q)
-
 end Global
 
 section Chebotarev

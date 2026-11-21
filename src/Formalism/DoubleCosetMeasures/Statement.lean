@@ -202,12 +202,6 @@ theorem isLowUni_one {n : ℕ} : IsLowUni (1 : Matrix (Fin n) (Fin n) K) := ⟨M
 
 theorem isUpUni_one {n : ℕ} : IsUpUni (1 : Matrix (Fin n) (Fin n) K) := ⟨Matrix.blockTriangular_one, fun a => Matrix.one_apply_eq a⟩
 
-def lowUniG (n : ℕ) : Subgroup (GL (Fin n) K) where
-  carrier := {g | IsLowUni (g : Matrix (Fin n) (Fin n) K)}
-  one_mem' := by simpa using isLowUni_one K
-  mul_mem' := by intro a b ha hb; simpa using isLowUni_mul K ha hb
-  inv_mem' := by intro a ha; simpa [Matrix.coe_units_inv] using isLowUni_inv K ha
-
 def upUniG (n : ℕ) : Subgroup (GL (Fin n) K) where
   carrier := {g | IsUpUni (g : Matrix (Fin n) (Fin n) K)}
   one_mem' := by simpa using isUpUni_one K

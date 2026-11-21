@@ -11,8 +11,6 @@ section Defs
 
 variable {A : Type} [CommRing A] {n : Type} [Fintype n] [DecidableEq n]
 
-def hform (σ : A →+* A) (J : Matrix n n A) (x y : n → A) : A := ∑ i, ∑ j, σ (x i) * J i j * y j
-
 end Defs
 
 section Points
@@ -29,10 +27,6 @@ def tensInt (R : Type) [CommRing R] [Algebra F R] (S₁ : Subring E) (S₂ : Sub
     Subring (E ⊗[F] R) :=
   Subring.closure (Set.range (fun x : S₁ => (x : E) ⊗ₜ[F] (1 : R)) ∪
     Set.range (fun y : S₂ => (1 : E) ⊗ₜ[F] (y : R)))
-
-def latS (R : Type) [CommRing R] [Algebra F R] (S : Subring (E ⊗[F] R)) {O : Type} [CommRing O]
-    [Algebra O E] (Λ : Submodule O (n → E)) : Submodule S (n → E ⊗[F] R) :=
-  Submodule.span S ((fun x : n → E => fun i => inclE (F := F) R (x i)) '' (Λ : Set (n → E)))
 
 end Points
 

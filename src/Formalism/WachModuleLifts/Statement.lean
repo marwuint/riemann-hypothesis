@@ -33,19 +33,10 @@ def ContentMul : Prop :=
 def ContentMono : Prop :=
   ∀ (p : ℕ) [Fact p.Prime] (g s : ℕ) (f : PowerSeries ℚ_[p]), g ≤ s → Content p s f → Content p g f
 
-def LemmaCSharp : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (y r : ℕ), r ≤ y → padicValNat p (y.choose r) < p - 1 →
-    ‖PowerSeries.coeff (p * r) (uu p 1 ^ y)‖ = (p : ℝ) ^ ((r : ℤ) - padicValNat p (y.choose r))
-
 def LemmaCSharpInv : Prop :=
   ∀ (p : ℕ) [Fact p.Prime] (y r : ℕ), 0 < y → padicValNat p ((y + r - 1).choose r) < p - 1 →
     ‖PowerSeries.coeff (p * r) ((uu p 1)⁻¹ ^ y)‖ =
       (p : ℝ) ^ ((r : ℤ) - padicValNat p ((y + r - 1).choose r))
-
-def LemmaCSharpG : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (g : ℕ), 1 ≤ g → ∀ (y r : ℕ), r ≤ y →
-    padicValNat p (y.choose r) < p - 1 →
-    ‖PowerSeries.coeff (p ^ g * r) (uu p g ^ y)‖ = (p : ℝ) ^ ((r : ℤ) - padicValNat p (y.choose r))
 
 def LemmaCSharpGInv : Prop :=
   ∀ (p : ℕ) [Fact p.Prime] (g : ℕ), 1 ≤ g → ∀ (y r : ℕ), 0 < y →
@@ -65,10 +56,6 @@ def LemmaCSharpOdd1Inv : Prop :=
   ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∀ (y r : ℕ), 0 < y →
     ‖PowerSeries.coeff (p * r) ((uu p 1)⁻¹ ^ y)‖ =
       (p : ℝ) ^ ((r : ℤ) - padicValNat p ((y + r - 1).choose r))
-
-def LemmaCSharpOddG : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∀ (g : ℕ), 1 ≤ g → ∀ (y r : ℕ), r ≤ y →
-    ‖PowerSeries.coeff (p ^ g * r) (uu p g ^ y)‖ = (p : ℝ) ^ ((r : ℤ) - padicValNat p (y.choose r))
 
 def LemmaCSharpOddGInv : Prop :=
   ∀ (p : ℕ) [Fact p.Prime], p ≠ 2 → ∀ (g : ℕ), 1 ≤ g → ∀ (y r : ℕ), 0 < y →
@@ -90,14 +77,6 @@ def LemmaHStep : Prop :=
   ∀ (p : ℕ) [Fact p.Prime] (σ : ℝ), 0 ≤ σ → σ ≤ p → ∀ f : PowerSeries ℚ_[p],
     (∀ s : ℕ, ‖PowerSeries.coeff s f‖ ≤ (p : ℝ) ^ (σ * s)) →
     ∀ r : ℕ, ‖PowerSeries.coeff r (phiPS p f)‖ ≤ (p : ℝ) ^ (σ * r / p)
-
-def LemmaHLift : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (V : Type) [NormedAddCommGroup V] [NormedSpace ℚ_[p] V]
-    [IsUltrametricDist V] (u : ℚ_[p]) (x : ℕ → V) (c : ℕ → ℕ → V →L[ℚ_[p]] V) (gg : ℕ → V),
-    (∀ m : ℕ, 1 ≤ m → ‖u ^ m - 1‖ = (p : ℝ) ^ (-(1 + (padicValNat p m : ℤ)))) →
-    (∀ m i, ‖c m i‖ ≤ 1) → (∀ m, ‖gg m‖ ≤ 1) → ‖x 0‖ ≤ 1 →
-    (∀ m : ℕ, 1 ≤ m → (u ^ m - 1) • x m = (∑ i ∈ range m, c m i (x i)) + gg m) →
-    ∀ m : ℕ, ‖x m‖ ≤ (p : ℝ) ^ (m + padicValNat p m.factorial)
 
 def Legendre : Prop :=
   ∀ (p : ℕ) [Fact p.Prime] (m : ℕ),

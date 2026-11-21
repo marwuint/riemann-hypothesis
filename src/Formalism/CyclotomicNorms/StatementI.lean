@@ -91,12 +91,4 @@ def Discard : Prop :=
 def monicOf {K : Type} [Field K] {N : ℕ} (a : Fin N → K) : K[X] :=
   X ^ N + ∑ i : Fin N, C (a i) * X ^ (i : ℕ)
 
-open Classical in
-
-def SquarefreeShare : Prop :=
-  ∀ (K : Type) [Field K] [Fintype K] (N : ℕ),
-    ((univ.filter (fun a : Fin N → K => (monicOf a).coeff 0 ≠ 0 ∧ ¬ Squarefree (monicOf a))).card : ℝ)
-      * Fintype.card K ≤
-      2 * (univ.filter (fun a : Fin N → K => (monicOf a).coeff 0 ≠ 0)).card
-
 end Formalism.CyclotomicNorms

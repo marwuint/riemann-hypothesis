@@ -77,8 +77,6 @@ def hermV : Submodule ℝ (Mat 𝕜 ι a) where
     simp only [Pi.smul_apply, Pi.star_apply] at h ⊢
     rw [h, RCLike.real_smul_eq_coe_mul, RCLike.real_smul_eq_coe_mul, star_mul', RCLike.star_def, RCLike.conj_ofReal]
 
-def posSet : Set (hermV 𝕜 ι a) := {p | ∃ g : GL (Fin a) (ι → 𝕜), (p : Mat 𝕜 ι a) = Matrix.of.symm (g.val * g.valᴴ)}
-
 variable {𝕜 ι a}
 
 def invSet : Set (Mat 𝕜 ι a) := {x | IsUnit (Matrix.of x)}

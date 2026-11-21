@@ -132,10 +132,6 @@ variable (f)
 def RowExact (M : PMod R) : Prop := ∀ (U : Scheme.{0}) (π : U ⟶ X),
   (∀ c : Cc f M π 0, Cc.δ c = 0 → c = 0) ∧ ∀ (p : ℕ) (c : Cc f M π (p + 1)), Cc.δ c = 0 → ∃ b : Cc f M π p, Cc.δ b = c
 
-def LocallyExactCech (τ : GrothendieckTopology Scheme.{0}) (K : PC R) (m : ℤ) : Prop :=
-  ∀ (U : Scheme.{0}) (π : U ⟶ X) (p : ℕ) (x : Cc f (K.X m) π (p + 1)), Cc.Cy K m x → Cc.Bd K m (Cc.δ x) →
-    LocT τ U fun _ g => ∃ c : Cc f (K.X m) (g ≫ π) p, Cc.Cy K m c ∧ Cc.Bd K m (Cc.res g rfl x - Cc.δ c)
-
 variable {f} in
 
 def Pt.Univ {U : Scheme.{0}} {π : U ⟶ X} {p : ℕ} {Z : Scheme.{0}} (x₀ : Pt f π p Z) : Prop :=

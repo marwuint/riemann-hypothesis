@@ -141,10 +141,6 @@ def ev [IsAdicComplete (maximalIdeal O) O] (a : maximalIdeal O) : O⟦X⟧ →�
 @[simp] theorem ev_C [IsAdicComplete (maximalIdeal O) O] (a : maximalIdeal O) (r : O) : ev a (C r) = r :=
   lift_C _ a r
 
-def upow [IsAdicComplete (maximalIdeal O) O] {l : ℕ} [Fact l.Prime] [Algebra ℤ_[l] O]
-    (u : oneUnits O) (s : ℤ_[l]) : O :=
-  ev (pt u) (binomialSeries O s)
-
 end Local
 
 section MuLam
@@ -178,9 +174,6 @@ variable {R : Type*} [CommRing R]
 
 def locLen (P : Ideal R) [P.IsPrime] (M : Type*) [AddCommGroup M] [Module R M] : ℕ∞ :=
   Module.length (Localization.AtPrime P) (LocalizedModule P.primeCompl M)
-
-def IsChar (M : Type*) [AddCommGroup M] [Module R M] (f : R) : Prop :=
-  f ≠ 0 ∧ ∀ (p : R) (P : Ideal R) [P.IsPrime], p ≠ 0 → P = Ideal.span {p} → locLen P M = emultiplicity p f
 
 def IsPseudoIso {M N : Type*} [AddCommGroup M] [Module R M] [AddCommGroup N] [Module R N]
     (φ : M →ₗ[R] N) : Prop :=

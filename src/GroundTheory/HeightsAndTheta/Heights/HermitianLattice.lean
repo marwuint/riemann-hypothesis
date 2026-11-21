@@ -207,11 +207,7 @@ end Examples
 
 abbrev GaussianField : Type := CyclotomicField 4 ℚ
 
-def ratIntegers : HermitianBundle ℚ := HermitianBundle.integers ℚ
-
 def ratStandard (n : ℕ) : HermitianBundle ℚ := HermitianBundle.standard ℚ n
-
-def gaussianIntegers : HermitianBundle GaussianField := HermitianBundle.integers GaussianField
 
 def gaussianStandard (n : ℕ) : HermitianBundle GaussianField :=
   HermitianBundle.standard GaussianField n

@@ -49,6 +49,4 @@ def GaussFormula : Prop :=
           (gaussBinom (Nat.card k) m j : R) * Y ^ j =
       ∏ i ∈ Finset.range m, (1 - (Nat.card k : R) ^ i * Y)
 
-def Statement : Prop := SubspaceCount ∧ OverspaceCount ∧ GaussFormula
-
 end GlobalTheory.IndefiniteRowSideFullHecke.GaussianBinomialFormula

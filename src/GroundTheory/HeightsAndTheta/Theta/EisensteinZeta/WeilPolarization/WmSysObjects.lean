@@ -172,9 +172,6 @@ variable [MeasurableSpace X] [BorelSpace X] [IsTopologicalAddGroup X] [LocallyCo
 def leviModulus (P : SympPolarization ω X Y) (g : P.levi) : NNReal :=
   addEquivAddHaarChar (P.leviXHomeo g)
 
-def rXX (P : SympPolarization ω X Y) (g : P.levi) (φ : X → ℂ) : X → ℂ :=
-  fun x => (((P.leviModulus g : ℝ) ^ (-(1 / 2 : ℝ)) : ℝ) : ℂ) * φ (P.leviX (g⁻¹ : P.levi) x)
-
 end Top
 
 section L2
@@ -185,10 +182,6 @@ def Implements (P : SympPolarization ω X Y) (ψ : AddChar R Circle) (μ : Measu
     (g : W ≃ₗ[R] W) (M : Lp ℂ 2 μ →L[ℂ] Lp ℂ 2 μ) : Prop :=
   ∀ (h : Heis ω) (f f' : Lp ℂ 2 μ), (f' : X → ℂ) =ᵐ[μ] P.schr ψ h f →
     (M f' : X → ℂ) =ᵐ[μ] P.schr ψ (sympAct g h) (M f)
-
-def IsSplitting (P : SympPolarization ω X Y) (ψ : AddChar R Circle) (μ : Measure X)
-    (G : Subgroup (sympGroup ω)) (om : G →* unitary (Lp ℂ 2 μ →L[ℂ] Lp ℂ 2 μ)) : Prop :=
-  ∀ g : G, P.Implements ψ μ ((g : sympGroup ω) : W ≃ₗ[R] W) (om g : Lp ℂ 2 μ →L[ℂ] Lp ℂ 2 μ)
 
 end L2
 
@@ -224,24 +217,6 @@ namespace FourPieces
 
 variable {ω : LinearMap.BilinForm R W}
 
-def pol₁ (F : FourPieces ω P₁ P₂ Q₁ Q₂) : SympPolarization ω (P₁ × P₂) (Q₁ × Q₂) where
-  e := F.e
-  isoX x x' := by rw [F.form]; simp
-  isoY y y' := by rw [F.form]; simp
-
-def pol₂ (F : FourPieces ω P₁ P₂ Q₁ Q₂) : SympPolarization ω (P₁ × Q₂) (Q₁ × P₂) where
-  e := F.e.trans (fourShuffle P₁ P₂ Q₁ Q₂)
-  isoX x x' := by
-    rw [F.form]
-    simp [fourShuffle]
-  isoY y y' := by
-    rw [F.form]
-    simp [fourShuffle]
-
-def partialFourier (F : FourPieces ω P₁ P₂ Q₁ Q₂) [MeasurableSpace P₂] (ψ : AddChar R Circle)
-    (ν : Measure P₂) (φ : P₁ × P₂ → ℂ) : P₁ × Q₂ → ℂ :=
-  fun z => ∫ p, φ (z.1, p) * (ψ (F.a₂ p z.2) : ℂ) ∂ν
-
 end FourPieces
 
 section Std
@@ -264,12 +239,6 @@ def stdForm {d : ℕ} (M : Matrix (Fin d) (Fin d) R) :
 
 theorem stdForm_apply {d : ℕ} (M : Matrix (Fin d) (Fin d) R) (u v : (Fin d → R) × (Fin d → R)) :
     stdForm R M u v = u.1 ⬝ᵥ (M *ᵥ v.2) - v.1 ⬝ᵥ (M *ᵥ u.2) := rfl
-
-def stdPol {d : ℕ} (M : Matrix (Fin d) (Fin d) R) :
-    SympPolarization (stdForm R M) (Fin d → R) (Fin d → R) where
-  e := LinearEquiv.refl R _
-  isoX x x' := by simp [stdForm_apply]
-  isoY y y' := by simp [stdForm_apply]
 
 end Std
 

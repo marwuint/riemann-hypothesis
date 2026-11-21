@@ -51,11 +51,6 @@ def GLinf : Type := DirectLimit (fun n : ℕ => GL (Fin n) R) (stab R)
 
 instance : Group (GLinf R) := inferInstanceAs (Group (DirectLimit (fun n : ℕ => GL (Fin n) R) (stab R)))
 
-def toGLinf (n : ℕ) : GL (Fin n) R →* GLinf R where
-  toFun g := (⟦⟨n, g⟩⟧ : DirectLimit (fun n : ℕ => GL (Fin n) R) (stab R))
-  map_one' := (DirectLimit.one_def n).symm
-  map_mul' g g' := (DirectLimit.mul_def (G := fun n : ℕ => GL (Fin n) R) (f := stab R) n g g').symm
-
 def Unimodular {n : ℕ} (v : Fin n → R) : Prop := Ideal.span (Set.range v) = ⊤
 
 def StableRangeLe (s : ℕ) : Prop :=

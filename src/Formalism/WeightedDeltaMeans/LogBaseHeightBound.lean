@@ -33,16 +33,6 @@ def SecondTermBound : Prop :=
       |rest| ≤ K5 * ((D + 1) * L * spread) →
       -((D + 1) * L * ((K1 + K2) * Λ * (∑ τ, ∑ i, |u τ i|) + K5 * spread)) ≤ P
 
-def LowerBoundAtBase : Prop :=
-  ∀ (B0 r0 tail A0 : ℝ) (bad : Finset ℕ), 2 ≤ B0 → (∀ p ∈ bad, p.Prime) →
-    (bad.card : ℝ) ≤ B0 → 0 ≤ tail →
-    A0 = r0 - 1 / 2
-        - (∑ p ∈ (Finset.range (⌊B0⌋₊ + 1)).filter Nat.Prime ∪ bad,
-            (p : ℝ) * Real.log p / ((p : ℝ) ^ 2 - 1)) + tail →
-    r0 - 1 / 2 - 20 * Real.log B0 ≤ A0 ∧
-    ∀ rd Lchi : ℝ, 1 ≤ rd → 0 ≤ Lchi →
-      -((20 + 2 * |r0 - 1 / 2|) * (Real.log (B0 * rd) + Lchi)) ≤ A0
-
 def SpreadBound : Prop :=
   ∀ (Ψ : Type) [Fintype Ψ] (N j' : ℕ) (u : Ψ → Fin N → ℝ) (nodes : Ψ → Finset (Fin N))
     (osc : Ψ → ℝ) (Cn : ℝ), 0 ≤ Cn → (∀ τ, 0 ≤ osc τ) → (∀ τ, j' ≤ (nodes τ).card) →
@@ -52,11 +42,6 @@ def SpreadBound : Prop :=
 def SpreadFails : Prop :=
   ¬ ∃ C : ℝ, ∀ (N j' : ℕ) (u : Fin N → ℝ), 2 * j' ≤ N → Antitone u →
     ∀ a b : Fin N, (j' : ℝ) * (u a - u b) ≤ C * (∑ i, |u i|)
-
-def LogBaseHeightBound : Prop :=
-  ∀ (f N H b h0 B0 : ℝ), 1 ≤ f → 1 ≤ N → 0 ≤ H → H ≤ 8 * b / h0 → 8 ≤ h0 → 4 * f * N ^ 2 ≤ b →
-    2 ≤ b → B0 = 4 * f * N ^ 2 * (1 + H) →
-    4 ≤ B0 ∧ Real.log B0 ≤ 3 * Real.log b
 
 def NefAtBaseHeight : Prop :=
   ∀ (f N M g B0 : ℝ), 1 ≤ f → 1 ≤ N → 0 ≤ M → 0 < g → B0 = 4 * f * N ^ 2 * (1 + M / g) →

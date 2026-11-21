@@ -47,9 +47,4 @@ def DiscardRatioDstar : Prop :=
         Dstar * (1 - Real.sqrt (2 * δ)) ^ 2 ≤
       (1 + η) * (((1 - Pi) * Q * (1 - Pi)).trace.re) ^ 2
 
-def DiscardKernel : Prop :=
-  ∀ (m n : ℕ) (B : Matrix (Fin m) (Fin n) ℂ) (Pi : Matrix (Fin m) (Fin m) ℂ) (c : ℝ),
-    Pi.IsHermitian → Pi * Pi = Pi → 0 ≤ c →
-    ((c : ℂ) • (B.conjTranspose * B) - (c : ℂ) • (B.conjTranspose * (1 - Pi) * B)).PosSemidef
-
 end Formalism.CyclotomicNorms

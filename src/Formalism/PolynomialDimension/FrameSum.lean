@@ -141,14 +141,4 @@ def FockGauss : Prop :=
           (N * k * (Real.logb p (2 * a + k) + 1)) / 2 : ℝ) : WithTop ℝ) ≤ vBB p F ∧
         vBB p F ≤ vG p F + (((padicValNat p (∏ z, (d z).factorial) : ℝ) / 2 : ℝ) : WithTop ℝ)
 
-def FrameSum : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (Z : Type) [Fintype Z] [DecidableEq Z] (Fr : Finset Z) (r N k : ℕ) (a : ℝ)
-    (d : Z → ℕ) (M : Z → Fin r → ℕ), 0 ≤ a →
-    Fr.card ≤ N → r + 1 ≤ k → (∀ z, (d z : ℝ) ≤ 2 * a) → (∀ z ∈ Fr, ∑ i, M z i ≤ d z) →
-      (∀ z ∈ Fr, (padicValNat p ((d z).factorial / ((d z - ∑ i, M z i).factorial * ∏ i, (M z i).factorial)) : ℝ) ≤
-          (r + 1) * (Real.logb p (2 * a + k) + 1)) ∧
-      2 * ((padicValNat p (∏ z, (d z).factorial) : ℝ) / 2) - N * k * (Real.logb p (2 * a + k) + 1) ≤
-        2 * ((padicValNat p (∏ z, (if z ∈ Fr then d z - ∑ i, M z i else d z).factorial) : ℝ) / 2) +
-          (padicValNat p (∏ z ∈ Fr, ∏ i, (M z i).factorial) : ℝ)
-
 end Formalism.CountingSumsFrames

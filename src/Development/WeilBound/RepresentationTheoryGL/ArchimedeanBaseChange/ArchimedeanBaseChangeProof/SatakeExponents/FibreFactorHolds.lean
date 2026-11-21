@@ -15,11 +15,6 @@ def Power : Prop := ∀ (B : Type) [CommRing B] [Algebra ℂ B] (ι : Type) [Fin
     ‖∑ i, c i * q i b ^ k‖ ≤ C * (1 + k) ^ N * ν b ^ k) →
   ∀ p : B →ₐ[ℂ] ℂ, ∑ i with q i = p, c i ≠ 0 → ∀ b, ‖p b‖ ≤ ν b
 
-def OneFactor : Prop := ∀ (B : Type) [CommRing B] [Algebra ℂ B] [StarRing B] [StarModule ℂ B]
-  (ι : Type) [Fintype ι] [Nonempty ι] (H : ι → Type) [∀ s, NormedAddCommGroup (H s)] [∀ s, InnerProductSpace ℂ (H s)]
-  [∀ s, CompleteSpace (H s)] (R : ∀ s, B →⋆ₐ[ℂ] (H s →L[ℂ] H s)) (p : B →⋆ₐ[ℂ] ℂ),
-  (∀ b, ∃ s, ‖p b‖ ≤ ‖R s b‖) → ∃ s, ∀ b, ‖p b‖ ≤ ‖R s b‖
-
 def fibre {A : Type} [CommRing A] [Algebra ℂ A] [StarRing A] [StarModule ℂ A] {ι : Type} (As : ι → Type)
     [∀ s, CommRing (As s)] [∀ s, Algebra ℂ (As s)] [∀ s, StarRing (As s)] [∀ s, StarModule ℂ (As s)]
     (ev : ∀ s, As s →⋆ₐ[ℂ] A) : StarSubalgebra ℂ (A × ∀ s, As s) where
@@ -28,11 +23,6 @@ def fibre {A : Type} [CommRing A] [Algebra ℂ A] [StarRing A] [StarModule ℂ A
   add_mem' := fun {x y} hx hy s => by simp [hx s, hy s]
   algebraMap_mem' := fun z s => by simp [Algebra.algebraMap_eq_smul_one]
   star_mem' := fun {x} hx s => by simp [map_star, hx s]
-
-def FibreFactor : Prop := ∀ (A : Type) [CommRing A] [Algebra ℂ A] [StarRing A] [StarModule ℂ A] (ι : Type) (As : ι → Type)
-  [∀ s, CommRing (As s)] [∀ s, Algebra ℂ (As s)] [∀ s, StarRing (As s)] [∀ s, StarModule ℂ (As s)]
-  (ev : ∀ s, As s →⋆ₐ[ℂ] A), (∀ s, Function.Surjective (ev s)) → ∀ (p : A →⋆ₐ[ℂ] ℂ) (s : ι) (ν : As s → ℝ),
-  (∀ x ∈ fibre As ev, ‖p x.1‖ ≤ ν (x.2 s)) → ∀ b, ‖p (ev s b)‖ ≤ ν b
 
 def CHBound : Prop := ∀ (Z : Type) [CommRing Z] [Algebra ℂ Z] [StarRing Z] [StarModule ℂ Z]
   (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (R : Z →⋆ₐ[ℂ] (H →L[ℂ] H))

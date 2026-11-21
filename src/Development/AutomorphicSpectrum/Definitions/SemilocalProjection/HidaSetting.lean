@@ -98,9 +98,6 @@ def Dtop (F : Flag h Λ r T) (F' : Flag h Λ r T') : E := (F.Zhat F').det
 def Dr (F : Flag h Λ r T) (F' : Flag h Λ r T') : E :=
   ((F.Zhat F').submatrix Fin.castSucc Fin.castSucc).det
 
-def G (F : Flag h Λ r T) (F' : Flag h Λ r T') : E :=
-  F.Dtop F' * star (F.Dtop F') - (T : E) * T' * (F.Dr F' * star (F.Dr F'))
-
 def Gv (F : Flag h Λ r T) (F' : Flag h Λ r T') (w : InfinitePlace E) : ℝ :=
   w (F.Dtop F') ^ 2 - (T : ℝ) * T' * w (F.Dr F') ^ 2
 
@@ -156,10 +153,6 @@ def ix (F : Flag h Λ r T) (F' : Flag h Λ r T') (g : ℕ) : ℕ := idx (F.La F'
 def G0 (F : Flag h Λ r T) (F' : Flag h Λ r T') (g : ℕ) : ℝ :=
   ldet h (F.UU F') / (g : ℝ) ^ (Module.finrank ℚ E * (r + 1))
 
-def Generic (F : Flag h Λ r T) (F' : Flag h Λ r T') (g : ℕ) : Prop :=
-  ∀ x ∈ cut Λ (F.UE F'), ∃ v ∈ F.UU F', ∃ u ∈ F.U, ∃ u' ∈ F'.U, ∃ y ∈ Λ,
-    u' - u = (g : E) • y ∧ x = v + y
-
 def Sg (F : Flag h Λ r T) (F' : Flag h Λ r T') (y y' : V) (α α' : E) : Prop :=
   y ∈ F.UE F' ⊓ perp h F.Xp ∧ y' ∈ F.UE F' ⊓ perp h F'.Xp ∧
     y - y' - α • F.z - α' • F'.z ∈ F.X ⊔ F'.X
@@ -211,9 +204,5 @@ def Ga (P : Pair g F F' F'') (α α' δ δ' : E) : Prop :=
 def Scalar (P : Pair g F F' F'') : Prop := ∀ α α', P.Ga α α' α α'
 
 end Pair
-
-def HidaSetting (h : Form E V) (Λ : Submodule (𝓞 E) V) (k r g T T' : ℕ) : Prop :=
-  IsHerm h ∧ HasSig h (k + r) (r + 1) ∧ SelfDual h Λ ∧ 2 ≤ k ∧ 2 ≤ g ∧ 1 ≤ T ∧ 1 ≤ T' ∧
-    Nat.Coprime g (T * T')
 
 end GlobalTheory.CompanionTheory.Loop

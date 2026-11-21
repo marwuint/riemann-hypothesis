@@ -23,12 +23,6 @@ def GrassBound : Prop :=
 def energy {m : ℕ} (u : Fin m → ℕ) : ℤ :=
   ∑ j, (u j : ℤ) ^ 2 - ∑ j : Fin m, ∑ i : Fin m, if (i : ℕ) + 1 = j then (u i : ℤ) * u j else 0
 
-def EnergyIdentity : Prop :=
-  ∀ (m : ℕ) (u : Fin (m + 1) → ℕ),
-    2 * energy u = (u 0 : ℤ) ^ 2 +
-      (∑ j : Fin (m + 1), ∑ i : Fin (m + 1),
-        if (i : ℕ) + 1 = j then ((u j : ℤ) - u i) ^ 2 else 0) + (u (Fin.last m) : ℤ) ^ 2
-
 def EnergyPos : Prop :=
   ∀ (m : ℕ) (u : Fin m → ℕ), u ≠ 0 → 1 ≤ energy u
 

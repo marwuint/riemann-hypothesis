@@ -9,8 +9,6 @@ section Additive
 variable {O Y M : Type*} [CommRing O] [StarRing O] [AddCommGroup Y] [Module O Y]
   [AddCommGroup M]
 
-def addRefine (τ : Y →+ Y →+ M) (w : O) (y : Y) : M := τ y (w • y)
-
 variable {τ : Y →+ Y →+ M} {w : O}
 
 def subHom {ψ ψ' : Y → M} (hψ : ∀ y y', ψ (y + y') = ψ y + ψ y' + τ y y')

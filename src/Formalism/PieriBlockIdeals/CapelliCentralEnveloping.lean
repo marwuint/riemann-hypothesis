@@ -152,25 +152,12 @@ def capelliRow (E : Fin N → Fin N → 𝒰) (u : 𝒰) : 𝒰 :=
 
 end Capelli
 
-def C1 : Prop :=
-  ∀ (𝒰 : Type) [Ring 𝒰] (N : ℕ) (E : Fin N → Fin N → 𝒰) (u : 𝒰), GlRel E →
-    (∀ i j, Commute u (E i j)) → ∀ k m, Commute (E k m) (capelli E u)
-
 def CapelliCentralPoly : Prop :=
   ∀ (𝒰 : Type) [Ring 𝒰] (N : ℕ) (E : Fin N → Fin N → 𝒰), GlRel E → ∀ k m n,
     Commute (E k m)
       ((capelli (fun i j => Polynomial.C (E i j)) (Polynomial.X : Polynomial 𝒰)).coeff n)
 
 attribute [local instance 100] LieRing.ofAssociativeRing in
-
-def CapelliCentralEnveloping : Prop :=
-  ∀ (R : Type) [CommRing R] (N : ℕ)
-    (x : UniversalEnvelopingAlgebra R (Matrix (Fin N) (Fin N) R)) (n : ℕ),
-    Commute x
-      ((capelli (fun i j => Polynomial.C
-          (UniversalEnvelopingAlgebra.ι R (Matrix.single i j (1 : R))))
-        (Polynomial.X :
-          Polynomial (UniversalEnvelopingAlgebra R (Matrix (Fin N) (Fin N) R)))).coeff n)
 
 def C2 : Prop :=
   ∀ (k : Type) [CommRing k] (𝒰 : Type) [Ring 𝒰] [Algebra k 𝒰] (V : Type) [AddCommGroup V]

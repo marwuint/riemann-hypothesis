@@ -13,14 +13,6 @@ def LocalFactorTameDv : Prop :=
         (q ^ (-((j * t * r : ℕ) : ℤ)) * qE q 1 r * L / (qE q (t + 1) (j * t))⁻¹) =
       L
 
-def LocalFactorSplitDv : Prop :=
-  ∀ (F : Type) [Field F] [Fintype F] (a t : ℕ) (J' : Subgroup (GL (Fin a) F)),
-    let q : ℝ := Fintype.card F
-    ((Nat.card (GL (Fin a ⊕ Fin t) F) : ℝ) /
-        (Nat.card (blockUpper (F := F) a t (J' : Set (GL (Fin a) F))) : ℝ)) *
-      ((Nat.card J' : ℝ) * q ^ (-((a * a : ℕ) : ℤ)) * q ^ (-((a * t : ℕ) : ℤ))) =
-    qE q (t + 1) (a + t)
-
 def laguerre (n α : ℕ) (x : ℝ) : ℝ :=
   ∑ k ∈ range (n + 1), (-1 : ℝ) ^ k * ((n + α).choose (n - k) : ℝ) * x ^ k / (k.factorial : ℝ)
 

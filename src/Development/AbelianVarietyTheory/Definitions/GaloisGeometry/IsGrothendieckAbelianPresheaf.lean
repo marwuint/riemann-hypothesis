@@ -379,15 +379,7 @@ theorem change_smul (u : F ⟶ (res J f).obj G) (T : Cᵒᵖ ⥤ Type 1) (n : �
   have h : (res J f).map (f r • 𝟙 G) = r • 𝟙 _ := rfl
   rw [h, Linear.smul_comp, Linear.comp_smul, Category.id_comp, Category.comp_id]
 
-def resId (f : R →+* R) (hf : f = RingHom.id R) : res J f ⟶ 𝟭 _ where
-  app G := ⟨Functor.whiskerLeft G.obj (ModuleCat.restrictScalarsId' f hf).hom⟩
-  naturality _ _ _ := rfl
-
 variable {S' : Type 1} [CommRing S']
-
-def resComp (g : S →+* S') (gf : R →+* S') (h : gf = g.comp f) : res J g ⋙ res J f ⟶ res J gf where
-  app G := ⟨Functor.whiskerLeft G.obj (ModuleCat.restrictScalarsComp' f g gf h).inv⟩
-  naturality _ _ _ := rfl
 
 end Site
 

@@ -434,25 +434,4 @@ structure Ax : Type 1 where
 
 end Data
 
-open Data in
-
-def TheoremA : Prop :=
-  ∀ (K : Type) [Field K] [NumberField K] (ι : Type) [Fintype ι]
-    (Ω : ι → Type) [∀ c, Field (Ω c)] [∀ c, Algebra K (Ω c)]
-    (WT : Type) [AddCommGroup WT]
-    (A : ι → Type) [∀ c, CommRing (A c)] [∀ c, Algebra (Ω c) (A c)] [∀ c, Algebra K (A c)]
-    [∀ c, Algebra (𝓞 K) (A c)]
-    (𝒜 : (c : ι) → WT → Submodule (Ω c) (A c)) (d : Data K ι Ω WT A), d.Ax (𝒜 := 𝒜) →
-    ∃ r : IsDedekindDomain.HeightOneSpectrum (𝓞 K) → ℝ,
-      (∀ la, 0 ≤ r la) ∧ (Function.support r).Finite ∧
-      (∀ la (e : ℕ), (d.T : ℝ) * d.nu la ≤ e →
-        let R := (la.valuationSubringAtPrime K).toSubring
-        letI : Module R (∀ c, A c) := Module.compHom _ R.subtype
-        let Θ := Submodule.span R (d.Theta : Set (∀ c, A c))
-        let X := Submodule.span R
-          ((la.asIdeal ^ e • d.M : Submodule (𝓞 K) (∀ c, A c)) : Set (∀ c, A c))
-        LenLE (Module.length R (↥(X ⊔ Θ) ⧸ Θ.comap (X ⊔ Θ).subtype)) (r la)) ∧
-      (∑ᶠ la, r la * logNorm la) / (Module.finrank ℚ K : ℝ) ≤
-        d.rk * (d.P1' * d.D ^ 2 * d.wsize d.ka / d.T + d.P2 * d.T + d.P3 * d.T * d.cc)
-
 end ReciprocityTheory.ChartRestriction.G.T0

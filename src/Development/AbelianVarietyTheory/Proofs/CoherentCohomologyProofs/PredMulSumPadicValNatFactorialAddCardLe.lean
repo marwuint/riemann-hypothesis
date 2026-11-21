@@ -245,9 +245,6 @@ theorem mem_germIdeal_pow_iff_le_order [Finite σ] {n : ℕ} {g : MvPowerSeries 
 
 variable [Finite σ]
 
-noncomputable def leadingForm (N : ℕ) : MvPowerSeries σ R →ₗ[R] MvPolynomial σ R :=
-  MvPolynomial.homogeneousComponent N ∘ₗ truncTotal (N + 1)
-
 noncomputable def derivAtOrigin (D : Derivation R (MvPowerSeries σ R) (MvPowerSeries σ R)) :
     σ → R := fun i => constantCoeff (D (X i))
 

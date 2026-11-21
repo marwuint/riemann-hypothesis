@@ -124,12 +124,4 @@ def EvExtendStatement : Prop :=
     [IsScalarTower O LL S] (ψ : PowerSeries O →ₐ[O] PowerSeries S), constantCoeff (ψ X) = 0 →
     ∃! ev : PowerSeries LL →ₐ[LL] PowerSeries S, ∀ a, ev (PowerSeries.map (algebraMap O LL) a) = ψ a
 
-def ConstSectionStatement : Prop :=
-  ∀ (LL S : Type) [Field LL] [CommRing S] [Algebra LL S] (r : ℕ) (g : PowerSeries LL →ₐ[LL] PowerSeries LL)
-    (τ : PowerSeries S →ₐ[LL] PowerSeries S) (ev : PowerSeries LL →ₐ[LL] PowerSeries S),
-    constantCoeff (ev X) = 0 → constantCoeff (g X) = 0 → constantCoeff (τ (ev X)) = 0 → ev (g X) = τ (ev X) →
-    ∀ G H : Matrix (Fin r) (Fin r) (PowerSeries LL), H.map constantCoeff = 1 → G * H.map g = H →
-    (∀ a, ev (g a) = τ (ev a)) ∧ IsUnit (H.map ev) ∧ (H.map ev).map constantCoeff = 1 ∧
-      G.map ev * (H.map ev).map τ = H.map ev
-
 end LevelStatements.Lv

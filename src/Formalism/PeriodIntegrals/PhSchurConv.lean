@@ -29,10 +29,6 @@ def IsOpInt {K : Type} [NormedAddCommGroup K] [InnerProductSpace ℂ K] (μ : Me
     (π : G → (K →L[ℂ] K)) (ph : G → ℂ) (T : K →L[ℂ] K) : Prop :=
   ∀ x y : K, ⟪x, T y⟫_ℂ = ∫ g, ph g * ⟪x, π g y⟫_ℂ ∂μ
 
-def IsRowProj {K : Type} [NormedAddCommGroup K] [InnerProductSpace ℂ K]
-    (π : G → (K →L[ℂ] K)) (m : G → ℂ) (T : K →L[ℂ] K) : Prop :=
-  (∀ x y : K, ⟪T x, y⟫_ℂ = ⟪x, T y⟫_ℂ) ∧ T.comp T = T ∧ ∀ a, T.comp ((π a).comp T) = m a • T
-
 def PhConv (μ : Measure G) (ph m : G → ℂ) : Prop :=
   m 1 = 1 ∧ (∀ g, ph g⁻¹ = star (ph g)) ∧
     ∀ x y : G, Integrable (fun g => ph g * ph (x⁻¹ * g⁻¹ * y)) μ ∧

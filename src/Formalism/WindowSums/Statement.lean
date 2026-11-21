@@ -49,24 +49,6 @@ def SemilinearActionOnEigenvectorFamily : Prop :=
     ∀ (ε u : PowerSeries O), IsUnit u →
     ∀ (y B : ℕ), ℓ * y < B → (p1 ℓ ε u) ^ y ∉ IdLQ (O := O) ℓ 1 B
 
-def C1 : Prop :=
-  ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ℓ : ℕ) [Fact ℓ.Prime],
-    Irreducible (ℓ : O) →
-    ∀ (ε u : PowerSeries O), IsUnit ε → IsUnit u →
-    ∀ (b y s : ℕ), 1 ≤ y →
-      (PowerSeries.X : PowerSeries O) ^ b ∈
-          Ideal.span {(p1 ℓ ε u) ^ y, PowerSeries.C ((ℓ : O) ^ s)} →
-      (s : ℝ) ≤ max 0 ((b : ℝ) / (ℓ : ℝ) - (y : ℝ) + 2 + Real.logb ℓ b)
-
-def DegCmp : Prop :=
-  ∀ (O : Type) [CommRing O] [IsDomain O] (ϖ : O), Prime ϖ →
-    ∀ (F G : PowerSeries O) (c : O) (k : ℕ),
-      PowerSeries.map (Ideal.Quotient.mk (Ideal.span {ϖ})) G ≠ 0 →
-      (PowerSeries.map (Ideal.Quotient.mk (Ideal.span {ϖ})) F).order <
-        (PowerSeries.map (Ideal.Quotient.mk (Ideal.span {ϖ})) G).order →
-      PowerSeries.C c * F ∈ Ideal.span {PowerSeries.C (ϖ ^ k), G} →
-      ϖ ^ k ∣ c
-
 def XPowDecomposition : Prop :=
   ∀ (O : Type) [CommRing O] (ℓ : ℕ) [Fact ℓ.Prime] (u : PowerSeries O) (b s : ℕ),
     s ≤ b / ℓ + 1 →

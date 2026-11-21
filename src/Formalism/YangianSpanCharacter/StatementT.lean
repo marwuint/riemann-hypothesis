@@ -105,12 +105,6 @@ def MinusLetter : Prop :=
           pt0 (pt1 ((d - 1) • (1 : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) R) - Pf R)) =
         (d * (d - 2)) • J0 R
 
-open scoped Kronecker in
-
-def FlipCommute : Prop :=
-  ∀ (R : Type) [CommRing R] (g gi : Matrix (Fin 2) (Fin 2) R), g * gi = 1 → gi * g = 1 →
-    (g ⊗ₖ g) * Pf R = Pf R * (g ⊗ₖ g) ∧ (giᵀ ⊗ₖ g) * pt1 (Pf R) = pt1 (Pf R) * (giᵀ ⊗ₖ g)
-
 def pM : Module.End ℚ (ℤ → ℚ) where
   toFun f n := (n : ℚ) * f n
   map_add' f g := by funext n; simp [mul_add]

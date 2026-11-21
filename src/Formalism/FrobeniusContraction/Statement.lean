@@ -131,10 +131,6 @@ def PsModX : Prop :=
   ∀ (O A : Type) [CommRing O] [CommRing A] [Algebra O A] (B : Base O A) (s : ℕ),
     B.p s - (B.ℓ : A) ∈ Ideal.span {B.X}
 
-def PsCoprime : Prop :=
-  ∀ (O A : Type) [CommRing O] [CommRing A] [Algebra O A] (B : Base O A) (s t : ℕ), s < t →
-    B.p t - (B.ℓ : A) ∈ Ideal.span {B.p s}
-
 def PsModL : Prop :=
   ∀ (O A : Type) [CommRing O] [CommRing A] [Algebra O A] (B : Base O A) (s : ℕ),
     ∃ v : A, IsUnit v ∧ B.p s - v * B.X ^ (B.ℓ ^ s) ∈ Ideal.span {(B.ℓ : A)}
@@ -179,15 +175,6 @@ def PhiContract : Prop :=
     [IsScalarTower O AA V] (W : WachDatum E n V) (M h : ℕ),
     1 ≤ M → 4 * h ≤ (B.ℓ - 1) * M → (∀ i, ∀ x ∈ W.N i, B.q ^ h • W.φ i x ∈ W.N (i + 1)) →
     ∀ k : ℕ, ∀ x ∈ B.I ^ k • W.XMN M, W.Φ x ∈ B.I ^ (k + 1) • W.XMN M
-
-def F1 : Prop :=
-  ∀ (O A AA : Type) [CommRing O] [CommRing A] [Algebra O A] [CommRing AA] [Algebra O AA]
-    [Algebra A AA] [IsScalarTower O A AA] (B : Base O A) (E : Amb B AA) (n : ℕ) [NeZero n]
-    (V : Type) [AddCommGroup V] [Module AA V] [Module A V] [IsScalarTower A AA V] [Module O V]
-    [IsScalarTower O AA V] (W : WachDatum E n V) (M h : ℕ),
-    1 ≤ M → 4 * h ≤ (B.ℓ - 1) * M → (∀ i, ∀ x ∈ W.N i, B.q ^ h • W.φ i x ∈ W.N (i + 1)) →
-    IsAdicComplete B.I ↥(W.XMN M) →
-    ∀ y ∈ W.XMN M, ∃! x, x ∈ W.XMN M ∧ W.Φ x - x = y
 
 def FiniteCocycleOfIntegral : Prop :=
   ∀ (O A AA : Type) [CommRing O] [CommRing A] [Algebra O A] [CommRing AA] [Algebra O AA]

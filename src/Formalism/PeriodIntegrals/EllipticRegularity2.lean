@@ -68,6 +68,4 @@ end PI.EllRegPr
 
 namespace PI
 
-def EllipticRegularity2 : Prop := EllRegPr.WFsEmptyIff ∧ EllRegPr.WFsChar ∧ EllRegPr.WFsElliptic
-
 end PI

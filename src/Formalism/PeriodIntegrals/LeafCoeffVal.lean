@@ -21,11 +21,6 @@ def ze3 (p : ℕ) {K : Type} [Field K] {h : ℕ} (t : Fin h → PowerSeries K) (
   PowerSeries.mk fun n =>
     ∑ k ∈ range (n + 1), PowerSeries.coeff n ((t (posSub i1 k)) ^ (p ^ (2 * k + 1))) / (p : K) ^ (k + 1)
 
-def LeafCoeffVal : Prop :=
-  ∀ p : ℕ, p.Prime → p ≠ 2 → ∀ (i0 : Fin 1) (t : Fin 1 → PowerSeries ℚ), IsLeaf p t → ∀ e : ℕ,
-    padicValRat p (PowerSeries.coeff (p ^ 3 * p ^ e) ((-ze3 p t (posAdd i0 1)) ^ (p ^ e)) / ((p ^ e).factorial : ℚ)) =
-      -(((p : ℤ) + 1) * (p : ℤ) ^ e + padicValNat p (p ^ e).factorial)
-
 end PI
 
 end

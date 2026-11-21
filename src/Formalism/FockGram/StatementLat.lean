@@ -20,11 +20,6 @@ def orthSum {R M₁ M₂ : Type*} [CommSemiring R] [StarRing R] [AddCommMonoid M
   (B₁.comp (LinearMap.fst R M₁ M₂)).compl₂ (LinearMap.fst R M₁ M₂) +
     (B₂.comp (LinearMap.snd R M₁ M₂)).compl₂ (LinearMap.snd R M₁ M₂)
 
-def GramChange : Prop :=
-  ∀ (R M ι κ : Type) [CommRing R] [StarRing R] [AddCommGroup M] [Module R M]
-    [Fintype ι] [DecidableEq ι] (B : M →ₗ⋆[R] M →ₗ[R] R) (b : Basis ι R M) (v : κ → M),
-    sgram B v = (b.toMatrix v)ᴴ * sgram B b * b.toMatrix v
-
 def GramChangeDet : Prop :=
   ∀ (R M ι : Type) [CommRing R] [StarRing R] [AddCommGroup M] [Module R M]
     [Fintype ι] [DecidableEq ι] (B : M →ₗ⋆[R] M →ₗ[R] R) (b : Basis ι R M) (v : ι → M),
@@ -40,15 +35,6 @@ def SubIndexZ : Prop :=
   ∀ (M ι : Type) [AddCommGroup M] [Fintype ι] [DecidableEq ι]
     (B : LinearMap.BilinForm ℤ M) (b : Basis ι ℤ M) (N : Submodule ℤ M) (bN : Basis ι ℤ N),
     (bgram B fun i => (bN i : M)).det = (Nat.card (M ⧸ N) : ℤ) ^ 2 * (bgram B b).det
-
-def OrthSumGram : Prop :=
-  ∀ (R M₁ M₂ ι₁ ι₂ : Type) [CommRing R] [StarRing R] [AddCommGroup M₁] [Module R M₁]
-    [AddCommGroup M₂] [Module R M₂] [Fintype ι₁] [DecidableEq ι₁] [Fintype ι₂] [DecidableEq ι₂]
-    (B₁ : M₁ →ₗ⋆[R] M₁ →ₗ[R] R) (B₂ : M₂ →ₗ⋆[R] M₂ →ₗ[R] R) (v₁ : ι₁ → M₁) (v₂ : ι₂ → M₂),
-    sgram (orthSum B₁ B₂) (Sum.elim (fun i => (v₁ i, 0)) (fun j => (0, v₂ j))) =
-      Matrix.fromBlocks (sgram B₁ v₁) 0 0 (sgram B₂ v₂) ∧
-    (sgram (orthSum B₁ B₂) (Sum.elim (fun i => (v₁ i, 0)) (fun j => (0, v₂ j)))).det =
-      (sgram B₁ v₁).det * (sgram B₂ v₂).det
 
 def TensorGram : Prop :=
   ∀ (R M₁ M₂ ι₁ ι₂ : Type) [CommRing R] [AddCommGroup M₁] [Module R M₁]

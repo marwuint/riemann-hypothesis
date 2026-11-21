@@ -26,8 +26,6 @@ def RecursionSucc : Prop :=
     RecHyp r ε δ M s m →
     (∀ i ≤ r + 1, s i ≤ 2 * M) ∧ √(m (r+1)) ≤ 1 + C * ((r : ℝ) + 1) * (ε * M + δ * √M)
 
-def RecursionUnrestrictedFalse : Prop := ¬ RecursionUnrestricted
-
 noncomputable def chebPt (α β : ℝ) (n : ℕ) (j : Fin (n+1)) : ℝ :=
   (α + β) / 2 + (β - α) / 2 * Real.cos (π * (j : ℕ) / n)
 

@@ -67,12 +67,6 @@ def g0 (G : Glob) (O : Orb n m) (j : Fin m) : ℝ := max (g0raw G O j) 0
 def gg (G : Glob) (O : Orb n m) (j : Fin m) : ℝ :=
   gam G.p * (∑ s ∈ O.T, al G O s) - (∑ s ∈ O.Tod, minF G.p (al G O s) (cap G O j) s) - dl G O
 
-def Pr1 (G : Glob) (O : Orb n m) (j : Fin m) : ℝ :=
-  (∑ s ∈ O.Tod, (O.w j s - O.b s)) + (n : ℝ) * (G.wpp + G.eta + G.c + G.Nm)
-
-def Prr (G : Glob) (O : Orb n m) (r : ℝ) : ℝ :=
-  r * ((O.T.card : ℝ) * (2 * G.bp + G.c) + (n : ℝ) * (G.wpp + G.eta + G.c + G.Nm))
-
 def dEv (O : Orb n m) (y : ZMod n) : ℕ := sInf {e : ℕ | 1 ≤ e ∧ y - (e : ZMod n) ∈ O.Tev}
 
 def yMinus (O : Orb n m) (y : ZMod n) : ZMod n := y - (dEv O y : ZMod n)

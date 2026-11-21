@@ -57,14 +57,6 @@ def RealSlopeBounds (ι : Type*) [Fintype ι] [Nonempty ι] : Prop :=
     (∀ u, muMaxM u ≤ A) → (∀ u, -A' ≤ muM u) → (∀ u u', |h u - h u'| ≤ V) →
     uF d muMaxN muN h ≤ A + A' + V + wmean d (fun u => dr u + BE u)
 
-def RealSlopeBoundsSplit (ι : Type*) [Fintype ι] [Nonempty ι] : Prop :=
-  ∀ (d muMaxN muN muMaxM muM h dr BE lT : ι → ℝ) (Sg0 A A' sa V1 Lk : ℝ),
-    (∀ u, 0 < d u) → (∀ u, 0 ≤ dr u) → Slopes2ge muMaxN muN muMaxM muM dr BE Sg0 →
-    (∀ u, muMaxM u ≤ A) → (∀ u, -A' ≤ muM u) →
-    (∀ u u', |(h u + sa * lT u) - (h u' + sa * lT u')| ≤ V1) →
-    (∀ u u', |lT u - lT u'| ≤ Lk) →
-    uF d muMaxN muN h ≤ A + A' + (V1 + |sa| * Lk) + wmean d (fun u => dr u + BE u)
-
 end
 
 end Formalism.LFunctionChainParameters.WeightedMeanLemmas

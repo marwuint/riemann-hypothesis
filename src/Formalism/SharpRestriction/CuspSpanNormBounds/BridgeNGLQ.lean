@@ -7,33 +7,6 @@ namespace Formalism.MainNotions.BridgeNGLQ
 open MeasureTheory Matrix
 open scoped ENNReal
 
-def S1 : Prop :=
-  ∀ (O : Type) [CommRing O] [IsPrincipalIdealRing O]
-    (D : Type) [AddCommGroup D] [Module O D] [Finite D]
-    (D' : Type) [AddCommGroup D'] [Module O D'] [Finite D']
-    (g : ℕ) (s : Fin g → D), Submodule.span O (Set.range s) = ⊤ →
-      Nat.card (Submodule O D) ≤ Nat.card D ^ g ∧ Nat.card (D →ₗ[O] D') ≤ Nat.card D' ^ g
-
-def S3 : Prop :=
-  ∀ (K : Type) [Field K] [StarRing K] [TopologicalSpace K] [IsTopologicalDivisionRing K]
-    [T2Space K] [LocallyCompactSpace K] [ContinuousStar K] [MeasurableSpace K] [BorelSpace K],
-    (∃ x : K, star x ≠ x) →
-    ∀ (n m : ℕ) (A : GL (Fin m) K) (c : ℝ≥0∞),
-      (∃ μ : Measure K, μ.IsAddHaarMeasure ∧
-        ∀ T : Set K, MeasurableSet T →
-          μ ((fun y => (A : Matrix (Fin m) (Fin m) K).det * y) '' T) = c * μ T) →
-      (∀ [MeasurableSpace (Matrix (Fin n) (Fin m) K)] [BorelSpace (Matrix (Fin n) (Fin m) K)]
-          (ν : Measure (Matrix (Fin n) (Fin m) K)), ν.IsAddHaarMeasure →
-          ∀ S : Set (Matrix (Fin n) (Fin m) K), MeasurableSet S →
-            ν ((fun X => X * (A : Matrix (Fin m) (Fin m) K)) '' S) = c ^ n * ν S) ∧
-      (∀ [MeasurableSpace (selfAdjoint (Matrix (Fin m) (Fin m) K))]
-          [BorelSpace (selfAdjoint (Matrix (Fin m) (Fin m) K))]
-          (ν : Measure (selfAdjoint (Matrix (Fin m) (Fin m) K))), ν.IsAddHaarMeasure →
-          ∀ S : Set (selfAdjoint (Matrix (Fin m) (Fin m) K)), MeasurableSet S →
-            ν {H' | ∃ H ∈ S, (H' : Matrix (Fin m) (Fin m) K) =
-                (A : Matrix (Fin m) (Fin m) K)ᴴ * (H : Matrix (Fin m) (Fin m) K) *
-                  (A : Matrix (Fin m) (Fin m) K)} = c ^ m * ν S)
-
 def HaarScalingSplit : Prop :=
   ∀ (F : Type) [Field F] [TopologicalSpace F] [IsTopologicalDivisionRing F] [T2Space F]
     [LocallyCompactSpace F] [MeasurableSpace F] [BorelSpace F],
@@ -78,14 +51,5 @@ def HermitianQuadricSplitCount : Prop :=
         if c = 0 then
           (Fintype.card F : ℤ) ^ (2 * d - 1) + (Fintype.card F : ℤ) ^ d - (Fintype.card F : ℤ) ^ (d - 1)
         else (Fintype.card F : ℤ) ^ (2 * d - 1) - (Fintype.card F : ℤ) ^ (d - 1)
-
-def S4 : Prop := HermitianQuadricInertCount ∧ HermitianQuadricSplitCount
-
-def GaussSum : Prop :=
-  ∀ (R : Type) [CommRing R] [Fintype R] [StarRing R] (Φ : AddChar R ℂ),
-    (∀ z : R, (∀ y : R, Φ (y * z + star (y * z)) = 1) → z = 0) →
-    ∀ (ρ : ℕ) (H : Matrix (Fin ρ) (Fin ρ) R), Hᴴ = H → IsUnit H.det →
-    ∀ χ : AddChar (Fin ρ → R) ℂ,
-      ‖∑ u : Fin ρ → R, Φ (star u ⬝ᵥ (H *ᵥ u)) * χ u‖ ^ 2 ≤ (Fintype.card R : ℝ) ^ ρ
 
 end Formalism.MainNotions.BridgeNGLQ

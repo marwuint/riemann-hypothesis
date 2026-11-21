@@ -110,10 +110,6 @@ def ApproxF : Prop := ∀ (X : Ctx) (φ : X.G → ℂ) (V : Set X.G) (ε : ℝ),
   ∃ ψ : X.G → ℂ, Tst ψ ∧ tsupport ψ ⊆ V ∧ ∫ z, ‖ψ z⁻¹‖ ∂X.μ = 1 ∧
     ∀ y, ‖cv X.μ (adj ψ) (cv X.μ φ ψ) y - φ y‖ ≤ ε
 
-def Approx : Prop := ∀ (X : Ctx) (φ : X.G → ℂ) (V : Set X.G) (ε : ℝ) (x y : X.G), Tst φ → V ∈ nhds (1 : X.G) → 0 < ε →
-  ∃ ψ : X.G → ℂ, Tst ψ ∧ tsupport ψ ⊆ V ∧ ∫ z, ‖ψ z⁻¹‖ ∂X.μ = 1 ∧
-    ‖ker X.Γ (cv X.μ (adj ψ) (cv X.μ φ ψ)) x y - ker X.Γ φ x y‖ ≤ ε
-
 def OpExA : Prop := ∀ (X : Ctx) (ι : Type) [Fintype ι] (Φ : Matrix ι ι (X.G → ℂ)), (∀ i j, Tst (Φ i j)) →
   ∃! T, X.IsOp Φ T
 

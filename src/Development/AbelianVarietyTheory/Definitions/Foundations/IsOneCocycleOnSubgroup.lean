@@ -7,9 +7,6 @@ namespace GlobalTheory.KCoh
 variable {R : Type*} [CommRing R] {G : Type*} [Group G]
 variable {M M' M'' : Type*} [AddCommGroup M] [Module R M] [AddCommGroup M'] [Module R M'] [AddCommGroup M''] [Module R M'']
 
-def IsOneCocycleOnSubgroup (ρ : Representation R G M) (H : Subgroup G) (a : G → M) : Prop :=
-  ∀ g ∈ H, ∀ h ∈ H, a (g * h) = a g + ρ g (a h)
-
 def d1 (ρ : Representation R G M) (b : G → M) (g h : G) : M := ρ g (b h) - b (g * h) + b g
 
 def IsTwoCocycleOnSubgroup (ρ : Representation R G M) (H : Subgroup G) (z : G → G → M) : Prop :=
@@ -17,13 +14,6 @@ def IsTwoCocycleOnSubgroup (ρ : Representation R G M) (H : Subgroup G) (z : G �
 
 def Cob (ρ : Representation R G M) (H : Subgroup G) (z : G → G → M) (η : G → M) : Prop :=
   ∀ g ∈ H, ∀ h ∈ H, z g h = d1 ρ η g h
-
-def Eqv (ρ : Representation R G M) (ρ' : Representation R G M') (f : M →ₗ[R] M') : Prop :=
-  ∀ g m, f (ρ g m) = ρ' g (f m)
-
-def Eqv₂ (ρ : Representation R G M) (ρ' : Representation R G M') (ρ'' : Representation R G M'')
-    (β : M →ₗ[R] M' →ₗ[R] M'') : Prop :=
-  ∀ g m m', β (ρ g m) (ρ' g m') = ρ'' g (β m m')
 
 def Triv (ρ : Representation R G M) (H : Subgroup G) : Prop := ∀ h ∈ H, ∀ m, ρ h m = m
 
@@ -42,8 +32,6 @@ def tw (χ : G →* Rˣ) (ρ : Representation R G M) : Representation R G M wher
     ext m
     simp [mul_smul, smul_comm (χ h : R) (χ g : R)]
 
-def chr (χ : G →* Rˣ) : Representation R G R := tw χ (Representation.trivial R G R)
-
 def sh (S : Type*) [MulAction G S] (ρ : Representation R G M) : Representation R G (S → M) where
   toFun g :=
     { toFun := fun f s => ρ g (f (g⁻¹ • s))
@@ -51,12 +39,6 @@ def sh (S : Type*) [MulAction G S] (ρ : Representation R G M) : Representation 
       map_smul' := fun c f => by funext s; simp }
   map_one' := by ext f s; simp
   map_mul' g h := by ext f s; simp [mul_smul]
-
-def push {S S' : Type*} [Fintype S'] (π : S' → S) : (S' → M) →ₗ[R] (S → M) :=
-  open Classical in
-  { toFun := fun f s => ∑ s' ∈ Finset.univ.filter (fun s' => π s' = s), f s'
-    map_add' := fun f f' => by funext s; simp [Finset.sum_add_distrib]
-    map_smul' := fun c f => by funext s; simp [Finset.smul_sum] }
 
 def pull {S S' : Type*} (π : S' → S) : (S → M) →ₗ[R] (S' → M) := LinearMap.funLeft R M π
 

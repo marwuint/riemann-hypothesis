@@ -186,8 +186,6 @@ def M' (L : Level H) : ℕ := Nat.lcm L.M L.A
 
 def M₀ (L : Level H) (p : ℕ) : ℕ := L.M / p ^ L.M.factorization p
 
-def GoodAt (L : Level H) (p : ℕ) : Prop := p.Prime ∧ 3 ≤ L.M₀ p
-
 def Dvd (L L₂ : Level H) : Prop := L.M ∣ L₂.M ∧ L.A ∣ L₂.A ∧ L.MM ∣ L₂.MM
 
 theorem Dvd.refl (L : Level H) : L.Dvd L := ⟨dvd_rfl, dvd_rfl, dvd_rfl⟩

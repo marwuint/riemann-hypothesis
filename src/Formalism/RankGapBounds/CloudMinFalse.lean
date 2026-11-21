@@ -37,14 +37,6 @@ def RestLog : Prop :=
     (∀ a, 0 ≤ U a ∧ U a ≤ h) →
     eExp U l ≤ N ^ 2 * Nat.log l (2 * h + N)
 
-def CloudMinFalse : Prop :=
-  ¬ ∀ (l k : ℕ) (U : Fin k → ℤ) (xm xp : ℤ), l.Prime → StrictAnti U →
-    (∀ a, xm ≤ U a ∧ U a ≤ xp) →
-    (eExp U l : ℝ) ≤ min ((k : ℝ) ^ 2 * (Nat.log l ((xp - xm).toNat + k) : ℝ))
-                         ((k : ℝ) * (((xp - xm).toNat : ℝ) + k) / ((l : ℝ) - 1))
-
 def witnessU : Fin 10 → ℤ := ![114, 113, 112, 111, 110, 4, 3, 2, 1, 0]
-
-def WitnessBig : Prop := 25 ≤ eExp witnessU 101
 
 end Formalism.RankGapBounds.JumpSetsAlt

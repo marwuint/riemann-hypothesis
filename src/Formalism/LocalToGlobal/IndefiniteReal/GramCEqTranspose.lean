@@ -126,10 +126,6 @@ open Classical in
 def gramV (pos : (LL →+* ℂ) → Prop) (σ : LL →+* ℂ) {n : ℕ} (b : Fin n → WL) : Matrix (Fin n) (Fin n) ℂ :=
   if pos σ then A.gramC σ b else (A.gramC ((starRingEnd ℂ).comp σ) b)ᵀ
 
-def IsFrameAt (pos : (LL →+* ℂ) → Prop) (σ : LL →+* ℂ) {n : ℕ} (b : Fin n → WL) (X : Matrix (Fin n) (Fin n) ℂ) :
-    Prop :=
-  IsUnit X.det ∧ (X⁻¹)ᴴ * X⁻¹ = A.gramV pos σ b
-
 def Mcoord (J0 : Subgroup G0) (lam0 : J0 →* LLˣ) (eC : G0 → LL) {d : ℕ} (b : Fin d → WL) :
     Submodule (𝓞 LL) (Fin d → LL) :=
   (A.Mj J0 lam0 eC).comap ((Fintype.linearCombination LL b).restrictScalars (𝓞 LL))
@@ -170,10 +166,6 @@ variable {LL : Type} [Field LL]
 variable {QL : Type} [AddCommGroup QL] [Module LL QL]
 variable {Ix J : Type} [Fintype Ix] [Fintype J]
 
-def eeNormSq (kap : (LL →+* ℂ) → ℝ) (lam : (LL →+* ℂ) → J → Ix → ℝ) (nq : (LL →+* ℂ) → QL → ℝ)
-    (prj : Ix → QL →ₗ[LL] QL) (σ : LL →+* ℂ) (F : QL) : ℝ :=
-  ∑ c, kap σ * (∏ j, lam σ j c) * nq σ (prj c F) ^ 2
-
 end EEMetric
 
 section Statements
@@ -195,9 +187,6 @@ def UnifAt (actC : ∀ σ, G0 →* (W σ →ₗ[ℂ] W σ)) (σ : LL →+* ℂ) 
 def PosOK (pos : (LL →+* ℂ) → Prop) (σ₀ : LL →+* ℂ) : Prop :=
   pos σ₀ ∧ ∀ σ, (pos σ ∨ pos ((starRingEnd ℂ).comp σ)) ∧ ¬ (pos σ ∧ pos ((starRingEnd ℂ).comp σ))
 
-def UnifAll (pos : (LL →+* ℂ) → Prop) (actC : ∀ σ, G0 →* (W σ →ₗ[ℂ] W σ)) : Prop :=
-  ∀ σ, pos σ → A.UnifAt actC σ
-
 def ChiKs : Prop :=
   ∀ g, ((A.chi g : LLˣ) : LL) ∈ Set.range (algebraMap Ks LL)
 
@@ -207,15 +196,6 @@ def HeckeRat (pos : (LL →+* ℂ) → Prop) {T : Type} (hL : T → WL →ₗ[LL
 
 def GalA : Prop :=
   ∀ (σ : LL →+* ℂ) (x : WL), A.nrmAt ((starRingEnd ℂ).comp σ) x = A.nrmAt σ x
-
-def GalE (pos : (LL →+* ℂ) → Prop) (eC : G0 → LL) (eAn : ∀ σ, W σ →ₗ[ℂ] W σ) : Prop :=
-  ∀ σ, pos σ → ∀ x, A.j σ (A.eOp eC x) = eAn σ (A.j σ x)
-
-def GalD (pos : (LL →+* ℂ) → Prop) {XL : Type} [AddCommGroup XL] [Module LL XL] {X : (LL →+* ℂ) → Type}
-    [∀ σ, AddCommGroup (X σ)] [∀ σ, Module ℂ (X σ)] (jX : ∀ σ, XL →ₛₗ[σ] X σ) (thL : XL →ₗ[LL] WL)
-    (thC : ∀ σ, X σ →ₗ[ℂ] W σ) (actC : ∀ σ, G0 →* (W σ →ₗ[ℂ] W σ)) : Prop :=
-  ∀ σ, pos σ → ∃ z ∈ Subgroup.center G0, ∃ κ : ℂ, (∃ n : ℕ, 0 < n ∧ κ ^ n = 1) ∧
-    ∀ x, A.j σ (thL x) = κ • actC σ z (thC σ (jX σ x))
 
 def RatTheta {XL : Type} [AddCommGroup XL] [Module LL XL] {X : (LL →+* ℂ) → Type}
     [∀ σ, AddCommGroup (X σ)] [∀ σ, Module ℂ (X σ)] (jX : ∀ σ, XL →ₛₗ[σ] X σ) (thL : XL →ₗ[LL] WL)
@@ -240,10 +220,6 @@ def MKFull : Prop :=
 
 def MKStable : Prop :=
   ∀ g f, (f ∈ A.WK → A.ρ g f ∈ A.WK) ∧ (f ∈ A.MK → A.ρ g f ∈ A.MK)
-
-def EIdem (eC : G0 → LL) : Prop :=
-  A.eOp eC ∘ₗ A.eOp eC = A.eOp eC ∧ (∀ g, A.eOp eC ∘ₗ A.ρ g = A.ρ g ∘ₗ A.eOp eC) ∧
-    ∀ g, eC g ∈ Set.range (algebraMap Ks LL)
 
 def ActUnitary (pos : (LL →+* ℂ) → Prop) (actC : ∀ σ, G0 →* (W σ →ₗ[ℂ] W σ)) : Prop :=
   ∀ σ, pos σ → ∀ g (x y : W σ), ⟪actC σ g x, actC σ g y⟫_ℂ = ⟪x, y⟫_ℂ

@@ -121,16 +121,6 @@ def GoodGen : Prop :=
         s.card ≤ min (finrank K (LinearMap.range e)) (finrank K (LinearMap.ker e)) ∧
           Submodule.span O (s : Set (P ⧸ (A ⊓ V₀).comap P.subtype)) = ⊤
 
-def GoodDual : Prop :=
-  ∀ (O K X : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K]
-    [IsFractionRing O K] [AddCommGroup X] [Module K X] [Module O X] [IsScalarTower O K X]
-    [FiniteDimensional K X] (B : LinearMap.BilinForm K X), B.Nondegenerate →
-    ∀ (e : X →ₗ[K] X), e ∘ₗ e = e → (∀ x y, B (e x) y = B x (e y)) →
-    ∀ A : Submodule O X, IsLat O K X A →
-      {x : X | x ∈ LinearMap.range e ∧
-          ∀ y ∈ A ⊓ (LinearMap.range e).restrictScalars O, B x y ∈ Set.range (algebraMap O K)} =
-        e '' {z : X | ∀ y ∈ A, B z y ∈ Set.range (algebraMap O K)}
-
 def PointwiseLength : Prop :=
   ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K]
     [IsFractionRing O K] [Infinite (IsLocalRing.ResidueField O)]

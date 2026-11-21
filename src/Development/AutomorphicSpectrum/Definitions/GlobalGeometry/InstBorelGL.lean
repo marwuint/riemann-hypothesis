@@ -155,9 +155,6 @@ def IsStep [MeasurableSpace F] (δ : Fˣ →* ℂˣ) (ν : ℕ → Fˣ →* ℂ�
       z = localZ μ dx (ν (j + 1) * δ) nrm (phiQ O ϖ δ r ((j + 1) * t) (j * t)) (phiQ O ϖ δ r ((j + 1) * t) (j * t))
         (mcoef O μ f)
 
-def om {c : ℕ} (κ : Measure (GL (Fin c) F)) (φ : GL (Fin c) F → ℂ) (g : GL (Fin c) F) : ℂ :=
-  ∫ k in (GLint O c : Set (GL (Fin c) F)), φ (k * g) ∂κ
-
 end Local
 
 section More
@@ -184,12 +181,6 @@ def pEl {r c : ℕ} (m₁ : GL (Fin r) F) (B : Matrix (Fin r) (Fin c) F) (m₂ :
     simp only [Matrix.reindex_apply, Matrix.submatrix_mul_equiv, Matrix.fromBlocks_multiply, Matrix.neg_mul,
       Matrix.mul_assoc, Units.inv_mul, Matrix.mul_one, Matrix.zero_mul, Matrix.mul_zero, add_zero, zero_add,
       add_neg_cancel, neg_zero, Matrix.fromBlocks_one, Matrix.submatrix_one_equiv]
-
-def cellPJ (O : Subring F) (ϖ : F) (r c : ℕ) : Set (GL (Fin (r + c)) F) :=
-  {g | ∃ p : GL (Fin (r + c)) F, bDA (p : Matrix (Fin (r + c)) (Fin (r + c)) F) = 0 ∧ ∃ j ∈ parJ O ϖ r c, g = p * j}
-
-def iwa (O : Subring F) (ϖ : F) {n : ℕ} (σ : Fin n → ℕ) : Set (GL (Fin n) F) :=
-  {k | k ∈ GLint O n ∧ ∀ a b, σ b < σ a → ∃ o ∈ O, (k : Matrix (Fin n) (Fin n) F) a b = ϖ * o}
 
 def UnrChar (nrm : AbsoluteValue F ℝ) (q : ℕ) {c : ℕ} (χ : Fin c → F → ℂ) (α : Fin c → ℂ) : Prop :=
   (∀ i, α i ≠ 0) ∧ ∀ i (x : F) (e : ℤ), nrm x = (q : ℝ) ^ (-e) → χ i x = α i ^ e

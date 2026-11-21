@@ -23,12 +23,6 @@ abbrev SD (σ : Representation ℤ Γ L) : Type := Multiplicative L ⋊[autOf σ
 
 variable {Γ' : Type} [Group Γ'] {L' : Type} [AddCommGroup L']
 
-def sdMap {σ' : Representation ℤ Γ' L'} {σ : Representation ℤ Γ L} (α : Γ' →* Γ) (u : L' →ₗ[ℤ] L)
-    (h : ∀ γ x, u (σ' γ x) = σ (α γ) (u x)) : SD σ' →* SD σ :=
-  SemidirectProduct.map (AddMonoidHom.toMultiplicative u.toAddMonoidHom) α fun γ => by
-    ext x
-    simp [autOf, h]
-
 variable (E : Type) [Field E]
 
 abbrev altRepZ (σ : Representation ℤ Γ L) (q : ℕ) : Representation E Γ (Alt ℤ L E q) := altRep E σ q

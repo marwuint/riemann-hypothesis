@@ -65,8 +65,6 @@ variable {R S : Type*} [CommSemiring R] [CommSemiring S] {σ : Type*}
 
 def multiChoose (n β : σ →₀ ℕ) : ℕ := β.prod fun i e => (n i).choose e
 
-def multiFactorial (β : σ →₀ ℕ) : ℕ := β.prod fun _ e => e.factorial
-
 @[simp] theorem multiChoose_zero (n : σ →₀ ℕ) : multiChoose n 0 = 1 := by simp [multiChoose]
 
 theorem multiChoose_eq_mul_erase (n β : σ →₀ ℕ) (i : σ) :

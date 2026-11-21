@@ -22,11 +22,6 @@ def fitGen [Fintype m] {M : Type*} [AddCommGroup M] [Module R M] (g : m → M) (
     (r : Fin (Fintype.card m - i) → m),
     (∀ j, ∑ a, A a j • g a = 0) ∧ x = (A.submatrix r id).det}
 
-variable (R) in
-
-def modFit (M : Type*) [AddCommGroup M] [Module R M] (i : ℕ) : Ideal R :=
-  ⨆ (k : ℕ) (g : Fin k → M) (_ : Submodule.span R (Set.range g) = ⊤), fitGen g i
-
 end Minors
 
 section Complex
@@ -161,9 +156,6 @@ end Koszul
 section Lagrangian
 
 variable {k : Type*} [Field k] {V : Type*} [AddCommGroup V] [Module k V]
-
-def IsLagrangian (B : LinearMap.BilinForm k V) (L : Submodule k V) : Prop :=
-  B.orthogonal L = L
 
 def IsHalfIsotropic (B : LinearMap.BilinForm k V) (L : Submodule k V) : Prop :=
   (∀ x ∈ L, ∀ y ∈ L, B x y = 0) ∧ 2 * finrank k L = finrank k V

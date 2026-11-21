@@ -228,12 +228,6 @@ def intertw {G V V' : Type} [Monoid G] [AddCommGroup V] [Module ℂ V] [AddCommG
 def Interlace (big small : List ℚ) : Prop :=
   big.length = small.length + 1 ∧ ∀ i (h : i < small.length) (h' : i + 1 < big.length), big[i] > small[i] ∧ small[i] > big[i + 1]
 
-def Interlacing : Prop :=
-  ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (S : Sizes) (P : ι → Entries S), (∀ τ, (P τ).Good) →
-    (∀ τ, Interlace (P τ).bigPar (P τ).smallPar) ∧
-      Module.finrank ℂ (intertw (weylRep (S.nC S.m) fun τ => hw (P τ).smallPar)
-        ((weylRep (S.nR S.m) fun τ => hw (P τ).bigPar).comp (embed S.nC_succ))) = 1
-
 def OneLine : Prop :=
   ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (S : Sizes) (P : ι → Entries S), (∀ τ, (P τ).Good) →
     Module.finrank ℂ (invFun (omRep P)) = 1

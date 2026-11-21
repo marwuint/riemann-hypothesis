@@ -333,10 +333,6 @@ section Symbolic
 
 variable {R : Type*} [CommRing R]
 
-noncomputable def symbolicPower (P : Ideal R) [P.IsPrime] (m : ℕ) : Ideal R :=
-  (IsLocalRing.maximalIdeal (Localization.AtPrime P) ^ m).comap
-    (algebraMap R (Localization.AtPrime P))
-
 open IsLocalRing in
 
 theorem exists_sup_maximalIdeal_pow_stable [IsNoetherianRing R] [IsLocalRing R]

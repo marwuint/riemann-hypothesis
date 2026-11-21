@@ -8,9 +8,6 @@ namespace Formalism.L2.SG.Pf.StabilizerMassQuotient
 
 variable (Γ : Type*) [Group Γ]
 
-def mass (A : Type*) [MulAction Γ A] : ℝ≥0∞ :=
-  ∑' o : Quotient (MulAction.orbitRel Γ A), ((Nat.card (MulAction.stabilizer Γ o.out) : ℝ≥0∞))⁻¹
-
 variable {Γ}
 
 theorem card_stab_smul {A : Type*} [MulAction Γ A] (g : Γ) (a : A) :

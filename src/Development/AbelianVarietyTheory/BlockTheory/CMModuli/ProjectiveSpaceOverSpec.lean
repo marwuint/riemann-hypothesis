@@ -28,9 +28,6 @@ def IsQuasiProjectiveOver (R : Type) [CommRing R] {X : Scheme.{0}}
   ∃ (N : ℕ) (i : X ⟶ projSpace R N),
     IsImmersion i ∧ QuasiCompact i ∧ i ≫ projSpaceToSpec R N = f
 
-def IsNormalScheme (X : Scheme.{0}) : Prop :=
-  ∀ x : X, IsDomain (X.presheaf.stalk x) ∧ IsIntegrallyClosed (X.presheaf.stalk x)
-
 def IsIndEtale {A S : Type} [CommRing A] [CommRing S] (φ : A →+* S) : Prop :=
   MorphismProperty.ind.{0} (RingHom.toMorphismProperty @RingHom.Etale) (CommRingCat.ofHom φ)
 

@@ -583,11 +583,7 @@ def PPpp : ℝ := 32 * N.PPp + N.QJ + N.Qc + N.QH + N.Q6
 
 def tableDegreeSevenMax : ℝ := (max (N.sizeConstantAtParamsWeight) (max (N.flipOneThree) (max (N.tableLineDegreeFive) (max (N.tableLineDegreeTwo) (max (N.Pet) (max (N.G * (1 + N.Np)) (N.o + N.B7)))))))
 
-def P4 : ℝ := N.DivisibilityWeightConstant * (N.PD + N.PQ)
-
 end Num
-
-def Bd (X M : Num → ℝ) : Prop := ∃ C : ℝ, ∀ N : Num, N.admitted → 0 ≤ X N ∧ X N ≤ C * M N
 
 def MonoLet (X : Num → ℝ) : Prop := ∀ N N' : Num, N.H0 → N.LetLow → Num.LetLe N N' → X N ≤ X N'
 

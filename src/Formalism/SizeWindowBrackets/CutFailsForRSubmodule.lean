@@ -41,11 +41,4 @@ def ClaimC : Prop :=
     Module.length R (latV M V ⧸ (ϖ ^ τ • latV M V).comap (latV M V).subtype) =
       ((Module.finrank R (latV M V) * τ : ℕ) : ℕ∞)
 
-def CutFailsForRSubmodule : Prop :=
-  ∀ (R : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R] (ϖ : R), Irreducible ϖ →
-  ∀ (K : Type) [Field K] [Algebra R K] [IsFractionRing R K],
-    let M : Submodule R K := Submodule.span R {1}
-    let V : Submodule R K := Submodule.span R {algebraMap R K ϖ}
-    ϖ • M ⊓ V ≠ ϖ • (M ⊓ V)
-
 end Formalism.LFunctionChainParameters.DiagonalSublatticeLength

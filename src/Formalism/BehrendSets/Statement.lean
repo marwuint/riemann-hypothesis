@@ -20,30 +20,8 @@ def OrdIff : Prop := ∀ (s l j : ℕ) (hl : Nat.Coprime l (2 ^ (s + 2))),
 
 def PmOne (M l : ℕ) : Prop := 2 ≤ l ∧ ((l : ℤ) ≡ 1 [ZMOD M] ∨ (l : ℤ) ≡ -1 [ZMOD M])
 
-open Classical in
-def SumSq : Prop := ∀ M Y : ℕ, 2 ≤ M →
-  ∑ l ∈ (range Y).filter (PmOne M), Real.log l / (l : ℝ) ^ 2 ≤ 40 * Real.log M / (M : ℝ) ^ 2
-
-open Classical in
-def SumLin : Prop := ∀ M Y : ℕ, 2 ≤ M →
-  ∑ l ∈ (range (Y + 1)).filter (PmOne M), Real.log l / (l : ℝ) ≤ 8 * (1 + Real.log Y) ^ 2 / (M : ℝ)
-
 def ShortOrdLarge : Prop := ∀ (s Lw l : ℕ) (hl : Nat.Coprime l (2 ^ (s + 2))), 1 ≤ Lw →
   8 * Lw ≤ 2 ^ s → 2 ≤ l → orderOf (frob s l hl) ≤ 4 * Lw → 2 ^ s ≤ Lw * (l + 1)
-
-open Classical in
-
-def ShortOrdSq : Prop := ∀ (s Lw Y : ℕ), 1 ≤ Lw → 8 * Lw ≤ 2 ^ s →
-  ∑ l ∈ (range Y).filter
-      (fun l => 2 ≤ l ∧ ∃ hl : Nat.Coprime l (2 ^ (s + 2)), orderOf (frob s l hl) ≤ 4 * Lw),
-    Real.log l / (l : ℝ) ^ 2 ≤ 80 * (Lw : ℝ) ^ 2 * Real.log ((2 : ℝ) ^ s) / ((2 : ℝ) ^ s) ^ 2
-
-open Classical in
-
-def ShortOrdLin : Prop := ∀ (s Y : ℕ) (B : ℝ), 0 ≤ B →
-  ∑ l ∈ (range (Y + 1)).filter
-      (fun l => 2 ≤ l ∧ ∃ hl : Nat.Coprime l (2 ^ (s + 2)), ((orderOf (frob s l hl) : ℕ) : ℝ) < B),
-    Real.log l / (l : ℝ) ≤ 2 * B * (1 + Real.log Y) ^ 2 / (2 : ℝ) ^ s
 
 def BehrendFree (K : ℕ) (T : Finset ℕ) : Prop :=
   ∀ α β γ : ℤ, α ≠ 0 → β ≠ 0 → γ ≠ 0 → α + β + γ = 0 →
@@ -63,21 +41,10 @@ def ThickSet : Prop := ∃ C : ℝ, 0 < C ∧ ∀ n L : ℕ, 1 ≤ L → 8 * L �
 def thick (n : ℕ) (T : Finset ℕ) (u : ZMod n) : Finset (ZMod n) :=
   T.image (fun t : ℕ => ((t : ℕ) : ZMod n) + u)
 
-open Classical in
-def WindowTwo : Prop := ∀ (n L : ℕ) [NeZero n] (T : Finset ℕ),
-  (∀ t ∈ T, 8 * L * t < n) → BehrendFree (2 * L) T →
-  ∀ h u t₀ : ZMod n, 2 * L < addOrderOf h → ∀ j : ℤ,
-    ((Finset.Ico j (j + 2 * (L : ℤ))).filter (fun i : ℤ => t₀ + i • h ∈ thick n T u)).card ≤ 2
-
 def OrbitOne : Prop := ∀ (n L : ℕ) [NeZero n] (T : Finset ℕ),
   (∀ t ∈ T, 8 * L * t < n) →
   ∀ h u t₀ : ZMod n, addOrderOf h ≤ 8 * L → ∀ i₁ i₂ : ℤ,
     t₀ + i₁ • h ∈ thick n T u → t₀ + i₂ • h ∈ thick n T u → i₁ • h = i₂ • h
-
-open Classical in
-def TranslateMean : Prop := ∀ (n : ℕ) [NeZero n] (T : Finset ℕ), (∀ t ∈ T, t < n) →
-  ∀ {ι : Type} (I : Finset ι) (pos : ι → ZMod n),
-    ∑ u : ZMod n, (I.filter (fun i => pos i ∈ thick n T u)).card = I.card * T.card
 
 def wt {α : Type} [DecidableEq α] (X : Finset α) (δ : ℝ) (T : Finset α) : ℝ :=
   δ ^ T.card * (1 - δ) ^ (X \ T).card
@@ -114,14 +81,5 @@ def BadOrbit : Prop := ∀ (n : ℕ) [NeZero n] (h t₀ : ZMod n) (δ : ℝ) (L 
   prob (Finset.univ : Finset (ZMod n)) δ
       (fun T => t₀ ∈ T ∧ ∃ W ∈ orbitWindows n h t₀ L, K + 1 ≤ (T ∩ W).card)
     ≤ δ * n * ((L : ℝ) * δ) ^ K
-
-open Classical in
-
-def BadMean : Prop := ∀ {α : Type} [DecidableEq α] {ι : Type} (X : Finset α) (δ : ℝ) (L K : ℕ)
-  (I : Finset ι) (pt : ι → α) (c : ι → ℝ) (𝒲 : ι → Finset (Finset α)),
-  0 ≤ δ → δ ≤ 1 → (L : ℝ) * δ ≤ 1 → (∀ i, 0 ≤ c i) → (∀ i, ∀ W ∈ 𝒲 i, W.card ≤ L) →
-  expect X δ (fun T => ∑ i ∈ I,
-      c i * (if pt i ∈ T ∧ ∃ W ∈ 𝒲 i, K + 1 ≤ (T ∩ W).card then 1 else 0))
-    ≤ ∑ i ∈ I, c i * (δ * (𝒲 i).card * ((L : ℝ) * δ) ^ K)
 
 end Formalism.BehrendSets

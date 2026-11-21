@@ -31,11 +31,6 @@ variable {B N : Type*} [CommRing B] [AddCommGroup N] [Module B N]
 
 instance : Inhabited (OddForm B N) := ⟨⟨0, fun _ _ => rfl, fun _ _ _ => by simp⟩⟩
 
-def ofScalar (c : B) : OddForm B B where
-  be := c • LinearMap.mul B B
-  symm b b' := by simp [mul_comm]
-  assoc b b' b'' := by simp; ring
-
 @[nolint unusedArguments]
 def Ext (_ : OddForm B N) : Type _ := B × N
 

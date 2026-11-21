@@ -21,14 +21,6 @@ def minorProd {R : Type u} [CommRing R] {σ : Type} {N0 N1 C : ℕ}
     (I : ∀ c, Fin (p c) → Fin N1) : MvPolynomial σ R :=
   ∏ c, (Matrix.of fun (r r' : Fin (p c)) => row ⟨r.val, lt_of_lt_of_le r.isLt (hp c)⟩ (I c r')).det
 
-def MonoShapeTop : Prop :=
-  ∀ (R : Type u) [CommRing R] (N0 N1 m C : ℕ) (T : Fin N0 → Fin m → R) (p : Fin C → ℕ)
-    (hp : ∀ c, p c ≤ N0), (∀ c, 1 ≤ p c) → ∀ (I : ∀ c, Fin (p c) → Fin N1),
-    ∀ mono ∈ (minorProd (oldRowTop (N1 := N1) T) p hp I).support,
-      (∑ b : Fin N1, mono (none, b)) = C ∧
-      (∑ k : Fin m, ∑ b : Fin N1, mono (some k, b)) = ∑ c, (p c - 1) ∧
-      ∀ k : Fin m, (∑ b : Fin N1, mono (some k, b)) ≤ (Finset.univ.filter (fun c => 2 ≤ p c)).card
-
 def MonoShapeLow : Prop :=
   ∀ (R : Type u) [CommRing R] (N0 N1 m C : ℕ) (T : Fin N0 → Fin m → R) (p : Fin C → ℕ)
     (hp : ∀ c, p c ≤ N0) (I : ∀ c, Fin (p c) → Fin N1),

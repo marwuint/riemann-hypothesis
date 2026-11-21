@@ -20,8 +20,4 @@ def dualLat {N : ℕ} (L : Submodule ℤ (EuclideanSpace ℝ (Fin N))) : Set (Eu
 def firstMin {N : ℕ} (S : Set (EuclideanSpace ℝ (Fin N))) : ℝ :=
   sInf {r | ∃ y ∈ S, y ≠ 0 ∧ r = ‖y‖}
 
-def TransferenceCoverRad : Prop :=
-  ∀ (N : ℕ) (L : Submodule ℤ (EuclideanSpace ℝ (Fin N))) [DiscreteTopology L], IsZLattice ℝ L →
-    covRad (L : Set (EuclideanSpace ℝ (Fin N))) * firstMin (dualLat L) ≤ (N : ℝ) / 2
-
 end PI

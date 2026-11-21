@@ -184,11 +184,6 @@ def ErrX : ℝ :=
     + (1 - D.delBar)⁻¹ * (4 * Real.log (1 + D.x ^ C.cHH) * (D.UBar C + D.b)
         + (D.etaBar + 4 * Real.sqrt D.eBar) * (D.x ^ C.cHH * D.b))
 
-def MeanBoundSecondForm : Prop :=
-  Nonempty U0 → D.HidaSetting C → D.DIV C → D.EComp C → D.HComp C → D.Count C → D.Slopes C → D.SlopesN C →
-    D.Losses C → D.SlopeIneq → D.HHBound C → D.FParams →
-    umean D.ASK ≤ umean D.Main + D.ErrX C
-
 def TaBound (cTa Xp Bo : ℝ) : Prop :=
   1 ≤ Xp ∧ 0 ≤ Bo ∧ ∀ u0, D.Ta u0 ≤ cTa * (m : ℝ) * D.nT * D.a * Real.log Xp + Bo
 

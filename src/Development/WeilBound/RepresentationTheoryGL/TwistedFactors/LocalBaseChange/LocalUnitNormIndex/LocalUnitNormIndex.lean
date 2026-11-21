@@ -61,9 +61,6 @@ def LocalUnitNormOpenSubgroup : Prop :=
 def LocalUnitNormKernel : Prop :=
   ∀ σ : E ≃ₐ[F] E, IsGen σ → ∀ x : Eˣ, normU F E x = 1 ↔ ∃ y : Eˣ, x = y / sigU σ y
 
-def LocalUnitNormIndex : Prop :=
-  ∀ σ : E ≃ₐ[F] E, IsGen σ → ((OU E).map (normU F E)).relIndex (OU F) = ramIdx F E
-
 def NormIndex : Prop :=
   ∀ σ : E ≃ₐ[F] E, IsGen σ → (normU F E).range.index = Module.finrank F E
 

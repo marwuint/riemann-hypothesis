@@ -142,8 +142,6 @@ def allOnes (L : ℕ) : Fin L →₀ ℕ := Finsupp.equivFunOnFinite.symm fun _ 
 def exL (n L : ℕ) : PolyL n L →ₗ[ℂ] Poly n :=
   ((MvPolynomial.lcoeff (Poly n) (allOnes L)).restrictScalars ℂ).comp (sumAlgEquiv ℂ (Fin L) (EntIdx n)).toLinearMap
 
-def ex (n L : ℕ) (k : ℕ) : PolyM n L →ₗ[ℂ] Poly n := (exL n L).comp (coefM n L k)
-
 end GlobalTheory.PsCo.Pc1.A
 
 end

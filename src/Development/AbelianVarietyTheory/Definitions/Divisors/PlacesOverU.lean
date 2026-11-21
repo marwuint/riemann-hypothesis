@@ -101,44 +101,12 @@ def Φ : Finset (F →+* ℂ) := embOver K F (D.τ₀.comp (algebraMap K F))
 
 def d : ℕ := Module.finrank ℚ (maximalRealSubfield F)
 
-def uc : Ideal (𝓞 K) := D.u.asIdeal.comap (IsCMField.ringOfIntegersComplexConj K : 𝓞 K →+* 𝓞 K)
-
 def placesOverU : Set (HeightOneSpectrum (𝓞 F)) :=
   {v | v.asIdeal.comap (algebraMap (𝓞 K) (𝓞 F)) = D.u.asIdeal}
 
 def IsDivision : Prop := ∀ x : D.B, x ≠ 0 → IsUnit x
 
-def ε : D.w.adicCompletionIntegers F ⊗[𝓞 F] D.OB :=
-  D.splitW.symm (Matrix.single ⟨0, D.n_pos⟩ ⟨0, D.n_pos⟩ 1)
-
 def starO (x : D.OB) : D.OB := ⟨star (x : D.B), D.OB_star x x.2⟩
-
-def OBp : Subring D.B where
-  carrier := {x | ∃ m : ℕ, m.Coprime p ∧ (m : D.B) * x ∈ D.OB}
-  one_mem' := ⟨1, Nat.coprime_one_left p, by simpa using D.OB.one_mem⟩
-  mul_mem' := by
-    rintro x y ⟨m, hm, hx⟩ ⟨m', hm', hy⟩
-    refine ⟨m * m', Nat.Coprime.mul hm hm', ?_⟩
-    have : ((m * m' : ℕ) : D.B) * (x * y) = ((m : D.B) * x) * ((m' : D.B) * y) := by
-      rw [Nat.cast_mul, mul_assoc, ← mul_assoc (m' : D.B) x y, (Nat.cast_commute m' x).eq]; noncomm_ring
-    rw [this]; exact D.OB.mul_mem hx hy
-  add_mem' := by
-    rintro x y ⟨m, hm, hx⟩ ⟨m', hm', hy⟩
-    refine ⟨m * m', Nat.Coprime.mul hm hm', ?_⟩
-    have : ((m * m' : ℕ) : D.B) * (x + y) = (m' : D.B) * ((m : D.B) * x) + (m : D.B) * ((m' : D.B) * y) := by
-      rw [mul_add, ← mul_assoc, ← mul_assoc, ← Nat.cast_mul, ← Nat.cast_mul, mul_comm m' m]
-    rw [this]
-    exact D.OB.add_mem (D.OB.mul_mem (D.OB.natCast_mem m') hx) (D.OB.mul_mem (D.OB.natCast_mem m) hy)
-  zero_mem' := ⟨1, Nat.coprime_one_left p, by simp⟩
-  neg_mem' := by
-    rintro x ⟨m, hm, hx⟩
-    exact ⟨m, hm, by simpa using D.OB.neg_mem hx⟩
-
-open Classical in
-
-def sigLie (τ : F →+* ℂ) : ℕ :=
-  if τ ∈ D.Φ then (if τ = D.τ₀ then D.n else 0)
-  else (if (starRingEnd ℂ).comp τ = D.τ₀ then D.n * (D.n - 1) else D.n * D.n)
 
 instance : IsScalarTower ℚ F D.B :=
   IsScalarTower.of_algebraMap_eq' (RingHom.ext_rat _ _)

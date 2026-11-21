@@ -12,9 +12,6 @@ noncomputable def gchPoly (c : ℚ) (k : ℕ) : ℚ[X] :=
 def GchBasics : Prop :=
   (∀ n k : ℕ, gch (n : ℚ) k = (n.choose k : ℚ)) ∧ (∀ (c x : ℚ) (k : ℕ), (gchPoly c k).eval x = gch (x + c) k)
 
-def BinomRatio : Prop :=
-  ∀ (x : ℚ) (l J : ℕ), l ≤ J → gch x J * gch (J : ℚ) l = gch x l * gch (x - l) (J - l)
-
 def DetDegTop : Prop :=
   ∀ (K : Type) [CommRing K] (n : ℕ) (A : Matrix (Fin n) (Fin n) K[X]) (a b : Fin n → ℕ),
     (∀ i j, (A i j).natDegree ≤ a i + b j) →
@@ -41,10 +38,6 @@ def TiePoly : Prop :=
     (∀ i j, ((tiePoly J c B) i j).natDegree ≤ J) ∧
     (∀ i j, ((tiePoly J c B) i j).coeff J = if i = j then ((J.factorial : ℚ))⁻¹ else 0)
 
-def LegendreDigits : Prop :=
-  ∀ (p m : ℕ), p.Prime →
-    (m : ℝ) / ((p : ℝ) - 1) - (padicValNat p m.factorial : ℝ) ≤ (Nat.log p m : ℝ) + 1
-
 noncomputable def vmin (p : ℕ) {K : Type} [NormedField K] (h : ℕ) (x : K) : ℝ :=
   -Real.logb p (max ‖x‖ ((p : ℝ) ^ (-(h : ℤ))))
 
@@ -52,27 +45,6 @@ def WindowCount : Prop :=
   ∀ (p : ℕ) [Fact p.Prime] (K : Type) [NormedField K] [NormedAlgebra ℚ_[p] K] [IsUltrametricDist K]
     (ζ : K) (t₀ : ℤ) (Y₀ h : ℕ),
     ∑ t ∈ Ico t₀ (t₀ + Y₀), vmin p h ((t : K) - ζ) ≤ ∑ i ∈ Icc 1 h, ((Y₀ : ℝ) / (p : ℝ) ^ i + 1)
-
-open Classical in
-
-def DiscsDisjoint : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (K : Type) [NormedField K] [NormedAlgebra ℚ_[p] K] [IsUltrametricDist K]
-    (roots : Multiset K) (t₀ : ℤ) (Y₀ h : ℕ), Y₀ ≤ p ^ h →
-    ∑ t ∈ Ico t₀ (t₀ + Y₀), (roots.filter (fun ζ => ‖(t : K) - ζ‖ ≤ (p : ℝ) ^ (-(h : ℤ)))).card ≤ roots.card
-
-open Classical in
-
-def WindowMean : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (K : Type) [NormedField K] [NormedAlgebra ℚ_[p] K] [IsUltrametricDist K]
-    (roots : Multiset K) (lam La₀ E : ℝ) (n₀ del₀ : ℕ) (t₀ : ℤ) (Y₀ h : ℕ) (β : ℤ → ℕ),
-    0 < Y₀ → Y₀ ≤ p ^ h → 0 < E →
-    roots.card ≤ del₀ * n₀ →
-    lam + (roots.card : ℝ) / ((p : ℝ) - 1) ≤ (n₀ : ℝ) * La₀ →
-    (∀ t ∈ Ico t₀ (t₀ + Y₀),
-      (β t : ℝ) * E ≤ (lam + (roots.map (fun ζ => vmin p h ((t : K) - ζ))).sum) +
-        E * ((roots.filter (fun ζ => ‖(t : K) - ζ‖ ≤ (p : ℝ) ^ (-(h : ℤ)))).card : ℝ)) →
-    (∑ t ∈ Ico t₀ (t₀ + Y₀), (β t : ℝ)) / (Y₀ : ℝ) ≤
-      (n₀ : ℝ) * ((del₀ : ℝ) / Y₀ + (La₀ + (del₀ : ℝ) * h / Y₀) / E)
 
 def CycleProd : Prop :=
   ∀ (J : ℕ) [NeZero J] (p : ℝ) (Q : Fin J → ℝ) (R : Fin J → ℤ), p ≠ 0 →
@@ -86,20 +58,6 @@ def CoarseSlack : Prop :=
     64 * p * k ^ 2 * Ns * Y ^ 2 ≤ p ^ L₁ →
     be / (Qn * p ^ (Rn - Rj)) ≤ 16 * p * Y * k ^ 2 * Ns * p ^ (-L₁) ∧
       16 * p * Y * k ^ 2 * Ns * p ^ (-L₁) ≤ 1 / (4 * Y)
-
-open Classical in
-
-def FrameCount : Prop :=
-  ∀ (r Q b : ℕ) (c : ℤ), 2 ≤ r → 0 < Q →
-    (Q : ℝ) ^ (r - 1) * (1 - 8 * r * b / Q) ≤
-      ((univ.filter (fun e : Fin r → Fin Q =>
-        (∀ i, (e i : ℕ) + 4 * b < Q) ∧ (∑ i, ((e i : ℕ) : ℤ)) ≡ c [ZMOD Q])).card : ℝ)
-
-def TrueRing : Prop :=
-  ∀ (R : Type) [CommRing R] (r Q : ℕ), 0 < Q →
-    Function.Bijective (fun f : (Fin r → Fin Q) → MvPolynomial (Fin r) R =>
-      ∑ e, MvPolynomial.monomial (Finsupp.equivFunOnFinite.symm (fun i => ((e i : ℕ)))) (1 : R) *
-        MvPolynomial.expand Q (f e))
 
 def SatSub : Prop :=
   ∀ (R : Type) [CommRing R] [IsDomain R] [IsPrincipalIdealRing R] [IsLocalRing R] (n : ℕ)

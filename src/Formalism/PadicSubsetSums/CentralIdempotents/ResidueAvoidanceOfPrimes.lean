@@ -115,16 +115,6 @@ def GenKerGr : Prop :=
       ∑ i ∈ Finset.range m,
         (Module.finrank k ↥(F (i + 1) ⊓ ⨆ n : ℕ, (F i).comap (f ^ n)) - Module.finrank k ↥(F i))
 
-def Close : Prop :=
-  (∀ (k V : Type) [Field k] [AddCommGroup V] [Module k V] [FiniteDimensional k V]
-      (KK L N : Submodule k V) (r d : ℕ),
-      L ≤ KK ⊓ N → Module.finrank k KK - Module.finrank k L ≤ r →
-      Module.finrank k ↥(KK ⊓ N) - Module.finrank k L = r - d → d ≤ r →
-      Module.finrank k KK - Module.finrank k ↥(KK ⊓ N) ≤ d) ∧
-  (∀ (k V : Type) [Field k] [AddCommGroup V] [Module k V] [FiniteDimensional k V]
-      (Hf adm : Submodule k V), Hf ≤ adm → Module.finrank k adm ≤ Module.finrank k Hf →
-      adm = Hf)
-
 def DepthSteps : Prop :=
   ∀ (f : ℕ) [NeZero f] (ℓ : ℕ) (h w : ZMod f → ℕ), 2 ≤ ℓ → ∀ i : ZMod f,
     sg f ℓ h i + 2 * ℓ < (ℓ : ℤ) * (sg f ℓ h (i - 1) + 3) - h i ∧
@@ -327,15 +317,6 @@ def ResidueAvoidanceOfSmall : Prop :=
 def AvoidanceSizeBound : Prop :=
   ∀ (ηi η t : ℕ) (σ size : ℤ) (B w₂ : ℝ), ηi ≤ 2 * η + t + 1 → (σ : ℝ) ≤ 2 * B →
     2 * (η : ℝ) + t + 4 * B + 4 < w₂ → w₂ ≤ size → (ηi : ℤ) + 2 * σ + 3 < size
-
-def ResidueAvoidanceOfPrimes : Prop :=
-  ∀ (ℓ : ℕ) (G : Bool) (h η : ℕ) (σ sp : ℤ) (U : Multiset ℤ) (Sz : Finset ℤ),
-    (∀ x ∈ ClN G h η U, ∃ W ∈ Sz, 0 ≤ (if G then x else (h : ℤ) - x) - W ∧
-      (if G then x else (h : ℤ) - x) - W ≤ sp) →
-    (∀ W ∈ Sz, ∀ j ∈ Finset.Icc (-2 * σ - 2 - sp) ((η : ℤ) + 2 * σ + 3), W - j ≠ 0) →
-    (¬ ∃ W ∈ Sz, ∃ j ∈ Finset.Icc (-2 * σ - 2 - sp) ((η : ℤ) + 2 * σ + 3),
-      W - j ≠ 0 ∧ (ℓ : ℤ) ∣ W - j) →
-    ResidueAvoidance ℓ G h η σ U
 
 def LamCount : Prop :=
   ∀ (ηi η t S : ℕ) (σ : ℤ) (B : ℝ), 0 ≤ σ → ηi ≤ 2 * η + t + 1 → (σ : ℝ) ≤ 2 * B →

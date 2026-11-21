@@ -106,11 +106,6 @@ def Polar : Prop :=
       ContinuousOn L {g | inUJ ε g} ∧
       ∀ g, inUJ ε g → inP ε (L g) ∧ g * NormedSpace.exp (-L g) ∈ Kset ε)
 
-def Complexify : Prop :=
-  ∀ (n : ℕ) (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ),
-    ∃! p : Matrix (Fin n) (Fin n) ℂ × Matrix (Fin n) (Fin n) ℂ,
-      inG ε p.1 ∧ inG ε p.2 ∧ Z = p.1 + Complex.I • p.2
-
 def HSBall : Prop :=
   ∀ (n : ℕ) (ε : Fin n → Bool),
     (∀ R : ℝ, IsCompact {g : Matrix (Fin n) (Fin n) ℂ | inUJ ε g ∧ hs g ≤ R}) ∧

@@ -8,11 +8,6 @@ open Finset MvPolynomial
 
 namespace Formalism.InvariantFactorPaths.GelfandTsetlinBases
 
-def ValTop : Prop :=
-  ∀ (k : Type) [Field k] (ι ζ : Type) (n : ℕ) (isVec : ι → Bool) (S : Set ι) [DecidablePred (· ∈ S)]
-    (G : MvPolynomial (LVar ι ζ n) k),
-    (valS isVec S G = ⊤ ↔ G = 0) ∧ (lam1S isVec S G = ⊥ ↔ G = 0)
-
 def PropVa : Prop :=
   ∀ (k : Type) [Field k] (ι ζ : Type) (n : ℕ) (isVec : ι → Bool) (S : Set ι) [DecidablePred (· ∈ S)]
     (G H : MvPolynomial (LVar ι ζ n) k),

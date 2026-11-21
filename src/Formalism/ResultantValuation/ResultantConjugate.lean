@@ -10,14 +10,6 @@ def PermDetOnePlus : Prop :=
   ∀ (m : ℕ) (σ : Equiv.Perm (Fin m)),
     ((1 : Matrix (Fin m) (Fin m) ℚ) + σ.permMatrix ℚ).det ≠ 0 ↔ ∀ k ∈ σ.cycleType, Odd k
 
-def ResultantConjugate : Prop :=
-  ∀ (K : Type) [Field K] (c : K →+* K) (a b : ℕ) (α : Fin a → K) (β : Fin b → K)
-    (σ : Equiv.Perm (Fin a)) (τ : Equiv.Perm (Fin b)),
-    (∀ i, α i ≠ 0) → (∀ j, β j ≠ 0) →
-    (∀ i, c (α i) = (α (σ i))⁻¹) → (∀ j, c (β j) = (β (τ j))⁻¹) →
-    (∏ i, ∏ j, (α i - β j)) =
-      (-1) ^ (a * b) * (∏ i, α i) ^ b * (∏ j, β j) ^ a * c (∏ i, ∏ j, (α i - β j))
-
 def CayleyDifference : Prop :=
   ∀ (K : Type) [Field K] (ε g₁ g₂ : K), (2 : K) ≠ 0 → ε ≠ 0 → g₁ + 1 ≠ 0 → g₂ + 1 ≠ 0 →
     g₁ = (ε + ε * (g₁ - 1) * (g₁ + 1)⁻¹) * (ε - ε * (g₁ - 1) * (g₁ + 1)⁻¹)⁻¹ ∧

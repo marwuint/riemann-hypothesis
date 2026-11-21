@@ -495,10 +495,6 @@ theorem colAct_mem_orbitSpan (g : T → GL (Fin n) R) {P : Poly R T p q (Fin n)}
 
 variable (R) in
 
-noncomputable def orbitSubrep : Subrepresentation (colRep R T p q (Fin n)) where
-  toSubmodule := orbitSpan R h c c'
-  apply_mem_toSubmodule g _ hP := colAct_mem_orbitSpan h c c' g hP
-
 theorem map_basePoly (f : R →+* S) : MvPolynomial.map f (basePoly R h c c') = basePoly S h c c' := by
   rw [basePoly, map_minorProd, basePoly]
   congr 1

@@ -44,8 +44,6 @@ variable {n : ℕ} {A E B : Type*} [CommRing A] [Ring E] [Algebra A E] [CommRing
 
 def val (x : E) : B := eval (fun _ => 1) (D.D 1 fun _ => x)
 
-def chi (x : E) : Polynomial B := aeval ![Polynomial.X, -1] (D.D 2 ![1, x])
-
 def lam (i : ℕ) (x : E) : B := (aeval ![1, Polynomial.X] (D.D 2 ![1, x]) : Polynomial B).coeff i
 
 def tr (x : E) : B := D.lam 1 x
@@ -72,7 +70,6 @@ end sch
 section sqz
 variable {A N : Type*} [CommRing A] [AddCommGroup N] [Module A N] [Module Aᵐᵒᵖ N] [IsCentralScalar A N]
 
-def scaleEps (c : A) : TrivSqZeroExt A N →ₐ[A] TrivSqZeroExt A N := TrivSqZeroExt.map (c • LinearMap.id)
 end sqz
 
 def Det.IsMap {n : ℕ} {G B A : Type} [Group G] [CommRing B] [CommRing A]

@@ -37,16 +37,6 @@ def dsigW (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) : List (Matrix (
   | [], v => v
   | X :: w, v => dsig σ X (dsigW σ w v)
 
-def SmComplete : Prop :=
-  ∀ (n : ℕ) (G : Set (Matrix (Fin n) (Fin n) ℂ)) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-    [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)),
-    IsClosedMatrixGroup G → IsIsomRep G σ →
-    ∀ v : ℕ → H, (∀ m, v m ∈ smoothVecs G σ) →
-      (∀ w : List (Matrix (Fin n) (Fin n) ℂ), (∀ X ∈ w, X ∈ lieAlg G) →
-        CauchySeq fun m => dsigW σ w (v m)) →
-      ∃ v₀ ∈ smoothVecs G σ, ∀ w : List (Matrix (Fin n) (Fin n) ℂ), (∀ X ∈ w, X ∈ lieAlg G) →
-        Tendsto (fun m => dsigW σ w (v m)) atTop (𝓝 (dsigW σ w v₀))
-
 end SmoothVectors
 
 end

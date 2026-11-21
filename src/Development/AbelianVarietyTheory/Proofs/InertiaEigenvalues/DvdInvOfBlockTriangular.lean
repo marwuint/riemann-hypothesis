@@ -66,12 +66,6 @@ theorem Shape.inv {α β : O} {g : GL (Fin n) O} (hg : Shape α β (g : Matrix (
       (fun i j h => (hg i j).1 h) i j h
   · exact dvd_inv_of_blockTriangular id β g (fun i j h => (hg i j).2 h) i j h
 
-def shapeGroup (n : ℕ) (α β : O) : Subgroup (GL (Fin n) O) where
-  carrier := {g | Shape α β (g : Matrix (Fin n) (Fin n) O)}
-  one_mem' := Shape.one α β
-  mul_mem' hx hy := Shape.mul hx hy
-  inv_mem' hx := Shape.inv hx
-
 theorem UpperUnip.shape {α : O} (β : O) {u : Matrix (Fin n) (Fin n) O} (hu : UpperUnip α u) :
     Shape α β u := fun i j =>
   ⟨(hu i j).2.2, fun h => by rw [(hu i j).1 h]; exact dvd_zero _⟩

@@ -39,12 +39,6 @@ def ClaimSg (W : Finset ι) (J : Finset κ) (l : ι → ℝ) (gain F E : κ → 
     (tau : ι → ℝ) : Prop :=
   Sg W l (sgw J gain F E) tau = Ga W J l gain tau + Fo W J l F - Ee W J l E
 
-def ClaimGaFree (W Z : Finset ι) (J : Finset κ) (l : ι → ℝ) (gain1 gain2 : κ → ι → ℝ)
-    (tau1 tau2 : ι → ℝ) : Prop :=
-  (∀ w ∈ W, w ∉ Z → (∀ j ∈ J, gain1 j w = gain2 j w) ∧ tau1 w = tau2 w) →
-  (∀ w ∈ W, w ∈ Z → (∀ j ∈ J, gain1 j w = 0 ∧ gain2 j w = 0) ∧ tau1 w = 0 ∧ tau2 w = 0) →
-  Ga W J l gain1 tau1 = Ga W J l gain2 tau2
-
 def ClaimUnit (W : Finset ι) (P : Finset ℕ) (pr : ι → ℕ) (l io : ι → ℝ) (iop : ℕ → ℝ) :
     Prop :=
   (∀ w ∈ W, pr w ∈ P) →

@@ -17,11 +17,6 @@ def wdeg (a : ℕ → K) (r : ℝ) : ℕ := sSup {k : ℕ | ‖a k‖ * r ^ k = 
 
 def evalS (a : ℕ → K) (x : K) : K := ∑' k : ℕ, a k * x ^ k
 
-def NewtonSlope : Prop :=
-  ∀ {K : Type} [NontriviallyNormedField K] [IsUltrametricDist K] (a : ℕ → K) (r₁ r₂ : ℝ),
-    0 < r₁ → r₁ < r₂ → ConvOn a r₂ → a ≠ 0 →
-      gNorm a r₁ * (r₂ / r₁) ^ wdeg a r₁ ≤ gNorm a r₂
-
 def Strassmann : Prop :=
   ∀ {K : Type} [NontriviallyNormedField K] [CompleteSpace K] [IsUltrametricDist K]
     (a : ℕ → K) (r : ℝ), 0 < r → ConvOn a r → a ≠ 0 →

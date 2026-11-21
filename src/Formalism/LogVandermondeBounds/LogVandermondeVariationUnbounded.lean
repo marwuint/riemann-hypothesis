@@ -61,9 +61,6 @@ def LogVandermondeVariationOfLogLe : Prop :=
   ∀ (n : ℕ) (Δ : ℝ) (u u' : Fin (n + 2) → ℝ), WordPair n Δ u u' → Real.log (1 + Δ) ≤ n + 2 →
     |vandLog u - vandLog u'| ≤ 8 * (n + 2) * (1 + Real.log (n + 2))
 
-def LogVandermondeVariationUnbounded : Prop :=
-  ∀ M : ℝ, ∃ (Δ : ℝ) (u u' : Fin 4 → ℝ), 1 ≤ Δ ∧ WordPair 2 Δ u u' ∧ M ≤ |vandLog u - vandLog u'|
-
 def CardBilinearLevel : Prop :=
   ∀ (F : Type) [Field F] [Fintype F] [DecidableEq F] (M : ℕ) (β : F), 1 ≤ M → β ≠ 0 →
     Fintype.card {p : (Fin M → F) × (Fin M → F) // ∑ i, p.1 i * p.2 i = β} =

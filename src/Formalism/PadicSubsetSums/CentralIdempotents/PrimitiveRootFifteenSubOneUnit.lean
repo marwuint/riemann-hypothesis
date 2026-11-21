@@ -6,12 +6,6 @@ open Polynomial
 
 namespace Formalism.IrreducibleCountingLemmas.Z
 
-def UnitRatio : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] (c : E →+* E),
-    (∀ (φ : E →+* ℂ) (x : E), φ (c x) = (starRingEnd ℂ) (φ x)) →
-    (∀ ζ : E, (∃ m : ℕ, 0 < m ∧ ζ ^ m = 1) → ζ = 1 ∨ ζ = -1) →
-    ∀ x : E, x ≠ 0 → IsIntegral ℤ (x / c x) → c x = x ∨ c x = -x
-
 def MinusPart : Prop :=
   ∀ (E : Type) [Field E] (c : E →+* E) (s x : E), s ≠ 0 → c s = -s → c x = -x → c (x / s) = x / s
 

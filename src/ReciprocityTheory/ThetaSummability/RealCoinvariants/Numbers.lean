@@ -34,7 +34,7 @@ def P : ℕ := D.a - D.p
 def Q : ℕ := D.p
 def P' : ℕ := D.q
 def Q' : ℕ := D.a' - D.q
-def e : ℝ := ((D.a : ℝ) - D.a') / 2
+
 def c₁ : ℝ := ((D.R : ℝ) - D.S) / 2
 def c₂ : ℝ := ((D.P : ℝ) - D.Q) / 2
 def c₂' : ℝ := ((D.P' : ℝ) - D.Q') / 2

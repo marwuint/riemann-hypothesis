@@ -36,12 +36,6 @@ def LinearMonomialBasisStatement : Prop :=
       (Matrix.of fun x y : Fin h → ZMod p =>
         ∏ j, (∑ i, A j i * ZMod.castHom (dvd_refl p) k (x i)) ^ ((e.symm y j : Fin p) : ℕ)).det ≠ 0
 
-def NearIdentityColengthStatement : Prop :=
-  ∀ (K : Type) [Field K] (v : Valuation K NNReal) (ι : Type) [Fintype ι] [DecidableEq ι]
-    (U : Matrix ι ι K) (s : ι → K),
-    (∀ i j, v (U i j) ≤ 1) → (∀ i j, v (U i j - (1 : Matrix ι ι K) i j) < 1) →
-    v (U * Matrix.diagonal s).det = ∏ i, v (s i)
-
 def ColengthZeroStatement : Prop :=
   ∀ (K : Type) [Field K] (v : Valuation K NNReal) (ι : Type) [Fintype ι] [DecidableEq ι]
     (T : Matrix ι ι K),

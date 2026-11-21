@@ -27,33 +27,9 @@ def SUnitIsUnit : Prop :=
     (∃ n : ℕ, IsIntegral R (algebraMap R L s ^ n * z⁻¹)) →
     ∀ w : HeightOneSpectrum R, s ∉ w.asIdeal → w.valuation L z = 1
 
-def LatticeLocalGlobalOfGlobal : Prop :=
-  ∀ (R L EE : Type) [CommRing R] [IsDedekindDomain R] [Field L] [Algebra R L]
-    [IsFractionRing R L] [AddCommGroup EE] [Module L EE] [Module R EE] [IsScalarTower R L EE]
-    (Λ₀ : Submodule R EE) (Λ' : HeightOneSpectrum R → Submodule R EE)
-    (S : Finset (HeightOneSpectrum R)),
-    Λ₀.FG → Submodule.span L (Λ₀ : Set EE) = ⊤ →
-    (∀ w, (Λ' w).FG) → (∀ w, Submodule.span L (Λ' w : Set EE) = ⊤) →
-    (∀ w, w ∉ S → Λ' w = Λ₀) →
-    ∃ RR : Submodule R EE, (RR : Set EE) = {x : EE | ∀ w, x ∈ locAt w (Λ' w)} ∧ RR.FG ∧
-      Submodule.span L (RR : Set EE) = ⊤ ∧ ∀ w, locAt w RR = locAt w (Λ' w)
-
 def gramσ {K M n : Type} [CommRing K] [AddCommGroup M] [Module K M] (σ : K →+* K)
     (B : M →ₛₗ[σ] M →ₗ[K] K) (v : n → M) : Matrix n n K :=
   Matrix.of fun i j => B (v i) (v j)
-
-def GramChangeσ : Prop :=
-  ∀ (K M n : Type) [CommRing K] [AddCommGroup M] [Module K M] [Fintype n] [DecidableEq n]
-    (σ : K →+* K) (B : M →ₛₗ[σ] M →ₗ[K] K) (v : n → M) (g : Matrix n n K),
-    gramσ σ B (fun j => ∑ i, g i j • v i) = (g.map σ).transpose * gramσ σ B v * g ∧
-    (gramσ σ B (fun j => ∑ i, g i j • v i)).det = σ g.det * g.det * (gramσ σ B v).det
-
-def DualGramσ : Prop :=
-  ∀ (K M n : Type) [Field K] [AddCommGroup M] [Module K M] [Fintype n] [DecidableEq n]
-    (σ : K →+* K) (B : M →ₛₗ[σ] M →ₗ[K] K), (∀ x y, σ (B x y) = B y x) →
-    ∀ (v : Module.Basis n K M) (w : n → M),
-      (∀ i j, B (w i) (v j) = if i = j then 1 else 0) →
-      gramσ σ B w = (gramσ σ B v)⁻¹ ∧ (gramσ σ B w).det * (gramσ σ B v).det = 1
 
 def FormIsForm : Prop :=
   ∀ (k K E ι : Type) [Field k] [Field K] [Algebra k K] [AddCommGroup E] [Module K E]

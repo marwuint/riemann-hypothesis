@@ -26,16 +26,6 @@ def GramDetIndex : Prop :=
       (Matrix.of fun i j => ⟪b i, b j⟫_ℝ).det *
         ((Ld.toAddSubgroup.relIndex L.toAddSubgroup : ℕ) : ℝ) = 1
 
-def GramDet : Prop :=
-  ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (d : ℕ) (e F : Fin d → V),
-    Pairwise (fun σ τ => ⟪e σ, e τ⟫_ℂ = 0) → (∀ σ, e σ ≠ 0) →
-    let Z : Submodule ℂ V := Submodule.span ℂ (Set.range e)
-    letI : FiniteDimensional ℂ Z := FiniteDimensional.span_of_finite ℂ (Set.finite_range e)
-    let pr : V → V := fun v => Z.starProjection v
-    let G : Matrix (Fin d) (Fin d) ℂ := Matrix.of fun a b => ⟪pr (F a), pr (F b)⟫_ℂ
-    let C : Matrix (Fin d) (Fin d) ℂ := Matrix.of fun σ a => ⟪e σ, F a⟫_ℂ
-    G.det = ((‖C.det‖ ^ 2 / ∏ σ, ‖e σ‖ ^ 2 : ℝ) : ℂ)
-
 def MasterIdentity : Prop :=
   ∀ (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (d : ℕ) (e F : Fin d → V),
     Pairwise (fun σ τ => ⟪e σ, e τ⟫_ℂ = 0) → (∀ σ, e σ ≠ 0) →

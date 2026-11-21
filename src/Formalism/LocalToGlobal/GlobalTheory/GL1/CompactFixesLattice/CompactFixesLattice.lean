@@ -64,16 +64,6 @@ def latS (R : Type) [CommRing R] [Algebra F R] (S : Subring (E ⊗[F] R)) {O : T
 
 end Points
 
-def CompactFixesLattice : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (k : ℕ),
-  letI := tensTop (F := F) (E := E) (FiniteAdeleRing (𝓞 F) F)
-  ∀ U : Subgroup (GL (Fin k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)),
-    IsCompact (U : Set (GL (Fin k) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))) →
-    ∃ Λ : Submodule (𝓞 E) (Fin k → E), Module.Finite (𝓞 E) Λ ∧
-      Submodule.span E (Λ : Set (Fin k → E)) = ⊤ ∧
-      U ≤ stabGL (latS (F := F) (FiniteAdeleRing (𝓞 F) F)
-        (tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)) Λ)
-
 abbrev AF (F : Type) [Field F] [NumberField F] : Type := FiniteAdeleRing (𝓞 F) F
 
 abbrev AE (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] : Type :=

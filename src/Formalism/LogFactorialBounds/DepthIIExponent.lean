@@ -49,23 +49,6 @@ def AbsorbExact : Prop :=
   ∀ (T D c h : ℝ), 0 ≤ D → 0 ≤ c → -c ≤ h →
     (T - 3 * D - 3) * (h + c) - (T + 3 * D + 3) * c ≤ T * h - 3 * (D + 1) * |h|
 
-def DepthRadii : Prop :=
-  ∀ (p : ℝ) (n : ℕ), 2 ≤ p → 1 ≤ n →
-    2 / (p - 1) ≤ p ^ n * (2 / (p * (p - 1))) - ((n : ℝ) - 1) ∧
-    2 / (p - 1) ≤ p ^ n * (2 / (p - 1)) - n
-
-def DepthIIExponent : Prop :=
-  ∀ p r : ℕ, 2 ≤ p →
-    (p ^ 2 - 1) ∣ (p ^ (2 * r) - 1) ∧
-    (p : ℝ) ^ (2 * r + 1) / ((p : ℝ) ^ 2 - 1)
-        - p * (((p ^ (2 * r) - 1) / (p ^ 2 - 1) : ℕ) : ℝ) = p / ((p : ℝ) ^ 2 - 1)
-
-def LegendreBounds : Prop :=
-  ∀ (p : ℕ) [Fact p.Prime] (k c : ℕ) (α : Fin k → ℕ), (∀ j, α j ≤ c) →
-    ((p : ℝ) - 1) * (∑ j, (padicValNat p (α j).factorial : ℝ)) ≤ ∑ j, (α j : ℝ) ∧
-    (∑ j, (α j : ℝ)) / ((p : ℝ) - 1) - k * ((Nat.log p c : ℝ) + 1)
-      ≤ ∑ j, (padicValNat p (α j).factorial : ℝ)
-
 def TTDiffUnit : Prop :=
   ∀ (A : Type) [CommRing A] [IsDomain A] (ζ : A) (ℓ : ℕ), ℓ.Prime → IsPrimitiveRoot ζ ℓ →
     ∀ i j : ℕ, i < j → j < ℓ →

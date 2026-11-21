@@ -555,9 +555,6 @@ def placeOf (s : G.MuIdx) : Fin G.m := (G.emb_all _ s.2).choose
 
 def mu0 : ℤ := 1
 
-def mu (s : G.MuIdx) : Fin G.n → ℤ :=
-  if sigPosH (G.gram_herm (InfinitePlace.mk (G.iotaC.comp s.1))) = 1 then Pi.single ⟨0, G.n_pos⟩ 1 else 0
-
 structure Level (G : HTGroup p) where
 
   K : OpenSubgroup G.GAf

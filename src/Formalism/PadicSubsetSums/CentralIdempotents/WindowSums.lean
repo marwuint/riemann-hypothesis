@@ -117,12 +117,6 @@ def SigBound : Prop :=
     4 * h ≤ s * M ∧ (M : ℝ) ≤ 6 * ((e * h : ℕ) : ℝ) / l + 1 ∧
       (σ : ℝ) ≤ 9 * ((e * h : ℕ) : ℝ) / l + 3
 
-def ContractBij : Prop :=
-  ∀ (R P : Type) [CommRing R] [AddCommGroup P] [Module R P] (I : Ideal R) [IsAdicComplete I P]
-    (f : P →+ P),
-    (∀ k : ℕ, ∀ x ∈ (I ^ k • ⊤ : Submodule R P), f x ∈ (I ^ (k + 1) • ⊤ : Submodule R P)) →
-    Function.Bijective (fun x => f x - x)
-
 def KappaBound : Prop :=
   ∀ (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ u : ℤ_[l]ˣ, ((u : ℤ_[l]) - 1).valuation = 1 →
     ∀ (e S h : ℕ) (b : Fin e → ℕ) (up : Fin e → Bool), (∀ τ, 1 ≤ b τ ∧ b τ ≤ h) →

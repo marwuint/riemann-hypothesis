@@ -59,13 +59,6 @@ def GAdjugateOrth : Prop :=
       (∀ v w, v ∈ S → w ∈ S → h v w ∈ O) →
       (∀ a, e a ∈ S) → (∀ a, e' a ∈ S) → (∀ a, g a ∈ S) → ∀ b, GAdjVec h e e' g b ∈ S)
 
-def GAdjugateNormBound : Prop :=
-  ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℂ V] (N : ℕ)
-    (h : V →ₗ[ℂ] V → ℂ) (e e' g : Fin N → V) (ρ' : ℝ),
-    (∀ x y, ‖h x y‖ ≤ ‖x‖ * ‖y‖) →
-    (∀ a, ‖e a‖ ≤ ρ') → (∀ a, ‖e' a‖ ≤ ρ') → (∀ a, ‖g a‖ ≤ ρ') →
-    ∀ b, ‖GAdjVec h e e' g b‖ ≤ (N + 1).factorial * ρ' ^ (2 * N + 1)
-
 def GIsotropicNorm : Prop :=
   ∀ (K : Type) [Field K] [NumberField K] (a : NumberField.RingOfIntegers K)
     (H : (K →+* ℂ) → ℝ),
@@ -95,11 +88,6 @@ def GTorsionFree : Prop :=
 def GEigenValuation : Prop :=
   ∀ (r g e : ℕ) (k : ℤ), 1 ≤ r → r + 1 < g → 1 ≤ e → e ≤ r → 0 < k →
     (1 : ℝ) / ((g : ℝ) - 1) < (k : ℝ) / e
-
-def GFiniteOrderUnipotent : Prop :=
-  ∀ (K : Type) [Field K] [CharZero K] (n : Type) [Fintype n] [DecidableEq n]
-    (A : Matrix n n K) (k : ℕ), 0 < k → A ^ k = 1 →
-    A.charpoly = (X - 1) ^ Fintype.card n → A = 1
 
 def GMonomialDet : Prop :=
   ∀ (H : Type) [Group H] [Fintype H] [DecidableEq H] (Y : Type) [MulAction H Y]

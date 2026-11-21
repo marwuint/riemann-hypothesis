@@ -77,17 +77,6 @@ def linSubst {N n : ℕ} (U : Matrix (Fin n) (Fin n) ℂ) (F : MvPolynomial (Fin
     MvPolynomial (Fin N × Fin n) ℂ :=
   aeval (fun p : Fin N × Fin n => ∑ l : Fin n, C (U p.2 l) * X (p.1, l)) F
 
-def NormUnitary : Prop :=
-  ∀ (N n : ℕ) (ν : Fin N → ℕ) (F : MvPolynomial (Fin N × Fin n) ℂ),
-    F ∈ weightedHomogeneousSubmodule ℂ (blockWt N n) ν →
-    ∀ U ∈ Matrix.unitaryGroup (Fin n) ℂ, bnorm (linSubst U F) = bnorm F
-
-def NormMul : Prop :=
-  ∀ (N n : ℕ) (ν μ : Fin N → ℕ) (F G : MvPolynomial (Fin N × Fin n) ℂ),
-    F ∈ weightedHomogeneousSubmodule ℂ (blockWt N n) ν →
-    G ∈ weightedHomogeneousSubmodule ℂ (blockWt N n) μ →
-    bnorm (F * G) ≤ bnorm F * bnorm G
-
 def NormEval : Prop :=
   ∀ (N n : ℕ) (ν : Fin N → ℕ) (F : MvPolynomial (Fin N × Fin n) ℂ),
     F ∈ weightedHomogeneousSubmodule ℂ (blockWt N n) ν →

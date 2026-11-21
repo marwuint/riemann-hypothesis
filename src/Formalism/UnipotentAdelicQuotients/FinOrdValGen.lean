@@ -28,14 +28,4 @@ def localIdele (v : HeightOneSpectrum (𝓞 L)) : (v.adicCompletion L)ˣ →* Id
       map_one' := Prod.ext rfl (map_one (finiteSingle L v))
       map_mul' := fun x y => Prod.ext (mul_one 1).symm (map_mul (finiteSingle L v) x y) }
 
-def FinOrdValGen : Prop :=
-  ∀ χ : Ideles L →* ℂˣ, Continuous χ → (∀ k : Lˣ, χ (diagUnits L k) = 1) → (∃ n : ℕ, 0 < n ∧ χ ^ n = 1) →
-    ∀ ϖ : (v : HeightOneSpectrum (𝓞 L)) → (v.adicCompletion L)ˣ,
-      (∀ v, Valued.v ((ϖ v : (v.adicCompletion L)ˣ) : v.adicCompletion L) = WithZero.exp (-1 : ℤ)) →
-    ∀ S : Set (HeightOneSpectrum (𝓞 L)), S.Finite →
-    ∀ (P : HeightOneSpectrum (𝓞 L)) (x : (P.adicCompletion L)ˣ),
-      χ (localIdele L P x) ∈ Subgroup.closure {z : ℂˣ | ∃ v, v ∉ S ∧
-        (∀ y : (v.adicCompletion L)ˣ, Valued.v (y : v.adicCompletion L) = 1 → χ (localIdele L v y) = 1) ∧
-        z = χ (localIdele L v (ϖ v))}
-
 end HeckeValGen

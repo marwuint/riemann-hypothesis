@@ -66,17 +66,6 @@ def UnitaryApproxDefs.intOE (E : Type) [Field E] [NumberField E] : Subring E := 
 
 end Points
 
-def UnitaryApprox : Prop :=
-  ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
-    (n : Type) [Fintype n] [DecidableEq n] (σ : E →ₐ[F] E) (J : Matrix n n E),
-    (∀ e, σ (σ e) = e) → (∃ θ, σ θ ≠ θ) → UnitaryApproxDefs.IsHerm (σ : E →+* E) J → IsUnit J.det →
-    ∀ (v : HeightOneSpectrum (𝓞 F)), ∀ g ∈ UnitaryApproxDefs.UPts σ J (v.adicCompletion F), ∀ D : 𝓞 F, D ≠ 0 →
-    ∃ γ ∈ UnitaryApproxDefs.UJ (σ : E →+* E) J, ∀ i j,
-      ∃ s ∈ UnitaryApproxDefs.tensInt (F := F) (v.adicCompletion F) (UnitaryApproxDefs.intOE E) (v.adicCompletionIntegers F).toSubring,
-        (g : Matrix n n (E ⊗[F] v.adicCompletion F)) i j -
-            UnitaryApproxDefs.inclE (F := F) (v.adicCompletion F) ((γ : Matrix n n E) i j) =
-          UnitaryApproxDefs.inclE (F := F) (v.adicCompletion F) (algebraMap F E (D : F)) * s
-
 end PI
 
 end

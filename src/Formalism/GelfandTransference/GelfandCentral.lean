@@ -16,10 +16,6 @@ def epow {A : Type} [Ring A] {n : ℕ} (E : Fin n → Fin n → A) : ℕ → Fin
 
 def etr {A : Type} [Ring A] {n : ℕ} (E : Fin n → Fin n → A) (k : ℕ) : A := ∑ a, epow E k a a
 
-def GelfandCentral : Prop :=
-  ∀ (A : Type) [Ring A] (n : ℕ) (E : Fin n → Fin n → A), GlRel E →
-    ∀ (k : ℕ) (c d : Fin n), etr E k * E c d = E c d * etr E k
-
 def HighestDiag : Prop :=
   ∀ (A M : Type) [Ring A] [AddCommGroup M] [Module A M] (n : ℕ) (E : Fin n → Fin n → A),
     GlRel E → ∀ (ν : Fin n → ℤ) (v : M),

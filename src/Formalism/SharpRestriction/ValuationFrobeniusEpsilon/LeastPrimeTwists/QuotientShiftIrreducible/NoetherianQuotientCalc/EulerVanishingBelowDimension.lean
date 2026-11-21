@@ -166,10 +166,6 @@ def RuleDev : Prop :=
       ∀ i < t, (𝔮 i).IsPrime ∧ (𝔮 i).IsHomogeneous X.𝒜 ∧ F.Ann ≤ 𝔮 i ∧
         Nonempty (SES (F.sub (N i)) (F.sub (N (i + 1))) (((GMod.self X.𝒜).quo (𝔮 i)).shift (d i)))
 
-def EulerVanishingBelowDimension : Prop :=
-  ∀ (k : ℕ) (X : HidaSetting k) (ts : List (Deg k × X.R)) (F : X.Mod), Valid X.𝒜 ts → F.IsGr X.𝒜 →
-    admitted X.𝒜 ts F.Ann → DimLT X.𝒜 ts.length F.Ann → ∀ᶠ m in atTop, chi ts F m = 0
-
 def EulerPositivityInDimension : Prop :=
   ∀ (k : ℕ) (X : HidaSetting k) (ts : List (Deg k × X.R)) (F : X.Mod), Valid X.𝒜 ts → F.IsGr X.𝒜 →
     admitted X.𝒜 ts F.Ann → DimLT X.𝒜 (ts.length + 1) F.Ann → ∀ᶠ m in atTop, 0 ≤ chi ts F m
@@ -178,12 +174,6 @@ def RuleTw : Prop :=
   ∀ (k : ℕ) (X : HidaSetting k) (ts : List (Deg k × X.R)) (F : X.Mod) (d : Deg k), Valid X.𝒜 ts →
     F.IsGr X.𝒜 → admitted X.𝒜 ts F.Ann → DimLT X.𝒜 (ts.length + 1) F.Ann →
     ∀ᶠ m in atTop, chi ts (F.shift d) m = chi ts F m
-
-def EulerAdditivityInSection : Prop :=
-  ∀ (k : ℕ) (X : HidaSetting k) (ts : List (Deg k × X.R)) (F : X.Mod) (d d' : Deg k) (s s' : X.R),
-    Valid X.𝒜 ((d, s) :: (d', s') :: ts) → F.IsGr X.𝒜 →
-    admitted X.𝒜 ((d + d', s * s') :: ts) F.Ann → DimLT X.𝒜 (ts.length + 2) F.Ann →
-    ∀ᶠ m in atTop, chi ((d + d', s * s') :: ts) F m = chi ((d, s) :: ts) F m + chi ((d', s') :: ts) F m
 
 def RuleNzd : Prop :=
   ∀ (k : ℕ) (X : HidaSetting k) (ts : List (Deg k × X.R)) (F : X.Mod) (d : Deg k) (s : X.R),

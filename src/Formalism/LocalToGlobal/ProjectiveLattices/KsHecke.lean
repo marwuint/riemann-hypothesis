@@ -72,8 +72,6 @@ section Str
 
 variable {L : Type*} [Field L] {XS : Type*} [AddCommGroup XS] [Module L XS]
 
-def HeckeIdentityAtZero (tV : ℕ → XS →ₗ[L] XS) : Prop := tV 0 = LinearMap.id
-
 def cStr (B q : L) (r t : ℕ) : L[X] :=
   ∏ j ∈ Finset.range t, (1 - C (B * q ^ ((r - 1) / 2 + j)) * X)
 

@@ -18,21 +18,6 @@ def GoodImpliesH : Prop :=
     (∀ a : ℕ, 1 ≤ a → 2 * a ≤ r → ∃ v, ∀ J : Finset (c v), ∑ i ∈ J, d v i ≠ a) →
     ∀ a : ℕ, 0 < a → a < r → ∃ v, ∀ J : Finset (c v), ∑ i ∈ J, d v i ≠ a
 
-def JacquetSubsetSum : Prop :=
-  ∀ (k : Type) [Field k] (r s : ℕ) (b : Fin r → Fin s), Monotone b →
-    ∀ (Y : Type) [AddCommGroup Y] [Module ℂ Y] (ρ : GL (Fin r) k → Y →ₗ[ℂ] Y),
-    (∀ S : Finset (Fin r), (∃ i j, b i = b j ∧ i ∈ S ∧ j ∉ S) →
-      ∀ y : Y, (∀ u : GL (Fin r) k,
-        (∀ i j, (u : Matrix (Fin r) (Fin r) k) i j ≠ (1 : Matrix (Fin r) (Fin r) k) i j →
-          b i = b j ∧ i ∈ S ∧ j ∉ S) → ρ u y = y) → y = 0) →
-    ∀ (a : ℕ), a ≤ r → ∀ (φ : GL (Fin r) k → Y),
-    (∀ q x : GL (Fin r) k, (∀ i j, b j < b i → (q : Matrix (Fin r) (Fin r) k) i j = 0) →
-      φ (q * x) = ρ q (φ x)) →
-    (∀ x n : GL (Fin r) k,
-      (∀ i j, (n : Matrix (Fin r) (Fin r) k) i j ≠ (1 : Matrix (Fin r) (Fin r) k) i j →
-        (i : ℕ) < a ∧ a ≤ (j : ℕ)) → φ (x * n) = φ x) →
-    φ ≠ 0 → ∃ J : Finset (Fin s), a = ∑ c ∈ J, (Finset.univ.filter fun i => b i = c).card
-
 def IwahoriNewton : Prop :=
   ∀ (O : Type) [CommRing O] [IsLocalRing O] (ϖ : O), ϖ ∈ IsLocalRing.maximalIdeal O →
     ∀ (r : ℕ) (a : Fin r → ℕ), StrictAnti a →
@@ -65,13 +50,5 @@ def ConeCharIndep : Prop :=
   ∀ (r : ℕ) (c : (Multiplicative (Fin r → ℤ) →* ℂ) →₀ ℂ),
     (∀ a : Fin r → ℤ, StrictAnti a →
       (c.sum fun χ z => z * χ (Multiplicative.ofAdd a)) = 0) → c = 0
-
-def SimpleCharIndep : Prop :=
-  ∀ (A : Type) [Ring A] [Algebra ℂ A] (ι : Type) [Finite ι] (W : ι → Type)
-    [∀ i, AddCommGroup (W i)] [∀ i, Module ℂ (W i)] [∀ i, Module A (W i)]
-    [∀ i, IsScalarTower ℂ A (W i)] [∀ i, FiniteDimensional ℂ (W i)],
-    (∀ i, IsSimpleModule A (W i)) → (∀ i j, Nonempty (W i ≃ₗ[A] W j) → i = j) →
-    LinearIndependent ℂ
-      (fun i => fun h : A => LinearMap.trace ℂ (W i) (Algebra.lsmul ℂ ℂ (W i) h))
 
 end Formalism.PacketSums

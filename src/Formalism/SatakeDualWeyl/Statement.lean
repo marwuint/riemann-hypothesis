@@ -236,10 +236,6 @@ def BCMem : Prop :=
     (σ : A →+* A) (σ' : B →+* B) (φ : A →+* B), φ.comp σ = σ'.comp φ →
     ∀ (J : Matrix n n A) (g : GL n A), g ∈ UJ σ J → bc φ g ∈ UJ σ' (J.map φ)
 
-def UJUnitary : Prop :=
-  ∀ (n : Type) [Fintype n] [DecidableEq n] (g : GL n ℂ),
-    g ∈ UJ (starRingEnd ℂ) (1 : Matrix n n ℂ) ↔ (g : Matrix n n ℂ) ∈ Matrix.unitaryGroup n ℂ
-
 def UpqCompact : Prop := ∀ p : ℕ, IsCompact (Upq p 0 : Set (GL (Fin p ⊕ Fin 0) ℂ))
 
 def UpqNoncompact : Prop :=

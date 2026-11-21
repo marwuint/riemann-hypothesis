@@ -10,9 +10,6 @@ section Generisation
 
 variable {Z : Scheme.{u}} (η : Z) [IsDomain (Z.presheaf.stalk η)]
 
-noncomputable def stalkGenericPoint : Z :=
-  Z.fromSpecStalk η (⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (Z.presheaf.stalk η))
-
 variable [IsDiscreteValuationRing (Z.presheaf.stalk η)]
 
 end Generisation

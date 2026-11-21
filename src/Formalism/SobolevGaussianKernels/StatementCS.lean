@@ -44,11 +44,4 @@ def SqSumRad : Prop :=
     (∀ d, d ∉ K → ∃ (c : ℂ) (χ : AddChar A ℂ), (∃ y, χ y ≠ 1) ∧ ∀ y, φ (y + d) * star (φ y) = c * χ y) →
     ‖∑ y, φ y‖ ^ 2 ≤ (Fintype.card A : ℝ) * (K.card : ℝ)
 
-def KernelBoundRel : Prop :=
-  ∀ (ι : Type) [Fintype ι] (P : ι → ι → ℝ) (w : ι → ℂ) (ε₁ ε₂ : ℝ),
-    (∀ i j, P i j = P j i) →
-    (∀ i, |(∑ j, P i j) - 1| ≤ ε₁) →
-    (∀ i, ‖∑ j, (P i j : ℂ) * w j‖ ≤ ε₂ * ‖w i‖) →
-    ‖∑ i, w i‖ ≤ (ε₁ + ε₂) * ∑ i, ‖w i‖
-
 end Formalism.SL.CS

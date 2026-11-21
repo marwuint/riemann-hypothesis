@@ -99,10 +99,6 @@ def gal (n : ℕ) : Representation R (Ω ≃ₐ[k] Ω) (H R n (geom Ω p)) where
         rw [Category.assoc, galMap_snd, galMap_snd, galMap_snd_assoc, h, Spec.map_comp]
     rw [this, pull_comp]; rfl
 
-def IsMatrixForm (n : ℕ) {S : Type} [CommRing S] [Algebra R S] {a : ℕ} (r : (Ω ≃ₐ[k] Ω) →* GL (Fin a) S) : Prop :=
-  ∃ b : Module.Basis (Fin a) R (H R n (geom Ω p)), ∀ σ,
-    (r σ : Matrix (Fin a) (Fin a) S) = (LinearMap.toMatrix b b (gal R Ω p n σ)).map (algebraMap R S)
-
 end Galois
 
 abbrev fibre {O K : Type} [CommRing O] [CommRing K] {X : Scheme.{0}} (p : X ⟶ Spec (CommRingCat.of O)) (φ : O →+* K) : Scheme.{0} :=

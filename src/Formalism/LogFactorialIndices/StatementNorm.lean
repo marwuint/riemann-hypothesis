@@ -6,11 +6,6 @@ namespace Formalism.LatticeIndexTer
 
 open scoped ComplexConjugate
 
-def NormRel : Prop :=
-  ∀ (L : Type) [Field L] (σ : L →+* ℂ) (c : L →+* L), (∀ x, σ (c x) = conj (σ x)) →
-    ∀ (D : ℕ) (Y : Matrix (Fin D) (Fin D) L) (G : Matrix (Fin D) (Fin D) ℂ),
-      ((Y.map σ) * G * (Y.map σ).conjTranspose).det = σ (Y.det * c Y.det) * G.det
-
 def NormRelDiv : Prop :=
   ∀ (L : Type) [Field L] (σ : L →+* ℂ) (c : L →+* L), (∀ x, σ (c x) = conj (σ x)) →
     ∀ (D : ℕ) (Y : Matrix (Fin D) (Fin D) L) (G : Matrix (Fin D) (Fin D) ℂ) (κ : ℝ) (z₀ zμ : L),

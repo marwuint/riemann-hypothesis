@@ -146,10 +146,4 @@ def LastEntryLMinus : Prop :=
   ∀ (T D am : ℤ), 0 < T → 0 ≤ D → 2 * T ^ 2 ≤ am → 40 * (D + 2) ≤ T →
     19 * T ≤ 10 * (am / (T + D + 2))
 
-def ParameterInequalities : Prop :=
-  ∀ (q RR PP DF M0 T g0 Cd : ℝ), 1 ≤ RR → 1 ≤ PP → 1 ≤ DF → 0 ≤ M0 → 0 ≤ T → 0 ≤ g0 →
-    (M0 < PP → RR ^ 4 * PP ^ 3 * DF ^ 2 ≤ q → DF * M0 < q) ∧
-    (0 < q → T * g0 * RR * PP * DF ^ 2 ≤ q → T * (RR * PP * DF ^ 2 / q) * g0 ≤ 1) ∧
-    (0 < q → 2 * Cd ≤ RR * PP → 2 * Cd * DF ^ 2 / q ≤ RR * PP * DF ^ 2 / q)
-
 end Formalism.LatticeBaseChangeAlt

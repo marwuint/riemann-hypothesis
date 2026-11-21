@@ -9,13 +9,6 @@ def EvenOddPowerQuotientLowerBound : Prop :=
     ((p : ℚ) - 2) + 1 / ((p : ℚ) - 1) ≤
       (((p : ℚ) ^ 2) ^ i + (p : ℚ) * ((p : ℚ) ^ 2) ^ j) / ((p : ℚ) ^ 2 - 1) - ((i : ℚ) + j + 1)
 
-def EvenOddPowerQuotientEqualityCases : Prop :=
-  ∀ (p : ℕ), 2 ≤ p →
-    ((((p : ℚ) ^ 2) ^ 0 + (p : ℚ) * ((p : ℚ) ^ 2) ^ 1) / ((p : ℚ) ^ 2 - 1) - (0 + 1 + 1) =
-      ((p : ℚ) - 2) + 1 / ((p : ℚ) - 1)) ∧
-    ((((p : ℚ) ^ 2) ^ 1 + (p : ℚ) * ((p : ℚ) ^ 2) ^ 1) / ((p : ℚ) ^ 2 - 1) - (1 + 1 + 1) =
-      ((p : ℚ) - 2) + 1 / ((p : ℚ) - 1))
-
 def LegendreFactorialBound : Prop :=
   ∀ (p i : ℕ), p.Prime → 1 ≤ i → (p - 1) * padicValNat p i.factorial ≤ i - 1
 

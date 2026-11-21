@@ -68,16 +68,4 @@ namespace PI
 
 open NumberField PI.IsoDetDefs
 
-def IsoDet : Prop :=
-  ∀ (E : Type) [Field E] [NumberField E] [StarRing E]
-    (V : Type) [AddCommGroup V] [Module E V] [Module (𝓞 E) V] [IsScalarTower (𝓞 E) E V] [FiniteDimensional E V]
-    (h : V →ₗ⋆[E] V →ₗ[E] E), h.IsSymm →
-    ∀ (n : ℕ) (e e' : Fin n → V) (𝔞 : Fin n → FractionalIdeal (nonZeroDivisors (𝓞 E)) E),
-      (∀ a, 𝔞 a ≠ 0) →
-      (∀ a b, h (e a) (e b) = 0) → (∀ a b, h (e' a) (e' b) = 0) →
-      (Matrix.of fun a b => h (e a) (e' b)).det ≠ 0 →
-      latDetH h (pseudoSpan 𝔞 e ⊔ pseudoSpan 𝔞 e') ≤
-        |((Algebra.norm ℚ (Matrix.of fun a b => h (e a) (e' b)).det : ℚ) : ℝ)| *
-          ∏ a, ((FractionalIdeal.absNorm (𝔞 a) : ℚ) : ℝ) ^ 2
-
 end PI

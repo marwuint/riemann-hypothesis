@@ -115,10 +115,6 @@ def ASet {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n] (LL : Letter
     Set (MvPolynomial (ι × Fin n) R) :=
   {F | ((th : ℤ) : WithTop ℤ) ≤ valS LL S F}
 
-def LamSet {R : Type*} [CommRing R] {ι : Type*} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι) (M : ℤ) :
-    Set (MvPolynomial (ι × Fin n) R) :=
-  {F | lam1S LL S F ≤ ((M : ℤ) : WithBot ℤ)}
-
 open Classical in
 
 def glAct (R : Type*) [CommRing R] {ι : Type*} [Fintype ι] {n : ℕ} (LL : Letters ι) (S : Set ι) (a b : Fin n) :

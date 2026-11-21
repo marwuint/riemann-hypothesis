@@ -75,13 +75,6 @@ def JetGapColumns : Prop :=
         0 < (q - DF * M₀) * μ ∧
         ∑ k, B (∑ j, (e j k : ℝ) • b j) (∑ j, (e j k : ℝ) • b j) / 2 ≤ DF ^ 2 * Cφ
 
-def AlternatingBinomial : Prop :=
-  ∀ (σ R : Type) [Fintype σ] [DecidableEq σ] [CommRing R] (a : σ → ℕ) (T : σ → R),
-    ∑ e ∈ Fintype.piFinset (fun j => Finset.range (a j + 1)),
-        (-1 : R) ^ (∑ j, (a j - e j)) * ((∏ j, (a j).choose (e j) : ℕ) : R) *
-          ∏ j, (1 + T j) ^ (e j) =
-      ∏ j, T j ^ (a j)
-
 def DescentNoLinearTerm : Prop :=
   ∀ (V : Type) [AddCommGroup V] [Module ℝ V] (B : LinearMap.BilinForm ℝ V) (w₀ w₀b : V →ₗ[ℝ] V),
     (∀ x y, B x y = B y x) → (∀ x y, B x (w₀ y) = B (w₀b x) y) → w₀ + w₀b = LinearMap.id →
@@ -141,14 +134,5 @@ def CovolAbsorb : Prop :=
       lEt ≤ -i * ((2 * π - 1) * φ - PP)) ∧
     (∀ (RR dp lmax cov : ℝ) (d : ℕ), 0 ≤ lmax → cov ≤ lmax ^ d →
       lmax ^ 2 ≤ 4 * RR * dp ^ 2 * φ → cov ≤ (4 * RR * dp ^ 2 * φ) ^ ((d : ℝ) / 2))
-
-def MinimumChainBounds : Prop :=
-  ∀ (dp lmax2 φ RR PP r₁ r E0 minQ δ : ℝ), 0 ≤ dp → 0 ≤ φ → 0 ≤ RR → 1 ≤ r₁ → 0 ≤ r →
-    minQ ≤ dp * lmax2 / (4 * r₁ ^ 2) → lmax2 ≤ 2 * RR * dp ^ 2 * φ → E0 ≤ r * minQ →
-    r * dp ^ 3 ≤ PP →
-    minQ ≤ RR * dp ^ 3 * φ / (2 * r₁ ^ 2) ∧ E0 ≤ r * RR * dp ^ 3 * φ / (2 * r₁ ^ 2) ∧
-      E0 ≤ RR * PP * φ ∧
-      (φ ≤ r₁ ^ 4 * E0 → φ ≤ 2 * r₁ ^ 4 * E0 / 2) ∧
-      (2 * r₁ ^ 4 * r) * δ - 2 * r₁ ^ 4 * E0 = 2 * r₁ ^ 4 * (r * δ - E0)
 
 end Formalism.LatticeBaseChangeAlt

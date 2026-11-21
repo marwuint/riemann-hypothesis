@@ -65,19 +65,6 @@ section Conj
 
 variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
-def conjSub (H : Subgroup G) (g : G) (hg : ∀ x, x ∈ H ↔ g * x * g⁻¹ ∈ H) : H ≃ₜ* H where
-  toFun x := ⟨g * x * g⁻¹, (hg x).1 x.2⟩
-  invFun x := ⟨g⁻¹ * x * g, (hg _).2 (by
-    have e : g * (g⁻¹ * (x : G) * g) * g⁻¹ = x := by group
-    rw [e]; exact x.2)⟩
-  left_inv x := by ext; simp only; group
-  right_inv x := by ext; simp only; group
-  map_mul' x y := by ext; simp only [Subgroup.coe_mul]; group
-  continuous_toFun := Continuous.subtype_mk
-    ((continuous_const.mul continuous_subtype_val).mul continuous_const) _
-  continuous_invFun := Continuous.subtype_mk
-    ((continuous_const.mul continuous_subtype_val).mul continuous_const) _
-
 end Conj
 
 section Scale

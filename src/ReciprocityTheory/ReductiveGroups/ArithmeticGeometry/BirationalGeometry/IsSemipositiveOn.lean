@@ -27,10 +27,6 @@ def secNm (x : ι → Ω) (d : ℕ) : Submodule o Ω :=
   ((integralClosure (coneRing o x) (Polynomial Ω)).restrictScalars o).toSubmodule.comap
     ((Polynomial.monomial d).restrictScalars o)
 
-def gradedPiece (I : Ideal (MvPolynomial (ι) o)) (d : ℕ) :
-    Submodule o (MvPolynomial (ι) o ⧸ I) :=
-  (homogeneousSubmodule (ι) o d).map (Ideal.Quotient.mkₐ o I).toLinearMap
-
 def IsHomogIdeal (I : Ideal (MvPolynomial (ι) o)) : Prop :=
   ∀ f ∈ I, ∀ d, homogeneousComponent d f ∈ I
 
@@ -90,9 +86,6 @@ section Heights
 
 def coeffGaussNorm {K ι : Type*} [Field K] (v : AbsoluteValue K ℝ) (f : MvPolynomial ι K) : ℝ :=
   ⨆ m : f.support, v (f.coeff m)
-
-def hgt {K ι : Type*} [Field K] [NumberField K] (y : ι → K) : ℝ :=
-  Height.logHeight y / Height.totalWeight K
 
 end Heights
 
@@ -178,10 +171,6 @@ end Joins
 section Multi
 
 variable {r : ℕ} {ι : Fin r → Type*} [∀ k, Fintype (ι k)]
-
-def multiPtNorm (m : ∀ k, ConeMetric ℂ (ι k)) (a : Fin r → ℤ)
-    (f g : MvPolynomial (Σ k, ι k) ℂ) (z : ∀ k, ι k → ℂ) : ℝ :=
-  ‖eval (fun p => z p.1 p.2) f‖ / ‖eval (fun p => z p.1 p.2) g‖ / ∏ k, (m k).ρ (z k) ^ a k
 
 end Multi
 

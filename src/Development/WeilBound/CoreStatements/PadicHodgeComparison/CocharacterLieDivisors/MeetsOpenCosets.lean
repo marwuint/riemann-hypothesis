@@ -4,9 +4,6 @@ open Polynomial
 
 namespace PositivityTheory.AutomorphicGaloisHodgeTate.Div
 
-def MeetsOpenCosets {Γ : Type} [Group Γ] [TopologicalSpace Γ] (S : Set Γ) : Prop :=
-  ∀ U : Subgroup Γ, IsOpen (U : Set Γ) → ∀ g : Γ, ∃ s ∈ S, g⁻¹ * s ∈ U
-
 def IsSSMat {Γ K ι : Type} [Group Γ] [Field K] [Fintype ι] [DecidableEq ι]
     (ρ : Γ →* GL ι K) : Prop :=
   ∀ W : Submodule K (ι → K), (∀ g : Γ, ∀ v ∈ W, (ρ g : Matrix ι ι K).mulVec v ∈ W) →

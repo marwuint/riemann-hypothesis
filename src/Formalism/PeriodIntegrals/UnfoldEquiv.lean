@@ -76,30 +76,6 @@ variable {k n c}
 def n1Arg (r : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)) : k :=
   ∑ i ∈ Finset.range (c - 1), atN (r (eN k (n + c) (n + i + 1))) (n + i)
 
-def Cbe (J : Subgroup ((Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k))) (h : (Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)) :
-    Subgroup ((Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k)) :=
-  R1 k n c ⊓ J.comap (MulAut.conj h⁻¹).toMonoidHom
-
-def prX (C : Subgroup ((Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k))) : Subgroup ((Fin n → k) ≃ₗ[k] (Fin n → k)) where
-  carrier := {g | ∃ r ∈ C, ∀ x, r (inX k n c x) = inX k n c (g x)}
-  one_mem' := ⟨1, C.one_mem, fun _ => rfl⟩
-  mul_mem' := by
-    rintro a b ⟨r, hr, h1⟩ ⟨s, hs, h2⟩
-    refine ⟨r * s, C.mul_mem hr hs, fun x => ?_⟩
-    show r (s _) = _
-    rw [h2, h1]
-    rfl
-  inv_mem' := by
-    rintro a ⟨r, hr, h1⟩
-    refine ⟨r⁻¹, C.inv_mem hr, fun x => ?_⟩
-    show r.symm _ = _
-    rw [LinearEquiv.symm_apply_eq, h1]
-    show _ = inX k n c (a (a.symm x))
-    rw [LinearEquiv.apply_symm_apply]
-
-def volN (K : Type) [Field K] (C N1O : Subgroup ((Fin (n + c) → k) ≃ₗ[k] (Fin (n + c) → k))) : K :=
-  ((N1O.relIndex (C ⊓ N1 k n c) : ℕ) : K) / (((C ⊓ N1 k n c).relIndex N1O : ℕ) : K)
-
 end Groups
 
 section Data
@@ -107,11 +83,6 @@ section Data
 variable {k K : Type} [CommRing k] [Field K]
 
 abbrev SF (k K : Type) [CommRing k] (a b : ℕ) : Type := ((Fin a → k) →ₗ[k] (Fin b → k)) → K
-
-def om {a b : ℕ} (mu : k → K) (v : k → ℤ) (sq : K) (g₀ : (Fin a → k) ≃ₗ[k] (Fin a → k))
-    (h : (Fin b → k) ≃ₗ[k] (Fin b → k)) (Φ : SF k K a b) : SF k K a b := fun x =>
-  mu (LinearEquiv.det g₀ : kˣ) * (mu (LinearEquiv.det h : kˣ))⁻¹ * sq ^ (-(v (LinearEquiv.det g₀ : kˣ)) * b) *
-    sq ^ (v (LinearEquiv.det h : kˣ) * a) * Φ (h.symm.toLinearMap ∘ₗ x ∘ₗ g₀.toLinearMap)
 
 variable (n' c' n c : ℕ)
 

@@ -249,13 +249,6 @@ def ggSub {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V] (ψ₀ : AddChar 
     intro a v hv u hu
     rw [map_smul, hv u hu, smul_comm]
 
-def GelfandGraev : Prop :=
-  ∀ (n : ℕ) (ψ₀ : AddChar K ℂ), ψ₀ ≠ 1 →
-    (∀ τ : FDRep ℂ (GL (Fin n) K), Simple τ → Module.finrank ℂ (ggSub ψ₀ τ.ρ) ≤ 1) ∧
-    ∀ (s : ℕ) (b : Fin n → Fin s) (lam : ∀ c : Fin s, FDRep ℂ (GL {i // b i = c} K)),
-      Function.Surjective b → (∀ c, Simple (lam c) ∧ IsCuspidal K (lam c)) →
-      Module.finrank ℂ (ggSub ψ₀ (hcRep K b lam)) = 1
-
 def GaloisLabel (C : LabelConv K) : Prop :=
   ∀ (n : ℕ) (α : ℂ ≃+* ℂ) (a : ℕ),
     (∀ ζ : ℂ, ζ ^ (∏ d ∈ Finset.Icc 1 n, (q K ^ d - 1)) = 1 → α ζ = ζ ^ a) →
@@ -264,41 +257,5 @@ def GaloisLabel (C : LabelConv K) : Prop :=
       ∃ τ' : FDRep ℂ (GL (Fin n) K), Simple τ' ∧ HasLabel C τ' f' ∧
         (∀ γ, LinearMap.trace ℂ τ' (τ'.ρ γ) = α (LinearMap.trace ℂ τ (τ.ρ γ))) ∧
         ∀ γ, α ((zIdem τ).coeff γ) = (zIdem τ').coeff γ
-
-def DualLabel (C : LabelConv K) : Prop :=
-  ∀ (n : ℕ) (τ : FDRep ℂ (GL (Fin n) K)) (f f' : K[X]), Simple τ → HasLabel C τ f →
-    f'.Monic → rootsBar K f' = (rootsBar K f).map (·⁻¹) →
-    ∃ τ' : FDRep ℂ (GL (Fin n) K), Simple τ' ∧ HasLabel C τ' f' ∧
-      ∀ γ, LinearMap.trace ℂ τ' (τ'.ρ γ) = LinearMap.trace ℂ τ (τ.ρ γ⁻¹)
-
-open Classical in
-
-def HowlettLehrer : Prop :=
-  ∀ (n s : ℕ) (b : Fin n → Fin s) {V : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
-    (ρ : Representation ℂ (GL (Fin n) K) V),
-    let U := {g : GL (Fin n) K | g ∈ unip K b}
-    let Um := {g : GL (Fin n) K | g ∈ unip K (fun i => (Fin.revPerm (b i)))}
-    let avg : V → V := fun v => ∑ u ∈ Finset.univ.filter (fun u => u ∈ U), ρ u v
-    Set.BijOn avg {v | ∀ u ∈ Um, ρ u v = v} {v | ∀ u ∈ U, ρ u v = v}
-
-open Classical in
-
-def GGIdem : Prop :=
-  ∀ (n : ℕ) (ψ₀ : AddChar K ℂ),
-    let e : MonoidAlgebra ℂ (GL (Fin n) K) :=
-      ∑ u ∈ Finset.univ.filter (fun u => u ∈ unitri K n),
-        MonoidAlgebra.single u ((((Finset.univ.filter (fun u => u ∈ unitri K n)).card : ℂ))⁻¹ * (psiU ψ₀ u)⁻¹)
-    e * e = e
-
-def CentralIdem : Prop :=
-  ∀ n : ℕ,
-    (∀ τ : FDRep ℂ (GL (Fin n) K), Simple τ →
-      zIdem τ * zIdem τ = zIdem τ ∧ ∀ a, zIdem τ * a = a * zIdem τ) ∧
-    (∀ τ τ' : FDRep ℂ (GL (Fin n) K), Simple τ → Simple τ' → IsEmpty (τ ≅ τ') →
-      zIdem τ * zIdem τ' = 0) ∧
-    ∀ (m : ℕ) (τ : Fin m → FDRep ℂ (GL (Fin n) K)), (∀ i, Simple (τ i)) →
-      (∀ i j, Nonempty (τ i ≅ τ j) → i = j) →
-      (∀ σ : FDRep ℂ (GL (Fin n) K), Simple σ → ∃ i, Nonempty (σ ≅ τ i)) →
-      ∑ i, zIdem (τ i) = 1
 
 end Formalism.IrreducibleCountingLemmas.TYPES

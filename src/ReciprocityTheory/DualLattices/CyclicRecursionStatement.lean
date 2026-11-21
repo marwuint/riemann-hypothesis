@@ -92,13 +92,6 @@ def TeichSumStatement (p : ℕ) [Fact p.Prime] : Prop :=
           (teichmuller p y + (p : WittVector p K) * t) ^ p =
             teichmuller p (y ^ p) + (p : WittVector p K) ^ 2 * w
 
-def CyclicRecursionStatement : Prop :=
-  ∀ (V : Type) [AddCommGroup V] [Module ℚ V] (o : ℕ) [NeZero o] (P : ℚ), 1 < P →
-    ∀ La s : ZMod o → V,
-      (∀ i, P • s i = s (i + 1) + La (i + 1)) ↔
-        (∀ i, s i = (1 - P⁻¹ ^ o)⁻¹ •
-          ∑ n ∈ Finset.range o, P⁻¹ ^ (n + 1) • La (i + ((n + 1 : ℕ) : ZMod o)))
-
 def CyclicSeriesStatement : Prop :=
   ∀ (o : ℕ) [NeZero o] (P : ℝ), 1 < P → ∀ (La : ZMod o → ℝ) (i : ZMod o),
     HasSum (fun n : ℕ => P⁻¹ ^ (n + 1) * La (i + ((n + 1 : ℕ) : ZMod o)))

@@ -87,12 +87,6 @@ def MollifierL2Tendsto (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E] [F
   ∀ (l : Filter ι) (K : ι → Kernel E μ), Tendsto (fun i => (K i).r) l (𝓝 0) →
     ∀ u : E → ℂ, MemLp u 2 μ → Tendsto (fun i => eLpNorm (moll (K i) u - u) 2 μ) l (𝓝 0)
 
-def MollifierL2LocTendsto (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
-    [MeasurableSpace E] [BorelSpace E] (μ : Measure E) [μ.IsAddHaarMeasure] (ι : Type*) : Prop :=
-  ∀ (l : Filter ι) (K : ι → Kernel E μ), Tendsto (fun i => (K i).r) l (𝓝 0) →
-    ∀ u : E → ℂ, (∀ C, IsCompact C → MemLp u 2 (μ.restrict C)) →
-      ∀ C, IsCompact C → Tendsto (fun i => eLpNorm (moll (K i) u - u) 2 (μ.restrict C)) l (𝓝 0)
-
 def WeightedTendstoSt (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [MeasurableSpace E] [BorelSpace E] (μ : Measure E) [μ.IsAddHaarMeasure] (ι : Type*) : Prop :=
   ∀ (l : Filter ι) (K : ι → Kernel E μ), Tendsto (fun i => (K i).r) l (𝓝 0) →

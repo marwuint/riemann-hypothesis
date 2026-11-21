@@ -62,8 +62,6 @@ def C1 (y z : D) : Prop := W.QInv y ∧ W.XN z
 
 def C2 (ω : D) : Prop := ∃ y, W.QInv y ∧ ω = B.X • y
 
-def d0 (x : D) : D × D := (W.φ x - x, W.γ x - x)
-
 def d1 (y z : D) : D := (W.γ y - y) - (W.φ z - z)
 
 def Cocycle (y z : D) : Prop := W.C1 y z ∧ W.d1 y z = 0
@@ -184,10 +182,6 @@ def BInt : Submodule O (D × D) :=
   (W.N.restrictScalars O).map ((W.φ - LinearMap.id).prod (W.γ - LinearMap.id))
 
 abbrev integralCohomology : Type := ↥W.ZInt ⧸ W.BInt.comap W.ZInt.subtype
-
-abbrev H1 : Type := ↥W.Z1 ⧸ W.B1.comap W.Z1.subtype
-
-abbrev finiteCohomology : Type := ↥W.Zf ⧸ W.B1.comap W.Zf.subtype
 
 end WachMod
 

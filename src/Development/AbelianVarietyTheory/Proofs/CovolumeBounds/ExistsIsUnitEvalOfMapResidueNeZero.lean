@@ -108,16 +108,6 @@ omit [∀ s, Fintype (m s)] in
 @[simp] theorem ofEntries_entries {α : Type*} (b : ∀ s, Matrix (m s) (n s) α) :
     ofEntries (entries b) = b := rfl
 
-def frameMulLinear (n : ι → Type*) (w : ∀ s, m s → V s) :
-    (EntryIndex m n → K) →ₗ[K] (∀ s, n s → V s) where
-  toFun ξ := frameMul w (ofEntries ξ)
-  map_add' ξ η := by
-    funext s j
-    simp [frameMul, add_smul, Finset.sum_add_distrib]
-  map_smul' c ξ := by
-    funext s j
-    simp [frameMul, Finset.smul_sum, smul_smul]
-
 end Semiring
 
 variable [Fintype ι] {r : ι → ℕ} [Field K] [∀ s, AddCommGroup (V s)] [∀ s, Module K (V s)]

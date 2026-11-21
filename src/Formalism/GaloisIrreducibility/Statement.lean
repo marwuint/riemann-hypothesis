@@ -114,13 +114,6 @@ def AltFormRank : Prop :=
     ∃ ω : L →ₗ[F] L →ₗ[F] F, (∀ x, ω x x = 0) ∧
       Module.finrank F S - 1 ≤ Module.finrank F (LinearMap.range (ω.domRestrict₁₂ S S'))
 
-def OneNonUnit : Prop :=
-  ∀ (R : Type) [CommRing R] [IsLocalRing R] (s : ℕ) (A : Matrix (Fin s) (Fin s) R),
-    s - 1 ≤ (A.map (IsLocalRing.residue R)).rank →
-    ∃ P Q : GL (Fin s) R, ∃ d : R,
-      (P : Matrix (Fin s) (Fin s) R) * A * (Q : Matrix (Fin s) (Fin s) R) =
-        Matrix.diagonal (fun i : Fin s => if (i : ℕ) = s - 1 then d else 1)
-
 def TwistNotIso : Prop :=
   ∀ (G K : Type) [Group G] [Field K] (n : ℕ) (ρ : G →* GL (Fin n) K) (χ : G →* Kˣ),
     Odd n → Even (orderOf χ) →

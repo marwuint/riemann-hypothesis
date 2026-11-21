@@ -40,8 +40,6 @@ def RandomSubsetAvoidsBadEvents : Prop :=
     ∃ T : Finset α, δ * Fintype.card α / 2 ≤ T.card ∧ (T.card : ℝ) ≤ 2 * δ * Fintype.card α ∧
       ∑ p, ω p * ((T.filter fun t => BAD p t T).card : ℝ) ≤ 4 * β * δ * Fintype.card α * ∑ p, ω p
 
-def RandomSubsetCounterexample : Prop := ¬ RandomSubsetAvoidsBadEvents
-
 def TopsFixed : Prop :=
   ∀ (α ι : Type) [Fintype α] [DecidableEq α] [Fintype ι] (δ β : ℝ) (ω : ι → ℝ)
     (BAD : ι → α → Finset α → Prop) [∀ p t T, Decidable (BAD p t T)],

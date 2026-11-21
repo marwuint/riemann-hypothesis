@@ -119,6 +119,4 @@ theorem grpK_const (k : ℕ) : grpK (fun _ : Fin k => true) =
   ext g
   simp [grpK]
 
-def detRep (n : ℕ) (g : Matrix (Fin n) (Fin n) ℂ) : ℂ →L[ℂ] ℂ := g.det • (1 : ℂ →L[ℂ] ℂ)
-
 end GlobalTheory.IndefiniteRowSideFullHecke.HarishChandraRootData

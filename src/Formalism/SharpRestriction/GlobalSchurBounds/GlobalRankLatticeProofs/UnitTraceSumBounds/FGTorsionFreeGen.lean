@@ -25,11 +25,6 @@ def SupLatLine : Prop :=
       IsSimpleModule R (M ⧸ (stdLat R K r).comap M.subtype) →
       ∃ x : Fin r → R, (∃ i, ¬ ϖ ∣ x i) ∧ M = supLat R K ϖ x)
 
-def FGTorsionFreeGen : Prop :=
-  ∀ (R M : Type) [CommRing R] [IsDedekindDomain R] [AddCommGroup M] [Module R M]
-    [Module.Finite R M] [NoZeroSMulDivisors R M],
-    ∃ s : Finset M, s.card ≤ Module.finrank R M + 1 ∧ Submodule.span R (s : Set M) = ⊤
-
 def IndexMatNorm : Prop :=
   ∀ (E : Type) [Field E] [NumberField E] (r : ℕ) (A : Matrix (Fin r) (Fin r) (𝓞 E)), A.det ≠ 0 →
     Nat.card ((Fin r → 𝓞 E) ⧸ LinearMap.range A.mulVecLin) = (Algebra.norm ℤ A.det).natAbs

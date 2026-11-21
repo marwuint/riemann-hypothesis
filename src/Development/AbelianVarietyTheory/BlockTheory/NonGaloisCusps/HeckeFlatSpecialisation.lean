@@ -175,12 +175,6 @@ def Specialisation : Prop :=
 
 end Statements
 
-def LocalData : Prop :=
-  ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Finite (ResidueField O)]
-    (F : Type) [Field F] [Algebra O F] [IsFractionRing O F] (r t : ℕ),
-    HeckeIdentity O F r t ∧ ComplementSum O F r t ∧ GroupRingDatum O F r t ∧
-      Specialisation O F r t
-
 section Basic₂
 
 variable (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]

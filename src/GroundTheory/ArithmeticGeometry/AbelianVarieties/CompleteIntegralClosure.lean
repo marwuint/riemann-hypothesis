@@ -61,10 +61,6 @@ section Idempotent
 
 variable {B : Type*} [CommRing B]
 
-def idemIter (x : B) : ℕ → B
-  | 0 => x
-  | n + 1 => 3 * idemIter x n ^ 2 - 2 * idemIter x n ^ 3
-
 variable (J : Ideal B) [IsPrecomplete J B] [IsHausdorff J B]
 
 end Idempotent

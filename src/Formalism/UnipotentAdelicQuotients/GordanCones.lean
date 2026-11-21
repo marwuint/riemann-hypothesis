@@ -12,10 +12,6 @@ def cone {n : ℕ} (s : Finset (Fin n → ℤ)) : Set (Fin n → ℚ) :=
 def dualCone {n : ℕ} (A : Finset (Fin n → ℤ)) : Set (Fin n → ℚ) :=
   {x | ∀ a ∈ A, 0 ≤ ∑ i, (a i : ℚ) * x i}
 
-def Lattice : Prop :=
-  ∀ (n : ℕ) (s : Finset (Fin n → ℤ)), ∃ t : Finset (Fin n → ℤ),
-    {x : Fin n → ℤ | toQ x ∈ cone s} = {x | ∃ d : (Fin n → ℤ) → ℕ, x = ∑ v ∈ t, d v • v}
-
 def GenIneq : Prop :=
   (∀ (n : ℕ) (A : Finset (Fin n → ℤ)), ∃ s : Finset (Fin n → ℤ), dualCone A = cone s) ∧
   (∀ (n : ℕ) (s : Finset (Fin n → ℤ)), ∃ A : Finset (Fin n → ℤ), cone s = dualCone A)

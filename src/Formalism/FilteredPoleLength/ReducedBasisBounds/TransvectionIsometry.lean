@@ -74,15 +74,6 @@ def ThickArith : Prop :=
         4 * Real.exp (3.3 * ((g : ℝ) + c) - R0 ^ 2 / 16) ∧
       4 * Real.exp (3.3 * ((g : ℝ) + c) - R0 ^ 2 / 16) ≤ 1 / 2
 
-def TransvectionIsometry : Prop :=
-  ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (h : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ),
-    (∀ v w, h w v = starRingEnd ℂ (h v w)) → ∀ x : V, h x x = 0 →
-      (∀ (β : ℂ) (v w : V), β + starRingEnd ℂ β = 0 →
-        h (v + (β * h v x) • x) (w + (β * h w x) • x) = h v w) ∧
-      ∀ (β β' : ℂ) (v : V),
-        let u := v + (β' * h v x) • x
-        u + (β * h u x) • x = v + ((β + β') * h v x) • x
-
 def MultCount : Prop :=
   ∀ (N : ℕ) (la : Fin N → ℝ) (la1 laN : ℝ), 0 < la1 → (∀ i, la1 ≤ la i ∧ la i ≤ laN) →
     ∏ i, (1 + 4 * la i / la1) ^ N ≤ (5 * laN / la1) ^ (N ^ 2)

@@ -23,11 +23,4 @@ noncomputable def mulX (𝔞 𝔟 : Ideal A) (h1 : ∀ b ∈ 𝔟, x * b ∈ �
 @[simp] lemma mulX_apply (𝔞 𝔟 : Ideal A) (h1 : ∀ b ∈ 𝔟, x * b ∈ 𝔞) (b : 𝔟) :
     ((mulX x 𝔞 𝔟 h1 b : 𝔞) : A) = x * b := rfl
 
-noncomputable def projQ (𝔞 : Ideal A) : 𝔞 →ₗ[A] (𝔞.map (Ideal.Quotient.mk (Ideal.span {x}))) where
-  toFun a := ⟨Ideal.Quotient.mk _ a, Ideal.mem_map_of_mem _ a.2⟩
-  map_add' a b := by ext; simp
-  map_smul' c a := by
-    ext
-    simp [Algebra.smul_def, Ideal.Quotient.algebraMap_eq]
-
 end PI.UnitaryGroupMassFormula.MF

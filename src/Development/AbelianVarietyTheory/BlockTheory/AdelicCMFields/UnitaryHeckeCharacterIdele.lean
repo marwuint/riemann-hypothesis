@@ -264,17 +264,6 @@ def inv (χ : UnitaryHeckeChar E) : UnitaryHeckeChar E where
   continuous_toHom := χ.continuous_toHom.inv
   map_principal x := by simp [χ.map_principal]
 
-def restrict (F : Type) [Field F] [NumberField F] [Algebra F E] (χ : UnitaryHeckeChar E) :
-    UnitaryHeckeChar F where
-  toHom := χ.toHom.comp (ideleMap F E)
-  continuous_toHom := χ.continuous_toHom.comp (continuous_ideleMap F E)
-  map_principal x := by
-    rw [MonoidHom.comp_apply, ideleMap_principalIdele, χ.map_principal]
-
-def IsTrivialOn (F : Type) [Field F] [NumberField F] [Algebra F E] (χ : UnitaryHeckeChar E) :
-    Prop :=
-  ∀ x : Idele F, χ.toHom (ideleMap F E x) = 1
-
 def localComponent (χ : UnitaryHeckeChar E) (P : HeightOneSpectrum (𝓞 E)) :
     (P.adicCompletion E)ˣ →* Circle :=
   χ.toHom.comp (localIdele P)

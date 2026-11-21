@@ -21,11 +21,6 @@ def frQ {ι : Type*} [Fintype ι] {V : ι → Type*} [∀ i, NormedAddCommGroup 
     (c : ι → ℝ) (B : ∀ i, V i →ₗ[ℂ] H) : H →ₗ[ℂ] H :=
   ∑ i, (c i : ℂ) • (B i ∘ₗ LinearMap.adjoint (B i))
 
-def CorankShare : Prop :=
-  ∀ (R : ℕ) (x : Fin R → ℝ) (s u τ : ℝ), 0 < u → 0 ≤ τ →
-    (R : ℝ) * s ≤ ∑ j, x j → (∀ j, x j ≤ s + u) →
-    ((univ.filter (fun j => x j < s - τ)).card : ℝ) ≤ R * (u / (u + τ))
-
 def FrameLA : Prop :=
   ∀ (ι : Type) [Fintype ι] (V : ι → Type) [∀ i, NormedAddCommGroup (V i)]
     [∀ i, InnerProductSpace ℂ (V i)] [∀ i, FiniteDimensional ℂ (V i)]

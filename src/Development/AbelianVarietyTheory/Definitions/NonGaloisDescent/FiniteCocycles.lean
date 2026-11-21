@@ -28,20 +28,6 @@ def tr (y : E) : A := D.lam 1 y
 def Kills (y : E) : Prop :=
   ∀ (B : Type) [CommRing B] [Algebra A B] (h : B ⊗[A] E), D.D B (1 + h * (1 ⊗ₜ y)) = 1
 
-def pull {E' : Type} [Ring E'] [Algebra A E'] (φ : E' →ₐ[A] E) : Det n A E' where
-  D B _ _ := (D.D B).comp (Algebra.TensorProduct.map (AlgHom.id B B) φ).toMonoidHom
-  nat B B' _ _ _ _ f x := by
-    change D.D B' (Algebra.TensorProduct.map (AlgHom.id B' B') φ _) = f (D.D B (Algebra.TensorProduct.map (AlgHom.id B B) φ x))
-    rw [← D.nat]
-    congr 1
-    induction x using TensorProduct.induction_on with
-    | zero => simp
-    | tmul a b => simp
-    | add a b ha hb => simp only [map_add, ha, hb]
-  homog B _ _ b x := by
-    change D.D B (Algebra.TensorProduct.map (AlgHom.id B B) φ (b • x)) = b ^ n * D.D B (Algebra.TensorProduct.map (AlgHom.id B B) φ x)
-    rw [map_smul, D.homog]
-
 end Det
 
 structure GDet (n : ℕ) (A G : Type) [CommRing A] [Group G] : Type 1 where

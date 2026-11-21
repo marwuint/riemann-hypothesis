@@ -45,10 +45,4 @@ end Formalism.D.Classical
 
 namespace Formalism.D.Classical
 
-def CuspidalCharExists : Prop :=
-  ∀ (g : ℕ) [Fact g.Prime] (teich : AlgebraicClosure (ZMod g) →* ℂ) (ζ : ℕ → AlgebraicClosure (ZMod g)),
-    (∀ x y : AlgebraicClosure (ZMod g), x ≠ 0 → y ≠ 0 → teich x = teich y → x = y) → grIsGenSys ζ →
-    ∀ d k : ℕ, 0 < d → (grLab ζ d k).natDegree = d →
-      ∃ χ : GL (Fin d) (ZMod g) → ℂ, grIsCuspChar χ ∧ grEllipticValues teich χ k
-
 end Formalism.D.Classical

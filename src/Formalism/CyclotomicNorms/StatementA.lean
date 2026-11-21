@@ -8,15 +8,6 @@ namespace Formalism.CyclotomicNorms
 
 abbrev wt (x : ℝ) : WithTop ℝ := (x : WithTop ℝ)
 
-def Newton : Prop :=
-  ∀ (L : Type) [Field L] (v : AddValuation L (WithTop ℝ)) (ℓ e : ℕ) (f : L[X]) (c : ℝ),
-    ℓ.Prime → 0 < e → v (ℓ : L) = wt 1 →
-    (∀ i, v (f.coeff i) = ⊤ ∨ ∃ n : ℕ, v (f.coeff i) = wt ((n : ℝ) / e)) →
-    v (f.coeff 0) = wt c →
-    ∃ X : Finset ℕ, (X.card : ℝ) ≤ e * c ∧
-      ∀ j : ℕ, 1 ≤ j → j ∉ X → ∀ z : L, IsPrimitiveRoot z (ℓ ^ j) →
-        v (f.eval (z - 1)) ≤ wt c
-
 def GTPigeonhole : Prop :=
   ∀ (a : ℕ → ℝ) (V ε K₁ : ℝ) (X B : Finset ℕ) (k₀ N : ℕ),
     0 < ε → 1 ≤ k₀ → (∀ k, 0 ≤ a k) → B.card ≤ N → (∀ S : Finset ℕ, ∑ k ∈ S, a k ≤ V) →
@@ -126,27 +117,6 @@ def CentralScalar : Prop :=
     (∀ w : W, (∀ g, ρ g w = w) → w = 0) ∧
     ∀ (n : ℕ) (f : (Fin (n + 1) → G) → W), Continuous f → coboundary ρ (n + 1) f = 0 →
       ∃ h : (Fin n → G) → W, Continuous h ∧ coboundary ρ n h = f
-
-def Cycles : Prop :=
-  ∀ (G k V P : Type) [Group G] [Field k] [AddCommGroup V] [Module k V] [FiniteDimensional k V]
-    [Fintype P] (ρ : Representation k G V) (N : ℕ) (D I : P → Subgroup G)
-    (χ : P → Fin N → G → k) (flag : P → Fin (N + 1) → Submodule k V),
-    Module.finrank k V = N →
-    (∀ v, I v ≤ D v) → (∀ v, ∀ d ∈ D v, ∀ x ∈ I v, d * x * d⁻¹ ∈ I v) →
-
-    (∀ v (i : Fin (N + 1)), Module.finrank k (flag v i) = i) →
-    (∀ v (i : Fin N), flag v i.castSucc ≤ flag v i.succ) →
-    (∀ v i, ∀ x ∈ flag v i, ∀ y ∈ I v, ρ y x ∈ flag v i) →
-
-    (∀ v (i : Fin N), ∀ x ∈ flag v i.succ, ∀ y ∈ I v,
-      ρ y x - χ v i y • x ∈ flag v i.castSucc) →
-
-    (∀ v (i j : Fin N), i ≠ j → ∃ y ∈ I v, χ v i y ≠ χ v j y) →
-    (∀ v (i : Fin N), ∀ d ∈ D v, ∃ j : Fin N, ∀ y ∈ I v, χ v j y = χ v i (d⁻¹ * y * d)) →
-
-    (∀ a : ℕ, 1 ≤ a → 2 * a ≤ N → ∃ v, ¬ ∃ S : Finset (Fin N), S.card = a ∧
-      ∀ i ∈ S, ∀ d ∈ D v, ∃ j ∈ S, ∀ y ∈ I v, χ v j y = χ v i (d⁻¹ * y * d)) →
-    ∀ W : Submodule k V, (∀ g, ∀ x ∈ W, ρ g x ∈ W) → W = ⊥ ∨ W = ⊤
 
 def CentralTwoStep : Prop :=
   ∀ (H G : Type) [Group H] [CommGroup G] [Finite G] (π : H →* G), Function.Surjective π →
