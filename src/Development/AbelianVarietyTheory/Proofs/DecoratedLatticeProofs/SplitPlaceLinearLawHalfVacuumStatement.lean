@@ -20,4 +20,4 @@ theorem _root_.GlobalTheory.T.splitPlace_linearLaw_halfVacuum : ∀ (D : D7) (ψ
     ∀ Φ : WO S T → ℂ, IsSBHalf e (latO S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E))
       fun _ => True) Φ →
       om (g, h) (Tm Φ) = GlobalTheory.SplitLinear.fac S T χS χT x y • Tm fun t => Φ (actO S T g⁻¹ h⁻¹ t) := by
-  first | exact @GlobalTheory.SplitLinearHalf.law_half | exact GlobalTheory.SplitLinearHalf.law_half | (intros; apply GlobalTheory.SplitLinearHalf.law_half <;> assumption)
+  exact @GlobalTheory.SplitLinearHalf.law_half

@@ -11,4 +11,4 @@ open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.dvrPlace_disc_kaehlerWedge_perm_neg : ∀ {k K : Type} [Field k] [CharZero k] [Field K] (c : k →+* K) (n : ℕ) (x : Fin n → K) (σ : Equiv.Perm (Fin n))
   (E : Place c) (φ : K →₀ ℚ), E.disc (dForm c (x ∘ σ)) φ = E.disc (dForm c x) φ ∧ E.disc (-dForm c x) φ = E.disc (dForm c x) φ := by
-  first | exact @GlobalTheory.FieldPair.disc_dForm_perm_neg | exact GlobalTheory.FieldPair.disc_dForm_perm_neg | (intros; apply GlobalTheory.FieldPair.disc_dForm_perm_neg <;> assumption)
+  exact @GlobalTheory.FieldPair.disc_dForm_perm_neg

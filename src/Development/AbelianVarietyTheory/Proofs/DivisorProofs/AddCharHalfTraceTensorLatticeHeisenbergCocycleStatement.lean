@@ -31,4 +31,4 @@ theorem _root_.GlobalTheory.T.addChar_halfTrace_tensorLattice_heisenbergCocycle 
             (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F X.J) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F Y.J) γ' γ') *
           B.ψ (-(⅟(2 : AF F) * GlobalTheory.WeilM.symp (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) (-1)
             (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F X.J) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F Y.J) γ γ')) := by
-  first | exact @GlobalTheory.VacCocycle.psi_half_symp_add | exact GlobalTheory.VacCocycle.psi_half_symp_add | (intros; apply GlobalTheory.VacCocycle.psi_half_symp_add <;> assumption)
+  exact @GlobalTheory.VacCocycle.psi_half_symp_add

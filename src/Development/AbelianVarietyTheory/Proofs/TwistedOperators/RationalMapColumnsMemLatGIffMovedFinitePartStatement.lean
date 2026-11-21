@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.rationalMap_columns_mem_latG_iff_moved_finitePart 
       (∀ a, (fun m => ∑ n, Yr m n * b n a) ∈ latG (Wc D i) y) ↔
         actO (Vc D i) (Wc D i) 1 y⁻¹ (ratW (Wc D i) (Vc D i) Yr - GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.realPt (Vc D i) (Wc D i) Yr) ∈
           latO (Vc D i) (Wc D i) (R.ΛV i) (R.ΛW i) fun _ => True := by
-  first | exact @GlobalTheory.ColSplit.cols_mem_iff | exact GlobalTheory.ColSplit.cols_mem_iff | (intros; apply GlobalTheory.ColSplit.cols_mem_iff <;> assumption)
+  exact @GlobalTheory.ColSplit.cols_mem_iff

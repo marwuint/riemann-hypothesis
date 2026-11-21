@@ -17,4 +17,4 @@ theorem _root_.GlobalTheory.T.graphLocalRing_regular_params_and_dim : ∀ {K κ'
   IsLocalRing.maximalIdeal (GlobalTheory.DiagLoc.loc L σ) =
       Ideal.span (Set.range fun i => GlobalTheory.DiagLoc.toLoc L σ (x i ⊗ₜ[ℂ] 1 - 1 ⊗ₜ[ℂ] σ (x i))) ∧
     ringKrullDim (GlobalTheory.DiagLoc.loc L σ) = n := by
-  first | exact @GlobalTheory.DiagLoc.maximalIdeal_eq_span_and_ringKrullDim | exact GlobalTheory.DiagLoc.maximalIdeal_eq_span_and_ringKrullDim | (intros; apply GlobalTheory.DiagLoc.maximalIdeal_eq_span_and_ringKrullDim <;> assumption)
+  exact @GlobalTheory.DiagLoc.maximalIdeal_eq_span_and_ringKrullDim

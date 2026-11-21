@@ -26,4 +26,4 @@ theorem _root_.GlobalTheory.T.mem_adelicLatticeAtPlace_of_tensor_with_lattice : 
     (q : Fin d → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E), 0 < n → X.L.IsLattice E →
     (∀ x ∈ X.L, Matrix.vecMulVec (fun i => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) (AF F) (x i)) q ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.latAtV X W v) →
     q ∈ GlobalTheory.InertSph.latAt W v := by
-  first | exact @GlobalTheory.LatExtract.main | exact GlobalTheory.LatExtract.main | (intros; apply GlobalTheory.LatExtract.main <;> assumption)
+  exact @GlobalTheory.LatExtract.main

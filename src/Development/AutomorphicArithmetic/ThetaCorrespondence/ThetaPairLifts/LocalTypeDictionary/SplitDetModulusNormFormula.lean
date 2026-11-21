@@ -30,5 +30,5 @@ theorem _root_.GlobalTheory.T.split_det_modulus_norm_formula : _root_.GlobalTheo
       ∀ z ∈ GlobalTheory.InertSph.latAt G.W v, (t : Matrix (Fin (a + a')) (Fin (a + a')) (AE F E)) *ᵥ z ∈ GlobalTheory.InertSph.latAt G.W v ∧
         ((t⁻¹ : GL (Fin (a + a')) (AE F E)) : Matrix (Fin (a + a')) (Fin (a + a')) (AE F E)) *ᵥ z ∈ GlobalTheory.InertSph.latAt G.W v) →
       (adeleClass F).modu (Units.map (Algebra.norm (AF F) : AE F E →* AF F) (Matrix.GeneralLinearGroup.det t)) = 1 := by
-  first | exact @_root_.GlobalTheory.SplitDetModule.split_det_modulus_eq_norm_det | exact _root_.GlobalTheory.SplitDetModule.split_det_modulus_eq_norm_det | (intros; apply _root_.GlobalTheory.SplitDetModule.split_det_modulus_eq_norm_det <;> assumption)
+  exact @_root_.GlobalTheory.SplitDetModule.split_det_modulus_eq_norm_det
 end

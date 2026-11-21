@@ -108,5 +108,5 @@ theorem _root_.GlobalTheory.T.archimedean_product_rule_derivative : _root_.Globa
     ∀ (f : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d)) (y : Fin n × Fin d → mixedEmbedding.mixedSpace F) (c : Fin k → ℂ),
     (∀ i, HasDerivAt (fun t : ℝ => T i t f y) (c i) 0) →
     HasDerivAt (fun t : ℝ => (List.ofFn fun i => T i t).prod f y) (∑ i, c i) 0 := by
-  first | exact @_root_.GlobalTheory.ArchProdRule.archimedean_hasDerivAt_prod | exact _root_.GlobalTheory.ArchProdRule.archimedean_hasDerivAt_prod | (intros; apply _root_.GlobalTheory.ArchProdRule.archimedean_hasDerivAt_prod <;> assumption)
+  exact @_root_.GlobalTheory.ArchProdRule.archimedean_hasDerivAt_prod
 end

@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.deriv_heisenbergCM_real_line_finite_invariant : �
       ∀ f : Formalism.IndefR.DatumF.WOF F E nS nT → ℂ, ∀ L : ℝ →+ Formalism.IndefR.DatumF.WOF F E nS nT, Continuous L → (∀ t, (L t).map (Formalism.IndefR.DatumF.finPartF F E) = 0) →
       ∀ u : Formalism.IndefR.DatumF.WOF F E nS nT, u.map (Formalism.IndefR.DatumF.infPartF F E) = 0 → Formalism.IndefR.DatumF.heisOF σ JS JT ξ₀ B.ψ (u) f = f →
       Formalism.IndefR.DatumF.heisOF σ JS JT ξ₀ B.ψ (u) (fun w => deriv (fun t : ℝ => Formalism.IndefR.DatumF.heisOF σ JS JT ξ₀ B.ψ (L t) f (w)) 0) = fun w => deriv (fun t : ℝ => Formalism.IndefR.DatumF.heisOF σ JS JT ξ₀ B.ψ (L t) f (w)) 0 := by
-  first | exact @GlobalTheory.HeisDerivCM.heisOF_deriv_fix | exact GlobalTheory.HeisDerivCM.heisOF_deriv_fix | (intros; apply GlobalTheory.HeisDerivCM.heisOF_deriv_fix <;> assumption)
+  exact @GlobalTheory.HeisDerivCM.heisOF_deriv_fix

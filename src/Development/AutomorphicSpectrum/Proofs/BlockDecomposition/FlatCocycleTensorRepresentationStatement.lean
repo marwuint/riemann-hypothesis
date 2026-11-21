@@ -14,4 +14,4 @@ theorem _root_.GlobalTheory.T.flat_cocycle_tensor_representation : ∀ (R : Type
     (∀ (T T' T'' : C) (φ : T ⟶ T') (ψ : T' ⟶ T''),
       f T T'' (φ ≫ ψ) = (mp F ψ).toLinearMap.rTensor N (f T T' φ) + f T' T'' ψ) →
     ∃ t : Z1 F ⊗[R] N, ∀ (T T' : C) (φ : T ⟶ T'), (evZ F φ).rTensor N t = f T T' φ := by
-  first | exact @GlobalTheory.CompanionTheory.Axis.cocycle_of_flat | exact GlobalTheory.CompanionTheory.Axis.cocycle_of_flat | (intros; apply GlobalTheory.CompanionTheory.Axis.cocycle_of_flat <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Axis.cocycle_of_flat

@@ -42,7 +42,7 @@ theorem key {x y : IrrGL k} (hx : x.IsCusp) (hy : y.IsCusp) {N : ℕ} (hd : ∑ 
   have hxc : ∀ a, (![x, y] a).IsCusp := Fin.forall_fin_two.2 ⟨hx, hy⟩
   have hj' := GlobalTheory.CompanionTheory.JmMono.jm_le_of_isSubquotient u hu τ _ (isSmooth_prodIrr ![x, y] hd) hτ
   obtain ⟨e, he⟩ := GlobalTheory.CompanionTheory.CuspPairSub.exists_equiv_of_jm_ne_zero ![x, y] u hd hu hxc hpos
-    (ENat.one_le_iff_ne_zero.1 (hj.trans hj'))
+    (Order.one_le_iff_ne_zero.1 (hj.trans hj'))
   have hee : e 0 ≠ e 1 := fun h => by simpa using e.injective h
   have k2 : ∀ a b : Fin 2, a ≠ b → (a = 0 ∧ b = 1) ∨ (a = 1 ∧ b = 0) := by decide
   rcases k2 _ _ hee with ⟨a, b⟩ | ⟨a, b⟩

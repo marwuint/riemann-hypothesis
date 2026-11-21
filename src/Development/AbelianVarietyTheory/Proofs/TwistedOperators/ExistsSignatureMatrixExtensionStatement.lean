@@ -23,4 +23,4 @@ theorem _root_.GlobalTheory.T.exists_signature_matrix_extension : ∀ (D : D7) (
     B *ᵥ (fun i => tauE D τ (zv d i)) = Pi.single (e none) 1 ∧
     (∀ h ∈ Formalism.QuantumDeterminants.UH (gramAt D Y τ), GlobalTheory.PackLoc.embAt θ d τ h ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ)) ∧
     ∀ h ∈ Formalism.QuantumDeterminants.UH (gramAt D Y τ), B * GlobalTheory.PackLoc.embAt θ d τ h * B⁻¹ = GlobalTheory.PackLoc.embOpt e (A * h * A⁻¹) := by
-  first | exact @GlobalTheory.PackFrame.exists_adapted_frame | exact GlobalTheory.PackFrame.exists_adapted_frame | (intros; apply GlobalTheory.PackFrame.exists_adapted_frame <;> assumption)
+  exact @GlobalTheory.PackFrame.exists_adapted_frame

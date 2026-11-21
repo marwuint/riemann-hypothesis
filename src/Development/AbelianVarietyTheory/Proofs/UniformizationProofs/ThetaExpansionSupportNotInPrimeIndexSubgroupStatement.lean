@@ -15,4 +15,4 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UU
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.thetaExpansion_support_not_in_primeIndex_subgroup : Laws → Laws2 → (AllPre fun {V} _ _ _ {D} {A} {G} _ _ U => ∀ θ f, U.Theta θ f → ∀ (l : ℕ), l.Prime → ∀ g : D.X →+ ZMod l, (∀ α, (∃ j, (f α).f j ≠ 0) → g α = 0) → g = 0) := by
-  first | exact @GlobalTheory.UU.PrimeIndex.hom_zmod_eq_zero_of_support | exact GlobalTheory.UU.PrimeIndex.hom_zmod_eq_zero_of_support | (intros; apply GlobalTheory.UU.PrimeIndex.hom_zmod_eq_zero_of_support <;> assumption)
+  exact @GlobalTheory.UU.PrimeIndex.hom_zmod_eq_zero_of_support

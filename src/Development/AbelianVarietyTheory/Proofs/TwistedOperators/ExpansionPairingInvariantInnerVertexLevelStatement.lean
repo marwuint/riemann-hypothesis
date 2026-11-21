@@ -13,4 +13,4 @@ theorem _root_.GlobalTheory.T.expansionPairing_invariant_inner_vertex_level : �
     ∀ (x : ∀ j, FinPt G (.top j)) (y : ∀ i, FinPt G (.grid i D.R.m)) (j : ℕ) (hj : 0 < j) (hjm : j < D.R.m) (k : FinPt G (.top j)),
       finG (G.V (.top j)) k ∈ S.levTop t Φ β j hjm →
       pairPts S τ (Function.update x j (x j * k)) y (Ψ (Function.update x j (x j * k) 0)) (F (y 0)) = pairPts S τ x y (Ψ (x 0)) (F (y 0)) := by
-  first | exact @GlobalTheory.ExpansionInvariance.pairPts_update_top | exact GlobalTheory.ExpansionInvariance.pairPts_update_top | (intros; apply GlobalTheory.ExpansionInvariance.pairPts_update_top <;> assumption)
+  exact @GlobalTheory.ExpansionInvariance.pairPts_update_top

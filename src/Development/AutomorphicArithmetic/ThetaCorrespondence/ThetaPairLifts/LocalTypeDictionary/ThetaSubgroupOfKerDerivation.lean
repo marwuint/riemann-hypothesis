@@ -102,5 +102,5 @@ theorem _root_.GlobalTheory.T.thetaSubgroup_of_ker_derivation : _root_.GlobalThe
     ∃ N : Submodule ℂ ((Fin a' × Fin (a + a') → AF F) → ℂ),
       (∀ Φ, Φ ∈ N ↔ Φ ∈ algD Γ.M' Bs.ψ Bs.emb ∧ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.PolMatch Bs Γ Xc R Rf 0 Φ) ∧
       IsThetaSubG Γ.M' Bs.ψ Bs.emb om' N ∧ N ≠ algD Γ.M' Bs.ψ Bs.emb := by
-  first | exact @_root_.GlobalTheory.KerDSub.ker_derivation_isThetaSubgroup | exact _root_.GlobalTheory.KerDSub.ker_derivation_isThetaSubgroup | (intros; apply _root_.GlobalTheory.KerDSub.ker_derivation_isThetaSubgroup <;> assumption)
+  exact @_root_.GlobalTheory.KerDSub.ker_derivation_isThetaSubgroup
 end

@@ -27,4 +27,4 @@ theorem _root_.GlobalTheory.T.exists_comparisonData_steps_upTo_rank : ∀ {K : C
         (∀ j hj, (I.at' j hj).C = (w.D Z).chTw u ((w.D Z).what₂.muAt v)) ∧
         (∀ j hj, Formalism.MainNotions.G.KAat.ChX (I.at' j hj).st) ∧
         (∀ j, (w.D Z).R.m ≤ j → IsEmpty (Lv.compS j)) := by
-  first | exact @GlobalTheory.Mem.Top.KerOne.CertEq.exists_comparisonData_steps_at_baseCharacter | exact GlobalTheory.Mem.Top.KerOne.CertEq.exists_comparisonData_steps_at_baseCharacter | (intros; apply GlobalTheory.Mem.Top.KerOne.CertEq.exists_comparisonData_steps_at_baseCharacter <;> assumption)
+  exact @GlobalTheory.Mem.Top.KerOne.CertEq.exists_comparisonData_steps_at_baseCharacter

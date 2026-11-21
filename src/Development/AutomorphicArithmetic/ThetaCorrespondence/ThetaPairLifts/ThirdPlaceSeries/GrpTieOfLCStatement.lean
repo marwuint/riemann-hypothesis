@@ -12,5 +12,5 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.grpTie_of_levelC : ∀ {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w} {x : St P} (_ : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel hL x), Formalism.L2.DIV.GrpTie (Dof x) (famR (w.st x.o.Z) w.I P.hX (usedOf w.I T P.Wt) x.m.z.Xg x.m.z.tr).A x.m.z.F.P0 x.m.z.F.ψ0 x.m.z.F.P1 x.m.z.F.ψ1 (x.m.z.R.eG.trans x.m.z.cG) := by
-  first | exact @_root_.GlobalTheory.HeightCounting.Fin3.grpTie_of_LC_alt | exact _root_.GlobalTheory.HeightCounting.Fin3.grpTie_of_LC_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Fin3.grpTie_of_LC_alt <;> assumption)
+  exact @_root_.GlobalTheory.HeightCounting.Fin3.grpTie_of_LC_alt
 end

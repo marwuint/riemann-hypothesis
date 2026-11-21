@@ -11,4 +11,4 @@ theorem _root_.GlobalTheory.T.last_row_update_nhds_generation : ∀ (k : Type) [
     (O : Set (Mir k n)) (hO : O ∈ 𝓝 (1 : Mir k n)),
     ∃ N ∈ 𝓝 (1 : GL (Fin (n + 1)) k), ∀ p ∈ S, ∀ x ∈ N, ∀ m : Mir k n, (m : GL (Fin (n + 1)) k) = p * x →
       ∃ a : Mir k n, (a : GL (Fin (n + 1)) k) ∈ S ∧ ∃ x' ∈ O, m = a * x' := by
-  first | exact @GlobalTheory.CompanionTheory.BZPhiPG.OntoO.RowRep.row_replacement | exact GlobalTheory.CompanionTheory.BZPhiPG.OntoO.RowRep.row_replacement | (intros; apply GlobalTheory.CompanionTheory.BZPhiPG.OntoO.RowRep.row_replacement <;> assumption)
+  exact @GlobalTheory.CompanionTheory.BZPhiPG.OntoO.RowRep.row_replacement

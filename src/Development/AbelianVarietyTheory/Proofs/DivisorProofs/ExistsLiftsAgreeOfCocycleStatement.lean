@@ -27,4 +27,4 @@ theorem _root_.GlobalTheory.T.exists_lifts_agree_of_cocycle_alt : ∀ (R R₀ : 
       (∀ k, spMap (Localization.awayMap π (f k)) ≫ e k = spMap (algebraMap R₀ (Localization.Away (π (f k)))) ≫ g₀) ∧
       ∀ j k, spMap (IsLocalization.Away.awayToAwayRight (P := Localization.Away (f j * f k)) (f j) (f k)) ≫ e j =
         spMap (IsLocalization.Away.awayToAwayLeft (P := Localization.Away (f j * f k)) (f k) (f j)) ≫ e k := by
-  first | exact @GlobalTheory.SecGlue.Cocycle.exists_lifts_agree_of_cocycle | exact GlobalTheory.SecGlue.Cocycle.exists_lifts_agree_of_cocycle | (intros; apply GlobalTheory.SecGlue.Cocycle.exists_lifts_agree_of_cocycle <;> assumption)
+  exact @GlobalTheory.SecGlue.Cocycle.exists_lifts_agree_of_cocycle

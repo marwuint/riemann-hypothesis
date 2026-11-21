@@ -62,5 +62,5 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open GlobalTheory.Grow GlobalTheory.Size
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.averaging_preserves_cusp_type : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (N : GlobalTheory.Grid.Node D) (ψ : GA D N.V → ℂ), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.IsCuspOfType θ N ψ → ∀ (τ : D.what₂.Tau) (e : Formalism.REAL.KG (N.M.ε τ) → ℂ), GlobalTheory.TypeSum.KFinFun (N.M.ε τ) e → GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.IsCuspOfType θ N (GlobalTheory.SeriesToClosure.avg θ N.V τ (N.M.ε τ) (N.M.fr τ) e ψ) := by
-  first | exact @_root_.GlobalTheory.AvgCuspType.cusp_average_isCuspOfType | exact _root_.GlobalTheory.AvgCuspType.cusp_average_isCuspOfType | (intros; apply _root_.GlobalTheory.AvgCuspType.cusp_average_isCuspOfType <;> assumption)
+  exact @_root_.GlobalTheory.AvgCuspType.cusp_average_isCuspOfType
 end

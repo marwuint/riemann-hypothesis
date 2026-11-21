@@ -17,4 +17,4 @@ theorem _root_.GlobalTheory.T.coboundaryMod_iff_forall_traceForm_coboundary : �
     L1Z.T = LinearMap.range (Algebra.linearMap ℤ_[l] ℚ_[l]) →
     ∀ (z : ↥(GK K) × ↥(GK K) → LL),
     (CobO (P.PD K) L1 z ↔ ∀ o : O, CobO (P.PD K) L1Z (fun x => lam (algebraMap O LL o * z x))) := by
-  first | exact @GlobalTheory.cobO_iff_forall_lam | exact GlobalTheory.cobO_iff_forall_lam | (intros; apply GlobalTheory.cobO_iff_forall_lam <;> assumption)
+  exact @GlobalTheory.cobO_iff_forall_lam

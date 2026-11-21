@@ -31,4 +31,4 @@ theorem _root_.GlobalTheory.T.period_data_dual_exact : ∀ {G : Type} [Group G] 
     (∀ g, ρ' g = ((tableLineDegreeTwo.charL (LL := LL) χ g)⁻¹ : LLˣ).val • ρ g) → L'.T = L.T →
     ∀ (z : G → ↥L.T ⊗[O] X) (hz : z ∈ Z1 (twCoef (latRep L) χ X) ⊤),
       (Submodule.Quotient.mk ⟨z, hz⟩ ∈ finiteSelmer PD L χ X ↔ tableLineDegreeTwo.InHfX PD L L' X χ z) := by
-  first | exact @GlobalTheory.AdmLoc.mk_mem_H1fX_iff_inHfX | exact GlobalTheory.AdmLoc.mk_mem_H1fX_iff_inHfX | (intros; apply GlobalTheory.AdmLoc.mk_mem_H1fX_iff_inHfX <;> assumption)
+  exact @GlobalTheory.AdmLoc.mk_mem_H1fX_iff_inHfX

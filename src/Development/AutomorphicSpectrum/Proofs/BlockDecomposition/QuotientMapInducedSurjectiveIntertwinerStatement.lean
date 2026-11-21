@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.quotient_map_induced_surjective_intertwiner : ∀ 
       ∃ h' ∈ H', ∃ κ' ∈ K', x = h' * κ') →
     (∀ O ∈ 𝓝 (1 : G), ∃ K : Subgroup G, IsOpen (K : Set G) ∧ IsCompact (K : Set G) ∧ (K : Set G) ⊆ O) →
     ∀ F : cIndSpace H' σ', ∃ f : cIndSpace H σ, ∀ x, F.1.1.1 x = q (f.1.1.1 (ι x)) := by
-  first | exact @GlobalTheory.CompanionTheory.LeibPhi.exists_cInd_restrict_eq | exact GlobalTheory.CompanionTheory.LeibPhi.exists_cInd_restrict_eq | (intros; apply GlobalTheory.CompanionTheory.LeibPhi.exists_cInd_restrict_eq <;> assumption)
+  exact @GlobalTheory.CompanionTheory.LeibPhi.exists_cInd_restrict_eq

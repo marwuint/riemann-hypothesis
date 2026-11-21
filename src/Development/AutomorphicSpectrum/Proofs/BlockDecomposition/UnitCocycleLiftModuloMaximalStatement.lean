@@ -19,4 +19,4 @@ theorem _root_.GlobalTheory.T.unit_cocycle_lift_modulo_maximal : ∀ (R : Type) 
             rs X (le₂₃ V a c d) (b i c d) - rs X (le₁₃ V a c d) (b i a d)) ∈ ext s (𝔪 * I) (V a ⊓ V c ⊓ V d)) ∧
         ∀ a c, rs X inf_le_left (u a) - tr M V j hj a c * rs X inf_le_right (u c) *
           (1 + ∑ i, GlobalTheory.SmallExtLift.cst s _ (t i) * b i a c) ∈ ext s (𝔪 * I) (V a ⊓ V c) := by
-  first | exact @GlobalTheory.CompanionTheory.FewEq.Cochain.exists_cochain | exact GlobalTheory.CompanionTheory.FewEq.Cochain.exists_cochain | (intros; apply GlobalTheory.CompanionTheory.FewEq.Cochain.exists_cochain <;> assumption)
+  exact @GlobalTheory.CompanionTheory.FewEq.Cochain.exists_cochain

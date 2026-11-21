@@ -77,6 +77,6 @@ open GlobalTheory.HeightCounting.Up (PrN)
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.local_fixed_point_of_third_layer : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ (D : D7) (X : RealSide D) (X0 : BaseLevelRowSide D) (Y : GlobalTheory.Mem.R3.Read (A3 := X.A3) X.R.toRealDat X.F.lv2 X0) (S : NX.RatDat D.ntw) (YS : NX.NExpRealS X.R X.cG S) (Z : ExportTie YS X.geo.v₀) (c : NChoice D) (w : D.what₂.places.Pl) (j : Fin D.R.m) (H : AtPlace Y Z c w j),
   ∀ τ : ℂ ≃+* ℂ, (∀ a, τ (embLL0 D a) = embLL0 D a) → FixBase X.core X.R.toRealDat j τ ∧ FixDat (baseOf Z c w j) τ := by
-  first | exact @_root_.GlobalTheory.PlaceFix.fixed_at_place_of_local_alt | exact _root_.GlobalTheory.PlaceFix.fixed_at_place_of_local_alt | (intros; apply _root_.GlobalTheory.PlaceFix.fixed_at_place_of_local_alt <;> assumption)
+  exact @_root_.GlobalTheory.PlaceFix.fixed_at_place_of_local_alt
 end
 end

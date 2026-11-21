@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.finrank_graphJets_le_choose : ∀ {κ κ' : Type} 
   Module.finrank κ' ((κ ⊗[ℂ] κ') ⧸ (RingHom.ker (Algebra.TensorProduct.productMap ρ (AlgHom.id ℂ κ'))) ^ M) ≤
     (M + k - 1).choose k ∧
   Module.Finite κ' ((κ ⊗[ℂ] κ') ⧸ (RingHom.ker (Algebra.TensorProduct.productMap ρ (AlgHom.id ℂ κ'))) ^ M) := by
-  first | exact @GlobalTheory.JetDim.jets_finrank_le | exact GlobalTheory.JetDim.jets_finrank_le | (intros; apply GlobalTheory.JetDim.jets_finrank_le <;> assumption)
+  exact @GlobalTheory.JetDim.jets_finrank_le

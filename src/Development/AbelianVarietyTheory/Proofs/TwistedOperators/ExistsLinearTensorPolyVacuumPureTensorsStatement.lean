@@ -24,4 +24,4 @@ theorem _root_.GlobalTheory.T.exists_linear_tensor_polyVacuum_pureTensors : ∀ 
         (∀ v (h : v ∈ T), φ' v = φ ⟨v, h⟩) → (∀ v ∉ T, φ' v = M.vac v) →
         L (f ⊗ₜ[ℂ] PiTensorProduct.tprod ℂ φ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin n × Fin d)) φ') ∧
       GlobalTheory.HoweGlobal.algAt M ψ emb T ≤ LinearMap.range L := by
-  first | exact @GlobalTheory.HoweGlobal.TensorMap.exists_tensL | exact GlobalTheory.HoweGlobal.TensorMap.exists_tensL | (intros; apply GlobalTheory.HoweGlobal.TensorMap.exists_tensL <;> assumption)
+  exact @GlobalTheory.HoweGlobal.TensorMap.exists_tensL

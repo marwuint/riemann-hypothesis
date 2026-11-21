@@ -10,4 +10,4 @@ open GlobalTheory.HermFrame GlobalTheory.IndefiniteRowSideFullHecke.HermitianCur
 
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.ext_trace_nonneg_of_pos_frame : ∀ {V : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedSpace ℝ V] [IsScalarTower ℝ ℂ V] {m l : Type} [Fintype m] [Fintype l] [DecidableEq m] [DecidableEq l] {U : Set V} {H : V → Matrix (m ⊕ l) (m ⊕ l) ℂ} {z : V} (h : IsPosFrame U H) (hz : z ∈ U), IsNonnegForm (extTrace H z) := by
-  first | exact @GlobalTheory.HermFrame.isNonnegForm_extTrace | exact GlobalTheory.HermFrame.isNonnegForm_extTrace | (intros; apply GlobalTheory.HermFrame.isNonnegForm_extTrace <;> assumption)
+  exact @GlobalTheory.HermFrame.isNonnegForm_extTrace

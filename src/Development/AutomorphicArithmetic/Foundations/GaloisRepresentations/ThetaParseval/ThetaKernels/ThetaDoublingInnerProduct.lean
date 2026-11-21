@@ -17,5 +17,5 @@ theorem _root_.GlobalTheory.T.theta_doubling_inner_product : ∀ (F E : Type) [F
         Formalism.IndefR.DatumF.heisOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ w (GlobalTheory.DblTargetDelta.deltaT f₁ f₂) =
           GlobalTheory.DblTargetDelta.deltaT (Formalism.IndefR.DatumF.heisOF σ JS JT ξ₀ B.ψ (GlobalTheory.DblTargetDelta.topR w) f₁)
             (Formalism.IndefR.DatumF.heisOF σ JS JT ξ₀ B.ψ (-GlobalTheory.DblTargetDelta.botR w) f₂) := by
-  first | exact @_root_.GlobalTheory.DblHeis.heisOF_dblG_deltaT_k | exact _root_.GlobalTheory.DblHeis.heisOF_dblG_deltaT_k | (intros; apply _root_.GlobalTheory.DblHeis.heisOF_dblG_deltaT_k <;> assumption)
+  exact @_root_.GlobalTheory.DblHeis.heisOF_dblG_deltaT_k
 end

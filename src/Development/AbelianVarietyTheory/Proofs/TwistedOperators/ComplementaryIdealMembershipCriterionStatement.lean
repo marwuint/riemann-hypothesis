@@ -12,4 +12,4 @@ open GlobalTheory.AscFin
 open GlobalTheory.XCharBF
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.complementary_ideal_membership_criterion : ∀ {D : D7}, OffQ D → ∀ {T : Type} {L : LevCh D T} (μ0 : T), L.Is μ0 → ∀ {sc : Consts} (G : GridData L sc) (c : AE D), c ∈ complId (D.host.AA * G.pl.stAbar sc) → (∀ e, IsIdemSum e G.pl.W0 → e * c ∈ complId D.host.AAbar) → c ∈ complId (D.host.AA * D.host.AAbar) := by
-  first | exact @GlobalTheory.XCharComb.mem_complId_AA_AAbar | exact GlobalTheory.XCharComb.mem_complId_AA_AAbar | (intros; apply GlobalTheory.XCharComb.mem_complId_AA_AAbar <;> assumption)
+  exact @GlobalTheory.XCharComb.mem_complId_AA_AAbar

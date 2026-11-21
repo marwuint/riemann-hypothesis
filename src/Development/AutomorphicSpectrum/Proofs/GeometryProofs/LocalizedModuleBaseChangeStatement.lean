@@ -7,4 +7,4 @@ theorem _root_.GlobalTheory.T.localized_module_base_change : ∀ (R P C C' : Typ
   [Module.Projective (Localization.Away f) P], IsUnit (algebraMap R C f) → ∀ c : C →ₐ[R] C',
   IsLocalizedModule (Submonoid.powers t) c.toLinearMap →
   IsLocalizedModule (Submonoid.powers t) (LinearMap.compRight R c.toLinearMap : (P →ₗ[R] C) →ₗ[R] (P →ₗ[R] C')) := by
-  first | exact @GlobalTheory.CompanionTheory.LocHom.isLocalizedModule_compRight_away | exact GlobalTheory.CompanionTheory.LocHom.isLocalizedModule_compRight_away | (intros; apply GlobalTheory.CompanionTheory.LocHom.isLocalizedModule_compRight_away <;> assumption)
+  exact @GlobalTheory.CompanionTheory.LocHom.isLocalizedModule_compRight_away

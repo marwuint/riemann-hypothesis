@@ -22,4 +22,4 @@ theorem _root_.GlobalTheory.T.lastStepDatum_fixed_congruentFrameChange_twistPrim
   (∀ l, IntAt P.1 ((qOf P.1 : X.E) ^ cst.M * y'' l)) →
   topDat Ch sel mu cst (m2 + 1) P (κ'.symm.toLinearMap ∘ₗ y ∘ₗ κ.toLinearMap) (κ.symm y'') =
     topDat Ch sel mu cst (m2 + 1) P y y'' := by
-  first | exact @GlobalTheory.TopFrameQM.topDat_frames_qM | exact GlobalTheory.TopFrameQM.topDat_frames_qM | (intros; apply GlobalTheory.TopFrameQM.topDat_frames_qM <;> assumption)
+  exact @GlobalTheory.TopFrameQM.topDat_frames_qM

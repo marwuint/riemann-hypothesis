@@ -40,5 +40,5 @@ theorem _root_.GlobalTheory.T.doubleLine_eigenspace_decomposition_split : _root_
     ∀ R : (Fin a' × Fin (a + a') → AF F) → ℂ, Rest (evFin F v) (G.M'.vac v) R →
     ∀ g ∈ GlobalTheory.InertDbl.KAtD σ G.W v, ∃ c : ℂ, omd g (GlobalTheory.InertDbl.dblFun (tens (evFin F v) (G.M'.vac v) R)) =
       c • GlobalTheory.InertDbl.dblFun (tens (evFin F v) (G.M'.vac v) R) := by
-  first | exact @_root_.GlobalTheory.SplitDblLine.doubleLine_eigenfunction_split | exact _root_.GlobalTheory.SplitDblLine.doubleLine_eigenfunction_split | (intros; apply _root_.GlobalTheory.SplitDblLine.doubleLine_eigenfunction_split <;> assumption)
+  exact @_root_.GlobalTheory.SplitDblLine.doubleLine_eigenfunction_split
 end

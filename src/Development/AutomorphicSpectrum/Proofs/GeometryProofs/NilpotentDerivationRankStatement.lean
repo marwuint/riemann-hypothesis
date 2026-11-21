@@ -9,4 +9,4 @@ theorem _root_.GlobalTheory.T.nilpotent_derivation_rank : ∀ (k : Type) [Field 
       Module.finrank k R = p * Module.finrank k (LinearMap.ker (D : R →ₗ[k] R)) ∧
       ∃ z : R, ε (D z) ≠ 0 ∧ ∀ u : R →ₗ[k] k, (∀ a b : R, u (a * b) = u a * ε b + ε a * u b) →
         (∀ a : R, D a = 0 → u a = 0) → u z = 0 → u = 0 := by
-  first | exact @GlobalTheory.CompanionTheory.Ggeo.DerivFree.finrank_and_vanishing | exact GlobalTheory.CompanionTheory.Ggeo.DerivFree.finrank_and_vanishing | (intros; apply GlobalTheory.CompanionTheory.Ggeo.DerivFree.finrank_and_vanishing <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Ggeo.DerivFree.finrank_and_vanishing

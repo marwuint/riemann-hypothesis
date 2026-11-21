@@ -10,4 +10,4 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Ro
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.unfoldedVacuaAreRealDatum_largeDepth : Big fun ch => VacReal ch := by
-  first | exact @GlobalTheory.VacRealPf.vacReal | exact GlobalTheory.VacRealPf.vacReal | (intros; apply GlobalTheory.VacRealPf.vacReal <;> assumption)
+  exact @GlobalTheory.VacRealPf.vacReal

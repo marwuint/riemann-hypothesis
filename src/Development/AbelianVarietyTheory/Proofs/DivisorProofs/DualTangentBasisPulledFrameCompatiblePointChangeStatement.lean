@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.dualTangentBasis_pulledFrame_compatible_pointChang
     KeyVals.IsDual c ξ y → KeyVals.IsDual c ξ' y' →
     ∀ F : DualNumber R →+* DualNumber R', (∀ a, F (algebraMap R _ a) = algebraMap R' _ (r a)) →
       F DualNumber.eps = DualNumber.eps → ∀ j, (y' j).left ≫ pullback.fst G.hom ξ' = spMap F ≫ (y j).left ≫ pullback.fst G.hom ξ := by
-  first | exact @GlobalTheory.KeyVals.Vec.dual_vec | exact GlobalTheory.KeyVals.Vec.dual_vec | (intros; apply GlobalTheory.KeyVals.Vec.dual_vec <;> assumption)
+  exact @GlobalTheory.KeyVals.Vec.dual_vec

@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.hermitianForm_integral_preimage_lattice : ∀ (L :
       (∀ i, w' i ∈ Formalism.UG.intL L) →
       Formalism.UG.hform σ (JS : Matrix (Fin n) (Fin n) L) (u + GlobalTheory.Hk3.HoweG.adj σ JS JT x *ᵥ w)
         (u' + GlobalTheory.Hk3.HoweG.adj σ JS JT x *ᵥ w') ∈ Formalism.UG.intL L := by
-  first | exact @GlobalTheory.Hk3.HoweG.GramA.hform_integral | exact GlobalTheory.Hk3.HoweG.GramA.hform_integral | (intros; apply GlobalTheory.Hk3.HoweG.GramA.hform_integral <;> assumption)
+  exact @GlobalTheory.Hk3.HoweG.GramA.hform_integral

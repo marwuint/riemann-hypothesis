@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.unfoldingExpansion_productFunction_fixed_by_Kplus 
     ∀ z : ∀ l : Arr D, WO (G.pS (arrP t l)) (G.pT (arrP t l)),
       (τ.sum fun d b => b * ∏ l, moveFirst W ((S.N.u (.top 0))⁻¹ * k * S.N.u (.top 0)) (vecsOf S d) l (z l)) =
         τ.sum fun d b => b * ∏ l, vecsOf S d l (z l) := by
-  first | exact @GlobalTheory.TopZeroFirst.product_invariant | exact GlobalTheory.TopZeroFirst.product_invariant | (intros; apply GlobalTheory.TopZeroFirst.product_invariant <;> assumption)
+  exact @GlobalTheory.TopZeroFirst.product_invariant

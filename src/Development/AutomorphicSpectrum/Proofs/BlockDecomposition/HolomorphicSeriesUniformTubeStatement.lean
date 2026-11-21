@@ -12,4 +12,4 @@ theorem _root_.GlobalTheory.T.holomorphic_series_uniform_tube : ∀ (ι X T : Ty
       ∀ l ∈ PositivityTheory.RgEis.tube V, ∀ g' ∈ U, ∀ r, ‖t r l g'‖ ≤ u r) →
     PositivityTheory.RgEis.TubeGood (fun l g => ∑' r, t r l g) Ω ∧
       ∀ l ∈ PositivityTheory.RgEis.tube Ω, ∀ g, Summable fun r => ‖t r l g‖ := by
-  first | exact @GlobalTheory.CompanionTheory.RgEisCross.tubeGood_tsum | exact GlobalTheory.CompanionTheory.RgEisCross.tubeGood_tsum | (intros; apply GlobalTheory.CompanionTheory.RgEisCross.tubeGood_tsum <;> assumption)
+  exact @GlobalTheory.CompanionTheory.RgEisCross.tubeGood_tsum

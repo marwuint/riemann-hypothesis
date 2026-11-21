@@ -29,4 +29,4 @@ theorem _root_.GlobalTheory.T.associated_psi_coordinates_of_tau_units : ∀ (E :
               (g := (algebraMap W (FractionRing W)).comp g) ((IsFractionRing.injective W (FractionRing W)).comp hg) (x : FractionRing R) =
             algebraMap W (FractionRing W) (u : W) * (x' : FractionRing W)) →
     ∀ (y : P.D.toPre.X) (r : R) (r' : W), PsiCoord P.D.toPre y r → PsiCoord P'.D.toPre (ρ y) r' → Associated (g r) r' := by
-  first | exact @GlobalTheory.PsiFromTau.associated_of_tau | exact GlobalTheory.PsiFromTau.associated_of_tau | (intros; apply GlobalTheory.PsiFromTau.associated_of_tau <;> assumption)
+  exact @GlobalTheory.PsiFromTau.associated_of_tau

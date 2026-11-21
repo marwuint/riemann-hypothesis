@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.artin_restrict_eq_artin_norm_single_place : ∀ (E
         toAb E Ω (τ.restrictScalars E) =
           art (localIdele E v (Units.map (algebraMap E (v.adicCompletion E)).toMonoidHom
             (Units.map (Algebra.norm E (S := K)) y))) := by
-  first | exact @GlobalTheory.NormCompat.res_art_eq_art_norm | exact GlobalTheory.NormCompat.res_art_eq_art_norm | (intros; apply GlobalTheory.NormCompat.res_art_eq_art_norm <;> assumption)
+  exact @GlobalTheory.NormCompat.res_art_eq_art_norm

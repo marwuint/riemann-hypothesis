@@ -7,4 +7,4 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.exists_localComponent_conj_splitPlace : ∀ (D : D7) (π : NG.AutRep D.host.E D.R.nV) (s : SplitPlace D.host.E) (w : PlE D.host),
     IsConjPl D.host w s.w → ∃ x, GlobalTheory.AutQuot.LocAt π w x := by
-  first | exact @GlobalTheory.AutQuot.conjLoc | exact GlobalTheory.AutQuot.conjLoc | (intros; apply GlobalTheory.AutQuot.conjLoc <;> assumption)
+  exact @GlobalTheory.AutQuot.conjLoc

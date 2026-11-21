@@ -22,4 +22,4 @@ theorem _root_.GlobalTheory.T.exists_global_section_angehrnSiu_inductive_step : 
     ∃ δ₀ : ℚ, 0 < δ₀ ∧ δ₀ ≤ 1 ∧ ∀ u ∈ (l • A).sections, (l • A).VanishesAt z u →
       ∀ g : X.functionFieldˣ, (g : X.functionField) = f₀ + u → ∀ δ : ℚ, 0 ≤ δ → δ ≤ δ₀ → ∀ x ∈ P,
         ¬ KltAt p n (Δ + (1 - δ) • D + (h / l) • qWeil (CartierDiv.principal g + l • A) 1) x := by
-  first | exact @GlobalTheory.PairStep.exists_global_step | exact GlobalTheory.PairStep.exists_global_step | (intros; apply GlobalTheory.PairStep.exists_global_step <;> assumption)
+  exact @GlobalTheory.PairStep.exists_global_step

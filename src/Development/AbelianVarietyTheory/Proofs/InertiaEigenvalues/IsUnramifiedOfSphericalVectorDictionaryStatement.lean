@@ -10,4 +10,4 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.isUnramified_of_sphericalVector_dictionary : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (F : FinIso L n) (π : NG.AutRep L n) (U : Submodule ℂ (UA L n → ℂ)), Dict F π U → ∀ (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)), NG.OverPl w v → π.SphAt v → IsUnramU U w := by
-  first | exact @GlobalTheory.UnramDict.isUnramU_of_sphAt | exact GlobalTheory.UnramDict.isUnramU_of_sphAt | (intros; apply GlobalTheory.UnramDict.isUnramU_of_sphAt <;> assumption)
+  exact @GlobalTheory.UnramDict.isUnramU_of_sphAt

@@ -6,4 +6,4 @@ theorem _root_.GlobalTheory.T.exists_pos_smul_eq_of_linearIndependent_cone' : �
     (a : Fin m' → ℕ), LinearIndependent ℤ δ → 0 < k → k • δ i = ∑ j, a j • γ j →
     (∀ j, 0 < a j → ∃ (k' : ℕ) (b : Fin m → ℕ), 0 < k' ∧ k' • γ j = ∑ l, b l • δ l) →
     ∃ (j : Fin m') (p r : ℕ), 0 < p ∧ 0 < r ∧ p • δ i = r • γ j := by
-  first | exact @GlobalTheory.exists_pos_smul_eq_of_linearIndependent_cone | exact GlobalTheory.exists_pos_smul_eq_of_linearIndependent_cone | (intros; apply GlobalTheory.exists_pos_smul_eq_of_linearIndependent_cone <;> assumption)
+  exact @GlobalTheory.exists_pos_smul_eq_of_linearIndependent_cone

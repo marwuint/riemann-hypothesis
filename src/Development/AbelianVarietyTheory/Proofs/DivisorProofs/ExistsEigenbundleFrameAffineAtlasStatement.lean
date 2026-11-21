@@ -5,4 +5,4 @@ open AlgebraicGeometry CategoryTheory TopologicalSpace Limits NumberField Recipr
 open GlobalTheory.FlagMod.LowRank (ECh Proj str)
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.exists_eigenbundleFrameAffineAtlas : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (Y : Model Xo c (RingHom.id c.F)) (p : Proj (RingHom.id c.F)), PushInvertible Y.t.G Y.t.PP.L → Nonempty (Atlas Y p) := by
-  first | exact @GlobalTheory.FlagMod.FieldFlag.exists_atlas | exact GlobalTheory.FlagMod.FieldFlag.exists_atlas | (intros; apply GlobalTheory.FlagMod.FieldFlag.exists_atlas <;> assumption)
+  exact @GlobalTheory.FlagMod.FieldFlag.exists_atlas

@@ -8,4 +8,4 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.baseChangeBis : ∀ (S : Scheme.{0}) (A S' S'' : Over S) [GrpObj A] (g : ℕ) (_ : S'' ⟶ S'), HasRep A g S' → HasRep A g S'' := by
-  first | exact @GlobalTheory.DualCon.HasRep.baseChange | exact GlobalTheory.DualCon.HasRep.baseChange | (intros; apply GlobalTheory.DualCon.HasRep.baseChange <;> assumption)
+  exact @GlobalTheory.DualCon.HasRep.baseChange

@@ -11,4 +11,4 @@ open scoped TensorProduct InnerProductSpace Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.realTranslation_cuspFormMaps_eq_smooth_linear_map : ∀ (D : D7) (θ : InfFam D) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S), IsInfFam θ → ∀ g ∈ GinfC V, ∃ σ : SmT M →ₗ[ℂ] SmT M, ∀ (J : Set (GA D V)) (χ : GA D V → ℂ), ∀ T ∈ MultT θ M J χ, ∀ x, T (σ x) = rTrans g (T x) := by
-  first | exact @GlobalTheory.RealTransSm.rTrans_eq_map | exact GlobalTheory.RealTransSm.rTrans_eq_map | (intros; apply GlobalTheory.RealTransSm.rTrans_eq_map <;> assumption)
+  exact @GlobalTheory.RealTransSm.rTrans_eq_map

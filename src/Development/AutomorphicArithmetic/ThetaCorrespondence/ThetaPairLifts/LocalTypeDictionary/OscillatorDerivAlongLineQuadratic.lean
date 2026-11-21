@@ -56,5 +56,5 @@ theorem _root_.GlobalTheory.T.oscillator_lie_action_quadratic : _root_.GlobalThe
         (∀ i, ActsD (evI F) (M.heisLine ψ (v i)) f (g₁ i)) → (∀ i, ActsD (evI F) (M.heisLine ψ (u i)) (g₁ i) (g₂ i)) →
         ∀ F₁ : ℝ → SInf F (Fin n × Fin d), (∀ t, Acts (evI F) (om (1, γ (Multiplicative.ofAdd t))) f (F₁ t)) →
         ∀ y, HasDerivAt (fun t => F₁ t y) (∑ i, c i * g₂ i y + c₀ * f y) 0 := by
-  first | exact @_root_.GlobalTheory.OscQuad.oscillator_deriv_along_line_quadratic | exact _root_.GlobalTheory.OscQuad.oscillator_deriv_along_line_quadratic | (intros; apply _root_.GlobalTheory.OscQuad.oscillator_deriv_along_line_quadratic <;> assumption)
+  exact @_root_.GlobalTheory.OscQuad.oscillator_deriv_along_line_quadratic
 end

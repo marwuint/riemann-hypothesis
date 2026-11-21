@@ -35,4 +35,4 @@ theorem _root_.GlobalTheory.T.exists_graded_form_on_affine_chart : KH.LocGr → 
         (hQ : Q = St (TF l s) {W}) (hQ₀ : Q ≤ St (TF l s) {W₀}) (hF : IsFil (sP Q) (sFil Q)) (hQW : ∀ T, Q T → InU W T)
         (h : HU (GlobalTheory.CompanionTheory.GrCech.grF (nlFun (dividedPowersBot O) 0 X q (Ideal.Quotient.mk ⊥)) r) Q r),
         ∃! f : Idx r d → Γ(X, W), h = ∑ k, GlobalTheory.CompanionTheory.GrCech.fAct hF hQW r (f k) ((resU (GlobalTheory.CompanionTheory.GrCech.grF (nlFun (dividedPowersBot O) 0 X q (Ideal.Quotient.mk ⊥)) r) hQ₀).pull r (ω k)) := by
-  first | exact @GlobalTheory.CompanionTheory.GrCech.Omega.basis | exact GlobalTheory.CompanionTheory.GrCech.Omega.basis | (intros; apply GlobalTheory.CompanionTheory.GrCech.Omega.basis <;> assumption)
+  exact @GlobalTheory.CompanionTheory.GrCech.Omega.basis

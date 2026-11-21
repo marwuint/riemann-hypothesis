@@ -12,4 +12,4 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open Classical
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.exists_e8Form_value_coprime_oddPrimePow : ∀ (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (p k : ℕ), p.Prime → p ≠ 2 → ∃ ε : Fin 8 → ℤ, Nat.Coprime ((p ^ k) ^ 2) (2 * (∑ u, ∑ v, W u v * ε u * ε v).natAbs) := by
-  first | exact @GlobalTheory.exists_e8Form_value_coprime_oddPrimePow' | exact GlobalTheory.exists_e8Form_value_coprime_oddPrimePow' | (intros; apply GlobalTheory.exists_e8Form_value_coprime_oddPrimePow' <;> assumption)
+  exact @GlobalTheory.exists_e8Form_value_coprime_oddPrimePow'

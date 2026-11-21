@@ -73,5 +73,5 @@ theorem _root_.GlobalTheory.T.bottomIntegral_leftInvariant_rationalPoints : ∀ 
     {i j : Fin D.R.m} {A A' WW : HSp D} {X : Tri T A A' WW}, _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → L.Is μ₀ →
     IsBottomTri W i j X →
     ∀ t P, ∀ γ ∈ GQ WW, ∀ x, X.I W.ψ W.θ t P (γ * x) = X.I W.ψ W.θ t P x := by
-  first | exact @_root_.GlobalTheory.RowTest.BottomRat.bottomIntegral_rational_left | exact _root_.GlobalTheory.RowTest.BottomRat.bottomIntegral_rational_left | (intros; apply _root_.GlobalTheory.RowTest.BottomRat.bottomIntegral_rational_left <;> assumption)
+  exact @_root_.GlobalTheory.RowTest.BottomRat.bottomIntegral_rational_left
 end

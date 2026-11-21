@@ -21,4 +21,4 @@ theorem _root_.GlobalTheory.T.finite_z_span_integral_representation : ∀ (E : T
       (ν : Measure (AutomorphicForm.archGroup E a)) [ν.IsHaarMeasure],
       ∃ κ : AutomorphicForm.archGroup E a → ℂ, Continuous κ ∧ HasCompactSupport κ ∧
         ∀ g : GA E a, φ.1 g = ∫ y, φ.1 (g * AutomorphicForm.infEmb E a y) * κ y ∂ν := by
-  first | exact @GlobalTheory.CompanionTheory.HCRep.GrowthKernel.exists_kernel_of_finite | exact GlobalTheory.CompanionTheory.HCRep.GrowthKernel.exists_kernel_of_finite | (intros; apply GlobalTheory.CompanionTheory.HCRep.GrowthKernel.exists_kernel_of_finite <;> assumption)
+  exact @GlobalTheory.CompanionTheory.HCRep.GrowthKernel.exists_kernel_of_finite

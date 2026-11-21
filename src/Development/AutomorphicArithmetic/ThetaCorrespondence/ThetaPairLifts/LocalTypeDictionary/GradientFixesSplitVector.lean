@@ -69,5 +69,5 @@ theorem _root_.GlobalTheory.T.nabla_preserves_split_fixed : _root_.GlobalTheory.
     ∀ R : (Fin a' × Fin (a + a') → AF F) → ℂ, R 0 ≠ 0 → Rest (evFin F v) (G.M'.vac v) R →
     ∀ n ∈ GlobalTheory.InertDbl.NabD σ G.W v, omd n (GlobalTheory.InertDbl.dblFun (tens (evFin F v) (G.M'.vac v) R)) =
       GlobalTheory.InertDbl.dblFun (tens (evFin F v) (G.M'.vac v) R) := by
-  first | exact @_root_.GlobalTheory.NabFixSplit.gradient_fixes_split_vector | exact _root_.GlobalTheory.NabFixSplit.gradient_fixes_split_vector | (intros; apply _root_.GlobalTheory.NabFixSplit.gradient_fixes_split_vector <;> assumption)
+  exact @_root_.GlobalTheory.NabFixSplit.gradient_fixes_split_vector
 end

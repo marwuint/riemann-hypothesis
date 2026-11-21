@@ -23,4 +23,4 @@ theorem _root_.GlobalTheory.T.exists_goodSchrodingerModel_conjugateDoubled : ∀
       (hJ : X.J = (1 : D.host.E) • (spW G i j).gram) (r s r' s' : ℕ),
       X.IsHerm D.sp.cm.sig B r s → Y.IsSkew D.sp.cm.sig B r' s' →
       ∃ co vac dom, Model.IsGood (Model.mk (σ := D.sp.cm.sig) (X := X) (W := Y) co vac ((M.ν (.grid ((i : ℕ) + 1) ((j : ℕ) + 1))).map (conjU _ 1 hJ)) dom) B.ψ := by
-  first | exact @GlobalTheory.SquareModel.exists_isGood_model_conj | exact GlobalTheory.SquareModel.exists_isGood_model_conj | (intros; apply GlobalTheory.SquareModel.exists_isGood_model_conj <;> assumption)
+  exact @GlobalTheory.SquareModel.exists_isGood_model_conj

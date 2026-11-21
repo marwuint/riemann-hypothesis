@@ -10,4 +10,4 @@ theorem _root_.GlobalTheory.T.partial_operator_fderiv_formula : ∀ (V : Type) [
     (P : SchwartzMap (κ' → V) ℂ →L[ℂ] SchwartzMap (κ₁' → V) ℂ) (f : SchwartzMap (κ ⊕ κ' → V) ℂ),
     Differentiable ℝ (qOp P f) ∧ ∀ (s v : κ ⊕ κ₁' → V),
       fderiv ℝ (qOp P f) s v = qOp P (pd (padL (κ' := κ') (v ∘ Sum.inl)) f) s + qOp ((pd (v ∘ Sum.inr)).comp P) f s := by
-  first | exact @GlobalTheory.SliceOp.differentiable_qOp_and_fderiv | exact GlobalTheory.SliceOp.differentiable_qOp_and_fderiv | (intros; apply GlobalTheory.SliceOp.differentiable_qOp_and_fderiv <;> assumption)
+  exact @GlobalTheory.SliceOp.differentiable_qOp_and_fderiv

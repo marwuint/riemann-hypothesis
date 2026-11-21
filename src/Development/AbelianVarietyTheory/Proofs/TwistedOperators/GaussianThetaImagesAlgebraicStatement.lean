@@ -28,4 +28,4 @@ theorem _root_.GlobalTheory.T.seesaw_weil_zeta_nonvanishing : GlobalTheory.Publi
           (φ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl D.host.F, (Fin W₁.rank × Fin (W.rank + W₁.rank) → Fv D.host.F v) → ℂ),
           Γ.M'.IsGauss Bs.ψ Bs.emb f₀ → (∀ v, φ v ∈ GlobalTheory.WeilM.SB _) → (∀ᶠ v in Filter.cofinite, φ v = Γ.M'.vac v) →
           GlobalTheory.TripleRead.thO Γ.M' ψ (sgn false W₁).gram e (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f₀ φ) ∈ algF ψ θ false A₁ B := by
-  first | exact @GlobalTheory.ThetaGaussAlg.thO_pure_gauss_mem_algF | exact GlobalTheory.ThetaGaussAlg.thO_pure_gauss_mem_algF | (intros; apply GlobalTheory.ThetaGaussAlg.thO_pure_gauss_mem_algF <;> assumption)
+  exact @GlobalTheory.ThetaGaussAlg.thO_pure_gauss_mem_algF

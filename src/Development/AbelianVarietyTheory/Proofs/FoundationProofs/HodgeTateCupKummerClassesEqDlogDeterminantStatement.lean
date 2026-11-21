@@ -11,4 +11,4 @@ theorem _root_.GlobalTheory.T.hodgeTate_cup_kummer_classes_eq_dlog_determinant :
     IsKum T n (Gn T n) (T.ζ (2 * n)) lz → IsKum T n (Gn T n) (T.qq (2 * n)) lq →
     Cob2 n (Gn T n) (fun g h => (p : Ω) ^ c * (((a g).val : Ω) * ((b h).val : Ω)) +
       (p : Ω) ^ c * (ι (fPi p n k l α β α' β') / (T.ζ n - 1)) * (((lz g).val : Ω) * ((lq h).val : Ω))) := by
-  first | exact @GlobalTheory.K5.KummerCup.cup_kummer_dlog | exact GlobalTheory.K5.KummerCup.cup_kummer_dlog | (intros; apply GlobalTheory.K5.KummerCup.cup_kummer_dlog <;> assumption)
+  exact @GlobalTheory.K5.KummerCup.cup_kummer_dlog

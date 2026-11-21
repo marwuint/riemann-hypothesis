@@ -99,5 +99,5 @@ theorem _root_.GlobalTheory.T.rational_jet_move_exists : _root_.GlobalTheory.Fun
         EqAt D q (GlobalTheory.SumSize.latAt ch.S.toGridChoice p.small (r * x)) (stdL D _) → EqAt D q (GlobalTheory.SumSize.latAt ch.S.toGridChoice p.big (r' * y)) (stdL D _) →
         GlobalTheory.MovedKappaEx.UnitAt q c) ∧
       GlobalTheory.MovedKappaEx.JetKap ch p (r * x) (r' * y) (c * κ) := by
-  first | exact @_root_.GlobalTheory.RatMoveJets.exists_rational_move_of_jets | exact _root_.GlobalTheory.RatMoveJets.exists_rational_move_of_jets | (intros; apply _root_.GlobalTheory.RatMoveJets.exists_rational_move_of_jets <;> assumption)
+  exact @_root_.GlobalTheory.RatMoveJets.exists_rational_move_of_jets
 end

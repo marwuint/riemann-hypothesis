@@ -11,4 +11,4 @@ open GlobalTheory.Mem.Col2.SplitChar (finIdl)
 
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.unitBlockCosetThetaVector_mem_thetaFunctions : ∀ (D : D7) (δ : ℂ), Crv D ⊤ δ → ∀ (𝔪 : Ideal (𝓞 D.host.E)), 𝔪 ≠ ⊥ → ∀ (o a d : ℕ) (e0 : VC D a d → ℂ), e0 ∈ Th D (tor0 D ⊤ δ) (stdL D a) (stdL D d) → cosetV D δ 𝔪 o a d e0 ∈ TT D (tor0 D ⊤ δ) a d := by
-  first | exact @GlobalTheory.FunObj.CosetTT.cosetV_mem_TT | exact GlobalTheory.FunObj.CosetTT.cosetV_mem_TT | (intros; apply GlobalTheory.FunObj.CosetTT.cosetV_mem_TT <;> assumption)
+  exact @GlobalTheory.FunObj.CosetTT.cosetV_mem_TT

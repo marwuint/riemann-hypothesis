@@ -105,5 +105,5 @@ theorem _root_.GlobalTheory.T.theta_image_eq_span_darboux : GlobalTheory.Publish
           (∀ Φ ∈ GlobalTheory.WeilM.schA D.host.F (Fin W₁.rank × Fin (W.rank + W₁.rank)),
             T Φ = GlobalTheory.TripleRead.thO Γ.M' ψ (sgn false W₁).gram e Φ) →
           (GlobalTheory.TripleAssembly.darbAlg Γ.M' Bs.ψ Bs.emb).map T = algF ψ θ false A₁ B := by
-  first | exact @_root_.GlobalTheory.DarbImage.theta_image_darboux_basis | exact _root_.GlobalTheory.DarbImage.theta_image_darboux_basis | (intros; apply _root_.GlobalTheory.DarbImage.theta_image_darboux_basis <;> assumption)
+  exact @_root_.GlobalTheory.DarbImage.theta_image_darboux_basis
 end

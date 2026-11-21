@@ -18,4 +18,4 @@ theorem _root_.GlobalTheory.T.dualTangentVectors_genericFibre_det_eq_detOmegaTra
     ∃ M : Matrix (Fin g) (Fin g) (KeyVals.FF S), (∀ j, IsLieComb (M j) y' (y j)) ∧
       M.det = S.presheaf.germ _ (genericPoint S) h1
         ((VB.det (LieVB.omega G) g).g c c' : Γ(S, (VB.det (LieVB.omega G) g).U c ⊓ (VB.det (LieVB.omega G) g).U c')) := by
-  first | exact @GlobalTheory.KeyVals.LieRel.lieRel | exact GlobalTheory.KeyVals.LieRel.lieRel | (intros; apply GlobalTheory.KeyVals.LieRel.lieRel <;> assumption)
+  exact @GlobalTheory.KeyVals.LieRel.lieRel

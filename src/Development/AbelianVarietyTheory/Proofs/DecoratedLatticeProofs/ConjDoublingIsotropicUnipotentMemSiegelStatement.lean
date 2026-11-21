@@ -13,4 +13,4 @@ open Matrix
 
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.conj_doubling_isotropic_unipotent_mem_siegel : ∀ (D : D7) (V : HSp D), ∀ γ ∈ GQ (dblSp V), ∀ γi : Matrix (Fin (V.rank + V.rank)) (Fin (V.rank + V.rank)) D.host.E, (matHom (dblSp V) γ⁻¹).1 = γi.map (incA D) → ∀ (r : ℕ) (K : Matrix (Fin V.rank) (Fin r) D.host.E), diagSnd γi * K = 0 → IsIsoFrame V (leviMat finSumFinEquiv γi * K) → ∀ n ∈ NI V (leviMat finSumFinEquiv γi * K), ∃ p : siegel V, γ * io V (n, 1) = p * γ ∧ aP V p = 1 := by
-  first | exact @GlobalTheory.Core.Rk.Dich.conj_io_unip_siegel | exact GlobalTheory.Core.Rk.Dich.conj_io_unip_siegel | (intros; apply GlobalTheory.Core.Rk.Dich.conj_io_unip_siegel <;> assumption)
+  exact @GlobalTheory.Core.Rk.Dich.conj_io_unip_siegel

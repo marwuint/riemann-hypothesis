@@ -71,5 +71,5 @@ theorem _root_.GlobalTheory.T.doubled_vacuum_line_eigen_split : _root_.GlobalThe
     ∀ R : (Fin a' × Fin (a + a') → AF F) → ℂ, R 0 ≠ 0 → Rest (evFin F v) (G.M'.vac v) R →
     ∀ g ∈ GlobalTheory.InertDbl.KAtD σ G.V' v, ∃ c : ℂ, omd g (GlobalTheory.InertDbl.dblFun (tens (evFin F v) (G.M'.vac v) R)) =
       c • GlobalTheory.InertDbl.dblFun (tens (evFin F v) (G.M'.vac v) R) := by
-  first | exact @_root_.GlobalTheory.DblVacLineSplitTransp.doubledVacuumFunction_eigen_of_split_transport | exact _root_.GlobalTheory.DblVacLineSplitTransp.doubledVacuumFunction_eigen_of_split_transport | (intros; apply _root_.GlobalTheory.DblVacLineSplitTransp.doubledVacuumFunction_eigen_of_split_transport <;> assumption)
+  exact @_root_.GlobalTheory.DblVacLineSplitTransp.doubledVacuumFunction_eigen_of_split_transport
 end

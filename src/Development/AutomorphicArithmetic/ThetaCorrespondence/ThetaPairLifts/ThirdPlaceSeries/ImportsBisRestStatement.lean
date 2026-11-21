@@ -14,5 +14,5 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.point_of_aux42_aux41 : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), Formalism.MainNotions.SumRepresentations.Conclusion42 D → _root_.Formalism.MainNotions.SumRepresentations.provisionFortyOne D → RowPoint D.nd D.naut := by
-  first | exact @_root_.GlobalTheory.RowPointLoc.main_alt_alt | exact _root_.GlobalTheory.RowPointLoc.main_alt_alt | (intros; apply _root_.GlobalTheory.RowPointLoc.main_alt_alt <;> assumption)
+  exact @_root_.GlobalTheory.RowPointLoc.main_alt_alt
 end

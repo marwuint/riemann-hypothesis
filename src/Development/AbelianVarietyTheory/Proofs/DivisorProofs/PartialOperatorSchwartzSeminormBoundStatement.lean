@@ -10,4 +10,4 @@ theorem _root_.GlobalTheory.T.partial_operator_schwartz_seminorm_bound : ∀ (V 
     (P : SchwartzMap (κ' → V) ℂ →L[ℂ] SchwartzMap (κ₁' → V) ℂ) (k : ℕ),
     ∃ (s : Finset (ℕ × ℕ)) (C : ℝ), 0 ≤ C ∧ ∀ (f : SchwartzMap (κ ⊕ κ' → V) ℂ) (z : κ ⊕ κ₁' → V),
       ‖z‖ ^ k * ‖qOp P f z‖ ≤ C * s.sup (schwartzSeminormFamily ℂ (κ ⊕ κ' → V) ℂ) f := by
-  first | exact @GlobalTheory.SliceOpDecay.decay | exact GlobalTheory.SliceOpDecay.decay | (intros; apply GlobalTheory.SliceOpDecay.decay <;> assumption)
+  exact @GlobalTheory.SliceOpDecay.decay

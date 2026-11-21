@@ -6,4 +6,4 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.exists_place_chart_of_splitIdempotent : ∀ {D : D7} (e : AE D), IsSplitIdem D e → ∃ (v : HeightOneSpectrum (𝓞 D.host.F)) (π : AE D →+* Fv D.host.F v), Chart e v π := by
-  first | exact @GlobalTheory.SplitChart.exists_chart | exact GlobalTheory.SplitChart.exists_chart | (intros; apply GlobalTheory.SplitChart.exists_chart <;> assumption)
+  exact @GlobalTheory.SplitChart.exists_chart

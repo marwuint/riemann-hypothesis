@@ -22,4 +22,4 @@ theorem _root_.GlobalTheory.T.refining_degenerationData_tauCoordinate_unit : ∀
       ∀ x : (FractionRing R')ˣ, IsTauCoord D a b x → ∃ u : R'ˣ, (x : FractionRing R') =
         algebraMap R' (FractionRing R') u * IsFractionRing.lift (A := R) (K := FractionRing R)
           (g := (algebraMap R' (FractionRing R')).comp ρ) ((IsFractionRing.injective R' (FractionRing R')).comp hρ) (k : FractionRing R) := by
-  first | exact @GlobalTheory.RefTauCoord.main | exact GlobalTheory.RefTauCoord.main | (intros; apply GlobalTheory.RefTauCoord.main <;> assumption)
+  exact @GlobalTheory.RefTauCoord.main

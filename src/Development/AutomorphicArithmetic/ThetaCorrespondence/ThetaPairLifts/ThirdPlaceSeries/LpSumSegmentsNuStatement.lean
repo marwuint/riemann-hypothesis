@@ -17,5 +17,5 @@ theorem _root_.GlobalTheory.T.sum_segments_langlands_at_place : ∀ (E Ω : Type
       sumList ((l.map fun Γ => Γ.nu (c : ℂ)).map fun Δ =>
           ((rc Δ.first).lpTw (((Δ.len : ℝ) - 1) / 2)).lpChar (WD.lpSp h Δ.len)) =
         (sumList (l.map fun Δ => ((rc Δ.first).lpTw (((Δ.len : ℝ) - 1) / 2)).lpChar (WD.lpSp h Δ.len))).lpTw c := by
-  first | exact @_root_.GlobalTheory.lpSum_segments_nu_alt | exact _root_.GlobalTheory.lpSum_segments_nu_alt | (intros; apply _root_.GlobalTheory.lpSum_segments_nu_alt <;> assumption)
+  exact @_root_.GlobalTheory.lpSum_segments_nu_alt
 end

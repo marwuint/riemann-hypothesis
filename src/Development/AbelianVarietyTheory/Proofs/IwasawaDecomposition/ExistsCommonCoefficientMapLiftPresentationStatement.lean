@@ -21,4 +21,4 @@ theorem _root_.GlobalTheory.T.exists_common_coefficientMap_liftPresentation : �
         (pairVr (labLL X.toD7) _
           (if X.toD7.sp.Vneg ((i : ℕ) + 1) then -(X.toD7.sp.V ((i : ℕ) + 1)).gram else (X.toD7.sp.V ((i : ℕ) + 1)).gram))
         (nabAtr (labLL X.toD7) _) (delAtr (labLL X.toD7) _) := by
-  first | exact @GlobalTheory.Mem.R3.LiftPresStd.exists_oneCoef_presStd | exact GlobalTheory.Mem.R3.LiftPresStd.exists_oneCoef_presStd | (intros; apply GlobalTheory.Mem.R3.LiftPresStd.exists_oneCoef_presStd <;> assumption)
+  exact @GlobalTheory.Mem.R3.LiftPresStd.exists_oneCoef_presStd

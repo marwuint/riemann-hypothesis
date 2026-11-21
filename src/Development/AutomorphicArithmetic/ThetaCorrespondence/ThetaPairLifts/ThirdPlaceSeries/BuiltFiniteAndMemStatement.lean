@@ -28,5 +28,5 @@ theorem _root_.GlobalTheory.T.side_eigen_unitary_alt : HeckeStdPlain → ∀ (D 
         (D.what₂.places.resChar (L.X.nd.w i)) (C.Q (L.X.nd.w i))).Finite ∧
       ptSys (withLoc L) i x ∈ EigSet (M (D.what₂.muTw (L.X.nd.w i)) (L.X.nd.j i) (L.X.nd.j_range i).1 (L.X.nd.j_range i).2)
         (D.what₂.places.resChar (L.X.nd.w i)) (C.Q (L.X.nd.w i)) := by
-  first | exact @_root_.GlobalTheory.EigPlace.built_finite_and_mem_alt | exact _root_.GlobalTheory.EigPlace.built_finite_and_mem_alt | (intros; apply _root_.GlobalTheory.EigPlace.built_finite_and_mem_alt <;> assumption)
+  exact @_root_.GlobalTheory.EigPlace.built_finite_and_mem_alt
 end

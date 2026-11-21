@@ -18,4 +18,4 @@ theorem _root_.GlobalTheory.T.doubledWeil_split_place_vacuum_eigenfunction : ∀
     ∀ g ∈ GlobalTheory.DblVac.KD σ G.W v, ∃ μ : ℂ,
       omd g (boxFun (tens (evFin F v) (G.M.vac v) r) (fun x => star (tens (evFin F v) (G.M.vac v) r x))) =
         μ • boxFun (tens (evFin F v) (G.M.vac v) r) (fun x => star (tens (evFin F v) (G.M.vac v) r x)) := by
-  first | exact @GlobalTheory.DblVacAny.split_eigen | exact GlobalTheory.DblVacAny.split_eigen | (intros; apply GlobalTheory.DblVacAny.split_eigen <;> assumption)
+  exact @GlobalTheory.DblVacAny.split_eigen

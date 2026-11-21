@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.exists_affine_cover_with_dual_number_derivations :
       (∀ b s, (d b s).fst = s) ∧
       ∀ (K : Type) [Field K] (θ : Γ(M.X, W') →+* DualNumber K), ∃ m : Fin (dimFlag Dw) → K, ∀ s,
         (θ s).snd = ∑ b, m b * (TrivSqZeroExt.fstHom K K K).toRingHom (θ (d b s).snd) := by
-  first | exact @GlobalTheory.CompHS.exists_derivFrame | exact GlobalTheory.CompHS.exists_derivFrame | (intros; apply GlobalTheory.CompHS.exists_derivFrame <;> assumption)
+  exact @GlobalTheory.CompHS.exists_derivFrame

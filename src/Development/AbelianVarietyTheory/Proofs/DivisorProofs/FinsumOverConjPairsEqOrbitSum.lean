@@ -12,4 +12,4 @@ theorem _root_.GlobalTheory.T.finsum_over_conj_pairs_eq_orbit_sum : ∀ (H : Typ
         (1 / (Nat.card (MulAction.stabilizer H (Quotient.out O.1)) : ℂ)) *
           f (Quotient.out O.1).elt (Quotient.out O.1).pt =
       (1 / (Nat.card (MulAction.stabilizer H x) : ℂ)) * ∑ᶠ γ : H, f γ x := by
-  first | exact @GlobalTheory.PtFib.ptFib_mass | exact GlobalTheory.PtFib.ptFib_mass | (intros; apply GlobalTheory.PtFib.ptFib_mass <;> assumption)
+  exact @GlobalTheory.PtFib.ptFib_mass

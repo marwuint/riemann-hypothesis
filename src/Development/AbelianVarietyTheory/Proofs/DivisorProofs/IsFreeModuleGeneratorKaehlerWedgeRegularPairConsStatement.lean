@@ -14,4 +14,4 @@ theorem _root_.GlobalTheory.T.isFreeModuleGenerator_kaehlerWedge_regularPair_con
   ∃ (m : ℕ) (z : Fin m → Q),
     (∀ P : MvPolynomial (Fin m) ℂ, P ≠ 0 → IsUnit (MvPolynomial.eval₂ (cL.codRestrict Q hQ.const_mem) z P)) ∧
     IsFreeGen Q (dForm (cL.codRestrict Q hQ.const_mem) (Fin.cons t (Fin.cons u z : Fin (m + 1) → Q) : Fin (m + 2) → Q)) := by
-  first | exact @GlobalTheory.FieldPair.isFreeGen_dForm_regularPair_cons | exact GlobalTheory.FieldPair.isFreeGen_dForm_regularPair_cons | (intros; apply GlobalTheory.FieldPair.isFreeGen_dForm_regularPair_cons <;> assumption)
+  exact @GlobalTheory.FieldPair.isFreeGen_dForm_regularPair_cons

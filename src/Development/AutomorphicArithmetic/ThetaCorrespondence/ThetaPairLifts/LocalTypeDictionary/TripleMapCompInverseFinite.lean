@@ -138,5 +138,5 @@ theorem _root_.GlobalTheory.T.triple_assembly_inverse_finite : GlobalTheory.Publ
       ∀ R Rf, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched Bs Γ Xc om om' R Rf →
         (∀ g ∈ GfC W, ∀ Φ ∈ algF ψ θ true A B, GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf (ωA (g, 1) Φ) = GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf Φ) ∧
           ∀ g ∈ GfC W₁, ∀ Φ ∈ algF ψ θ false A₁ B, GlobalTheory.TripleAssembly.mapB ψ e Bs Γ R Rf (ωB (g, 1) Φ) = GlobalTheory.TripleAssembly.mapB ψ e Bs Γ R Rf Φ := by
-  first | exact @_root_.GlobalTheory.TripleAssembly.triple_map_comp_inverse_finite | exact _root_.GlobalTheory.TripleAssembly.triple_map_comp_inverse_finite | (intros; apply _root_.GlobalTheory.TripleAssembly.triple_map_comp_inverse_finite <;> assumption)
+  exact @_root_.GlobalTheory.TripleAssembly.triple_map_comp_inverse_finite
 end

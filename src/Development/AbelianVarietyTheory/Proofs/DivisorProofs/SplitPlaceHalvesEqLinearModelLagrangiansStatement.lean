@@ -19,4 +19,4 @@ theorem _root_.GlobalTheory.T.splitPlace_halves_eq_linear_model_lagrangians : �
         At (evFin D.host.F v) u ∧ u.map (piW (τ.comp D.sp.cm.sig)) = 0) ∧
       (IsHalf (cA D (atPl w 1)) (HMul.hMul (uᵀ.submatrix e id) (incM Gm) : Matrix (Fin d) (Fin m) (AE D)) ↔
         At (evFin D.host.F v) u ∧ u.map (piW τ) = 0) := by
-  first | exact @GlobalTheory.SplitHalves.halves | exact GlobalTheory.SplitHalves.halves | (intros; apply GlobalTheory.SplitHalves.halves <;> assumption)
+  exact @GlobalTheory.SplitHalves.halves

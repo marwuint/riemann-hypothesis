@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.unramified_doubling_sum_GL_convergent_L_value : Gl
     HasSum (fun e : {e : Fin N → ℤ // Antitone e} => (μK.real (cell k (Fin N) ϖ e) : ℂ) *
       ((resCard k : ℂ) ^ (-((N : ℂ) / 2 + s) * (sumAbs e.1 : ℂ)) * zonalInt μK ψ (torusElt k (Fin N) ϖ e)))
       (lFactor (resCard k) α (s + 1 / 2) * lFactor (resCard k) α⁻¹ (s + 1 / 2) * invNormFactor (resCard k) N s) := by
-  first | exact @GlobalTheory.DoublingSeries.unramified_doubling_sum | exact GlobalTheory.DoublingSeries.unramified_doubling_sum | (intros; apply GlobalTheory.DoublingSeries.unramified_doubling_sum <;> assumption)
+  exact @GlobalTheory.DoublingSeries.unramified_doubling_sum

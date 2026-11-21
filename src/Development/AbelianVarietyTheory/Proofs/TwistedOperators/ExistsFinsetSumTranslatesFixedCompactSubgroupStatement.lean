@@ -27,4 +27,4 @@ open scoped InnerProductSpace
 open Formalism.MainNotions.KudlaSiegelWeil (Restr)
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.exists_finsetSum_translates_fixed_compactSubgroup : ∀ {G X : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup X] [Module ℂ X] (ρ : Representation ℂ G X) (K : Subgroup G), IsCompact (K : Set G) → ∀ x : X, IsOpen {g | ρ g x = x} → ∃ s : Finset G, (∀ g ∈ s, g ∈ K) ∧ s.Nonempty ∧ ∀ k ∈ K, ρ k (∑ g ∈ s, ρ g x) = ∑ g ∈ s, ρ g x := by
-  first | exact @GlobalTheory.exists_finset_sum_translate_fixed | exact GlobalTheory.exists_finset_sum_translate_fixed | (intros; apply GlobalTheory.exists_finset_sum_translate_fixed <;> assumption)
+  exact @GlobalTheory.exists_finset_sum_translate_fixed

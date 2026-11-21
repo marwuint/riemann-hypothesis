@@ -103,5 +103,5 @@ theorem _root_.GlobalTheory.T.adelic_stabilizer_finite_of_theta_subgroup : _root
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple Bs Γ Xc om om' → ∀ (hJ : Γ.W.J = D.host.xi0 • reindex e e X.gramᵀ)
     (N' : Submodule ℂ ((Fin a' × Fin (a + a') → AF D.host.F) → ℂ)),
     IsThetaSubG Γ.M' Bs.ψ Bs.emb om' N' → ∀ g ∈ GfC X, ∀ Φ ∈ N', om' (1, kapX X e hJ g) Φ ∈ N' := by
-  first | exact @_root_.GlobalTheory.StabFinAdelic.stabilizer_kappa_of_isThetaSubgroup | exact _root_.GlobalTheory.StabFinAdelic.stabilizer_kappa_of_isThetaSubgroup | (intros; apply _root_.GlobalTheory.StabFinAdelic.stabilizer_kappa_of_isThetaSubgroup <;> assumption)
+  exact @_root_.GlobalTheory.StabFinAdelic.stabilizer_kappa_of_isThetaSubgroup
 end

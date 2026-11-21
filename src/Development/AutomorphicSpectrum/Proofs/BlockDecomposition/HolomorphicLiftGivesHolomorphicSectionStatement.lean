@@ -18,4 +18,4 @@ theorem _root_.GlobalTheory.T.holomorphic_lift_gives_holomorphic_section : ∀ (
     IsOpen O → DifferentiableOn ℂ γ O → (∀ v ∈ O, IsUnder (PtsOver.map i rfl _ (s v)) (γ v)) →
     ContinuousOn s O ∧ ∀ (W : X.Opens) (f : Γ(X, W)),
       DifferentiableOn ℂ (ev (i ≫ mpStr ℤ m n) σ₀ W f ∘ s) (O ∩ s ⁻¹' ptsIn (i ≫ mpStr ℤ m n) σ₀ W) := by
-  first | exact @GlobalTheory.CompanionTheory.MixZ.Holo.holo | exact GlobalTheory.CompanionTheory.MixZ.Holo.holo | (intros; apply GlobalTheory.CompanionTheory.MixZ.Holo.holo <;> assumption)
+  exact @GlobalTheory.CompanionTheory.MixZ.Holo.holo

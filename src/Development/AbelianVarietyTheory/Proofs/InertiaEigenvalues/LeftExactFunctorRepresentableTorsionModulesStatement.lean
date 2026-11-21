@@ -13,4 +13,4 @@ theorem _root_.GlobalTheory.T.leftExact_functor_representable_torsion_modules : 
     (∀ B : ModuleCat.{0} Λ, Tors Λ B → ∀ φ : M ⟶ B, (F.map φ).hom ξ = 0 → φ = 0) ∧
     ∀ B : ModuleCat.{0} Λ, Finite B → (∀ x ∈ IsLocalRing.maximalIdeal Λ ^ n, ∀ y : B, x • y = 0) →
       ∀ η : F.obj B, ∃ φ : M ⟶ B, (F.map φ).hom ξ = η := by
-  first | exact @GlobalTheory.SelFun.Level.level | exact GlobalTheory.SelFun.Level.level | (intros; apply GlobalTheory.SelFun.Level.level <;> assumption)
+  exact @GlobalTheory.SelFun.Level.level

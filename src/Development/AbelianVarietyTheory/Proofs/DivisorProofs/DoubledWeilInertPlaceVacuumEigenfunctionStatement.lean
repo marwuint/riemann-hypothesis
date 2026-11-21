@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.doubledWeil_inert_place_vacuum_eigenfunction : ∀
     ∀ R : (Fin a' × Fin (a + a') → AF F) → ℂ, R 0 ≠ 0 → Rest (evFin F v) (G.M'.vac v) R →
     ∀ g ∈ GlobalTheory.InertDbl.KAtD σ G.W v, ∃ c : ℂ, omd g (GlobalTheory.InertDbl.dblFun (tens (evFin F v) (G.M'.vac v) R)) =
       c • GlobalTheory.InertDbl.dblFun (tens (evFin F v) (G.M'.vac v) R) := by
-  first | exact @GlobalTheory.DblVacLine.dblFun_eigen | exact GlobalTheory.DblVacLine.dblFun_eigen | (intros; apply GlobalTheory.DblVacLine.dblFun_eigen <;> assumption)
+  exact @GlobalTheory.DblVacLine.dblFun_eigen

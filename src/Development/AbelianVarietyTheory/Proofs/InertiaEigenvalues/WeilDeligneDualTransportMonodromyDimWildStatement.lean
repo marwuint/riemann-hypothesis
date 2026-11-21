@@ -26,4 +26,4 @@ theorem _root_.GlobalTheory.T.weilDeligneDualTransport_monodromy_dim_wild : ∀ 
     (x.mono0 → x'.mono0) ∧ x'.lpDim = x.lpDim ∧
     ((∀ σ ∈ Ine (F := D.host.E) (D.nd.plOm.1 w), σ ∈ wildSet D.nd (D.nd.plOm.1 w) → x.inePol σ = (X - 1) ^ x.lpDim) →
       ∀ σ ∈ Ine (F := D.host.E) (D.nd.plOm.1 w'), σ ∈ wildSet D.nd (D.nd.plOm.1 w') → x'.inePol σ = (X - 1) ^ x'.lpDim) := by
-  first | exact @GlobalTheory.WeilDeligne.ConjDual.mono_dim_wild | exact GlobalTheory.WeilDeligne.ConjDual.mono_dim_wild | (intros; apply GlobalTheory.WeilDeligne.ConjDual.mono_dim_wild <;> assumption)
+  exact @GlobalTheory.WeilDeligne.ConjDual.mono_dim_wild

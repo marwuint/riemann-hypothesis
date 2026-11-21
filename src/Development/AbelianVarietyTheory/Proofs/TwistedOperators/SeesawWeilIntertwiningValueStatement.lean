@@ -26,4 +26,4 @@ theorem _root_.GlobalTheory.T.mapA_mapB_invariant_under_finite_group : GlobalThe
       ∀ R Rf, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched Bs Γ Xc om om' R Rf →
         (∀ g ∈ GfC W, ∀ Φ ∈ algF ψ θ true A B, GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf (ωA (g, 1) Φ) = GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf Φ) ∧
           ∀ g ∈ GfC W₁, ∀ Φ ∈ algF ψ θ false A₁ B, GlobalTheory.TripleAssembly.mapB ψ e Bs Γ R Rf (ωB (g, 1) Φ) = GlobalTheory.TripleAssembly.mapB ψ e Bs Γ R Rf Φ := by
-  first | exact @GlobalTheory.TripleAssembly.mapA_mapB_invFin | exact GlobalTheory.TripleAssembly.mapA_mapB_invFin | (intros; apply GlobalTheory.TripleAssembly.mapA_mapB_invFin <;> assumption)
+  exact @GlobalTheory.TripleAssembly.mapA_mapB_invFin

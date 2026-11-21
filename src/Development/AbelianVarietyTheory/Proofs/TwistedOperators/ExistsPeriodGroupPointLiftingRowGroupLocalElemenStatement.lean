@@ -18,4 +18,4 @@ theorem _root_.GlobalTheory.T.exists_periodGroup_point_lifting_rowGroup_localEle
       (∀ w, l w ∈ rowR (G := locGrid ch.G t w.1) one_le_sLen (j := j) hj') →
       ∃ y, HasLoc t ch.S.B hj y (fun w => sgnAt ch.G t s w.1 j * l w * (sgnAt ch.G t s w.1 j)⁻¹) ∧
         δ * y * δ⁻¹ ∈ rowGrp ch.G j := by
-  first | exact @GlobalTheory.RowLift.lift_rowR | exact GlobalTheory.RowLift.lift_rowR | (intros; apply GlobalTheory.RowLift.lift_rowR <;> assumption)
+  exact @GlobalTheory.RowLift.lift_rowR

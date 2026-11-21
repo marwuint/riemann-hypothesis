@@ -18,4 +18,4 @@ theorem _root_.GlobalTheory.T.heisenberg_derivative_on_schwartz_tensor_conj : �
       (Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (∑ i, x i * evI F (Sum.elim b₁ (-b₂) i)) : ℝ) * f₀ x) →
     (∀ x, f₀ x = f (x ∘ Sum.inl) * star (f (x ∘ Sum.inr))) → ∀ x : κ ⊕ κ → mixedEmbedding.mixedSpace F,
     h x = g₁ (x ∘ Sum.inl) * star (f (x ∘ Sum.inr)) + f (x ∘ Sum.inl) * star (g₂ (x ∘ Sum.inr)) := by
-  first | exact @GlobalTheory.heisenbergDeriv_tensor_conj | exact GlobalTheory.heisenbergDeriv_tensor_conj | (intros; apply GlobalTheory.heisenbergDeriv_tensor_conj <;> assumption)
+  exact @GlobalTheory.heisenbergDeriv_tensor_conj

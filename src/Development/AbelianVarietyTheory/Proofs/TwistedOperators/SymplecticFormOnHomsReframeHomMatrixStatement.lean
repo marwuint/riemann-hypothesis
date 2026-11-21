@@ -12,4 +12,4 @@ open scoped TensorProduct ComplexConjugate Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.symplecticFormOnHoms_reframeHomMatrix : ∀ (D : D7) (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) (x y : WO (reS S b) T), symplO (reS S b) T x y = symplO S T (reW S T b x) (reW S T b y) := by
-  first | exact @GlobalTheory.AdSpan.ReVec.Sympl.symplO_reW | exact GlobalTheory.AdSpan.ReVec.Sympl.symplO_reW | (intros; apply GlobalTheory.AdSpan.ReVec.Sympl.symplO_reW <;> assumption)
+  exact @GlobalTheory.AdSpan.ReVec.Sympl.symplO_reW

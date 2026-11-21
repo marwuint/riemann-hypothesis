@@ -26,4 +26,4 @@ theorem _root_.GlobalTheory.T.heisenberg_invariant_form_vanishes_lagrangian_test
     ∀ (m : ℕ) (C : Matrix (Fin d) (Fin m) (AE F E)), GlobalTheory.InertVacLag.IsLagrAt σ W v C →
     ∃ φ₀ ∈ SB (Fin n × Fin d → Fv F v), ∀ l : ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] ℂ,
       GlobalTheory.InertVacLag.HeisInv M ψ v C l → l φ₀ = 0 → ∀ φ ∈ SB (Fin n × Fin d → Fv F v), l φ = 0 := by
-  first | exact @GlobalTheory.InertLagUniq.exists_test | exact GlobalTheory.InertLagUniq.exists_test | (intros; apply GlobalTheory.InertLagUniq.exists_test <;> assumption)
+  exact @GlobalTheory.InertLagUniq.exists_test

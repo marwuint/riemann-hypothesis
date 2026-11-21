@@ -6,4 +6,4 @@ open NumberField IsDedekindDomain MeasureTheory Matrix GlobalTheory.AdLat Global
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.lie_basis_spans_unitary_lie : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (G : Matrix (Fin r) (Fin r) E) (e : Fin (r ^ 2 - 1) → Matrix (Fin r) (Fin r) E), (∀ a b, cc (G a b) = G b a) → G.det ≠ 0 → (∀ i, (e i).trace = 0 ∧ ∀ u w, herm G (e i *ᵥ u) w + herm G u (e i *ᵥ w) = 0) → LinearIndependent (maximalRealSubfield E) e → ∀ X : Matrix (Fin r) (Fin r) E, X.trace = 0 → (∀ u w, herm G (X *ᵥ u) w + herm G u (X *ᵥ w) = 0) → X ∈ Submodule.span (maximalRealSubfield E) (Set.range e) := by
-  first | exact @GlobalTheory.SkewSpan.mem_span_of_skew | exact GlobalTheory.SkewSpan.mem_span_of_skew | (intros; apply GlobalTheory.SkewSpan.mem_span_of_skew <;> assumption)
+  exact @GlobalTheory.SkewSpan.mem_span_of_skew

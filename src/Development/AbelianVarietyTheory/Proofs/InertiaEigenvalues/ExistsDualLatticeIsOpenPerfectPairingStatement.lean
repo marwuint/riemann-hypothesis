@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.exists_dualLattice_isOpen_perfectPairing : ∀ {G 
     (∀ g, ∃ u : Oˣ, ((cycLL PD LL g : LLˣ) : LL) = algebraMap O LL (u : O)) →
     ∀ (U U' : GRep G Qp LL O) (P : U.V →ₗ[LL] U'.V →ₗ[LL] LL), IsDual1 PD U.ρ U'.ρ P →
     ∀ LT : Lattice (O := O) U.ρ, ∃ LT' : Lattice (O := O) U'.ρ, IsDualLat1 PD LT LT' P ∧ IsOpen (LT'.T : Set U'.V) := by
-  first | exact @GlobalTheory.Pass.LocDual.exists_dualLat_isOpen | exact GlobalTheory.Pass.LocDual.exists_dualLat_isOpen | (intros; apply GlobalTheory.Pass.LocDual.exists_dualLat_isOpen <;> assumption)
+  exact @GlobalTheory.Pass.LocDual.exists_dualLat_isOpen

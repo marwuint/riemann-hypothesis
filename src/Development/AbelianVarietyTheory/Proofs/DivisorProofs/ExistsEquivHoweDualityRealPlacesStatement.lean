@@ -13,4 +13,4 @@ theorem _root_.GlobalTheory.T.exists_equiv_howeDuality_realPlaces : ∀ (F E : T
     (∀ N N', GlobalTheory.Published.ThetaSubInf M B.ψ B.emb om N → GlobalTheory.Published.ThetaSubInf M B.ψ B.emb om N' → N ≠ M.Pol B.ψ B.emb → N' ≠ M.Pol B.ψ B.emb → N ⊔ N' ≠ M.Pol B.ψ B.emb) →
     RealQuot B M om p → RealQuot B M om q → Nontrivial P → Nontrivial Q → GlobalTheory.RealActs.KerStab B M om p → GlobalTheory.RealActs.KerStab B M om q →
     GlobalTheory.RealActs.Irred B M om p → GlobalTheory.RealActs.Irred B M om q → ∃ ψ : P ≃ₗ[ℂ] Q, ∀ f ∈ M.Pol B.ψ B.emb, q f = ψ (p f) := by
-  first | exact @GlobalTheory.HoweRealKer.exists_equiv | exact GlobalTheory.HoweRealKer.exists_equiv | (intros; apply GlobalTheory.HoweRealKer.exists_equiv <;> assumption)
+  exact @GlobalTheory.HoweRealKer.exists_equiv

@@ -9,4 +9,4 @@ theorem _root_.GlobalTheory.T.coneMatch_rays_of_linearIndependent_intForms : ∀
     (∀ i, InRCone δ (p i)) → (∀ j, 0 < c j → InRCone p (δ j)) →
     (∀ i, ∃ j, 0 < c j ∧ ∃ d : ℝ, 0 < d ∧ toReal (p i) = d • toReal (δ j)) ∧
     (∀ j, 0 < c j → ∃ i, ∃ d : ℝ, 0 < d ∧ toReal (p i) = d • toReal (δ j) ∧ c j = t i * d) := by
-  first | exact @GlobalTheory.PolFan.cone_match_rays | exact GlobalTheory.PolFan.cone_match_rays | (intros; apply GlobalTheory.PolFan.cone_match_rays <;> assumption)
+  exact @GlobalTheory.PolFan.cone_match_rays

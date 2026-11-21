@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.exists_residuePlace_of_twoDimLocalModel : ∀ {L K
   Function.Surjective ψ → (∀ a, ψ (S.const a) = cK a) →
   ∃ F : Place cK, (∀ a : K, a ∈ F.ring ↔ ∃ q : S.ring, (q : L) ∈ Q ∧ ψ q = a) ∧
     ∀ us : S.ring, (us : L) = u → F.ord (ψ us) = 1 := by
-  first | exact @GlobalTheory.FieldPair.residuePlace_of_locModel | exact GlobalTheory.FieldPair.residuePlace_of_locModel | (intros; apply GlobalTheory.FieldPair.residuePlace_of_locModel <;> assumption)
+  exact @GlobalTheory.FieldPair.residuePlace_of_locModel

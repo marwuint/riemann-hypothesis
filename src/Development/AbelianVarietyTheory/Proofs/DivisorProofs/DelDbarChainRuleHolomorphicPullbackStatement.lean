@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.del_dbar_chainRule_holomorphicPullback : ∀ (m n 
     (∀ S, DifferentiableAt ℝ (fun y => (bas n).repr (β y) S) (τ v)) →
     delAt (fun x => pull (fderiv ℂ τ x) (β (τ x))) v = pull (fderiv ℂ τ v) (delAt β (τ v)) ∧
     dbarAt (fun x => pull (fderiv ℂ τ x) (β (τ x))) v = pull (fderiv ℂ τ v) (dbarAt β (τ v)) := by
-  first | exact @GlobalTheory.CxForm.PullChain.delAt_dbarAt_pull_comp | exact GlobalTheory.CxForm.PullChain.delAt_dbarAt_pull_comp | (intros; apply GlobalTheory.CxForm.PullChain.delAt_dbarAt_pull_comp <;> assumption)
+  exact @GlobalTheory.CxForm.PullChain.delAt_dbarAt_pull_comp

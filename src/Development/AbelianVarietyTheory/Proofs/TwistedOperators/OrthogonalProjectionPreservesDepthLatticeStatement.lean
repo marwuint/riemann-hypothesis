@@ -10,4 +10,4 @@ open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.orthogonal_projection_preserves_depth_lattice : OnStd fun {D} _ _ _ {G} _ F => ∀ u ∈ latCore G 0, F.oz.jA ⬝ (F.oz.pA ⬝ u) ∈ latCore G 0 := by
-  first | exact @GlobalTheory.ProjCore.proj_mem_latCore | exact GlobalTheory.ProjCore.proj_mem_latCore | (intros; apply GlobalTheory.ProjCore.proj_mem_latCore <;> assumption)
+  exact @GlobalTheory.ProjCore.proj_mem_latCore

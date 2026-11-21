@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.holomorphic_functionValues_classicalUniformisation
     IsGrpPullback x.P.A D.P.A (spMap ((algebraMap (FractionRing R) ℂ).comp (algebraMap R (FractionRing R)))) φ → (∀ z, (ν.eA (d.ex z)).left = (u.ex z).left ≫ φ) →
     ∀ (U : (DegPre.BF D ℂ).left.Opens) (f : Γ((DegPre.BF D ℂ).left, U)), IsOpen {z | ⊤ ≤ ptB ν d z ⁻¹ᵁ U} ∧
       DifferentiableOn ℂ (fun z => valF (ptB ν d z) U f) {z | ⊤ ≤ ptB ν d z ⁻¹ᵁ U} := by
-  first | exact @GlobalTheory.MBLow.Cl.HolB.hol_ptB | exact GlobalTheory.MBLow.Cl.HolB.hol_ptB | (intros; apply GlobalTheory.MBLow.Cl.HolB.hol_ptB <;> assumption)
+  exact @GlobalTheory.MBLow.Cl.HolB.hol_ptB

@@ -23,4 +23,4 @@ theorem _root_.GlobalTheory.T.archimedean_preimage_realPlace_line : ∀ (D : D7)
       (∀ u, cS u = (HMul.hMul (uᵀ.submatrix e id) (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM ((if ε then -1 else 1 : D.host.E) • S.gram)) : Matrix (Fin X.rank) (Fin S.rank) (AE D))) →
       ∀ (τ : D.what₂.Tau) (z : Matrix (Fin X.rank) (Fin S.rank) ℂ),
         GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) (cS.symm (lineAt θ τ z 1)) := by
-  first | exact @GlobalTheory.ArchLinePreimage.arch_symm_lineAt | exact GlobalTheory.ArchLinePreimage.arch_symm_lineAt | (intros; apply GlobalTheory.ArchLinePreimage.arch_symm_lineAt <;> assumption)
+  exact @GlobalTheory.ArchLinePreimage.arch_symm_lineAt

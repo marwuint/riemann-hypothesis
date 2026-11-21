@@ -9,4 +9,4 @@ theorem _root_.GlobalTheory.T.isUnit_upperRightBlock_of_heisenbergDerivative_sol
     ∀ (J : (V × V) →ₗ[ℝ] (V × V)) (g : V → ℂ), Continuous g → g ≠ 0 →
     (∀ w x, GlobalTheory.GaussLine.dHeis β (J w) g x = Complex.I * GlobalTheory.GaussLine.dHeis β w g x) →
     IsUnit (GlobalTheory.FockFamily.blockB J) := by
-  first | exact @GlobalTheory.FockFamily.isUnit_blockB_of_solution | exact GlobalTheory.FockFamily.isUnit_blockB_of_solution | (intros; apply GlobalTheory.FockFamily.isUnit_blockB_of_solution <;> assumption)
+  exact @GlobalTheory.FockFamily.isUnit_blockB_of_solution

@@ -29,4 +29,4 @@ theorem _root_.GlobalTheory.T.conjIdealIndicator_unitBlockTranslate_reads_weilOp
     ∀ (G : VC D a d → ℂ) (o : ℕ), Reads ψ θ hS hT ⊤ δ 1 G (Tm (cosetFn (cA D e) (D.host.conj • modul P c) 0)) →
     ∃ ζ : ℂ, IsRootOne ζ ∧ Reads ψ θ hS hT ⊤ δ 1 (ζ • Wd D (tor0 D ⊤ δ) (pt D (tor0 D ⊤ δ) δ (unitBlock D o a d)) G)
       (Tm (cosetFn (cA D e) (D.host.conj • modul P c) (unitPt S T (cA D e) o))) := by
-  first | exact @GlobalTheory.BotSmallTransl.reads_transl | exact GlobalTheory.BotSmallTransl.reads_transl | (intros; apply GlobalTheory.BotSmallTransl.reads_transl <;> assumption)
+  exact @GlobalTheory.BotSmallTransl.reads_transl

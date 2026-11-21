@@ -20,4 +20,4 @@ theorem _root_.GlobalTheory.T.flat_aeval_dvrPlaceRing_uniformiser_residueLifts :
     (MvPolynomial.aeval (Fin.cons (⟨(t : K), t.2⟩ : placeAlg E)
         (fun i => (⟨(zR i : K), hER _ (zR i).2⟩ : placeAlg E))) :
         MvPolynomial (Fin (k + 1)) ℂ →ₐ[ℂ] placeAlg E).toRingHom.Flat := by
-  first | exact @GlobalTheory.GraphLocal.FlatPlace.flat_aeval_placeAlg | exact GlobalTheory.GraphLocal.FlatPlace.flat_aeval_placeAlg | (intros; apply GlobalTheory.GraphLocal.FlatPlace.flat_aeval_placeAlg <;> assumption)
+  exact @GlobalTheory.GraphLocal.FlatPlace.flat_aeval_placeAlg

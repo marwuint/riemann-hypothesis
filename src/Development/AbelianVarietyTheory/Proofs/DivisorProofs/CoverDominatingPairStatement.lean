@@ -13,4 +13,4 @@ theorem _root_.GlobalTheory.T.cover_dominating_pair : ∀ (F : Type) [Field F] [
     k ≫ V.π = W.π →
     ∃ (W' : Mean4O.Cover Y) (a : W'.X ⟶ W.X) (b : W'.X ⟶ V.X), a ≫ W.p = W'.p ∧ b ≫ V.p = W'.p ∧
       Lies W' W a ∧ Lies W' V b := by
-  first | exact @GlobalTheory.Mean4O.CoverDom.exists_cover_dominating_cover | exact GlobalTheory.Mean4O.CoverDom.exists_cover_dominating_cover | (intros; apply GlobalTheory.Mean4O.CoverDom.exists_cover_dominating_cover <;> assumption)
+  exact @GlobalTheory.Mean4O.CoverDom.exists_cover_dominating_cover

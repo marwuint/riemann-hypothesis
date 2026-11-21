@@ -18,4 +18,4 @@ theorem _root_.GlobalTheory.T.de_rham_rank_lubin_tate_line : ∀ {l : ℕ} [Fact
       ∀ (τ' : ↥K.1 →ₐ[ℚ_[l]] ↥LL.1) (a : ℤ),
         multV (P.PD K) (lineRep ((Units.map ((τ : ↥K.1 →+* ↥LL.1) : ↥K.1 →* ↥LL.1)).comp χ)) τ' a =
           if a = (if τ' = τ then (-1 : ℤ) else 0) then 1 else 0 := by
-  first | exact @GlobalTheory.CompanionTheory.LTRead.jumps_of_periods | exact GlobalTheory.CompanionTheory.LTRead.jumps_of_periods | (intros; apply GlobalTheory.CompanionTheory.LTRead.jumps_of_periods <;> assumption)
+  exact @GlobalTheory.CompanionTheory.LTRead.jumps_of_periods

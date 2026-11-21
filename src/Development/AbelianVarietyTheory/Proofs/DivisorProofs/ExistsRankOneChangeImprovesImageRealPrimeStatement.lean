@@ -17,4 +17,4 @@ theorem _root_.GlobalTheory.T.exists_rankOneChange_improves_image_real_prime : �
     (hgen : ∀ ψ : 𝓞 E →+ ℤ, ∃ t : 𝓞 E, ∀ u, ψ (s * u) = θ (t * u))
     (hZ : ¬ Z.map y ≤ img D y Z' 𝔭),
     ∃ Z'', Improves D y n 𝔭 Z Z' Z'' := by
-  first | exact @GlobalTheory.LowFilt.exists_improves_of_real | exact GlobalTheory.LowFilt.exists_improves_of_real | (intros; apply GlobalTheory.LowFilt.exists_improves_of_real <;> assumption)
+  exact @GlobalTheory.LowFilt.exists_improves_of_real

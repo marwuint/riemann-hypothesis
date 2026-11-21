@@ -12,4 +12,4 @@ theorem _root_.GlobalTheory.T.theta_sum_invariant_unipotent_translate : ∀ (D :
   ∀ Φ : schwartzA θ V.rank n,
     ∑' ξ : Matrix (Fin V.rank) (Fin n) D.host.E, (ω g Φ).1 (ξ.map (incA D)) =
       ∑' ξ : Matrix (Fin V.rank) (Fin n) D.host.E, Φ.1 (ξ.map (incA D)) := by
-  first | exact @GlobalTheory.CompanionTheory.ThetaInv.theta_unip | exact GlobalTheory.CompanionTheory.ThetaInv.theta_unip | (intros; apply GlobalTheory.CompanionTheory.ThetaInv.theta_unip <;> assumption)
+  exact @GlobalTheory.CompanionTheory.ThetaInv.theta_unip

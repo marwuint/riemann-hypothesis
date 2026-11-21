@@ -17,4 +17,4 @@ theorem _root_.GlobalTheory.T.exists_iso_refinements_same_polarised : ∀ (R : T
         val (D₀.tau a a') (𝟙 _) z J' =
           GlobalTheory.PolDeg.lamVal wΛ (lift (toUnit (TK R) ≫ D₀.c a) (toUnit (TK R) ≫ D₀.c a')).left z J J' *
             val (D.tau (xe a) (xe a')) (𝟙 _) z J := by
-  first | exact @GlobalTheory.MumCmp.SamePolIso.exists_iso | exact GlobalTheory.MumCmp.SamePolIso.exists_iso | (intros; apply GlobalTheory.MumCmp.SamePolIso.exists_iso <;> assumption)
+  exact @GlobalTheory.MumCmp.SamePolIso.exists_iso

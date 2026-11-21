@@ -6,4 +6,4 @@ open BranchingSupport Formalism.FourierDecayAlt Formalism.FourierDecayAlt.ThreeD
 open scoped InnerProductSpace ENNReal
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.isFRep_exteriorPower_standardRep : ∀ (k r : ℕ) (l : ℕ), IsFRep (k := k) (r := r) (cmp l) (cmp l (Formalism.QuantumDeterminants.Hpk k r)) l := by
-  first | exact @GlobalTheory.WedgeFRep.isFRep_cmp | exact GlobalTheory.WedgeFRep.isFRep_cmp | (intros; apply GlobalTheory.WedgeFRep.isFRep_cmp <;> assumption)
+  exact @GlobalTheory.WedgeFRep.isFRep_cmp

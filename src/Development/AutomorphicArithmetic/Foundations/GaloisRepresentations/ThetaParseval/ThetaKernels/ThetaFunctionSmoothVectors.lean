@@ -20,5 +20,5 @@ theorem _root_.GlobalTheory.T.theta_function_smooth_vectors : ∀ (F E : Type) [
       Formalism.IndefR.DatumF.IsStdCharF (fun w : InfinitePlace F => (B.emb w).1) B.ψ (-1) →
       ∀ f : Formalism.IndefR.DatumF.WOF F E nS nT → ℂ, Formalism.IndefR.DatumF.IsThetaFunOF σ JS JT ξ₀ B.ψ f → ∀ L : ℝ →+ Formalism.IndefR.DatumF.WOF F E nS nT, Continuous L → (∀ t, (L t).map (Formalism.IndefR.DatumF.finPartF F E) = 0) →
       ∀ w : Formalism.IndefR.DatumF.WOF F E nS nT, DifferentiableAt ℝ (fun t : ℝ => Formalism.IndefR.DatumF.heisOF σ JS JT ξ₀ B.ψ (L t) f w) 0 := by
-  first | exact @_root_.GlobalTheory.HeisLineDiffF.differentiableAt_heisOF_line_k | exact _root_.GlobalTheory.HeisLineDiffF.differentiableAt_heisOF_line_k | (intros; apply _root_.GlobalTheory.HeisLineDiffF.differentiableAt_heisOF_line_k <;> assumption)
+  exact @_root_.GlobalTheory.HeisLineDiffF.differentiableAt_heisOF_line_k
 end

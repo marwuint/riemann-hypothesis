@@ -26,4 +26,4 @@ theorem _root_.GlobalTheory.T.vacuum_split_place_indicator_dual_pair : GlobalThe
     ∀ R : (Fin a' × Fin (a + a') → AF F) → ℂ, R 0 ≠ 0 → Rest (evFin F v) (G.M'.vac v) R →
     ∀ p ∈ GlobalTheory.InertDbl.ParD σ G.V' v, omd p (GlobalTheory.InertDbl.dblFun (tens (evFin F v) (G.M'.vac v) R)) =
       GlobalTheory.InertDbl.dblFun (tens (evFin F v) (G.M'.vac v) R) := by
-  first | exact @GlobalTheory.SplitParLeft.parD_fix_left | exact GlobalTheory.SplitParLeft.parD_fix_left | (intros; apply GlobalTheory.SplitParLeft.parD_fix_left <;> assumption)
+  exact @GlobalTheory.SplitParLeft.parD_fix_left

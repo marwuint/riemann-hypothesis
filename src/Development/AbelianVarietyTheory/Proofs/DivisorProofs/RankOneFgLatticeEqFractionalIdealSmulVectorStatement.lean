@@ -9,4 +9,4 @@ theorem _root_.GlobalTheory.T.rankOne_fg_lattice_eq_fractionalIdeal_smul_vector 
     ReciprocityTheory.GeometryOfNumbersTheory.latRank K ell = 1 → ell.FG →
     ∃ v : Fin m → K, v ≠ 0 ∧ ∃ 𝔟 : Submodule (𝓞 K) K, 𝔟.FG ∧ 𝔟 ≠ ⊥ ∧
       ∀ e, e ∈ ell ↔ ∃ β ∈ 𝔟, e = β • v := by
-  first | exact @GlobalTheory.latRank_one_eq_ideal_smul | exact GlobalTheory.latRank_one_eq_ideal_smul | (intros; apply GlobalTheory.latRank_one_eq_ideal_smul <;> assumption)
+  exact @GlobalTheory.latRank_one_eq_ideal_smul

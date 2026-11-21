@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.inertPlace_stabilizer_two_factor_decomposition : �
       ∀ z ∈ GlobalTheory.InertSph.latAt G.W v, M *ᵥ z ∈ GlobalTheory.InertSph.latAt G.W v) ∧
     (∃ M : Matrix (Fin (a + a')) (Fin (a + a')) (AE F E), (1 + mat k₂) * M = 1 ∧ M * (1 + mat k₂) = 1 ∧
       ∀ z ∈ GlobalTheory.InertSph.latAt G.W v, M *ᵥ z ∈ GlobalTheory.InertSph.latAt G.W v) ∧ k = k₁ * k₂ := by
-  first | exact @GlobalTheory.InertTwoFac.twoFac | exact GlobalTheory.InertTwoFac.twoFac | (intros; apply GlobalTheory.InertTwoFac.twoFac <;> assumption)
+  exact @GlobalTheory.InertTwoFac.twoFac

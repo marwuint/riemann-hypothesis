@@ -9,4 +9,4 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris CrystallineSemistable
 open GlobalTheory.CatH (face toLast)
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.local_graded_vanishing : KH.LocGr := by
-  first | exact @GlobalTheory.CompanionTheory.LocGrStep.loc_gr | exact GlobalTheory.CompanionTheory.LocGrStep.loc_gr | (intros; apply GlobalTheory.CompanionTheory.LocGrStep.loc_gr <;> assumption)
+  exact @GlobalTheory.CompanionTheory.LocGrStep.loc_gr

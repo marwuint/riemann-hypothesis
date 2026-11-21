@@ -12,4 +12,4 @@ open scoped ComplexOrder
 
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.ball_mobius_zero_eq_iff_unitary : ∀ (Ψ : Type) [Fintype Ψ] (j j' n : ℕ) (q : Ψ × Fin j × Fin j' ≃ Fin n) (u v : Ψ → Matrix (Sg j j') (Sg j j') ℂ), (∀ τ, IsSgU (u τ)) → (∀ τ, IsSgU (v τ)) → (moebBall q u 0 = moebBall q (fun τ => u τ * v τ) 0 ↔ ∀ τ, (v τ)ᴴ * v τ = 1) := by
-  first | exact @GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Stab.moebBall_zero_iff | exact GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Stab.moebBall_zero_iff | (intros; apply GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Stab.moebBall_zero_iff <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Ar.Cusp.Dict.Stab.moebBall_zero_iff

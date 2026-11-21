@@ -8,4 +8,4 @@ theorem _root_.GlobalTheory.T.kaehler_finrank_fraction_field : ∀ (S T K L : Ty
     LinearIndependent T (fun i => KaehlerDifferential.D S T (w i)) →
     Submodule.span T (Set.range fun i => KaehlerDifferential.D S T (w i)) = ⊤ →
     Module.finrank L (KaehlerDifferential K L) = m := by
-  first | exact @GlobalTheory.CompanionTheory.Ggeo.finrank_kaehler_fractionRing_eq_of_basis | exact GlobalTheory.CompanionTheory.Ggeo.finrank_kaehler_fractionRing_eq_of_basis | (intros; apply GlobalTheory.CompanionTheory.Ggeo.finrank_kaehler_fractionRing_eq_of_basis <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Ggeo.finrank_kaehler_fractionRing_eq_of_basis

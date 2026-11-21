@@ -11,4 +11,4 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.tame_part_right : ∀ (F : Type) [Field F] [NumberField F] (κ κ' κ₁' : Type) [Fintype κ] [Fintype κ'] [Fintype κ₁']
     (T : ((κ' → AF F) → ℂ) →ₗ[ℂ] ((κ₁' → AF F) → ℂ)), IsTame F T → IsTame F (partR (κ := κ) T) := by
-  first | exact @GlobalTheory.TamePartR.isTame_partR | exact GlobalTheory.TamePartR.isTame_partR | (intros; apply GlobalTheory.TamePartR.isTame_partR <;> assumption)
+  exact @GlobalTheory.TamePartR.isTame_partR

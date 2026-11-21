@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.cayleyTransform_trivial_phase_skewHermitian : ∀ 
     ∀ C : Matrix (Fin n') (Fin n') L, (∀ i j, σ (C i j) = - C j i) → (∀ i j, Valued.v (C i j) < 1) →
     (∀ i j, (C * x) i j ∈ Formalism.UG.intL L) →
     ψ ((δ * Matrix.trace (C * (x * ((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * Matrix.transpose (x.map σ))) + σ (δ * Matrix.trace (C * (x * ((JS⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * Matrix.transpose (x.map σ))))) / 2) = 1 := by
-  first | exact @GlobalTheory.Hk3.CayleyPhase.cayley_phase | exact GlobalTheory.Hk3.CayleyPhase.cayley_phase | (intros; apply GlobalTheory.Hk3.CayleyPhase.cayley_phase <;> assumption)
+  exact @GlobalTheory.Hk3.CayleyPhase.cayley_phase

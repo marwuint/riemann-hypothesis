@@ -29,4 +29,4 @@ theorem _root_.GlobalTheory.T.characters_restrict_linear_to_trait_uniformisation
           ∃ u : Wˣ, IsFractionRing.lift (A := R) (K := FractionRing R)
               (g := (algebraMap W (FractionRing W)).comp g) ((IsFractionRing.injective W (FractionRing W)).comp hg) (x : FractionRing R) =
             algebraMap W (FractionRing W) (u : W) * (x' : FractionRing W) := by
-  first | exact @GlobalTheory.TauForm.main | exact GlobalTheory.TauForm.main | (intros; apply GlobalTheory.TauForm.main <;> assumption)
+  exact @GlobalTheory.TauForm.main

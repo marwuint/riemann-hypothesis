@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.exists_psi_generators_degenerationLaws_symmetricBa
     (∀ y z p J, Good D₀.P.L p J → val (τ' y z) (𝟙 _) p J = val (τ' z y) (𝟙 _) p J) →
     ∃ ψ : ∀ y : D₀.X, LB.Gen (LB.LinComb D₀.P.L (K := PUnit) (fun _ => (D₀.c y).left) (fun _ => -1)),
       GlobalTheory.UTau0.RLaws D₀ onB w0 uw ψ := by
-  first | exact @GlobalTheory.UTau0.exists_psi_rLaws | exact GlobalTheory.UTau0.exists_psi_rLaws | (intros; apply GlobalTheory.UTau0.exists_psi_rLaws <;> assumption)
+  exact @GlobalTheory.UTau0.exists_psi_rLaws

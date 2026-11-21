@@ -18,4 +18,4 @@ theorem _root_.GlobalTheory.T.finite_restricted_product_quotient : ∀ {ι Γ : 
     (hQf : ∀ i, {q : Hl i ⧸ V i | q.out ∈ Q i}.Finite)
     (hQV : ∀ᶠ i in cofinite, Q i ⊆ V i),
     {q : Γ ⧸ (⨅ i, (V i).comap (p i)) | ∀ i, p i q.out ∈ Q i}.Finite := by
-  first | exact @GlobalTheory.CompanionTheory.FinActS.finite_cosets_of_components_mem | exact GlobalTheory.CompanionTheory.FinActS.finite_cosets_of_components_mem | (intros; apply GlobalTheory.CompanionTheory.FinActS.finite_cosets_of_components_mem <;> assumption)
+  exact @GlobalTheory.CompanionTheory.FinActS.finite_cosets_of_components_mem

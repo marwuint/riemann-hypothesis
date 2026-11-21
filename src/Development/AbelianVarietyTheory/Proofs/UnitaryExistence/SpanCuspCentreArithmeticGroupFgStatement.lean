@@ -14,4 +14,4 @@ open AlgebraicGeometry CategoryTheory Limits ReciprocityTheory.ChartRestriction.
 open scoped Matrix nonZeroDivisors
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.span_cuspCentre_arithmeticGroup_fg : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r ρ : ℕ) (X : Data E r) (cu : FJ.CuspFD X ρ), (Submodule.span ℤ (FJ.zGam X cu)).FG := by
-  first | exact @GlobalTheory.CuspCentre.span_zGam_fg | exact GlobalTheory.CuspCentre.span_zGam_fg | (intros; apply GlobalTheory.CuspCentre.span_zGam_fg <;> assumption)
+  exact @GlobalTheory.CuspCentre.span_zGam_fg

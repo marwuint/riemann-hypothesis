@@ -57,5 +57,5 @@ section
 open GlobalTheory.SumSize GlobalTheory.RowClaim
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.kernel_conjugation_mean_archimedean_top_term : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → DictK → DepthK → InfTopK := by
-  first | exact @_root_.GlobalTheory.KerConjMean.archimedean_top_term_kernel_conj_mean | exact _root_.GlobalTheory.KerConjMean.archimedean_top_term_kernel_conj_mean | (intros; apply _root_.GlobalTheory.KerConjMean.archimedean_top_term_kernel_conj_mean <;> assumption)
+  exact @_root_.GlobalTheory.KerConjMean.archimedean_top_term_kernel_conj_mean
 end

@@ -28,4 +28,4 @@ theorem _root_.GlobalTheory.T.unitary_block_invertible_criterion : ∀ {K : Type
     ∃ (ζ : Matrix (Fin ρ) (Fin ρ) K) (η : Matrix (Fin ρ) (Fin p) K) (T : Matrix (Fin n) (Fin n) K),
       IsUnit (blk4 (a₄ + a₃ * X) (b₄ + a₃ * Y) c' d').det ∧ IsUnitary σ (blk4 0 1 (-1) 0) (blk4 (a₄ + a₃ * X) (b₄ + a₃ * Y) c' d') ∧
       cT σ ζ = ζ ∧ bl hn (-1) X 0 c' = T * rowC hn η (a₄ + a₃ * X) c' ∧ bl hn Z Y W d' = T * rowD hn σ ζ η (b₄ + a₃ * Y) d' := by
-  first | exact @GlobalTheory.CompanionTheory.ZUnf.NormalRow.normal_form | exact GlobalTheory.CompanionTheory.ZUnf.NormalRow.normal_form | (intros; apply GlobalTheory.CompanionTheory.ZUnf.NormalRow.normal_form <;> assumption)
+  exact @GlobalTheory.CompanionTheory.ZUnf.NormalRow.normal_form

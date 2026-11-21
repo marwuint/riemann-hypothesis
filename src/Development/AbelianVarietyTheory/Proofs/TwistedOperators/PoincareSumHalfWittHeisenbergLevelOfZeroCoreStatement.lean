@@ -16,4 +16,4 @@ open GlobalTheory.BumpMix
 
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.poincareSumHalfWitt_heisenberg_level_of_zero_core : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S S₀ T : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ), S₀.rank = 0 → ∀ (β : Mx D T.rank ρ → ℂ), IsBump β → ∃ U : AddSubgroup (WO S T), IsOpen (U : Set (WO S T)) ∧ ∀ u ∈ U, u.map (infPart D) = 0 → heisO ψ S T u (poinX ψ d T β) = poinX ψ d T β := by
-  first | exact @GlobalTheory.BumpMixLevel.poinX_heis_level | exact GlobalTheory.BumpMixLevel.poinX_heis_level | (intros; apply GlobalTheory.BumpMixLevel.poinX_heis_level <;> assumption)
+  exact @GlobalTheory.BumpMixLevel.poinX_heis_level

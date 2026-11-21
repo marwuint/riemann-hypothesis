@@ -11,4 +11,4 @@ theorem _root_.GlobalTheory.T.exists_pairing_coordinates_schrodinger_folland : �
       (∀ v v', GlobalTheory.RealWeil.sympl (φ v) (φ v') = -GlobalTheory.ArchUniq.omega P v v') ∧
       ∀ v (f : EuclideanSpace ℝ (Fin n) → ℂ),
         GlobalTheory.ArchUniq.schrF P v (f ∘ C) = GlobalTheory.RealWeil.rhoFun (φ v) f ∘ C := by
-  first | exact @GlobalTheory.ArchUniq.exists_pairing_coords | exact GlobalTheory.ArchUniq.exists_pairing_coords | (intros; apply GlobalTheory.ArchUniq.exists_pairing_coords <;> assumption)
+  exact @GlobalTheory.ArchUniq.exists_pairing_coords

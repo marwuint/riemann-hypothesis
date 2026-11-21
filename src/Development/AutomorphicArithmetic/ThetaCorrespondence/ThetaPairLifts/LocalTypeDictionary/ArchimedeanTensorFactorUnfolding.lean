@@ -38,5 +38,5 @@ section
 open GlobalTheory.SumSize GlobalTheory.RowClaim GlobalTheory.ArchTens
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.archimedean_tensor_factor_unfolding : _root_.GlobalTheory.FunPr.ThetaLocalInputs → BigC fun _ ch C _ => FlipAt ch (C / 2) → DatAt ch C := by
-  first | exact @_root_.GlobalTheory.ArchTens.Unfold.archimedean_tensor_unfold_datum | exact _root_.GlobalTheory.ArchTens.Unfold.archimedean_tensor_unfold_datum | (intros; apply _root_.GlobalTheory.ArchTens.Unfold.archimedean_tensor_unfold_datum <;> assumption)
+  exact @_root_.GlobalTheory.ArchTens.Unfold.archimedean_tensor_unfold_datum
 end

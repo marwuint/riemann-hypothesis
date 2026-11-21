@@ -20,4 +20,4 @@ theorem _root_.GlobalTheory.T.h2_bounded_twist : Formalism.GaloisCohomology.Loca
     ∃ C : ℕ, ∀ (n : ℕ), 0 < n → ∀ (h : ((p : O) ^ n) ∈ Ideal.span {ϖ ^ n}),
       letI := GlobalTheory.ShapeNeg.levZ (M := M) p n h
       Nat.card (ReciprocityTheory.Gal.H2 (GlobalTheory.ShapeNeg.levRepZ p n h ρ)) ≤ C := by
-  first | exact @GlobalTheory.CyclotomicH2Bound.h2_bounded_cyclotomic | exact GlobalTheory.CyclotomicH2Bound.h2_bounded_cyclotomic | (intros; apply GlobalTheory.CyclotomicH2Bound.h2_bounded_cyclotomic <;> assumption)
+  exact @GlobalTheory.CyclotomicH2Bound.h2_bounded_cyclotomic

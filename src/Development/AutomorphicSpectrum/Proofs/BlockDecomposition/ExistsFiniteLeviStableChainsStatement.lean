@@ -14,4 +14,4 @@ theorem _root_.GlobalTheory.T.exists_finite_levi_stable_chains : ∀ (n : ℕ) (
     SuppL (inUU lev) y → DegL d y →
     ∃ T : Submodule ℂ (Cq n V), FiniteDimensional ℂ T ∧ y ∈ T ∧ (∀ x ∈ T, SuppL (inUU lev) x ∧ DegL d x) ∧
       ∀ p q : Fin n, lev p = lev q → ∀ x ∈ T, Lv lev E1 E2 p q x ∈ T := by
-  first | exact @GlobalTheory.CompanionTheory.LvStableChains.exists_stable | exact GlobalTheory.CompanionTheory.LvStableChains.exists_stable | (intros; apply GlobalTheory.CompanionTheory.LvStableChains.exists_stable <;> assumption)
+  exact @GlobalTheory.CompanionTheory.LvStableChains.exists_stable

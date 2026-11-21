@@ -17,4 +17,4 @@ theorem _root_.GlobalTheory.T.exists_haar_volume_of_conjugate_lattice : Big fun 
     ∃ V₀ : ℝ, 0 < V₀ ∧ ∀ t β b, IsRep t ch.S.B s β b → ∀ hb : b j ∈ GfC _,
       la.real {n | (⟨b j, hb⟩ : GfC _)⁻¹ * n.1 * ⟨b j, hb⟩ ∈ (latGrp ch.G j).subgroupOf (GfC _)} *
         (GlobalTheory.RowWt.colCoef ch t β j : ℝ) = V₀ := by
-  first | exact @GlobalTheory.CellIdx.vol_mul_colCoef | exact GlobalTheory.CellIdx.vol_mul_colCoef | (intros; apply GlobalTheory.CellIdx.vol_mul_colCoef <;> assumption)
+  exact @GlobalTheory.CellIdx.vol_mul_colCoef

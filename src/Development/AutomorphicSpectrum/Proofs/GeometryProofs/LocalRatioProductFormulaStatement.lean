@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.local_ratio_product_formula : ∀ (L : Type) [Fiel
     ∑ᶠ v : FinitePlace L, (Real.log (locRatio a w c₀ v) - Real.log (v u)) =
       (∑ᶠ v : FinitePlace L, ∑ k, (a k : ℝ) * Real.log (⨆ i, v (w ⟨k, i⟩))) +
         ∑ σ : L →+* ℂ, (Real.log ‖σ u‖ + ∑ k, (a k : ℝ) * Real.log ‖σ (w ⟨k, c₀ k⟩)‖) := by
-  first | exact @GlobalTheory.CompanionTheory.Ar.RootHt.RatioSum.ratio_sum | exact GlobalTheory.CompanionTheory.Ar.RootHt.RatioSum.ratio_sum | (intros; apply GlobalTheory.CompanionTheory.Ar.RootHt.RatioSum.ratio_sum <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Ar.RootHt.RatioSum.ratio_sum

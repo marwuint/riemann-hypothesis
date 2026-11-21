@@ -22,4 +22,4 @@ open GlobalTheory.IndefiniteRowSideFullHecke.VolumeFlatSection (Blocks parahoric
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.heckeOperator_inverseCoset_conj_eigenvalue : ∀ (D : D7) (V : HSp D) (J : Set (GA D V)) (χ : GA D V → ℂ) (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))), SphOff J χ Sb → ∀ f ∈ GlobalTheory.FinZeta.bddAut V, (∀ k ∈ J, ∀ g, f (g * k) = χ k * f g) → ∀ e : HeightOneSpectrum (𝓞 D.host.E) → List ℤ → ℂ, (∀ P d R, Hecke₂ V J χ Sb P d R → heckeLin V R f = e P (dualLab d) • f) → ∀ P d R, Hecke₂ V J χ Sb P d R → heckeLin V R f = conj (e P d) • f := by
-  first | exact @GlobalTheory.HeckeAdjEigen.heckeLin_eq_conj_of_dualLab | exact GlobalTheory.HeckeAdjEigen.heckeLin_eq_conj_of_dualLab | (intros; apply GlobalTheory.HeckeAdjEigen.heckeLin_eq_conj_of_dualLab <;> assumption)
+  exact @GlobalTheory.HeckeAdjEigen.heckeLin_eq_conj_of_dualLab

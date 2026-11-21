@@ -9,4 +9,4 @@ open GlobalTheory.CompanionTheory.QKAvg
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.unipotent_radical_stabilizer_property : ∀ (D : D7) (B W : HSp D) (t : ℕ) (d : HypDec B W t), IsClosed (levM d : Set (GlobalTheory.RegSW.stab d)) := by
-  first | exact @GlobalTheory.CompanionTheory.QKAvg.isClosed_levM | exact GlobalTheory.CompanionTheory.QKAvg.isClosed_levM | (intros; apply GlobalTheory.CompanionTheory.QKAvg.isClosed_levM <;> assumption)
+  exact @GlobalTheory.CompanionTheory.QKAvg.isClosed_levM

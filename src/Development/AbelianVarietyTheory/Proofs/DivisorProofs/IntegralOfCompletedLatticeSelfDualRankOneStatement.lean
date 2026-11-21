@@ -27,4 +27,4 @@ theorem _root_.GlobalTheory.T.integral_of_completedLattice_selfDual_rankOne : �
   (∀ t : AE D, infPart D t = 0 → InHat 1 (fe D t) →
     ψ (Algebra.trace (AF D.host.F) (AE D) (incA D D.host.xi0 * (incA D (star r⁻¹) * (t * c)))) = 1) →
   InHat 1 (algebraMap D.host.E (FA D) ((n : D.host.E) * n * r) * fe D c) := by
-  first | exact @GlobalTheory.CosetOrth.inHat_of_char_dual | exact GlobalTheory.CosetOrth.inHat_of_char_dual | (intros; apply GlobalTheory.CosetOrth.inHat_of_char_dual <;> assumption)
+  exact @GlobalTheory.CosetOrth.inHat_of_char_dual

@@ -10,4 +10,4 @@ open GlobalTheory.CuspRep GlobalTheory.WeilDeligne GlobalTheory.Pst GlobalTheory
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.local_field_embedding_mem : ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (K : Type) [Field K] [NumberField K] [Algebra F K] [Algebra K Ω] [IsScalarTower F K Ω] [IsAlgClosure K Ω] (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω) (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l F Ω (Dec (F := F) A) O), Dec (F := F) A ≤ (res F Ω K).range → ∀ x : K, Bw.j (algebraMap K Ω x) ∈ Bw.Kw.1 := by
-  first | exact @GlobalTheory.RealGal.bridge_j_mem_Kw_of_dec_le | exact GlobalTheory.RealGal.bridge_j_mem_Kw_of_dec_le | (intros; apply GlobalTheory.RealGal.bridge_j_mem_Kw_of_dec_le <;> assumption)
+  exact @GlobalTheory.RealGal.bridge_j_mem_Kw_of_dec_le

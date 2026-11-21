@@ -7,4 +7,4 @@ open ReciprocityTheory.PGsh.L2 ReciprocityTheory.PGsh.Up GlobalTheory.CompanionT
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.non_fundamental_eigen_le_square_augmentation : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (F : Type) [Field F] [Fintype F] [DecidableEq F] [CharP F p] (f : ℕ), Fintype.card F = p ^ f → ∀ (AA : HopfOrder (C := C) R F), FStable F AA.carrier → ∀ χ : MulChar F R, ¬ IsFund p χ → eig AA.carrier χ ≤ sqIdeal (augIdeal AA.carrier) := by
-  first | exact @GlobalTheory.CompanionTheory.Relay.non_fundamental_eigen_le_square_augmentation | exact GlobalTheory.CompanionTheory.Relay.non_fundamental_eigen_le_square_augmentation | (intros; apply GlobalTheory.CompanionTheory.Relay.non_fundamental_eigen_le_square_augmentation <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Relay.non_fundamental_eigen_le_square_augmentation

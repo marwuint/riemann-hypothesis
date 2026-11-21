@@ -13,5 +13,5 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.type_nonzero_recursion_of_eigen' : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), ∀ (X : GlobalTheory.NJoin.RealAt D P.cf P.C P.tp) (_ : GlobalTheory.NJoin.Agree X P.M P.rep), (∀ j t, GlobalTheory.DownLift.TypeNZ X.R j t) → ∀ i, GlobalTheory.NJoin.EigString X i → GlobalTheory.NJoin.EigGood X i → GlobalTheory.RowCopy.TypeNZRec D.nd D.naut i := by
-  first | exact @_root_.GlobalTheory.TypeNZJoin.typeNZRec_of_join_alt | exact _root_.GlobalTheory.TypeNZJoin.typeNZRec_of_join_alt | (intros; apply _root_.GlobalTheory.TypeNZJoin.typeNZRec_of_join_alt <;> assumption)
+  exact @_root_.GlobalTheory.TypeNZJoin.typeNZRec_of_join_alt
 end

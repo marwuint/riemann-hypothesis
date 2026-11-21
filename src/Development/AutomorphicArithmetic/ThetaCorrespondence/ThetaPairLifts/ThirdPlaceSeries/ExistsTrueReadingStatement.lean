@@ -24,5 +24,5 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.exists_true_reading_with_laws_suppLaws : GlobalTheory.Published.AutomorphicFormsFiniteGL → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), (∀ i : D.nd.Loc, Nonempty (RowMod D P.rep (D.nd.j i))) → ∃ S : Reading P.T, _root_.GlobalTheory.NPin.IsFaithfulReading P S ∧ _root_.GlobalTheory.SplitRead.LawsAlt S ∧ SuppLaws S := by
-  first | exact @_root_.GlobalTheory.TrueReading.exists_true_reading_alt | exact _root_.GlobalTheory.TrueReading.exists_true_reading_alt | (intros; apply _root_.GlobalTheory.TrueReading.exists_true_reading_alt <;> assumption)
+  exact @_root_.GlobalTheory.TrueReading.exists_true_reading_alt
 end

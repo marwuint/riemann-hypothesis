@@ -12,4 +12,4 @@ open GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting (FinPl id
 open GlobalTheory.DownLift.GenSplit
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.heisenbergRelations_extend_to_place_commonEigen : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (Sb : Finset (FinPl D)) (v : FinPl D), v ∈ Sb → ∀ (p f : WO S T → ℂ), (∀ u, IsHalf (idem D (.inl v)) u → CoEig ψ S T p f u ∨ ∃ l, IsHalf (idem D (.inl v)) l ∧ CoEig ψ S T p f l ∧ ψ (symplO S T l u) ≠ 1) → RelOff ψ S T Sb p f → RelOff ψ S T (dropPl Sb v) p f := by
-  first | exact @GlobalTheory.DownLift.GenSplit.relOff_dropPl_of_coEig | exact GlobalTheory.DownLift.GenSplit.relOff_dropPl_of_coEig | (intros; apply GlobalTheory.DownLift.GenSplit.relOff_dropPl_of_coEig <;> assumption)
+  exact @GlobalTheory.DownLift.GenSplit.relOff_dropPl_of_coEig

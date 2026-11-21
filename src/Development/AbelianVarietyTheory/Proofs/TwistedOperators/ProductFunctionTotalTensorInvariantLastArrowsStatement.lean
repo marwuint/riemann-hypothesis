@@ -17,4 +17,4 @@ theorem _root_.GlobalTheory.T.productFunction_totalTensor_invariant_lastArrows :
         (colShift S t (finEmb G.sp.topDec k) (S.Z.vec (d.1 (lastIx D)))) j (w j)) *
       ∏ i, Function.update (fun i => S.Z.vec (d.2 i)) (lastIx D) (rowShift S k (S.Z.vec (d.2 (lastIx D)))) i (v i)) =
     τ.sum fun d a => a * (∏ j, S.Z.vec (d.1 j) (w j)) * ∏ i, S.Z.vec (d.2 i) (v i) := by
-  first | exact @GlobalTheory.LastVertexTensor.productFn_invariant | exact GlobalTheory.LastVertexTensor.productFn_invariant | (intros; apply GlobalTheory.LastVertexTensor.productFn_invariant <;> assumption)
+  exact @GlobalTheory.LastVertexTensor.productFn_invariant

@@ -9,4 +9,4 @@ open scoped ComplexOrder Topology
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.isNegHermitianSquare_curvature_boundedDomainHodgeGram : ∀ (m r : ℕ) (x : Fin m → Fin r → ℂ), (1 - Matrix.of x * (Matrix.of x)ᴴ).PosDef →
     IsNegSq (curv (domGram m r) x) r := by
-  first | exact @GlobalTheory.PointFormSign.curv_domGram_isNegSq | exact GlobalTheory.PointFormSign.curv_domGram_isNegSq | (intros; apply GlobalTheory.PointFormSign.curv_domGram_isNegSq <;> assumption)
+  exact @GlobalTheory.PointFormSign.curv_domGram_isNegSq

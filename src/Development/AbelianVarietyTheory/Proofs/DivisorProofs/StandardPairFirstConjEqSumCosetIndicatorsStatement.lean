@@ -22,4 +22,4 @@ theorem _root_.GlobalTheory.T.standardPairFirst_conj_eq_sum_cosetIndicators : �
   ∀ z : Formalism.MainNotions.StandardLatticesGL3.GA D a → Matrix (Fin d) (Fin a) D.host.E, (∀ r ∈ R, IsIntE (z r) ∧ Approx 𝔪 0 r (z r)) →
   (fun w => starRingEnd ℂ (stdFst ν e 𝔪 S T β 1 w)) =
     starRingEnd ℂ (unitChar ν e β.val) • ∑ r ∈ R, unitChar ν e (matE r) • cosInd e 𝔪 hS hT (z r) := by
-  first | exact @GlobalTheory.StdExpand.conj_stdFst_eq_sum | exact GlobalTheory.StdExpand.conj_stdFst_eq_sum | (intros; apply GlobalTheory.StdExpand.conj_stdFst_eq_sum <;> assumption)
+  exact @GlobalTheory.StdExpand.conj_stdFst_eq_sum

@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.unfoldedRankinSelbergIntegrand_continuous_invarian
     Continuous (fun p : ℝ × GA E a => GlobalTheory.RSCell.bInt ℓ F Φ J η p.1 p.2) ∧
       (∀ x, ∀ u ∈ GlobalTheory.CellDec.NA E a, ∀ g, GlobalTheory.RSCell.bInt ℓ F Φ J η x (u * g) = GlobalTheory.RSCell.bInt ℓ F Φ J η x g) ∧
       ∀ x g, GlobalTheory.RSCell.bInt ℓ F Φ J η x g ≠ ⊤ := by
-  first | exact @GlobalTheory.RSCellB.bInt_continuous_invariant_finite | exact GlobalTheory.RSCellB.bInt_continuous_invariant_finite | (intros; apply GlobalTheory.RSCellB.bInt_continuous_invariant_finite <;> assumption)
+  exact @GlobalTheory.RSCellB.bInt_continuous_invariant_finite

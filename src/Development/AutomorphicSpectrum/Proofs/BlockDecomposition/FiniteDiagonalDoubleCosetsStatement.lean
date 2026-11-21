@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.finite_diagonal_double_cosets : ∀ (H : Type) [Gr
       (((Z.map ((MonoidHom.id H).prod (MonoidHom.id H)) ⊓ (L.prod L).map (MulAut.conj (Quotient.out Q)).toMonoidHom).relIndex (C.map ((MonoidHom.id H).prod (MonoidHom.id H))) : ℕ) : ℂ) * F (Quotient.out Q) =
     ∑ᶠ q : DoubleCoset.Quotient (Z : Set H) (L : Set H),
       (((Z ⊓ L.map (MulAut.conj (Quotient.out q)).toMonoidHom).relIndex C : ℕ) : ℂ) * ∑ᶠ p : H ⧸ L, F (Quotient.out q, p.out) := by
-  first | exact @GlobalTheory.CompanionTheory.OrbitCount.orbit_count | exact GlobalTheory.CompanionTheory.OrbitCount.orbit_count | (intros; apply GlobalTheory.CompanionTheory.OrbitCount.orbit_count <;> assumption)
+  exact @GlobalTheory.CompanionTheory.OrbitCount.orbit_count

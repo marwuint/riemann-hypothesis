@@ -13,4 +13,4 @@ open GlobalTheory.SeeConjRead
 
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.instanceIota_readout_realTrivial_stabilizer_unitary : ∀ {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (β : GL (Fin (Yc D 0).rank) (EAf D)), IsFrame β (Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0) → ∀ κ : GA D (Yc D 0), (((iotaX X h).toMulEquiv κ).1 = 1 ↔ κ ∈ GfC (Yc D 0)) ∧ (((iotaX X h).toMulEquiv κ).2 ∈ X.B.I.Kset ↔ finE (Yc D 0) κ ∈ St β) ∧ finE (Yc D 0) κ ∈ UA D.sp.cm (Yc D 0).gram := by
-  first | exact @GlobalTheory.SeeConjReadIota.read_iota | exact GlobalTheory.SeeConjReadIota.read_iota | (intros; apply GlobalTheory.SeeConjReadIota.read_iota <;> assumption)
+  exact @GlobalTheory.SeeConjReadIota.read_iota

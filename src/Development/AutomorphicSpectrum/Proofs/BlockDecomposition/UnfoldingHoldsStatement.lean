@@ -14,4 +14,4 @@ open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doublin
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.unfolding_holds : PositivityTheory.PfSWUS.Unfold := by
-  first | exact @GlobalTheory.CompanionTheory.SwUnf.unfold | exact GlobalTheory.CompanionTheory.SwUnf.unfold | (intros; apply GlobalTheory.CompanionTheory.SwUnf.unfold <;> assumption)
+  exact @GlobalTheory.CompanionTheory.SwUnf.unfold

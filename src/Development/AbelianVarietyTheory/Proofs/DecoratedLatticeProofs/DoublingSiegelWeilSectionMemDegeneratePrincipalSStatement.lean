@@ -13,4 +13,4 @@ open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.doublingSiegelWeilSection_mem_degeneratePrincipalSeries : GlobalTheory.Published.WeilRepresentationUnitaryPair → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χB : (AE D)ˣ →* Circle) (omh : WRep (dblSp A) B), IsWeilDatumO ψ (dblSp A) B 1 χB omh → ∀ (ν : Measure (WO A B)) (𝓕 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓕 → ∀ φ, IsThetaFunO ψ (dblSp A) B φ → ∀ a : GL (Fin A.rank) (AE D), IsKFinVec omh (Khat A a) φ → swSec A B omh ν 𝓕 φ ∈ degPS A a χB⁻¹ (sZero A B) := by
-  first | exact @GlobalTheory.SwSecMem.swSec_mem_degPS | exact GlobalTheory.SwSecMem.swSec_mem_degPS | (intros; apply GlobalTheory.SwSecMem.swSec_mem_degPS <;> assumption)
+  exact @GlobalTheory.SwSecMem.swSec_mem_degPS

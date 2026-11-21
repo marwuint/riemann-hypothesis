@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.coords_added_projective : ∀ (X X' : Scheme.{0}) 
     (∀ q : X, genPt ξ ⤳ q) → CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) → CoordTie ℤ ξ' x' →
     GlobalTheory.CompanionTheory.Ar.Dominates ξ' ξ f (algebraMap Ω₀ Ω) →
     CoordTie ℤ ξ' (fun c' : (k : Unit ⊕ K) → addJ J N k => ∏ k, addY y x' ⟨k, c' k⟩) := by
-  first | exact @GlobalTheory.CompanionTheory.Ar.FlagStep.TieBlocks.tie_blocks | exact GlobalTheory.CompanionTheory.Ar.FlagStep.TieBlocks.tie_blocks | (intros; apply GlobalTheory.CompanionTheory.Ar.FlagStep.TieBlocks.tie_blocks <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Ar.FlagStep.TieBlocks.tie_blocks

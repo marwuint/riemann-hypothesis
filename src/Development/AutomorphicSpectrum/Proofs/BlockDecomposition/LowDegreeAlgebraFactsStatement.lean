@@ -4,4 +4,4 @@ import Development.WeilBound.RepresentationTheoryGL.DiscreteSeries.DiscreteSerie
 
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.low_degree_algebra_facts : PositivityTheory.RgDs.K.LowAlg := by
-  first | exact @GlobalTheory.CompanionTheory.GlLowest.lowAlg | exact GlobalTheory.CompanionTheory.GlLowest.lowAlg | (intros; apply GlobalTheory.CompanionTheory.GlLowest.lowAlg <;> assumption)
+  exact @GlobalTheory.CompanionTheory.GlLowest.lowAlg

@@ -12,4 +12,4 @@ theorem _root_.GlobalTheory.T.finite_lattice_points_siegel : ∀ (E : Type) [Fie
     (∀ r, -t₀ ≤ An.sr x r) → ∀ q ∈ Q,
     {γ : GA E N | γ ∈ latticeGL E N ∧ ∃ a ∈ Q', ∃ a' ∈ Q', γ = (b * An.tor E x * q) * a * a'⁻¹ * (b * An.tor E x * q)⁻¹}.encard ≤
       (⌈C * Real.exp (M * ∑ r ∈ Finset.range N, An.sr x r)⌉₊ : ℕ) := by
-  first | exact @GlobalTheory.CompanionTheory.ConcCount.count_conj_siegel | exact GlobalTheory.CompanionTheory.ConcCount.count_conj_siegel | (intros; apply GlobalTheory.CompanionTheory.ConcCount.count_conj_siegel <;> assumption)
+  exact @GlobalTheory.CompanionTheory.ConcCount.count_conj_siegel

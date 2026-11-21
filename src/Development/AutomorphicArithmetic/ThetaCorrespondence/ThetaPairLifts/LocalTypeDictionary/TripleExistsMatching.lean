@@ -58,5 +58,5 @@ theorem _root_.GlobalTheory.T.twist_triple_matches : GlobalTheory.Published.Howe
   ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →
     ∀ (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁) (B : Fr X) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →
       ∃ ωA ωB Pi rf rl p p', IsMatch ψ θ A A₁ B α β ωA ωB Pi rf rl p p' := by
-  first | exact @_root_.GlobalTheory.TripleRead.triple_exists_matching | exact _root_.GlobalTheory.TripleRead.triple_exists_matching | (intros; apply _root_.GlobalTheory.TripleRead.triple_exists_matching <;> assumption)
+  exact @_root_.GlobalTheory.TripleRead.triple_exists_matching
 end

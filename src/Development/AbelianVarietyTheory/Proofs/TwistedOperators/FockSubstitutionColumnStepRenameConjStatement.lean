@@ -18,4 +18,4 @@ theorem _root_.GlobalTheory.T.fockSubstitution_columnStep_rename_conj : ∀ {D :
       (fun τ => ((u τ : Matrix.unitaryGroup _ ℂ) : Matrix _ _ ℂ).submatrix (Fin.cast (GlobalTheory.RowReal.rank_gridM G (i := i) i.2.le))
         (Fin.cast (GlobalTheory.RowReal.rank_gridM G (i := i) i.2.le))) Q) =
       linSub (homMat _ _ (u, v)) (GlobalTheory.RowReal.trRow G i Q) := by
-  first | exact @GlobalTheory.RowReal.trRow_fockSubAll | exact GlobalTheory.RowReal.trRow_fockSubAll | (intros; apply GlobalTheory.RowReal.trRow_fockSubAll <;> assumption)
+  exact @GlobalTheory.RowReal.trRow_fockSubAll

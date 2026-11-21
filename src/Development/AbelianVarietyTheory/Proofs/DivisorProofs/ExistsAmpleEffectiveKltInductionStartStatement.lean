@@ -20,4 +20,4 @@ theorem _root_.GlobalTheory.T.exists_ample_effective_klt_inductionStart : Global
       ∃ (A F : CartierDiv X) (a : ℕ), IsAmpleLB (toLB A) ∧ 0 < a ∧ toPic F = a • cls N₀ hN₀ ∧
         ∃ (lam μ : ℚ) (m' : ℕ) (D₀ : CartierDiv X), 0 < m' ∧ D₀.Eff ∧ 0 < μ ∧ lam < β ∧
           (∀ C : Closeds X, IsCompleteCurve ℂ C → (interNumRed ℂ C ![toLB D₀] : ℚ) / m' = lam * interNumRed ℂ C ![N₀] / r - μ * interNumRed ℂ C ![toLB A]) ∧ ∀ y, KltAt p n (Δ + qWeil D₀ m') y := by
-  first | exact @GlobalTheory.PairStep.exists_ample_eff_kltAt_start | exact GlobalTheory.PairStep.exists_ample_eff_kltAt_start | (intros; apply GlobalTheory.PairStep.exists_ample_eff_kltAt_start <;> assumption)
+  exact @GlobalTheory.PairStep.exists_ample_eff_kltAt_start

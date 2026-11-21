@@ -11,4 +11,4 @@ theorem _root_.GlobalTheory.T.schwartz_bruhat_integrable_moments : ∀ (E : Type
     (∃ L : Set (Fin m → Af E), IsCompact L ∧ ∀ x, F x ≠ 0 → (fun i => pFin E (x i)) ∈ L) ∧
     ∀ k : ℕ, Integrable (fun x => ‖F x‖ * (1 + ‖fun i => pInf E (x i)‖) ^ k)
       (GroundTheory.Automorphic.GJMatrix.adeleMeasurePi E) := by
-  first | exact @GlobalTheory.SchwartzBruhatMoments.compactSupport_and_integrable_moments | exact GlobalTheory.SchwartzBruhatMoments.compactSupport_and_integrable_moments | (intros; apply GlobalTheory.SchwartzBruhatMoments.compactSupport_and_integrable_moments <;> assumption)
+  exact @GlobalTheory.SchwartzBruhatMoments.compactSupport_and_integrable_moments

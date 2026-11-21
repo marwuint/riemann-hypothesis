@@ -20,4 +20,4 @@ attribute [local instance] Formalism.IndefR.principalLevelFrame.instCMHostI
 open GlobalTheory.CuspMult
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.rank_equivariantHomsInto_isotypicSum_of_iso : ∀ (H S0 S X : Type) [Group H] [AddCommGroup S0] [Module ℂ S0] [AddCommGroup S] [Module ℂ S] [AddCommGroup X] [Module ℂ X] (σ0 : Representation ℂ H S0) (σ : Representation ℂ H S) (ρ : Representation ℂ H X) (C : Submodule ℂ X), Nonempty (σ.asModule ≃ₗ[MonoidAlgebra ℂ H] σ0.asModule) → Module.rank ℂ (homInto σ ρ (⨆ g ∈ homInto σ0 ρ C, LinearMap.range g)) = Module.rank ℂ (homInto σ0 ρ C) := by
-  first | exact @GlobalTheory.MultIso.rank_homInto_iSup_range | exact GlobalTheory.MultIso.rank_homInto_iSup_range | (intros; apply GlobalTheory.MultIso.rank_homInto_iSup_range <;> assumption)
+  exact @GlobalTheory.MultIso.rank_homInto_iSup_range

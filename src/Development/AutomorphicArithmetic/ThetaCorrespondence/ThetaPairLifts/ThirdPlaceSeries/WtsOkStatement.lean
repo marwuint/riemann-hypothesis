@@ -23,5 +23,5 @@ theorem _root_.GlobalTheory.T.weight_lambda_shift_nonneg' : _root_.GlobalTheory.
       (W.lam τ a : ℤ) = (Formalism.IndefR.Bridge.lamLdef (D := Fm.D x i) (Formalism.IndefR.Links.Vc (Fm.D x i) j).rank ((j : ℕ) + 1) τ).w a + c) ∧
     (∀ τ a, a < (GlobalTheory.ExpTie.parOf (Fm.L x i) j).Nr → 0 ≤ W.U (GlobalTheory.ExpTie.parOf (Fm.L x i) j) τ a ∧ W.U (GlobalTheory.ExpTie.parOf (Fm.L x i) j) τ a ≤ (Formalism.CohomologicalDescent.ShortWeightBounds.h0 (GlobalTheory.ExpTie.parOf (Fm.L x i) j) : ℤ)) ∧
     W.T2.card ≤ (Fm.D x i).host.T2.card ∧ W.Sp = Formalism.MainNotions.JumpSetsAlt.excSet (Fm.D x i) := by
-  first | exact @_root_.GlobalTheory.ExpTie.Lift.wts_ok_alt | exact _root_.GlobalTheory.ExpTie.Lift.wts_ok_alt | (intros; apply _root_.GlobalTheory.ExpTie.Lift.wts_ok_alt <;> assumption)
+  exact @_root_.GlobalTheory.ExpTie.Lift.wts_ok_alt
 end

@@ -8,4 +8,4 @@ set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.selfDual_splitComponent_isLattice_stabilizer_eq : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (S : HSp D) (n : Type) [Fintype n] [DecidableEq n] (β : Frame p S n) (L : Lat S), IsSelfDualC S L →
     ∃ Λ : Submodule 𝒪[k] (n → k), Λ.IsLattice k ∧ β.IsLat L Λ ∧ ∀ g, InK S L (· = p.v) (β.gl g) ↔ g • Λ = Λ := by
-  first | exact @GlobalTheory.FinPl.FrameLat.exists_lat | exact GlobalTheory.FinPl.FrameLat.exists_lat | (intros; apply GlobalTheory.FinPl.FrameLat.exists_lat <;> assumption)
+  exact @GlobalTheory.FinPl.FrameLat.exists_lat

@@ -11,4 +11,4 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.relIndex_uniformizer_pow_mul_integers_eq_sq_pow : ∀ {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (c : L →+* L) (q : ℕ), IsUnramInv ϖ c q → ∀ e : ℕ, ((Formalism.UG.intL L).toAddSubgroup.map (AddMonoidHom.mulLeft (ϖ ^ e))).relIndex (Formalism.UG.intL L).toAddSubgroup = (q ^ 2) ^ e := by
-  first | exact @GlobalTheory.UnramIntIndex.relIndex_mul_uniformizer_pow | exact GlobalTheory.UnramIntIndex.relIndex_mul_uniformizer_pow | (intros; apply GlobalTheory.UnramIntIndex.relIndex_mul_uniformizer_pow <;> assumption)
+  exact @GlobalTheory.UnramIntIndex.relIndex_mul_uniformizer_pow

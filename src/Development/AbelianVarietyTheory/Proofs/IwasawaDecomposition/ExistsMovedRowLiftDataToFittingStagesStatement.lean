@@ -14,4 +14,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar Formalism.IndefR.p
 open GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.Mem.R3.Tr
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.exists_movedRowLiftData_to_fittingStages : ∀ (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T) (Z₀ : w.Lt) (hX : B.fields.Ok) (Wt : Set B.places.Pl) (z₀ : Dat (w.st Z₀) w.I hX T Wt), ∀ (q : RowPk w z₀) (o : q.Over), Holds z₀.R z₀.F → z₀.R.toRealDat.ExAt → GlobalTheory.RealGeo.InGeo z₀.geo → GrpTrue Z₀.N f → o.Fits → ∃ m : Moved o, m.Copy ∧ m.Coh := by
-  first | exact @GlobalTheory.Mem.R3.Rw.Mv.exists_moved | exact GlobalTheory.Mem.R3.Rw.Mv.exists_moved | (intros; apply GlobalTheory.Mem.R3.Rw.Mv.exists_moved <;> assumption)
+  exact @GlobalTheory.Mem.R3.Rw.Mv.exists_moved

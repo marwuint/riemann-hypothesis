@@ -41,4 +41,4 @@ theorem _root_.GlobalTheory.T.exists_analyticData_enlargedBase_tupleFree : Globa
         IdemClass (D := (w'.st Z').toD7) (famR (w'.st Z') w'.I hX' (usedOf w'.I T' {v | B'.places.resChar v ∈ T'.pl}) Xg tr₀).A ∧ R₀.toRealDat.Pre0 (face0 (w'.st Z') w'.I hX' (usedOf w'.I T' {v | B'.places.resChar v ∈ T'.pl}) Xg tr₀).lv2 ∧ R₀.IsInert ∧ R₀.IsTup ∧
         R₀.AllPlaces ∧ Keep R₀.toRealDat (face0 (w'.st Z') w'.I hX' (usedOf w'.I T' {v | B'.places.resChar v ∈ T'.pl}) Xg tr₀).lv2 cG ∧ BrgStd (w'.st Z') w'.I hX' (usedOf w'.I T' {v | B'.places.resChar v ∈ T'.pl}) Xg tr₀ R₀.toRealDat ∧
         RSideW z {v | B'.places.resChar v ∈ T'.pl} R₀) := by
-  first | exact @GlobalTheory.Mem.R3.Rw.exists_realDat_keep_rsideW | exact GlobalTheory.Mem.R3.Rw.exists_realDat_keep_rsideW | (intros; apply GlobalTheory.Mem.R3.Rw.exists_realDat_keep_rsideW <;> assumption)
+  exact @GlobalTheory.Mem.R3.Rw.exists_realDat_keep_rsideW

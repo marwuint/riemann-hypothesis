@@ -20,4 +20,4 @@ theorem _root_.GlobalTheory.T.exists_supported_unitaries_moving_bottomTriples : 
       (∀ u : WO A WW, IsHalf (Y.e t) u → frMapO A WW Y.rA.β Y.rW.β (actO A WW g h u) = frMapO A WW X.rA.β X.rW.β u) ∧
       ∀ u : WO A' WW, IsHalf (cA D (Y.e t)) u →
         frMapAdj A' WW Y.rA'.β Y.rW.β (actO A' WW g' h u) = frMapAdj A' WW X.rA'.β X.rW.β u := by
-  first | exact @GlobalTheory.BotUnitMove.move_elts | exact GlobalTheory.BotUnitMove.move_elts | (intros; apply GlobalTheory.BotUnitMove.move_elts <;> assumption)
+  exact @GlobalTheory.BotUnitMove.move_elts

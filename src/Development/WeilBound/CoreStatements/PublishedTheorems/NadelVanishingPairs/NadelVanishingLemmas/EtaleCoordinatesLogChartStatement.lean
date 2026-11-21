@@ -14,4 +14,4 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.Cartier GlobalTheory.LogDR GlobalTheory.LogPair
 
 theorem _root_.GlobalTheory.T.etale_coordinates_log_chart : ∀ (p : ℕ) [Fact p.Prime] (X : Scheme.{0}) [IsIntegral X] (f : X ⟶ Sp (ZMod p)) (U : X.Opens) (h : genericPoint X ∈ U) {n : ℕ} (t : Fin n → Γ(X, U)) (x : Fin n → X.functionFieldˣ) (J : Finset (Fin n)) (Z : Set X), IsAffineOpen U → IsEtCoord f U t → (∀ j, (x j : X.functionField) = fnOf U h (t j)) → (∀ y ∈ U, y ∈ Z ↔ ∃ j ∈ J, ¬ UnitAt y (x j : X.functionField)) → IsLogChart Z U x J := by
-  first | exact @_root_.GlobalTheory.EtLog.isLogChart_of_isEtCoord | exact _root_.GlobalTheory.EtLog.isLogChart_of_isEtCoord | (intros; apply _root_.GlobalTheory.EtLog.isLogChart_of_isEtCoord <;> assumption)
+  exact @_root_.GlobalTheory.EtLog.isLogChart_of_isEtCoord

@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.splitPlace_tensorLattice_selfDual : ∀ (F E : Typ
     ∀ z : Matrix (Fin n) (Fin d) (AE F E), At (evFin F v) z →
       (z ∈ latAtV X Y v ↔ ∀ γ ∈ latAtV X Y v,
         B.ψ (symp (R := AF F) (cA σ) (-1) (incM F X.J) (incM F Y.J) z γ) = 1) := by
-  first | exact @GlobalTheory.SplitLatSelfDual.latAtV_selfDual_split | exact GlobalTheory.SplitLatSelfDual.latAtV_selfDual_split | (intros; apply GlobalTheory.SplitLatSelfDual.latAtV_selfDual_split <;> assumption)
+  exact @GlobalTheory.SplitLatSelfDual.latAtV_selfDual_split

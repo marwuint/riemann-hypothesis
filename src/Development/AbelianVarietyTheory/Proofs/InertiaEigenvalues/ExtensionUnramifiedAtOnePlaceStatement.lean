@@ -13,4 +13,4 @@ theorem _root_.GlobalTheory.T.exists_unramified_totallyComplex_ext_with_unity_ro
       (_ : IsPlaceOver A w'), ((g : ℕ) : 𝓞 E') ∈ w'.asIdeal ∧ ((g : ℕ) : 𝓞 E') ∉ w'.asIdeal ^ 2 ∧
       normV w' = g ^ n ∧ (∃ ζ : E', IsPrimitiveRoot ζ (g ^ n - 1)) ∧
       ∀ t ∈ Ine (F := E) A, ∀ e : E', t (algebraMap E' Ω e) = algebraMap E' Ω e := by
-  first | exact @GlobalTheory.UnrCycExt.exists_unramified_ext | exact GlobalTheory.UnrCycExt.exists_unramified_ext | (intros; apply GlobalTheory.UnrCycExt.exists_unramified_ext <;> assumption)
+  exact @GlobalTheory.UnrCycExt.exists_unramified_ext

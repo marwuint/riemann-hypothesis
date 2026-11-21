@@ -18,4 +18,4 @@ theorem _root_.GlobalTheory.T.descentDatum_frame_cocycle_unit : ∀ {X Y : Schem
       ∀ w : ↥(Triple f), f (pullback.fst f f (pullback.fst (pullback.snd f f) (pullback.fst f f) w)) ∈ V →
         gm (pullback.fst (pullback.snd f f) (pullback.fst f f)) w _ c *
           gm (pullback.snd (pullback.snd f f) (pullback.fst f f)) w _ c = gm (pr13 f) w _ c := by
-  first | exact @GlobalTheory.LBDescent.frame_cocycle | exact GlobalTheory.LBDescent.frame_cocycle | (intros; apply GlobalTheory.LBDescent.frame_cocycle <;> assumption)
+  exact @GlobalTheory.LBDescent.frame_cocycle

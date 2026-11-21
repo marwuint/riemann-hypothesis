@@ -40,4 +40,4 @@ theorem _root_.GlobalTheory.T.framePolynomial_coeff_bounded_by_determinants : �
           (∏ b, (Y b).det ^ k b) * evR Xo c F y' = Formalism.L2.LamCM.evalFr G Y) →
         ∀ μ, ∃ w : T.V, iK (MvPolynomial.coeff μ G) * ∏ v : Formalism.L2.LamCM.FrVar Dw.mult, cl v.1 v.2.2 ^ μ v =
           (∏ b, (g b).det ^ k b) * algebraMap T.V T.Fr w := by
-  first | exact @GlobalTheory.FrameCoeffLoc.coeff_mul_prod_mem_det | exact GlobalTheory.FrameCoeffLoc.coeff_mul_prod_mem_det | (intros; apply GlobalTheory.FrameCoeffLoc.coeff_mul_prod_mem_det <;> assumption)
+  exact @GlobalTheory.FrameCoeffLoc.coeff_mul_prod_mem_det

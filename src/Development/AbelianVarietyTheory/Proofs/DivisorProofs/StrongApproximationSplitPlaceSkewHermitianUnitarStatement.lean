@@ -17,4 +17,4 @@ theorem _root_.GlobalTheory.T.strongApproximation_splitPlace_skewHermitian_unita
     (Bs : Base F E) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (X : Chars F E) (om : Rep σ Γ.V Γ.W) (om' : Rep σ Γ.V' Γ.W), IsTriple Bs Γ X om om' →
     ∀ (v : Bs.P) (s : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ Γ.W.J), (mat s).det = 1 →
       s ∈ closure {x | ∃ γ ∈ ratU σ Γ.W.J, ∃ k ∈ UAt σ Γ.W (evFin F v.1), x = γ * k} := by
-  first | exact @GlobalTheory.SplitApprox.strongApprox_split | exact GlobalTheory.SplitApprox.strongApprox_split | (intros; apply GlobalTheory.SplitApprox.strongApprox_split <;> assumption)
+  exact @GlobalTheory.SplitApprox.strongApprox_split

@@ -8,4 +8,4 @@ open GlobalTheory GlobalTheory.CatCoh GlobalTheory.Cris GlobalTheory.DeRham Glob
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.bialgebraPullbackTwoVariables_res_cocycle_eq : ∀ (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (p : ℕ) (G : PDivGroup p R) (t : G.TorsionTower A) (c : primDR A) (d : Dat t c) (n : ℕ), pullbackTwo (G.res n) (d.coc (n + 1)) = d.coc n := by
-  first | exact @GlobalTheory.PtExt.Dat.pullTwo_res_coc | exact GlobalTheory.PtExt.Dat.pullTwo_res_coc | (intros; apply GlobalTheory.PtExt.Dat.pullTwo_res_coc <;> assumption)
+  exact @GlobalTheory.PtExt.Dat.pullTwo_res_coc

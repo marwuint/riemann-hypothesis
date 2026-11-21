@@ -17,4 +17,4 @@ theorem _root_.GlobalTheory.T.topFormDerivationDetPairing_change_matrix : ∀ {k
     (D D' : Fin n → (letI := α.toAlgebra; Derivation k A A)) (L : Matrix (Fin n) (Fin n) A),
     (letI := α.toAlgebra; ∀ j, D j = ∑ i, L i j • D' i) →
     ∀ η, GlobalTheory.LogKSDiv.topPair α D η = L.det * GlobalTheory.LogKSDiv.topPair α D' η := by
-  first | exact @GlobalTheory.LogKSDiv.topPair_change_matrix | exact GlobalTheory.LogKSDiv.topPair_change_matrix | (intros; apply GlobalTheory.LogKSDiv.topPair_change_matrix <;> assumption)
+  exact @GlobalTheory.LogKSDiv.topPair_change_matrix

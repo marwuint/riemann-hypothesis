@@ -10,4 +10,4 @@ theorem _root_.GlobalTheory.T.realScalarArchimedeanAdele_smul_matrix_realPlace :
     (τ : ∀ w : InfinitePlace F, EmbOver E w), IsCMExt F E σ →
     ∀ (u : Matrix α β (AE F E)) (r : ℝ) (w : InfinitePlace F),
       (realAd F r • u).map (piInf (τ w)) = (r : ℂ) • u.map (piInf (τ w)) := by
-  first | exact @GlobalTheory.RealScalar.realAd_smul_map | exact GlobalTheory.RealScalar.realAd_smul_map | (intros; apply GlobalTheory.RealScalar.realAd_smul_map <;> assumption)
+  exact @GlobalTheory.RealScalar.realAd_smul_map

@@ -18,4 +18,4 @@ theorem _root_.GlobalTheory.T.mixedModel_vacuum_eq_integralMatrix_indicator : �
       (om : Rep D.sp.cm.sig Γ.V Γ.W) (om' : Rep D.sp.cm.sig Γ.V' Γ.W), IsTripleOf W M t i j e Bs Γ X →
       GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple Bs Γ X om om' → IsTied t i j e Bs Γ X → ∀ w ∈ locPl G t, ∀ ι : ToA G t i j w, IsMixModelA W B t e Γ w ι →
       ι (Γ.M.vac _) = ι (Γ.M.vac _) 0 • Set.indicator {Z | ∀ r s, Z r s ∈ (ValuativeRel.valuation (Kw w)).integer} 1 := by
-  first | exact @GlobalTheory.MixVacBig.mix_vac | exact GlobalTheory.MixVacBig.mix_vac | (intros; apply GlobalTheory.MixVacBig.mix_vac <;> assumption)
+  exact @GlobalTheory.MixVacBig.mix_vac

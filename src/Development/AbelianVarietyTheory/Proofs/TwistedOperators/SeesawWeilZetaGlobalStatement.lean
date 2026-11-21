@@ -26,4 +26,4 @@ theorem _root_.GlobalTheory.T.seesaw_weil_zeta_global : GlobalTheory.Published.H
       ∀ R Rf, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched Bs Γ Xc om om' R Rf →
         ∀ (g : WO W X → ℂ) (P : PolF D X.rank W.rank), IsFinF ψ θ true A B g →
           ∃ Φ ∈ GlobalTheory.TripleAssembly.darbAlg Γ.M Bs.ψ Bs.emb, GlobalTheory.TripleRead.thO Γ.M ψ (sgn true W).gram e Φ = fockF ψ θ true A B g P := by
-  first | exact @GlobalTheory.FockThetaOnto.fockF_eq_thO | exact GlobalTheory.FockThetaOnto.fockF_eq_thO | (intros; apply GlobalTheory.FockThetaOnto.fockF_eq_thO <;> assumption)
+  exact @GlobalTheory.FockThetaOnto.fockF_eq_thO

@@ -10,4 +10,4 @@ theorem _root_.GlobalTheory.T.ray_class_cone_parametrization : ∀ (F : Type) [F
     ∀ 𝔞 : Ideal (𝓞 F), CoprimeTo F 𝔣 𝔞 →
       ∃ (𝔟 : Ideal (𝓞 F)) (J : Type) (_ : Fintype J) (r' : J → ℕ) (y : J → 𝓞 F) (v' : ∀ j, Fin (r' j) → 𝓞 F),
         ClassParam 𝔣 𝔞 𝔟 r' y v' := by
-  first | exact @GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.exists_classParam | exact GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.exists_classParam | (intros; apply GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.exists_classParam <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.exists_classParam

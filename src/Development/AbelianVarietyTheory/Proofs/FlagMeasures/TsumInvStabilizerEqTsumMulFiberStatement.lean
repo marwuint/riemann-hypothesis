@@ -4,4 +4,4 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TsumInvStabilizerEqT
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.tsum_inv_card_stabilizer_eq_tsum_mul_card_fiber : ∀ {Γ L Y : Type} [Group Γ] [MulAction Γ L] [MulAction Γ Y] (π : L → Y), (∀ (g : Γ) (x : L), π (g • x) = g • π x) → (∀ y : Y, (∃ x, π x = y) → Finite (MulAction.stabilizer Γ y)) → (∑' o : MulAction.orbitRel.Quotient Γ L, (((MulAction.stabilizer Γ o.out : Set Γ).encard : ℝ≥0∞))⁻¹) = ∑' o : MulAction.orbitRel.Quotient Γ Y, (((MulAction.stabilizer Γ o.out : Set Γ).encard : ℝ≥0∞))⁻¹ * (((π ⁻¹' {o.out}).encard : ℝ≥0∞)) := by
-  first | exact @GlobalTheory.tsum_inv_stabilizer_eq_tsum_mul_fiber | exact GlobalTheory.tsum_inv_stabilizer_eq_tsum_mul_fiber | (intros; apply GlobalTheory.tsum_inv_stabilizer_eq_tsum_mul_fiber <;> assumption)
+  exact @GlobalTheory.tsum_inv_stabilizer_eq_tsum_mul_fiber

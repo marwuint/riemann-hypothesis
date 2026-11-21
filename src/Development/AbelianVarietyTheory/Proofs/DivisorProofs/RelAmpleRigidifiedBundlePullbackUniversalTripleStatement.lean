@@ -11,4 +11,4 @@ attribute [local instance] Over.cartesianMonoidalCategory
 
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.relAmple_rigidifiedBundle_pullback_universalTriple : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Geo.Tor.Level H} (Xo : Moduli Dw l) (c : Coeff l) (tF : SAB H (Xo.XF c)), SABMap tF Xo.univ.t (pullback.fst _ _) → RelAmple tF.G tF.PP.L := by
-  first | exact @GlobalTheory.PullAmpleXF.relAmple_XF | exact GlobalTheory.PullAmpleXF.relAmple_XF | (intros; apply GlobalTheory.PullAmpleXF.relAmple_XF <;> assumption)
+  exact @GlobalTheory.PullAmpleXF.relAmple_XF

@@ -10,4 +10,4 @@ open GlobalTheory.ChiGrid GlobalTheory.LeafRestExamples GlobalTheory.FunObj.SqNu
 open GlobalTheory.Mem.Col2.SplitChar (finIdl)
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.heckeCharacter_bounded_conductor_kills_idele_norms : ∀ (D : D7) (χ : HChar D.host.E) (n : D.what₂.Tau → ℤ) (S : Finset ℕ) (k : ℕ), χ.TrivOn D.host.F → χ.HasInf (embT D) n → (∀ q ∈ S, q.Prime) → (∀ v, χ.UnrAt v ∨ ∃ q ∈ S, Formalism.L2.Host.OverP D.host q v ∧ χ.LevelLe v k) → ∀ x : (AE D)ˣ, χ.1 (finIdl D (x * sgU D x)) = 1 := by
-  first | exact @GlobalTheory.NormKill.chi_finIdl_norm_eq_one | exact GlobalTheory.NormKill.chi_finIdl_norm_eq_one | (intros; apply GlobalTheory.NormKill.chi_finIdl_norm_eq_one <;> assumption)
+  exact @GlobalTheory.NormKill.chi_finIdl_norm_eq_one

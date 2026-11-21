@@ -42,5 +42,5 @@ theorem _root_.GlobalTheory.T.charpoly_inv_eq_prod_absNorm_cpow_of_isFrob : ∀ 
     ∀ g : G E Ω, IsFrob (F := E) B (normV w) g →
       (r (g ^ (-1 : ℤ))).val.charpoly = (S.map fun z : ℂˣ =>
         Polynomial.X - Polynomial.C (ι.symm ((z : ℂ) * ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ ((-t : ℝ) : ℂ)))).prod := by
-  first | exact @_root_.GlobalTheory.GeomFrobChar.charpoly_inv_frob_eq_prod_X_sub_C | exact _root_.GlobalTheory.GeomFrobChar.charpoly_inv_frob_eq_prod_X_sub_C | (intros; apply _root_.GlobalTheory.GeomFrobChar.charpoly_inv_frob_eq_prod_X_sub_C <;> assumption)
+  exact @_root_.GlobalTheory.GeomFrobChar.charpoly_inv_frob_eq_prod_X_sub_C
 end

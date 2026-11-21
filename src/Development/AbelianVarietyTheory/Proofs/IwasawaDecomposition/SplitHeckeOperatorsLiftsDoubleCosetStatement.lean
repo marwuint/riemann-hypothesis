@@ -11,4 +11,4 @@ theorem _root_.GlobalTheory.T.splitHecke_operators_lifts_doubleCoset : ∀ (X : 
     Nonempty (Bridge.HeckeTie (Bridge.ratF (Vc X.toD7 i)) P ((famR X I hX U Xg tr).A.heckeL i t)
       (fun x => 1 ≤ x.2 ∧ x.2 ≤ (Vc X.toD7 i).rank) (LiftBrg.envL X I hX U Xg tr L cV i t).isT
       (LiftBrg.envL X I hX U Xg tr L cV i t).isLoc) := by
-  first | exact @GlobalTheory.Mem.R3.LiftBrg.SplitTie.split_tie | exact GlobalTheory.Mem.R3.LiftBrg.SplitTie.split_tie | (intros; apply GlobalTheory.Mem.R3.LiftBrg.SplitTie.split_tie <;> assumption)
+  exact @GlobalTheory.Mem.R3.LiftBrg.SplitTie.split_tie

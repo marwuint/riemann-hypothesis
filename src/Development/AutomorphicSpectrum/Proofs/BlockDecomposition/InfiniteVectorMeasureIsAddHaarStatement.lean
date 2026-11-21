@@ -5,4 +5,4 @@ open NumberField IsDedekindDomain MeasureTheory Matrix Topology Filter GlobalThe
 open scoped ContDiff
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.infinite_vector_measure_isAddHaar : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (k : ℕ), (nuInf E k).IsAddHaarMeasure := by
-  first | exact @GlobalTheory.CompanionTheory.CutOff.nuInf_isAddHaarMeasure | exact GlobalTheory.CompanionTheory.CutOff.nuInf_isAddHaarMeasure | (intros; apply GlobalTheory.CompanionTheory.CutOff.nuInf_isAddHaarMeasure <;> assumption)
+  exact @GlobalTheory.CompanionTheory.CutOff.nuInf_isAddHaarMeasure

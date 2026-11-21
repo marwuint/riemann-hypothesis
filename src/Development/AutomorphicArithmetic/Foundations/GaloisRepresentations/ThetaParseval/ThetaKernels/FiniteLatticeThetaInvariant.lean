@@ -18,5 +18,5 @@ theorem _root_.GlobalTheory.T.finite_lattice_theta_invariant : ∀ (F E : Type) 
         (lam : ℕ →* ℂ) (Om : GAF σ JS × GAF σ JT →* Module.End ℂ (GlobalTheory.WeilPartsF.thetaSubF σ JS JT ξ₀ B.ψ)),
         _root_.UpperTheory.TP.W.IsLatRepL σ JS JT ξ₀ B.ψ hc Λ w lam Om →
         ∀ g ∈ GlobalTheory.WeilPartsF.GinfCF σ JS, ∀ h ∈ GlobalTheory.WeilPartsF.GinfCF σ JT, ∀ f, Om (g, h) f = f := by
-  first | exact @_root_.UpperTheory.TP.W.IsLatRepL.real_triv | exact _root_.UpperTheory.TP.W.IsLatRepL.real_triv | (intros; apply _root_.UpperTheory.TP.W.IsLatRepL.real_triv <;> assumption)
+  exact @_root_.UpperTheory.TP.W.IsLatRepL.real_triv
 end

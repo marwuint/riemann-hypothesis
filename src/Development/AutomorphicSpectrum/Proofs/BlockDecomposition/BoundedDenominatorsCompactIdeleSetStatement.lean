@@ -9,4 +9,4 @@ theorem _root_.GlobalTheory.T.bounded_denominators_compact_idele_set : ∀ (F : 
     ∃ N : ℕ, 0 < N ∧ ∀ u ∈ D, ∀ t : F, (∀ v ∈ S, algebraMap F (Fv F v) t * (u : AF F).2 v ∈ C v) →
       (∀ v, v ∉ S → algebraMap F (Fv F v) t * (u : AF F).2 v ∈ v.adicCompletionIntegers F) →
       ∃ y : 𝓞 F, (y : F) = N * t := by
-  first | exact @GlobalTheory.CompanionTheory.BasePsi.Den.common_denominator | exact GlobalTheory.CompanionTheory.BasePsi.Den.common_denominator | (intros; apply GlobalTheory.CompanionTheory.BasePsi.Den.common_denominator <;> assumption)
+  exact @GlobalTheory.CompanionTheory.BasePsi.Den.common_denominator

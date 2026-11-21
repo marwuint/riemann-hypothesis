@@ -19,4 +19,4 @@ theorem _root_.GlobalTheory.T.darboux_coords_rational_points : ∀ (F E : Type) 
       M₁.co = co ∧ IsPair B M₁ χX χW om₁ r s r' s' ∧ c₀ ≠ 0 ∧
       ∀ Φ ∈ schA F (Fin n × Fin d), e Φ ∈ schA F (Fin n × Fin d) ∧ thetaSum F (e Φ) = c₀ * thetaSum F Φ ∧
         ∀ x, e (om x Φ) = om₁ x (e Φ) := by
-  first | exact @GlobalTheory.ModelChangeTo.change_to_coordinates | exact GlobalTheory.ModelChangeTo.change_to_coordinates | (intros; apply GlobalTheory.ModelChangeTo.change_to_coordinates <;> assumption)
+  exact @GlobalTheory.ModelChangeTo.change_to_coordinates

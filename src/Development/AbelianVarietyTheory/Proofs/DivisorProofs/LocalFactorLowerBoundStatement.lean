@@ -9,4 +9,4 @@ theorem _root_.GlobalTheory.T.local_factor_lower_bound : ∀ (E : Type) [Field E
     (v : HeightOneSpectrum (𝓞 (maximalRealSubfield E))), 1 ≤ r →
     (v.asIdeal.map (algebraMap (𝓞 (maximalRealSubfield E)) (𝓞 E))).IsPrime →
     ∏ i ∈ Finset.Icc 2 r, (1 - ((Ideal.absNorm v.asIdeal : ℝ) ^ i)⁻¹) ≤ locFactor E r v := by
-  first | exact @GlobalTheory.SUVol.prod_le_locFactor_of_isPrime | exact GlobalTheory.SUVol.prod_le_locFactor_of_isPrime | (intros; apply GlobalTheory.SUVol.prod_le_locFactor_of_isPrime <;> assumption)
+  exact @GlobalTheory.SUVol.prod_le_locFactor_of_isPrime

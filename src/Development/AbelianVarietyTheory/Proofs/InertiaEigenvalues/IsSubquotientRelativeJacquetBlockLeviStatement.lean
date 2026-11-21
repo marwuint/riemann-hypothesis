@@ -10,4 +10,4 @@ theorem _root_.GlobalTheory.T.isSubquotient_relativeJacquet_blockLevi : ∀ (k :
     [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (Levi k fun a => Fin (d a)) V)
     (τ : Representation ℂ (Levi k fun a => Fin (d a)) W),
     IsSmooth τ → IsSubquotient σ τ → IsSubquotient (relJacD e' σ) (relJacD e' τ) := by
-  first | exact @GlobalTheory.JacStagesExact.isSubquotient_relJacD | exact GlobalTheory.JacStagesExact.isSubquotient_relJacD | (intros; apply GlobalTheory.JacStagesExact.isSubquotient_relJacD <;> assumption)
+  exact @GlobalTheory.JacStagesExact.isSubquotient_relJacD

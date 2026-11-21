@@ -14,4 +14,4 @@ theorem _root_.GlobalTheory.T.tateDual_twistedSumSummand_isDeRham : ∀ (D : D7)
     ∀ (X' : GRep (Br.G D.nbr i w hw) ℚ_[D.nd.l i] (Br.LL D.nbr i w hw) (Br.OLL D.nbr i w hw))
       (PX : X.V →ₗ[Br.LL D.nbr i w hw] X'.V →ₗ[Br.LL D.nbr i w hw] Br.LL D.nbr i w hw),
       IsDual1 (Br.PD D.loc D.nbr i w hw) X.ρ X'.ρ PX → IsDR (Br.PD D.loc D.nbr i w hw) X'.ρ := by
-  first | exact @GlobalTheory.SummandDualDR.main | exact GlobalTheory.SummandDualDR.main | (intros; apply GlobalTheory.SummandDualDR.main <;> assumption)
+  exact @GlobalTheory.SummandDualDR.main

@@ -13,4 +13,4 @@ theorem _root_.GlobalTheory.T.weight_polynomial_trace_identity : ∀ {n : ℕ} (
           pPL n * altL (lam + delZ n) ^ 2 ∧
         cPoly s (fun μ => trOn (wtDual E μ) (dualT E T : (E.V →L[ℂ] ℂ) →ₗ[ℂ] (E.V →L[ℂ] ℂ))) * frL n (altL (delZ n)) =
           pPL n * frL n (altL (lam + delZ n)) := by
-  first | exact @GlobalTheory.CompanionTheory.RealCount.Tope.Ident.lefK_laurent_ident | exact GlobalTheory.CompanionTheory.RealCount.Tope.Ident.lefK_laurent_ident | (intros; apply GlobalTheory.CompanionTheory.RealCount.Tope.Ident.lefK_laurent_ident <;> assumption)
+  exact @GlobalTheory.CompanionTheory.RealCount.Tope.Ident.lefK_laurent_ident

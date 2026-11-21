@@ -63,6 +63,6 @@ theorem _root_.GlobalTheory.T.exists_local_tuple_of_discrete_series_read : Globa
   ∀ ι : KE c w →+* ℂ, (∀ x, ι (c.embW w x) = D.what₂.embLL x) →
   ∀ τ : ℂ ≃+* ℂ, (∀ a, τ (embLL0 D a) = embLL0 D a) → ∀ ψ' : Twist D Circle, ψ'.Good → ConjChar τ (twVia Z.ρ ι) ψ' →
   GlobalTheory.BigOn.Exp.TwConj.HasTuples X.core X.R.toRealDat X.geo.κ X.geo.v₀ X.geo.O (fun _ => 1) j (baseOf Z c w j) (twVia Z.ρ ι) ψ' := by
-  first | exact @_root_.GlobalTheory.PlaceTup.has_local_tuples_at_place_alt | exact _root_.GlobalTheory.PlaceTup.has_local_tuples_at_place_alt | (intros; apply _root_.GlobalTheory.PlaceTup.has_local_tuples_at_place_alt <;> assumption)
+  exact @_root_.GlobalTheory.PlaceTup.has_local_tuples_at_place_alt
 end
 end

@@ -17,4 +17,4 @@ open GlobalTheory.AscFin
 
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.staircase_lattice_isotropic_line_ideal_iff : OnStd fun {D} _ _ {sc} {G} _ F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m) (v : GlobalTheory.FinPl.Pl D) (i : Fin ρ), ∀ a ∈ idAt D (· = v), GlobalTheory.FinPl.colMul (F.dJ ρ h).jX i a ∈ latV _ (G.Λ (.grid (2 * ρ + 1) 0)) (· = v) ↔ a ∈ GlobalTheory.SeeSaw.idV (FractionalIdeal.spanSingleton _ ((-D.host.xi0) ^ (i.1 + 1))⁻¹ * (G.pl.stA sc ^ (2 * ρ - i.1) * (G.pl.stAbar sc ^ (i.1 + 1))⁻¹)) v := by
-  first | exact @GlobalTheory.StairLine.colMul_dJ_mem_iff | exact GlobalTheory.StairLine.colMul_dJ_mem_iff | (intros; apply GlobalTheory.StairLine.colMul_dJ_mem_iff <;> assumption)
+  exact @GlobalTheory.StairLine.colMul_dJ_mem_iff

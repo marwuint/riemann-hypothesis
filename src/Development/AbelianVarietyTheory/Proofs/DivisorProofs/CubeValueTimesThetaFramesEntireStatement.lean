@@ -12,4 +12,4 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.MBLow.Cl Matrix
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.cubeValueTimesThetaFrames_entire : AllC fun {R} _ _ {D} _ {N} ν => ∀ (g : ℕ) (d : AB N.toNumB g), Nonempty (Geo ν d) → ∀ x y : Fin g → ℂ, Differentiable ℂ (cubF d x y) := by
-  first | exact @GlobalTheory.MBLow.Cl.CubHol.cubF_entire | exact GlobalTheory.MBLow.Cl.CubHol.cubF_entire | (intros; apply GlobalTheory.MBLow.Cl.CubHol.cubF_entire <;> assumption)
+  exact @GlobalTheory.MBLow.Cl.CubHol.cubF_entire

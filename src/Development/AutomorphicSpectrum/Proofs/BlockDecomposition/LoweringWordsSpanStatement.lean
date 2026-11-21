@@ -14,4 +14,4 @@ theorem _root_.GlobalTheory.T.lowering_words_span : ∀ {n : ℕ} {A Z : Type} [
     ∀ (s : Finset (List (Fin n × Fin n))) (coef : List (Fin n × Fin n) → ℂ), (∀ l ∈ s, ∀ p ∈ l, p.2 < p.1) →
     ∑ l ∈ s, coef l • (l.map fun p => G p.1 p.2).prod t = 0 →
     ∑ l ∈ s, coef l • (l.map fun p => F p.1 p.2).prod z = 0 := by
-  first | exact @GlobalTheory.CompanionTheory.PresRho.pres_rho | exact GlobalTheory.CompanionTheory.PresRho.pres_rho | (intros; apply GlobalTheory.CompanionTheory.PresRho.pres_rho <;> assumption)
+  exact @GlobalTheory.CompanionTheory.PresRho.pres_rho

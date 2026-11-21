@@ -41,5 +41,5 @@ section
 open GlobalTheory.SumCount GlobalTheory.SumSize
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.theta_kCoset_count_formula : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.SumCount.CosK := by
-  first | exact @_root_.GlobalTheory.CosCount.card_kCosets_theta | exact _root_.GlobalTheory.CosCount.card_kCosets_theta | (intros; apply _root_.GlobalTheory.CosCount.card_kCosets_theta <;> assumption)
+  exact @_root_.GlobalTheory.CosCount.card_kCosets_theta
 end

@@ -10,4 +10,4 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.seeSawIteratedIntegralLaw_at_twist_of_factorisation : ∀ (D : D7) (c : Comm D) (v : VCom c) (t : Tup c) (w : VTup t), c.Is → t.Is → v.Is → WeilOK (t := t) v → QPin v w → QLaw v w := by
-  first | exact @GlobalTheory.QLawPf.qLaw_of_pin | exact GlobalTheory.QLawPf.qLaw_of_pin | (intros; apply GlobalTheory.QLawPf.qLaw_of_pin <;> assumption)
+  exact @GlobalTheory.QLawPf.qLaw_of_pin

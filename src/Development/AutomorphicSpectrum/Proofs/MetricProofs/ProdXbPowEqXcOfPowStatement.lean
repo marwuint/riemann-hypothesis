@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.prod_xb_pow_eq_xcOf_pow : ∀ {Ψ : Type} [Fintype
       xcOf x₀ c ^ (rkW r.2 * m (.inl r.1) + rkO r.2 * m (.inr r.1)) *
         (if p ≤ (r.2 : ℕ) + 1 then (zOf A c (.inl r.1))⁻¹ else 1) *
         (if (r.2 : ℕ) + 1 = p + q then (zOf A c (.inr r.1))⁻¹ else 1) := by
-  first | exact @GlobalTheory.CompanionTheory.Ar.PB.FMX.Frm.prod_xb_zpow_bF | exact GlobalTheory.CompanionTheory.Ar.PB.FMX.Frm.prod_xb_zpow_bF | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.FMX.Frm.prod_xb_zpow_bF <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Ar.PB.FMX.Frm.prod_xb_zpow_bF

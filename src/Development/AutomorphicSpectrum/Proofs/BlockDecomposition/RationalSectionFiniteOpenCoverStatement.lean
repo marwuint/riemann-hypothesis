@@ -20,4 +20,4 @@ theorem _root_.GlobalTheory.T.rational_section_finite_open_cover : ∀ {k : Type
       (∀ l, ∃ h : genericPoint X ∈ W l, fnOf (W l) h (d l) ≠ 0) ∧
       ∀ l, ∀ y ∈ ptsIn q σ (W l), y ∈ offSupp q σ (divOfRatSec ψ.isLB hr) → ev q σ (W l) (d l) y ≠ 0 →
         GlobalTheory.Cartier.logNorm ψ r y = Real.log ‖ev q σ (W l) (a l) y‖ - Real.log ‖ev q σ (W l) (d l) y‖ - ψ.φ (b l) y / 2 := by
-  first | exact @GlobalTheory.CompanionTheory.MixZ.ArchRep.logNorm_finite_rep | exact GlobalTheory.CompanionTheory.MixZ.ArchRep.logNorm_finite_rep | (intros; apply GlobalTheory.CompanionTheory.MixZ.ArchRep.logNorm_finite_rep <;> assumption)
+  exact @GlobalTheory.CompanionTheory.MixZ.ArchRep.logNorm_finite_rep

@@ -32,4 +32,4 @@ theorem _root_.GlobalTheory.T.iso_preserves_rigidification_at_origin : ∀ (V : 
         gw w₀ (eSec ((Over.pullback (jK V)).obj G)) z (JG (jK V ≫ eSec G)) (fun _ => JA (eSec A)) *
             val (L := LP) (φ := fun _ : PUnit => eSec A) (ε := fun _ => 1) rA (𝟙 _) z JA =
           val (L := LM) (φ := fun _ : PUnit => eSec G) (ε := fun _ => 1) rM (jK V) z JG := by
-  first | exact @GlobalTheory.normW_origin | exact GlobalTheory.normW_origin | (intros; apply GlobalTheory.normW_origin <;> assumption)
+  exact @GlobalTheory.normW_origin

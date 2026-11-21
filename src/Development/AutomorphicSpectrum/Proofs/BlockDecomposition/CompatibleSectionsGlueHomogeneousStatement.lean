@@ -11,4 +11,4 @@ theorem _root_.GlobalTheory.T.compatible_sections_glue_homogeneous : ∀ (B : Ty
       (∀ i j, ∃ m : ℕ, (X i * X j) ^ m * (X j ^ k * f i - X i ^ k * f j) ∈ P) →
       ∃ g : MvPolynomial (Fin (N + 1)) B, g.IsHomogeneous n ∧
         ∀ i, ∃ m : ℕ, X i ^ m * (X i ^ k * g - f i) ∈ P := by
-  first | exact @GlobalTheory.CompanionTheory.GE.SerreVan.serre_vanishing | exact GlobalTheory.CompanionTheory.GE.SerreVan.serre_vanishing | (intros; apply GlobalTheory.CompanionTheory.GE.SerreVan.serre_vanishing <;> assumption)
+  exact @GlobalTheory.CompanionTheory.GE.SerreVan.serre_vanishing

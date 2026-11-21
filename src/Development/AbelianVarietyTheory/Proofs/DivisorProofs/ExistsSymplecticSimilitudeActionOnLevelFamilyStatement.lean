@@ -12,4 +12,4 @@ theorem _root_.GlobalTheory.T.exists_symplecticSimilitude_action_on_levelFamily 
     (lev : (Fin h ⊕ Fin h → ℤ) → (𝟙_ (Over X) ⟶ u.A)),
     IsSympLev u.P h M (zetaAway M) s₁ lev → HarrisTaylorSymplecticLevelFamilyUniversalProperty b N h M s s₁ u lev →
     ∃ ρ : sympSimGrp h M → (X ⟶ X), ρ 1 = 𝟙 X ∧ (∀ a c, ρ (a * c) = ρ a ≫ ρ c) ∧ SympActs s s₁ u lev ρ := by
-  first | exact @GlobalTheory.UPel.HT.SympAct.exists_sympActs | exact GlobalTheory.UPel.HT.SympAct.exists_sympActs | (intros; apply GlobalTheory.UPel.HT.SympAct.exists_sympActs <;> assumption)
+  exact @GlobalTheory.UPel.HT.SympAct.exists_sympActs

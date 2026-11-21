@@ -10,4 +10,4 @@ theorem _root_.GlobalTheory.T.lastStepTestFunction_eq_columnsTestFunction : ∀ 
     IsOrd xPos e' → IsOrd (Sum.elim zPos fun _ => R.N R.m - 1) e → ∀ (y : HomE X.E (R.N (s + 1)) (R.N R.m)),
       (W.T s R).PhiTop (fromCols (toLoc ι e e' y).toRows₁ 0) =
         σ₀ (PhiTop Ch mu cst.sharp s P.1 (prXp X.E R ∘ₗ y ∘ₗ LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (s + 1))))) := by
-  first | exact @GlobalTheory.TwBridge.TopPhi.topPhi | exact GlobalTheory.TwBridge.TopPhi.topPhi | (intros; apply GlobalTheory.TwBridge.TopPhi.topPhi <;> assumption)
+  exact @GlobalTheory.TwBridge.TopPhi.topPhi

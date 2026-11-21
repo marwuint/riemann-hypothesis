@@ -27,4 +27,4 @@ theorem _root_.GlobalTheory.T.graded_split_range_iso_of_interval : ∀ {O A G : 
     ∀ f : ∀ i, S.N i → M i → M', (∀ i n, f i n 0 = 0) →
     (∀ (i : Fin m) n x (hu : u ≤ (i : ℕ)) (hv : (i : ℕ) < v) hx, f i n (θ i hu hv x) = π ⟨S.ν i n ⊗ₜ x, hx⟩) →
     Tens O f := by
-  first | exact @GlobalTheory.CompanionTheory.GrPiece.main | exact GlobalTheory.CompanionTheory.GrPiece.main | (intros; apply GlobalTheory.CompanionTheory.GrPiece.main <;> assumption)
+  exact @GlobalTheory.CompanionTheory.GrPiece.main

@@ -16,4 +16,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.ArchRec
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.splittingHeckeChar_exists_archimedeanExponent : ∀ (D : D7) (θ : InfFam D) (χ : (AE D)ˣ →* Circle) (n : ℕ) (τ : D.what₂.Tau), IsInfFam θ → IsHeckeChar D χ → ResEta D χ n → ∃ a : ℚ, HasInfExp D χ τ a := by
-  first | exact @GlobalTheory.SplitCharExp.exists_hasInfExp | exact GlobalTheory.SplitCharExp.exists_hasInfExp | (intros; apply GlobalTheory.SplitCharExp.exists_hasInfExp <;> assumption)
+  exact @GlobalTheory.SplitCharExp.exists_hasInfExp

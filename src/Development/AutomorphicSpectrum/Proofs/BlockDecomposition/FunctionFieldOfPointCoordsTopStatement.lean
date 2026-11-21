@@ -13,4 +13,4 @@ open GlobalTheory.ArithmeticHeightTower GlobalTheory.CompanionTheory.MPDict Reci
 open GlobalTheory
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.function_field_of_point_coords_top : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (x : MP ℤ m n) [CharZero ((MP ℤ m n).residueField x)], blockFnField (ptCoord x) = ⊤ := by
-  first | exact @GlobalTheory.CompanionTheory.MPDict.GenTop.blockFnField_ptCoord_eq_top | exact GlobalTheory.CompanionTheory.MPDict.GenTop.blockFnField_ptCoord_eq_top | (intros; apply GlobalTheory.CompanionTheory.MPDict.GenTop.blockFnField_ptCoord_eq_top <;> assumption)
+  exact @GlobalTheory.CompanionTheory.MPDict.GenTop.blockFnField_ptCoord_eq_top

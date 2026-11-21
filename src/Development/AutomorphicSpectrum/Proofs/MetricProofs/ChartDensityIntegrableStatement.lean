@@ -34,4 +34,4 @@ theorem _root_.GlobalTheory.T.chart_density_integrable : ∀ (K : Type) [Fintype
     ∀ᵐ y, ∑ᶠ w ∈ setFibre (conePts Q) Ψ y, setSheetDensity (conePts Q) Ψ (pot L) g y w =
       ∑ J ∈ chartComponents (conePts Q) σ i,
         chartDens J (chartProjMatrix σ Ψ) (chartWeight σ i g) (chartPot σ i L) y := by
-  first | exact @GlobalTheory.CompanionTheory.Ar.Pub.CxChart.FibSum.fibreSum | exact GlobalTheory.CompanionTheory.Ar.Pub.CxChart.FibSum.fibreSum | (intros; apply GlobalTheory.CompanionTheory.Ar.Pub.CxChart.FibSum.fibreSum <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Ar.Pub.CxChart.FibSum.fibreSum

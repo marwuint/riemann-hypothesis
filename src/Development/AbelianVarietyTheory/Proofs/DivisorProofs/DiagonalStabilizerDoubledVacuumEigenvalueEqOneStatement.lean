@@ -18,4 +18,4 @@ theorem _root_.GlobalTheory.T.diagonalStabilizer_doubledVacuum_eigenvalue_eq_one
     ∀ p ∈ GlobalTheory.DblVac.KD σ G.W v, p ∈ GlobalTheory.DblVac.PDiag σ G.W → ∀ μ : ℂ,
       omd p (boxFun (tens (evFin F v) (G.M.vac v) r) (fun x => star (tens (evFin F v) (G.M.vac v) r x))) =
         μ • boxFun (tens (evFin F v) (G.M.vac v) r) (fun x => star (tens (evFin F v) (G.M.vac v) r x)) → μ = 1 := by
-  first | exact @GlobalTheory.DblVacSiegel.eigen_eq_one_of_diag | exact GlobalTheory.DblVacSiegel.eigen_eq_one_of_diag | (intros; apply GlobalTheory.DblVacSiegel.eigen_eq_one_of_diag <;> assumption)
+  exact @GlobalTheory.DblVacSiegel.eigen_eq_one_of_diag

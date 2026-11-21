@@ -23,5 +23,5 @@ theorem _root_.GlobalTheory.T.lagrangian_integral_theta_model : ∀ (F E : Type)
       ∀ (ν : Measure (WOF F E nS nT)) (𝓕 : Set (WOF F E nS nT)), ν.IsAddHaarMeasure →
         IsAddFundamentalDomain (ratLF F E nS nT) 𝓕 ν →
       ∃ l₂ ∈ (adeleClass F).adm κ, ∀ Φ ∈ schA F κ, l₂ Φ = GlobalTheory.LagrTheta.lagrInt ν 𝓕 ((diagCols (Fin nT) : Matrix (Fin nT ⊕ Fin nT) (Fin nT) (AF F ⊗[F] E)).submatrix finSumFinEquiv.symm id) (GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ Φ) := by
-  first | exact @_root_.GlobalTheory.LagrThetaAdm.exists_admissible_eq_lagrangian_integral | exact _root_.GlobalTheory.LagrThetaAdm.exists_admissible_eq_lagrangian_integral | (intros; apply _root_.GlobalTheory.LagrThetaAdm.exists_admissible_eq_lagrangian_integral <;> assumption)
+  exact @_root_.GlobalTheory.LagrThetaAdm.exists_admissible_eq_lagrangian_integral
 end

@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.weil_datum_twist_by_hecke_characters_trivial_base 
         IsWeilDatumOF σ JS JT (fun w : InfinitePlace F => (B.emb w).1) ξ₀ B.ψ χS χT ω →
         IsHeckeCharF νS → IsHeckeCharF νT → ResEtaF νS 0 → ResEtaF νT 0 →
         ∃ ω', IsWeilDatumOF σ JS JT (fun w : InfinitePlace F => (B.emb w).1) ξ₀ B.ψ (χS * νS) (χT * νT) ω' := by
-  first | exact @GlobalTheory.WeilTwistF.exists_weilDatumOF_twist | exact GlobalTheory.WeilTwistF.exists_weilDatumOF_twist | (intros; apply GlobalTheory.WeilTwistF.exists_weilDatumOF_twist <;> assumption)
+  exact @GlobalTheory.WeilTwistF.exists_weilDatumOF_twist

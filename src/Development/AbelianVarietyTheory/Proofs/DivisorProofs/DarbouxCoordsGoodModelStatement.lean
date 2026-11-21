@@ -22,4 +22,4 @@ theorem _root_.GlobalTheory.T.darboux_coords_good_model : ∀ (F E : Type) [Fiel
         (∀ᶠ v in cofinite, ev v (M.vac v) = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1) ∧
         (∀ f φ, (∀ v, φ v ∈ SB _) → (∀ᶠ v in cofinite, φ v = M.vac v) → e (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (ei f) fun v => ev v (φ v)) ∧
         Set.BijOn e (schA F (Fin n × Fin d) : Set _) (schA F (Fin n × Fin d) : Set _) := by
-  first | exact @GlobalTheory.SympChangeBij.change_of_coordinates_bij | exact GlobalTheory.SympChangeBij.change_of_coordinates_bij | (intros; apply GlobalTheory.SympChangeBij.change_of_coordinates_bij <;> assumption)
+  exact @GlobalTheory.SympChangeBij.change_of_coordinates_bij

@@ -57,4 +57,4 @@ theorem _root_.GlobalTheory.T.stable_cover_cech_vanishing : (∀ {O : Type} [Com
       fun i n x => (morU (⟨G, τ i n, hτ i n⟩ : CH.Mor (F i) F' σ) (hS S)).pull j x) →
     ∀ j, Tens Λ (N := N) (M := fun i => HU (F i) (St Q (Set.range U)) j) (M' := HU F' (St Q' (Set.range U')) j)
       fun i n x => (morU (⟨G, τ i n, hτ i n⟩ : CH.Mor (F i) F' σ) hR).pull j x) := by
-  first | exact @GlobalTheory.CompanionTheory.GlobSt.glob_st | exact GlobalTheory.CompanionTheory.GlobSt.glob_st | (intros; apply GlobalTheory.CompanionTheory.GlobSt.glob_st <;> assumption)
+  exact @GlobalTheory.CompanionTheory.GlobSt.glob_st

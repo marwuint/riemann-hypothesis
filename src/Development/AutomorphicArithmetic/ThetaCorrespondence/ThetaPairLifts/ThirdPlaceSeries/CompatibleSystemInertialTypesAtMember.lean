@@ -41,6 +41,6 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 open Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Indef Formalism.L2.Rows Formalism.IndefR Formalism.IndefR.Links Formalism.IndefR.Lev Formalism.IndefR.RecTie GlobalTheory.HeightCounting.Up.RealOfReading
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.typesTrue_at_member_of_published_inputs : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ w Z _ _ t _ _ _ => TypesTrue (w.D Z).ntypes t.r.z.R.C.P t.r.z.R.C.W := by
-  first | exact @_root_.GlobalTheory.HeightCounting.Up.TypesAt.inertialTypes_at_member_alt | exact _root_.GlobalTheory.HeightCounting.Up.TypesAt.inertialTypes_at_member_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.TypesAt.inertialTypes_at_member_alt <;> assumption)
+  exact @_root_.GlobalTheory.HeightCounting.Up.TypesAt.inertialTypes_at_member_alt
 end
 end

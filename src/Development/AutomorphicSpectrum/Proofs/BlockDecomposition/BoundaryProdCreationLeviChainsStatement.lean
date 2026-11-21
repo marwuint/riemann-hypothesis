@@ -17,4 +17,4 @@ theorem _root_.GlobalTheory.T.boundary_prod_creation_levi_chains : ∀ (n : ℕ)
     bdL (inRR lev) E1 E2 (((l.map fun i => (creL (false, i) : Module.End ℂ (Cq n V))).prod : Module.End ℂ (Cq n V)) x) =
       (-1 : ℂ) ^ l.length • ((l.map fun i => (creL (false, i) : Module.End ℂ (Cq n V))).prod : Module.End ℂ (Cq n V))
         (bdL (inRR lev) E1 E2 x) := by
-  first | exact @GlobalTheory.CompanionTheory.LvChain.BdProdL.bd_prodL | exact GlobalTheory.CompanionTheory.LvChain.BdProdL.bd_prodL | (intros; apply GlobalTheory.CompanionTheory.LvChain.BdProdL.bd_prodL <;> assumption)
+  exact @GlobalTheory.CompanionTheory.LvChain.BdProdL.bd_prodL

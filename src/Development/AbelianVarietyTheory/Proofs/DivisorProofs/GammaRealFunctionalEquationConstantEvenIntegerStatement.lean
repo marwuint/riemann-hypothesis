@@ -7,4 +7,4 @@ theorem _root_.GlobalTheory.T.gammaReal_functionalEquation_constant_even_integer
     (d : ℂ) ^ ((1 - ((2 * s : ℕ) : ℂ)) / 2) * Complex.Gammaℝ (1 - ((2 * s : ℕ) : ℂ)) ^ f * B →
   (((2 * s - 1).factorial : ℕ) : ℂ) ^ f * ((d ^ (((2 * s : ℕ) : ℝ) - 1 / 2) : ℝ) : ℂ) *
     ((2 * (Real.pi : ℂ) * Complex.I) ^ (2 * s * f))⁻¹ * A = (2 : ℂ)⁻¹ ^ f * B := by
-  first | exact @GlobalTheory.gammaℝ_functional_constant_even | exact GlobalTheory.gammaℝ_functional_constant_even | (intros; apply GlobalTheory.gammaℝ_functional_constant_even <;> assumption)
+  exact @GlobalTheory.gammaℝ_functional_constant_even

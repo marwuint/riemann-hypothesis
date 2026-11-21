@@ -12,4 +12,4 @@ theorem _root_.GlobalTheory.T.homogeneous_ratio_cocycle : ∀ {K : Type} [Field 
     (ha : W ≤ uy i y a) (hb : W ≤ uy i y b) (hc : W ≤ uy i y c),
     (i.appLE _ W hb).hom (yQ y hy a b) * (i.appLE _ W hc).hom (yQ y hy b c) = (i.appLE _ W hc).hom (yQ y hy a c) ∧
     (i.appLE _ W ha).hom (yQ y hy a a) = 1 := by
-  first | exact @GlobalTheory.CompanionTheory.ConeYq.yQ_mul_yQ | exact GlobalTheory.CompanionTheory.ConeYq.yQ_mul_yQ | (intros; apply GlobalTheory.CompanionTheory.ConeYq.yQ_mul_yQ <;> assumption)
+  exact @GlobalTheory.CompanionTheory.ConeYq.yQ_mul_yQ

@@ -10,4 +10,4 @@ open scoped ComplexOrder
 
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.chernCurvature_modelGram_conjMulTranspose_inv : ∀ {n p q : ℕ} (Z : ReciprocityTheory.L2DbarEstimates.V n →ₗ[ℂ] Matrix (Fin p) (Fin q) ℂ) (w ξ η : ReciprocityTheory.L2DbarEstimates.V n), (1 - (Z w)ᴴ * Z w).PosDef → curv (fun u => (1 - (Z u).map (starRingEnd ℂ) * (Z u)ᵀ)⁻¹) w ξ η = -(Z ξ * (1 - (Z w)ᴴ * Z w)⁻¹ * (Z η)ᴴ * (1 - Z w * (Z w)ᴴ)⁻¹) := by
-  first | exact @GlobalTheory.PointChern.curv_modelGram_lie | exact GlobalTheory.PointChern.curv_modelGram_lie | (intros; apply GlobalTheory.PointChern.curv_modelGram_lie <;> assumption)
+  exact @GlobalTheory.PointChern.curv_modelGram_lie

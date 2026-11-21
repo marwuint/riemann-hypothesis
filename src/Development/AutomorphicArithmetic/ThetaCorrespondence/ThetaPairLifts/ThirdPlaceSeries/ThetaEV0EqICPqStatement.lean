@@ -12,5 +12,5 @@ open Formalism.BasicNotions Formalism.MainNotions NumberField IsDedekindDomain F
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.theta_j_ev0_eq_ic_pq : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz), p.PointConditions' → ∀ (t : Tup p) (y : Fin ((Df p).nV t) → D.what₂.LL), (p.R.toCx3 p.F).Θ t ((p.R.toCx3 p.F).jR t (eV0 p t y)) = (p.R.toCx3 p.F).iC p.F.cr false t (cpt p.P.A3.fam3.base3.v0.embedding (((Df p).Pq t).mulVec y)) := by
-  first | exact @_root_.GlobalTheory.BigTop.Fun.theta_eV0_eq_iC_Pq_alt | exact _root_.GlobalTheory.BigTop.Fun.theta_eV0_eq_iC_Pq_alt | (intros; apply _root_.GlobalTheory.BigTop.Fun.theta_eV0_eq_iC_Pq_alt <;> assumption)
+  exact @_root_.GlobalTheory.BigTop.Fun.theta_eV0_eq_iC_Pq_alt
 end

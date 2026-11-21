@@ -11,4 +11,4 @@ theorem _root_.GlobalTheory.T.fock_vacuum_pi_tensor_heisenberg_factorwise_signat
     sumPl (V := fun w : ι => Formalism.BasicNotions.TH.Pol (P w) (Q w) (R w) (S w)) (fun w => heisOp (Complex.I • (Jm (P w) (Q w) * c w * Jm (R w) (S w))))
       (PiTensorProduct.tprod ℂ fun _ => 1) =
     Complex.I • sumPl (V := fun w : ι => Formalism.BasicNotions.TH.Pol (P w) (Q w) (R w) (S w)) (fun w => heisOp (c w)) (PiTensorProduct.tprod ℂ fun _ => 1) := by
-  first | exact @GlobalTheory.FockVacD.sumPl_heisOp_vacuum_dep | exact GlobalTheory.FockVacD.sumPl_heisOp_vacuum_dep | (intros; apply GlobalTheory.FockVacD.sumPl_heisOp_vacuum_dep <;> assumption)
+  exact @GlobalTheory.FockVacD.sumPl_heisOp_vacuum_dep

@@ -11,4 +11,4 @@ theorem _root_.GlobalTheory.T.kummerCochain_eq_dlog_combination_finiteLevel : �
     IsKum T n (Gn T n) (T.ζ (2 * n)) lz → IsKum T n (Gn T n) (T.qq (2 * n)) lq →
     Cob1 n (Gn T n) (fun g => (p : Ω) ^ c * ((a g).val : Ω) - (p : Ω) ^ c * ι α * ((lq g).val : Ω) -
       (p : Ω) ^ c * (ι β + (k : Ω) * T.ζ n / (T.ζ n - 1)) * ((lz g).val : Ω)) := by
-  first | exact @GlobalTheory.KumDlog.kummer_eq_dlog | exact GlobalTheory.KumDlog.kummer_eq_dlog | (intros; apply GlobalTheory.KumDlog.kummer_eq_dlog <;> assumption)
+  exact @GlobalTheory.KumDlog.kummer_eq_dlog

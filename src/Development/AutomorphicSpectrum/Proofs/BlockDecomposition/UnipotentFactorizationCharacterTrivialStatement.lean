@@ -10,4 +10,4 @@ theorem _root_.GlobalTheory.T.unipotent_factorization_character_trivial : ∀ (k
     dEmb k i t d * (wEl k i t * sEmb k ((i + 1) + t) (castM k (by omega) (h : Mir k (i + (t + 1)))) * (wEl k i t)⁻¹) =
       (wEl k i t * sEmb k ((i + 1) + t) (castM k (by omega) (h : Mir k (i + (t + 1)))) * (wEl k i t)⁻¹) * (c : Mir k ((i + 1) + (t + 1))) *
         dEmb k i t ((((pgProj k i (t + 1) h).2)⁻¹ : GL (Fin (t + 1)) k).1.mulVec d) := by
-  first | exact @GlobalTheory.CompanionTheory.BZPhiPG.Conj.dEmb_conj | exact GlobalTheory.CompanionTheory.BZPhiPG.Conj.dEmb_conj | (intros; apply GlobalTheory.CompanionTheory.BZPhiPG.Conj.dEmb_conj <;> assumption)
+  exact @GlobalTheory.CompanionTheory.BZPhiPG.Conj.dEmb_conj

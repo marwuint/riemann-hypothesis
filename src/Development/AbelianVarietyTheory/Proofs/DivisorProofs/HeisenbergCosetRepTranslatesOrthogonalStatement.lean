@@ -19,4 +19,4 @@ theorem _root_.GlobalTheory.T.heisenbergCosetRepTranslates_orthogonal : ∀ {k :
     ∀ (ϖ : kˣ), GlobalTheory.SplitFlip.IsUnif ϖ → ∀ (i0 : Fin n) (T T' : Fin d → GlobalTheory.SplitFlip.Res k 1), T ≠ T' →
     ∀ μ : @Measure (Fin n × Fin d → k) (borel _), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ →
       ∫ y, Tr (GlobalTheory.HeisUnit.cosetRep ϖ i0 T) φ0 y * (starRingEnd ℂ) (Tr (GlobalTheory.HeisUnit.cosetRep ϖ i0 T') φ0 y) ∂μ = 0 := by
-  first | exact @GlobalTheory.HeisUnit.tr_cosetRep_orth | exact GlobalTheory.HeisUnit.tr_cosetRep_orth | (intros; apply GlobalTheory.HeisUnit.tr_cosetRep_orth <;> assumption)
+  exact @GlobalTheory.HeisUnit.tr_cosetRep_orth

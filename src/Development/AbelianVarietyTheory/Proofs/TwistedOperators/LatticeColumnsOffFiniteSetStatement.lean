@@ -10,4 +10,4 @@ open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.besselLevel_columns_carry_latticeLines_offExceptional : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), ∀ v ∉ G.pl.S0, ColsAt (F.dB ρ h) (xZero (F.dJ ρ h)) (G.Λ (.grid (2 * ρ + 2) 0)) (G.Λ (.grid (2 * ρ + 1) 0)) v := by
-  first | exact @GlobalTheory.StairCols.colsAt_xZero | exact GlobalTheory.StairCols.colsAt_xZero | (intros; apply GlobalTheory.StairCols.colsAt_xZero <;> assumption)
+  exact @GlobalTheory.StairCols.colsAt_xZero

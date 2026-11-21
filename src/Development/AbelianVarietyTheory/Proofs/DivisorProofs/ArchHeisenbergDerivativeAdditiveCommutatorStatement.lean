@@ -18,4 +18,4 @@ theorem _root_.GlobalTheory.T.archHeisenbergDerivative_additive_commutator : ∀
     (∀ u u', At (evI F) u → At (evI F) u' → ∀ f, D u (D u' f) - D u' (D u f) =
       ((-2 * Real.pi * Complex.I : ℂ) *
         ((Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (evI F (symp (R := AF F) (cA σ) (-1) JA JB u u')) : ℝ) : ℂ)) • f) := by
-  first | exact @GlobalTheory.HeisDerivLaws.heis_deriv_laws | exact GlobalTheory.HeisDerivLaws.heis_deriv_laws | (intros; apply GlobalTheory.HeisDerivLaws.heis_deriv_laws <;> assumption)
+  exact @GlobalTheory.HeisDerivLaws.heis_deriv_laws

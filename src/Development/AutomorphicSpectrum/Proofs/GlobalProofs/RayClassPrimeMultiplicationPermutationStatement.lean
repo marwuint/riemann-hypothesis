@@ -11,4 +11,4 @@ theorem _root_.GlobalTheory.T.ray_class_prime_multiplication_permutation : ∀ (
     ∃ e : {I : Ideal (𝓞 F) // CoprimeTo F 𝔣 I ∧ RayRel F 𝔣 I (τ c).1} ≃
         {I : Ideal (𝓞 F) // (CoprimeTo F 𝔣 I ∧ RayRel F 𝔣 I c.1) ∧ I ≤ 𝔠},
       ∀ J, (e J).1 = 𝔠 * J.1 := by
-  first | exact @GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.shift_perm | exact GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.shift_perm | (intros; apply GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.shift_perm <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.shift_perm

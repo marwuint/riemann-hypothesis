@@ -34,4 +34,4 @@ theorem _root_.GlobalTheory.T.exists_continuousRep_rightTranslation_maxCompactSt
       ∀ T : (GA D V → ℂ) →ₗ[ℂ] (GA D V → ℂ),
         (∀ i, ∀ w ∈ Y, T (GlobalTheory.KTypeProj.rhoK θ M i w) = GlobalTheory.KTypeProj.rhoK θ M i (T w)) →
         ∀ w : Y, GlobalTheory.Published.AutFin.HasTypeAt θ V τ (M.ε τ) (M.fr τ) ρ (T w) := by
-  first | exact @GlobalTheory.KTypeRep.exists_contRep_types | exact GlobalTheory.KTypeRep.exists_contRep_types | (intros; apply GlobalTheory.KTypeRep.exists_contRep_types <;> assumption)
+  exact @GlobalTheory.KTypeRep.exists_contRep_types

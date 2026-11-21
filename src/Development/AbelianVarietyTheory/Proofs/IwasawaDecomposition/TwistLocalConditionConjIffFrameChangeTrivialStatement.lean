@@ -10,4 +10,4 @@ theorem _root_.GlobalTheory.T.twistLocalCondition_conj_iff_frameChange_trivial :
       bc (prV (E := B.host.E) v) t = 1) →
     (∀ v ∈ Q, bc (prV (E := B.host.E) v) s = 1) →
     (LocCQ (I.Q a) n (t⁻¹ * s * t) θ ↔ θ = 1) := by
-  first | exact @GlobalTheory.Mem.Col2.TC.ChTw.Match.locCQ_conj_iff_eq_one | exact GlobalTheory.Mem.Col2.TC.ChTw.Match.locCQ_conj_iff_eq_one | (intros; apply GlobalTheory.Mem.Col2.TC.ChTw.Match.locCQ_conj_iff_eq_one <;> assumption)
+  exact @GlobalTheory.Mem.Col2.TC.ChTw.Match.locCQ_conj_iff_eq_one

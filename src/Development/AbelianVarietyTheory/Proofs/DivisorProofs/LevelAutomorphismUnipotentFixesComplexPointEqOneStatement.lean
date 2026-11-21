@@ -13,4 +13,4 @@ open GlobalTheory.IndefiniteRowSideFullHecke.LevelStructureAutomorphisms (LevelA
 open GlobalTheory.OrbitSep
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.levelAutomorphism_unipotent_fixes_complexPoint_eq_one : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ Dw.p + Dw.q → l.A = 1 → ∀ (I : Ideal (𝓞 E)) (g : ℕ), NeatPrime I g (Dw.p + Dw.q) → l.Mb ≤ I → ∀ γ : LevelAut Dw l, UnipAt I γ → ∀ y : FrPt Xo c ℂ, ptF (move Xo c γ y) = ptF y → γ = 1 := by
-  first | exact @GlobalTheory.UnipFree.free | exact GlobalTheory.UnipFree.free | (intros; apply GlobalTheory.UnipFree.free <;> assumption)
+  exact @GlobalTheory.UnipFree.free

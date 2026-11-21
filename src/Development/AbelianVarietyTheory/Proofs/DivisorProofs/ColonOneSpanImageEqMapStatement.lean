@@ -10,4 +10,4 @@ theorem _root_.GlobalTheory.T.colon_one_span_image_eq_map_colon : ∀ {E K : Typ
     ∀ (A : Submodule (𝓞 E) E), A.FG → (1 : E) ∈ A →
     (1 : Submodule (𝓞 K) K).colon (Submodule.span (𝓞 K) (τE '' A) : Set K) =
       ((1 : Submodule (𝓞 E) E).colon (A : Set E)).map τ := by
-  first | exact @GlobalTheory.colon_one_span_image_eq_map | exact GlobalTheory.colon_one_span_image_eq_map | (intros; apply GlobalTheory.colon_one_span_image_eq_map <;> assumption)
+  exact @GlobalTheory.colon_one_span_image_eq_map

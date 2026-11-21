@@ -28,4 +28,4 @@ theorem _root_.GlobalTheory.T.unitaryArchimedeanOneParam_eq_prod_cmType_lines : 
       (∀ τ, Y τ ∈ lieAt W τ) ∧ (∀ τ, γs τ ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Lines D.sp.cm.sig Wd) ∧
       (∀ τ t, γs τ (Multiplicative.ofAdd t) = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W 1 hJ (oneP θ W τ (Y τ) t)) ∧
       ∀ t, γ t = ((Finset.univ : Finset D.what₂.Tau).toList.map fun τ => γs τ t).prod := by
-  first | exact @GlobalTheory.ConjLineSplit.line_eq_prod | exact GlobalTheory.ConjLineSplit.line_eq_prod | (intros; apply GlobalTheory.ConjLineSplit.line_eq_prod <;> assumption)
+  exact @GlobalTheory.ConjLineSplit.line_eq_prod

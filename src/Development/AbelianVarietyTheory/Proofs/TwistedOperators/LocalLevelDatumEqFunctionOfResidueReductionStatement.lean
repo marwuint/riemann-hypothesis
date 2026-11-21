@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.localLevelDatum_eq_function_of_residueReduction : 
     ∀ (mu : (Fv D.host.F v)ˣ →* ℂˣ) (χ : (Formalism.L2.DIV.kP PP)ˣ →* ℂˣ), LiftsChar φ PP mu χ →
     ∀ Y : Matrix (Fin b) (Fin a) (Fv D.host.F v),
       localNewformFunction v J lam mu (rowsTB ht Y) = viaRed r (gLoc (b := b) L PP H c χ) Y := by
-  first | exact @GlobalTheory.StepVec.locDatum_eq_viaRed | exact GlobalTheory.StepVec.locDatum_eq_viaRed | (intros; apply GlobalTheory.StepVec.locDatum_eq_viaRed <;> assumption)
+  exact @GlobalTheory.StepVec.locDatum_eq_viaRed

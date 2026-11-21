@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.selfDualSkewHermitianLattice_splits_hyperbolicPlan
       (∀ u, form σ J (ι *ᵥ u) x = 0 ∧ form σ J (ι *ᵥ u) y = 0) ∧
       (∀ (s t : E) (u : Fin n₁ → E), s • x + ι *ᵥ u + t • y = 0 → s = 0 ∧ t = 0 ∧ u = 0) ∧
       ∀ z ∈ L, ∃ (s t : E) (u : Fin n₁ → E), s • x ∈ L ∧ t • y ∈ L ∧ ι *ᵥ u ∈ L ∧ z = s • x + ι *ᵥ u + t • y := by
-  first | exact @GlobalTheory.PlaneSkewSplit.split_global | exact GlobalTheory.PlaneSkewSplit.split_global | (intros; apply GlobalTheory.PlaneSkewSplit.split_global <;> assumption)
+  exact @GlobalTheory.PlaneSkewSplit.split_global

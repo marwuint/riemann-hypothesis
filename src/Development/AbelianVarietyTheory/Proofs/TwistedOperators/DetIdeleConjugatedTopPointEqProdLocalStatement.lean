@@ -13,4 +13,4 @@ theorem _root_.GlobalTheory.T.detIdele_conjugatedTopPoint_eq_prod_local : ∀ {D
     IsIdemSum e (locPl G t) →
     detAt e (G.V (.top (j + 1))) (conjPt S j k) =
       ∏ w : locPl G t, GlobalTheory.LFun.locIdele D.host.F w.1 (gdet (kapAt S t j hj k w)) := by
-  first | exact @GlobalTheory.TopLevelInv.detAt_conjPt_eq_prod | exact GlobalTheory.TopLevelInv.detAt_conjPt_eq_prod | (intros; apply GlobalTheory.TopLevelInv.detAt_conjPt_eq_prod <;> assumption)
+  exact @GlobalTheory.TopLevelInv.detAt_conjPt_eq_prod

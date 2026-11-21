@@ -8,4 +8,4 @@ theorem _root_.GlobalTheory.T.exists_annihilator_not_mem_minimalPrimes_le : ∀ 
       PrimeSpectrum.comap (algebraMap A B) ⁻¹' {PrimeSpectrum.comap (algebraMap A B) q})) →
     ∀ u : PrimeSpectrum B, ∃ g : B, g * b = 0 ∧ ∀ Q ∈ ((u.asIdeal.comap (algebraMap A B)).map (algebraMap A B)).minimalPrimes,
       Q ≤ u.asIdeal → g ∉ Q := by
-  first | exact @GlobalTheory.annihilator_avoids_fibre_minimalPrimes | exact GlobalTheory.annihilator_avoids_fibre_minimalPrimes | (intros; apply GlobalTheory.annihilator_avoids_fibre_minimalPrimes <;> assumption)
+  exact @GlobalTheory.annihilator_avoids_fibre_minimalPrimes

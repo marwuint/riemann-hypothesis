@@ -13,4 +13,4 @@ open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.constantFunction_has_trivialRep_satakeParameters : ∀ {D : D7} (A : HSp D) (LA : Lat A) (Sf : Finset (FinPl D)), IsSelfDualC A LA → (∀ v ∉ Sf, (2 : 𝓞 D.host.F) ∈ v.asIdeal → Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v) → GlobalTheory.LFun.IsParamFun D.sp.cm.sig A.gram LA (Sf : Set (FinPl D)) (fun _ : GA D A => (1 : ℂ)) (GlobalTheory.BottomRallis.trivPar A.rank) := by
-  first | exact @GlobalTheory.BottomRallis.TrivParFun.isParamFun_one_trivPar | exact GlobalTheory.BottomRallis.TrivParFun.isParamFun_one_trivPar | (intros; apply GlobalTheory.BottomRallis.TrivParFun.isParamFun_one_trivPar <;> assumption)
+  exact @GlobalTheory.BottomRallis.TrivParFun.isParamFun_one_trivPar

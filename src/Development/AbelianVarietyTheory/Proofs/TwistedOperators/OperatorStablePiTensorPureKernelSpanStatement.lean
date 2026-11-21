@@ -9,4 +9,4 @@ theorem _root_.GlobalTheory.T.operatorStable_piTensorPureKernelSpan : ∀ {ι : 
     (Op : ∀ i, Set (Module.End ℂ (M i))) (K : ∀ i, Submodule ℂ (M i)),
     (∀ i, GlobalTheory.TensHead.Stab (Op i) (K i)) →
     GlobalTheory.TensHead.Stab (GlobalTheory.TensHead.piOps Op) (GlobalTheory.TensHead.piKer K) := by
-  first | exact @GlobalTheory.TensHead.stab_piOps_piKer | exact GlobalTheory.TensHead.stab_piOps_piKer | (intros; apply GlobalTheory.TensHead.stab_piOps_piKer <;> assumption)
+  exact @GlobalTheory.TensHead.stab_piOps_piKer

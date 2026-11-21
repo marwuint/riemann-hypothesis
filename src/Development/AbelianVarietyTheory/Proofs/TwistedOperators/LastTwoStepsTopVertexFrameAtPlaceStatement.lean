@@ -22,4 +22,4 @@ theorem _root_.GlobalTheory.T.lastTwoSteps_topVertex_frame_at_place : ∀ {D : D
         FX.β = fromCols ((topOrthAt ch.G (show D.R.m = j + 1 + 1 by omega)).iA.map p.pr * (frRow ch.S.B t w D.R.m le_rfl).β)
           (Matrix.of fun r _ => ((topOrthAt ch.G (show D.R.m = j + 1 + 1 by omega)).iB.map p.pr *ᵥ fun _ => (1 : Kw w)) r) ∧
         ∀ r z, FX.β r z = (frTop ch.S.toGridChoice t w (j + 1 + 1) (by omega)).β r (e z) := by
-  first | exact @GlobalTheory.FlatPlace.frame_top_last | exact GlobalTheory.FlatPlace.frame_top_last | (intros; apply GlobalTheory.FlatPlace.frame_top_last <;> assumption)
+  exact @GlobalTheory.FlatPlace.frame_top_last

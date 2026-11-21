@@ -133,5 +133,5 @@ theorem _root_.GlobalTheory.T.bottom_class_sum_integral_neg : ∀ {D : D7} {T : 
       (∀ l, 0 < w l) ∧ κ.IsMulLeftInvariant ∧ IsProbabilityMeasure κ ∧
       ∀ (t : T) (P : PolF D WW.rank A.rank), ∀ h ∈ GfC WW,
         X.I W.ψ W.θ t P h = (v : ℂ) * ∑ l, ((w l : ℂ))⁻¹ * ∫ g, X.ker W.ψ W.θ t P h (z l * (g : GA D A)) ∂κ := by
-  first | exact @_root_.GlobalTheory.RowTest.BottomClassSumNeg.integral_eq_bottom_classSum | exact _root_.GlobalTheory.RowTest.BottomClassSumNeg.integral_eq_bottom_classSum | (intros; apply _root_.GlobalTheory.RowTest.BottomClassSumNeg.integral_eq_bottom_classSum <;> assumption)
+  exact @_root_.GlobalTheory.RowTest.BottomClassSumNeg.integral_eq_bottom_classSum
 end

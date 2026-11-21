@@ -10,4 +10,4 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open GlobalTheory GlobalTheory.CechPic GlobalTheory.QCoh GlobalTheory.LogPair
 open scoped TensorProduct
 theorem _root_.GlobalTheory.T.canonical_bundle_open_restrict : ∀ (R : Type) [CommRing R] (X Y : Scheme.{0}) (f : X ⟶ Sp R) (e : Y ⟶ X) [IsOpenImmersion e] (d : ℕ) [SmoothOfRelativeDimension d f] [SmoothOfRelativeDimension d (e ≫ f)] (K : CanonLB f d) (K' : CanonLB (e ≫ f) d), cls K'.bundle K'.isLB = CechPic.pull e (cls K.bundle K.isLB) := by
-  first | exact @_root_.GlobalTheory.cls_canonLB_openImmersion | exact _root_.GlobalTheory.cls_canonLB_openImmersion | (intros; apply _root_.GlobalTheory.cls_canonLB_openImmersion <;> assumption)
+  exact @_root_.GlobalTheory.cls_canonLB_openImmersion

@@ -12,4 +12,4 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Ro
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.gridRowMovedLattice_splits_bessel_largeDepth : Big fun {D} {Γ} _ _ {Pl0 T} {A} {Ks} _ _ _ {R} ch => ∀ j σ (hj : j + 2 * σ + 2 = D.R.m) v, GlobalTheory.FinPl.MonoAt (besDecAt ch.G j σ hj) (GlobalTheory.RowShape.rowN ch.G j) (GlobalTheory.RowShape.coreL ch.G j) v := by
-  first | exact @GlobalTheory.RowShape.big_monoAt_rowN | exact GlobalTheory.RowShape.big_monoAt_rowN | (intros; apply GlobalTheory.RowShape.big_monoAt_rowN <;> assumption)
+  exact @GlobalTheory.RowShape.big_monoAt_rowN

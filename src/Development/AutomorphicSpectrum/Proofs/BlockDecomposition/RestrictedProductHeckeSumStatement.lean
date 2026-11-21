@@ -28,4 +28,4 @@ theorem _root_.GlobalTheory.T.restricted_product_hecke_sum : ∀ {ι Γ : Type} 
         (∏ᶠ j, if j ∈ T then f j (p j q.out) else (V j : Set (Hl j)).indicator (1 : Hl j → ℂ) (p j q.out)) * g (y * q.out) =
       (T.map fun i => (((V i).relIndex (KH i) : ℕ) : ℂ)).prod *
         T.foldr (fun i g' x => hint (KH i) fun m => f i m * g' (x * e i m)) g y := by
-  first | exact @GlobalTheory.CompanionTheory.FinActSum.sum_formula | exact GlobalTheory.CompanionTheory.FinActSum.sum_formula | (intros; apply GlobalTheory.CompanionTheory.FinActSum.sum_formula <;> assumption)
+  exact @GlobalTheory.CompanionTheory.FinActSum.sum_formula

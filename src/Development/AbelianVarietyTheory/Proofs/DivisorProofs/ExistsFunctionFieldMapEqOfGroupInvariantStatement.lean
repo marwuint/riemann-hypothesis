@@ -15,4 +15,4 @@ set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.exists_functionFieldMap_eq_of_groupInvariant : ∀ (X W : Scheme.{0}) [IsIntegral X] [IsIntegral W] (Γ : Type) [Group Γ] [Finite Γ]
     (ρ : Γ →* Aut X) (q : X ⟶ W) [IsDominant q], IsAffineQuotient ρ q → ∀ u : X.functionFieldˣ,
     (∀ γ, fnAct ρ γ u = u) → ∃ b : W.functionFieldˣ, Units.map (functionFieldMap q).toMonoidHom b = u := by
-  first | exact @GlobalTheory.OrbitSep.exists_functionFieldMap_eq_of_invariant | exact GlobalTheory.OrbitSep.exists_functionFieldMap_eq_of_invariant | (intros; apply GlobalTheory.OrbitSep.exists_functionFieldMap_eq_of_invariant <;> assumption)
+  exact @GlobalTheory.OrbitSep.exists_functionFieldMap_eq_of_invariant

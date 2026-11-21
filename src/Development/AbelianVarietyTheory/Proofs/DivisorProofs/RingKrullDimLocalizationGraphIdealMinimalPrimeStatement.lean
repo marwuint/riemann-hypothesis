@@ -21,4 +21,4 @@ theorem _root_.GlobalTheory.T.ringKrullDim_localization_graphIdeal_minimalPrime 
   (∃ z : Fin k → κ, TrBasis (algebraMap ℂ κ) z) →
   𝔭 ∈ (graphIdeal E R π ρ).minimalPrimes →
   ringKrullDim (locAt (L := L) 𝔭) = k + 1 := by
-  first | exact @GlobalTheory.GraphLocal.dim_locAt_graph | exact GlobalTheory.GraphLocal.dim_locAt_graph | (intros; apply GlobalTheory.GraphLocal.dim_locAt_graph <;> assumption)
+  exact @GlobalTheory.GraphLocal.dim_locAt_graph

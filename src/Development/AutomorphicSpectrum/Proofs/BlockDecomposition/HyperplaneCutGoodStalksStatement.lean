@@ -15,4 +15,4 @@ open IsLocalRing
 open GlobalTheory.CompanionTheory.KoszulCount
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.hyperplane_cut_good_stalks : ∀ {X : Scheme.{0}} [IsLocallyNoetherian X] {L : LB X} (hL : L.IsLB) (F : X.Modules) [IsFiniteQC F] {d : ℕ} (s : L.Sec) (t : Fin d → L.Sec), GoodStalks F (Fin.cons s t : Fin (d + 1) → L.Sec) → Mono (cutHom F hL s) ∧ GoodStalks (cut F hL s) t := by
-  first | exact @GlobalTheory.CompanionTheory.KoszulCount.mono_cutHom_and_goodStalks_cut | exact GlobalTheory.CompanionTheory.KoszulCount.mono_cutHom_and_goodStalks_cut | (intros; apply GlobalTheory.CompanionTheory.KoszulCount.mono_cutHom_and_goodStalks_cut <;> assumption)
+  exact @GlobalTheory.CompanionTheory.KoszulCount.mono_cutHom_and_goodStalks_cut

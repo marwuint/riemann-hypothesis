@@ -122,5 +122,5 @@ theorem _root_.GlobalTheory.T.twist_real_place_correspondence : _root_.GlobalThe
           f₁ ∈ (GlobalTheory.RealQuot.coinv ε A B eT).map Φ) ∧
       (∀ k ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.KInf D.sp.cm.sig Xs τ, ∀ f ∈ Mo.Pol ψ' τ, ∀ f₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf D.host.F (Fin M.rank × Fin X.rank),
           GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Acts (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI D.host.F) (om (k, 1)) f f₁ → f₁ - f ∈ (GlobalTheory.RealQuot.coinv ε A B eT).map Φ) := by
-  first | exact @_root_.GlobalTheory.RealDict.real_place_correspondence | exact _root_.GlobalTheory.RealDict.real_place_correspondence | (intros; apply _root_.GlobalTheory.RealDict.real_place_correspondence <;> assumption)
+  exact @_root_.GlobalTheory.RealDict.real_place_correspondence
 end

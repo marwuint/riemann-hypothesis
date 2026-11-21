@@ -10,4 +10,4 @@ theorem _root_.GlobalTheory.T.unitaryThreeRankOne_sphericalVector_cell_value : �
     ∀ y : GU σ n, y ∈ KU σ n → IsWeylRep (simpleU k) (y : GL (Fin n) L) →
     ∀ (α : Fin (n / 2) → ℂ) (φ : GU σ n → ℂ), IsSphericalU q α φ → φ 1 = 1 →
     ∀ u : cellU y, φ (y⁻¹ * (u : GU σ n)) = (α k / (q : ℂ) ^ 2) ^ depthU k (u : GU σ n) := by
-  first | exact @GlobalTheory.WeylCell.U21HeisenbergElement.value_point | exact GlobalTheory.WeylCell.U21HeisenbergElement.value_point | (intros; apply GlobalTheory.WeylCell.U21HeisenbergElement.value_point <;> assumption)
+  exact @GlobalTheory.WeylCell.U21HeisenbergElement.value_point

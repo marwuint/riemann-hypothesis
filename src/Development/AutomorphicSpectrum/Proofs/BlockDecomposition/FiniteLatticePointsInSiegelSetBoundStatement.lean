@@ -29,4 +29,4 @@ theorem _root_.GlobalTheory.T.finite_lattice_points_in_siegel_set_bound : ∀ (D
     ∃ (A : ℕ) (B : ℝ), ∀ t ∈ cone r c, ∀ a : GA D V, IsTorusElt D.sp.cm.sig V.gram X Y t a →
       {δ : GF V | a⁻¹ * rat V δ * a ∈ C}.Finite ∧
       (({δ : GF V | a⁻¹ * rat V δ * a ∈ C}.ncard : ℕ) : ℝ) ≤ B * (∏ i, max (t i) 1) ^ A := by
-  first | exact @GlobalTheory.CompanionTheory.TorusCount.torus_count | exact GlobalTheory.CompanionTheory.TorusCount.torus_count | (intros; apply GlobalTheory.CompanionTheory.TorusCount.torus_count <;> assumption)
+  exact @GlobalTheory.CompanionTheory.TorusCount.torus_count

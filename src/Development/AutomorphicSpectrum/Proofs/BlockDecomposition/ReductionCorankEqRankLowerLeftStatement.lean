@@ -8,4 +8,4 @@ theorem _root_.GlobalTheory.T.reduction_corank_eq_rank_lower_left : ∀ (O L : T
     (n : ℕ) (ϖ : O), Irreducible ϖ → ∀ w : Lˣ, (w : L) = algebraMap O L ϖ →
     ∀ (κ : GL (Ix n) O) (h : GL (Ix n) (IsLocalRing.ResidueField O)), IsRed (O := O) w κ h →
       iD h = (lowerLeftBlock (resK κ)).rank := by
-  first | exact @GlobalTheory.CompanionTheory.Jp.RedRank.iD_eq_rank | exact GlobalTheory.CompanionTheory.Jp.RedRank.iD_eq_rank | (intros; apply GlobalTheory.CompanionTheory.Jp.RedRank.iD_eq_rank <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Jp.RedRank.iD_eq_rank

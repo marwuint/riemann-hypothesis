@@ -9,4 +9,4 @@ theorem _root_.GlobalTheory.T.exists_recurrence_polynomial : ∀ (G : Type) [Gro
     ∀ z, p.IsRoot z → ∃ c : ℂ, z = Complex.exp c ∧
       ∃ F ∈ Submodule.span ℂ (Set.range fun t : ℝ => fun g => F₀ (a t * g)), F ≠ 0 ∧
         ∀ (t : ℝ) g, F (a t * g) = Complex.exp (c * t) * F g := by
-  first | exact @GlobalTheory.CompanionTheory.KillDeg.killPoly_natDegree_le | exact GlobalTheory.CompanionTheory.KillDeg.killPoly_natDegree_le | (intros; apply GlobalTheory.CompanionTheory.KillDeg.killPoly_natDegree_le <;> assumption)
+  exact @GlobalTheory.CompanionTheory.KillDeg.killPoly_natDegree_le

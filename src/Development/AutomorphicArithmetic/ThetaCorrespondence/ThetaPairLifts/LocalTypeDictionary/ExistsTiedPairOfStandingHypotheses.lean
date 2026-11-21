@@ -257,5 +257,5 @@ set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.exists_tied_theta_pair : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G _ _ _ _ => ∀ (W : G.Weil) (B : Frames G) (ρ : RealMatch W), ∃ ρ₀ : RealMatch W, ρ₀.vX = ρ.vX ∧ ρ₀.vT = ρ.vT ∧ ρ₀.Tied ∧
     ∀ (i j : Fin D.R.m) (t : T), ∃ c₀ : ℂ, RegConst W B ρ₀ t i j c₀ := by
-  first | exact @_root_.GlobalTheory.GridFrameExistence.exists_tied_pair | exact _root_.GlobalTheory.GridFrameExistence.exists_tied_pair | (intros; apply _root_.GlobalTheory.GridFrameExistence.exists_tied_pair <;> assumption)
+  exact @_root_.GlobalTheory.GridFrameExistence.exists_tied_pair
 end

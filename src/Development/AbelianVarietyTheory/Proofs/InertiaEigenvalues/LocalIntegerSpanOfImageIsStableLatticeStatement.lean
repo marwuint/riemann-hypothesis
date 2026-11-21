@@ -17,4 +17,4 @@ theorem _root_.GlobalTheory.T.localIntegerSpanOfImage_is_stable_lattice : ∀ (D
     (Y : Submodule (D.nd.O i) (Fin a → Fin D.R.nV → KK D.nd i))
     (hst : ∀ γ : GE D.nd, ∀ y ∈ Y, actK i r Xs x γ y ∈ Y), Y.FG →
     ∃ LY : Lattice (O := Br.OLL D.nbr i w hw) (XG i w hw r Xs hr x Y hst).ρ, LY.T = latY i w hw Y := by
-  first | exact @GlobalTheory.Pass.LocDual.OneX.latY_lattice | exact GlobalTheory.Pass.LocDual.OneX.latY_lattice | (intros; apply GlobalTheory.Pass.LocDual.OneX.latY_lattice <;> assumption)
+  exact @GlobalTheory.Pass.LocDual.OneX.latY_lattice

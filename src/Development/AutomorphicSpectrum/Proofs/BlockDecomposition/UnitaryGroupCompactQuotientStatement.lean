@@ -14,4 +14,4 @@ theorem _root_.GlobalTheory.T.unitary_group_compact_quotient : ∀ (E : Type) [F
       ∃ γ ∈ UJ (IsCMField.complexConj E).toRingEquiv.toRingHom H, ∃ k ∈ C, g = ratF E n γ * k) ∧
   ∀ X : Set (GL (Fin n) (Af E)), IsCompact X →
     {γ : GL (Fin n) E | γ ∈ UJ (IsCMField.complexConj E).toRingEquiv.toRingHom H ∧ ratF E n γ ∈ X}.Finite := by
-  first | exact @GlobalTheory.CompanionTheory.DefiniteTransport.cocompact_discrete | exact GlobalTheory.CompanionTheory.DefiniteTransport.cocompact_discrete | (intros; apply GlobalTheory.CompanionTheory.DefiniteTransport.cocompact_discrete <;> assumption)
+  exact @GlobalTheory.CompanionTheory.DefiniteTransport.cocompact_discrete

@@ -63,5 +63,5 @@ theorem _root_.GlobalTheory.T.exists_fock_model_intertwiner : _root_.GlobalTheor
     GlobalTheory.RealDict.PublishedHyps D Xs Ws Mo ψ' χX χW om τ → GlobalTheory.RealDict.IsPairReading ψ ε A B ω Xs Ws Mo ψ' om τ →
     ∃ Φ : PolF D X.rank M.rank →ₗ[ℂ] GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf D.host.F (Fin M.rank × Fin X.rank),
       Function.Injective Φ ∧ LinearMap.range Φ = Mo.Pol ψ' τ ∧ GlobalTheory.RealDict.IsFockMap ψ θ ε A B Mo Φ := by
-  first | exact @_root_.GlobalTheory.RealDict.FockMap.exists_fock_model_map | exact _root_.GlobalTheory.RealDict.FockMap.exists_fock_model_map | (intros; apply _root_.GlobalTheory.RealDict.FockMap.exists_fock_model_map <;> assumption)
+  exact @_root_.GlobalTheory.RealDict.FockMap.exists_fock_model_map
 end

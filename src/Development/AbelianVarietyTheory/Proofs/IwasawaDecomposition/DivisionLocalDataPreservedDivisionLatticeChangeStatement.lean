@@ -5,4 +5,4 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Fo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.divisionLocalData_preserved_divisionLatticeChange : ∀ {B : Base} {f : Fr B.toPre} {T : TwDat B} (w : ColW B f T) (Z : w.Lt) {Wt : Set B.places.Pl} {nch : NChoice (w.D Z)} (n : NchT w Z Wt nch) (Y : DivX (w.D Z)) (N : ∀ u, Submodule (𝓞 B.LL) (Z.V.div.Nu u).V) (h : B.Word → ℝ), DivT n Y → Nonempty (DivT (nchTTr w Z N h n) (divTr (D := w.D Z) N h Y)) := by
-  first | exact @GlobalTheory.Mem.Top.Bl.WitTr.divT_setDiv | exact GlobalTheory.Mem.Top.Bl.WitTr.divT_setDiv | (intros; apply GlobalTheory.Mem.Top.Bl.WitTr.divT_setDiv <;> assumption)
+  exact @GlobalTheory.Mem.Top.Bl.WitTr.divT_setDiv

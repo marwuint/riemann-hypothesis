@@ -21,5 +21,5 @@ theorem _root_.GlobalTheory.T.theta_integral_unfolding : ∀ (F E : Type) [Field
       (∀ (k : ℕ) (L : (Fin k → ℝ) →+ Formalism.IndefR.DatumF.WOF F E nS nT), Continuous L → (∀ t, (L t).map (Formalism.IndefR.DatumF.finPartF F E) = 0) →
         ∀ w : Formalism.IndefR.DatumF.WOF F E nS nT, ContDiff ℝ ∞ fun x => g (w + L x)) →
       Continuous g := by
-  first | exact @_root_.GlobalTheory.WeilContF.continuous_of_level_real_k | exact _root_.GlobalTheory.WeilContF.continuous_of_level_real_k | (intros; apply _root_.GlobalTheory.WeilContF.continuous_of_level_real_k <;> assumption)
+  exact @_root_.GlobalTheory.WeilContF.continuous_of_level_real_k
 end

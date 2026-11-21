@@ -12,4 +12,4 @@ theorem _root_.GlobalTheory.T.torus_jacobian_det : ∀ {K R : Type} [Field K] [C
       (t ⟨k - 1, by omega⟩ : R) * ((t k)⁻¹ : Rˣ)
     Ring.inverse (∏ k, g k) * (Matrix.of fun k l => D k (g l)).det = (((∏ k, t k)⁻¹ : Rˣ) : R) ∨
     Ring.inverse (∏ k, g k) * (Matrix.of fun k l => D k (g l)).det = -(((∏ k, t k)⁻¹ : Rˣ) : R) := by
-  first | exact @GlobalTheory.CompanionTheory.Cone.dlog_ratio_det | exact GlobalTheory.CompanionTheory.Cone.dlog_ratio_det | (intros; apply GlobalTheory.CompanionTheory.Cone.dlog_ratio_det <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Cone.dlog_ratio_det

@@ -20,4 +20,4 @@ open GlobalTheory.Core.Rk.Exh GlobalTheory.RegSW
 open GlobalTheory.Core.Rk.SumBox
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.spherical_outside_box_product_orthDecSumLattice : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B W H : HSp D) (o : OrthDec B W H) (LA : Lat A) (LW : Lat W) (LH : Lat H) (Sf : Finset (FinPl D)) (Φ : WO A W → ℂ) (Φ' : WO A H → ℂ), IsSphOff ψ A W LA LW Sf Φ → IsSphOff ψ A H LA LH Sf Φ' → IsSphOff ψ A B LA (sumLatO o LW LH) Sf (o.boxT A Φ Φ') := by
-  first | exact @GlobalTheory.Core.Rk.SumBoxSph.isSphOff_boxT | exact GlobalTheory.Core.Rk.SumBoxSph.isSphOff_boxT | (intros; apply GlobalTheory.Core.Rk.SumBoxSph.isSphOff_boxT <;> assumption)
+  exact @GlobalTheory.Core.Rk.SumBoxSph.isSphOff_boxT

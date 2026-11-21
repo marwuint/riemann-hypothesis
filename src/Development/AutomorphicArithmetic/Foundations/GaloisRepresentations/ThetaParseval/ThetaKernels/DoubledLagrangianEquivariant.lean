@@ -27,5 +27,5 @@ theorem _root_.GlobalTheory.T.doubled_lagrangian_equivariant : ∀ (F E : Type) 
           (∀ x : Matrix (Fin nT) (Fin nS) E, ∃ y z : κ → F,
             co.e (incM F x) = (fun i => algebraMap F (AF F) (y i), fun i => algebraMap F (AF F) (z i))) →
           ∀ Φ ∈ schA F κ, Continuous (GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ Φ) := by
-  first | exact @_root_.GlobalTheory.ThetaTrContF.continuous_thetaTrF_k | exact _root_.GlobalTheory.ThetaTrContF.continuous_thetaTrF_k | (intros; apply _root_.GlobalTheory.ThetaTrContF.continuous_thetaTrF_k <;> assumption)
+  exact @_root_.GlobalTheory.ThetaTrContF.continuous_thetaTrF_k
 end

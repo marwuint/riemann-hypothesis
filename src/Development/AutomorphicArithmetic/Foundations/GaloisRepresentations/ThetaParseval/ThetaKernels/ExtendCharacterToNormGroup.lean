@@ -18,5 +18,5 @@ theorem _root_.GlobalTheory.T.extend_character_to_norm_group : ∀ (F E : Type) 
       ∃ lam' : (AF F ⊗[F] E)ˣ →* Circle, IsHeckeCharF lam' ∧
         (∀ z : (AF F ⊗[F] E)ˣ, At (evI F) ((z : AF F ⊗[F] E) - 1) → lam' z = 1) ∧
         ∀ a, lam' (idFF F E a) = lam a := by
-  first | exact @_root_.GlobalTheory.HeckeExtend.exists_extend_hecke_k | exact _root_.GlobalTheory.HeckeExtend.exists_extend_hecke_k | (intros; apply _root_.GlobalTheory.HeckeExtend.exists_extend_hecke_k <;> assumption)
+  exact @_root_.GlobalTheory.HeckeExtend.exists_extend_hecke_k
 end

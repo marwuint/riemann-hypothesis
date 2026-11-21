@@ -13,4 +13,4 @@ theorem _root_.GlobalTheory.T.squareZero_local_lifts_corrected_agree_on_overlaps
       (∀ k, spMap (Localization.awayMap π (f k)) ≫ e k = spMap (algebraMap R₀ (Localization.Away (π (f k)))) ≫ g₀) ∧
       ∀ j k, spMap (IsLocalization.Away.awayToAwayRight (P := Localization.Away (f j * f k)) (f j) (f k)) ≫ e j =
         spMap (IsLocalization.Away.awayToAwayLeft (P := Localization.Away (f j * f k)) (f k) (f j)) ≫ e k := by
-  first | exact @GlobalTheory.SecGlue.lifts_corrected_agree_on_overlaps | exact GlobalTheory.SecGlue.lifts_corrected_agree_on_overlaps | (intros; apply GlobalTheory.SecGlue.lifts_corrected_agree_on_overlaps <;> assumption)
+  exact @GlobalTheory.SecGlue.lifts_corrected_agree_on_overlaps

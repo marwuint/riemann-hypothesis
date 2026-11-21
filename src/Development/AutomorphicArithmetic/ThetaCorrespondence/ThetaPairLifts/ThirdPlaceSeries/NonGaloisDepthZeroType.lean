@@ -14,6 +14,6 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.depthZeroG_of_rowMod : _root_.GlobalTheory.NRows.ThetaLocalInputsAlt → GlobalTheory.Published.DepthZeroSupport → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), (∀ i : D.nd.Loc, Nonempty (RowMod D P.rep (D.nd.j i))) → GlobalTheory.HubX.DepthZeroG D := by
-  first | exact @_root_.GlobalTheory.DepthZeroType.depthZero_tame_alt | exact _root_.GlobalTheory.DepthZeroType.depthZero_tame_alt | (intros; apply _root_.GlobalTheory.DepthZeroType.depthZero_tame_alt <;> assumption)
+  exact @_root_.GlobalTheory.DepthZeroType.depthZero_tame_alt
 end
 end

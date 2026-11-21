@@ -10,4 +10,4 @@ open Polynomial
 
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.isDVR_valuationSubring_comap_of_finiteDimensional : ∀ (K L : Type) [Field K] [Field L] (φ : K →+* L), (letI := φ.toAlgebra; FiniteDimensional K L) → ∀ (V : ValuationSubring L) [IsDiscreteValuationRing V], IsDiscreteValuationRing (V.comap φ) := by
-  first | exact @GlobalTheory.RestrictDVR.main | exact GlobalTheory.RestrictDVR.main | (intros; apply GlobalTheory.RestrictDVR.main <;> assumption)
+  exact @GlobalTheory.RestrictDVR.main

@@ -11,4 +11,4 @@ set_option synthInstance.maxHeartbeats 400000
 set_option maxHeartbeats 1600000
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.teichmullerRootPow_ideals_tendsto_zero_weakTop : ∀ {l : ℕ} [Fact l.Prime] {P : LocPrime l} (AI : LocAinf l P) (s : ℕ), letI := wTop l; ∀ U ∈ 𝓝 (0 : WCb l), ∃ k : ℕ, ∀ z : Ainf l, inclW l ((WittVector.teichmuller l (AI.εroot s) - 1) ^ k * z) ∈ U := by
-  first | exact @GlobalTheory.WeakClosed.SmallW.main | exact GlobalTheory.WeakClosed.SmallW.main | (intros; apply GlobalTheory.WeakClosed.SmallW.main <;> assumption)
+  exact @GlobalTheory.WeakClosed.SmallW.main

@@ -14,5 +14,5 @@ section
 open GlobalTheory.BigTop GlobalTheory.BigTop.Fun GlobalTheory.SumSize
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.leafFixedPoint_of_finK_awayK : _root_.GlobalTheory.BigTop.Fun.SettingAtPoint → FinK → AwayK → _root_.GlobalTheory.BigTop.Fun.LeafFixedPoint @Comparison₂ := by
-  first | exact @_root_.GlobalTheory.Adopt.leafFixedPoint_of_finK_awayK | exact _root_.GlobalTheory.Adopt.leafFixedPoint_of_finK_awayK | (intros; apply _root_.GlobalTheory.Adopt.leafFixedPoint_of_finK_awayK <;> assumption)
+  exact @_root_.GlobalTheory.Adopt.leafFixedPoint_of_finK_awayK
 end

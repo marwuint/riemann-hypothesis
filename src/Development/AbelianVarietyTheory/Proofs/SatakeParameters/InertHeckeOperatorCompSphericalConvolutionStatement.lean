@@ -14,4 +14,4 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open Formalism.UG
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.inertHeckeOperator_comp_spherical_convolution : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (v : HeightOneSpectrum (𝓞 (maximalRealSubfield L))) (w : HeightOneSpectrum (𝓞 L)) (Dv : InertDatum L n v w) (U : Subgroup (GAf L n)), (∀ κ, TrivOutside {v} κ → (κ ∈ U ↔ κ ∈ Umax L n)) → ∀ (W : Type) [AddCommGroup W] [Module ℂ W], ∀ h ∈ Hecke ℂ (KU Dv.σw n), ∀ h' ∈ Hecke ℂ (KU Dv.σw n), ∀ f : GAf L n → W, (∀ κ ∈ U, NG.rt L n κ f = f) → heckeFunI L n U Dv (conv (KU Dv.σw n) h h') f = heckeFunI L n U Dv h (heckeFunI L n U Dv h' f) := by
-  first | exact @GlobalTheory.InertConv.heckeFunI_conv | exact GlobalTheory.InertConv.heckeFunI_conv | (intros; apply GlobalTheory.InertConv.heckeFunI_conv <;> assumption)
+  exact @GlobalTheory.InertConv.heckeFunI_conv

@@ -37,6 +37,6 @@ section
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.SRe
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.has4_of_has3_of_lv3Mv : GlobalTheory.Dec.DSInfChar → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.DiscreteSeriesUpqUnique → Formalism.L2.SG.RowsDef.RowsFinDim → HeckeCharacterZeroLocus.SiegelWeilU.SiegelWeilUnitaryConvergent → Vol.DiscreteSeriesExist → Vol.FormalDegreeFormula₂ → StandardLattice.SiegelMassRatioCM → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL), p.S = SExt.none → LevelThreeCondition p.s → StepW (pinAnd (Has3 p.s)) (Has4 p.s) := by
-  first | exact @_root_.GlobalTheory.Mem.SRe.UpS.has4_of_has3_of_sExt_none | exact _root_.GlobalTheory.Mem.SRe.UpS.has4_of_has3_of_sExt_none | (intros; apply _root_.GlobalTheory.Mem.SRe.UpS.has4_of_has3_of_sExt_none <;> assumption)
+  exact @_root_.GlobalTheory.Mem.SRe.UpS.has4_of_has3_of_sExt_none
 end
 end

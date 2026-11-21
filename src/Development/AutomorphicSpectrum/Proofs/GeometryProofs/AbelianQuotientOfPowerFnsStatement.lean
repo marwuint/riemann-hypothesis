@@ -10,4 +10,4 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.abelian_quotient_of_power_fns : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X : Scheme.{0}) (t : SAB H X), PowFns t → ∀ (k : Type) [Field k] [IsAlgClosed k] (p : ℕ) [Fact p.Prime] [CharP k p] (x : Sp k ⟶ X), GeomPF t x → Nonempty (AbQuot t x) := by
-  first | exact @GlobalTheory.CompanionTheory.Ar.AbQ.exists_abQuot | exact GlobalTheory.CompanionTheory.Ar.AbQ.exists_abQuot | (intros; apply GlobalTheory.CompanionTheory.Ar.AbQ.exists_abQuot <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Ar.AbQ.exists_abQuot

@@ -15,4 +15,4 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.not_isSplitPlace_of_inert_over_realSubfield : ∀ (D : D7) (Pp : HeightOneSpectrum (𝓞 D.host.E)), Formalism.UG.IsInertAt (↥D.host.F) D.host.E (HeightOneSpectrum.under (𝓞 ↥D.host.F) Pp) Pp → ¬ Formalism.BasicNotions.IsSplitPl D.host Pp := by
-  first | exact @GlobalTheory.not_isSplitPl_of_isInertAt | exact GlobalTheory.not_isSplitPl_of_isInertAt | (intros; apply GlobalTheory.not_isSplitPl_of_isInertAt <;> assumption)
+  exact @GlobalTheory.not_isSplitPl_of_isInertAt

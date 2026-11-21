@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.exists_global_module_localising_to_lattices : ∀ 
     (∀ q, G.IsLattice ((D.gat u v hg).P.W q) (L q)) →
     ∃ Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E), ∀ q,
       L q = Submodule.span ((D.gat u v hg).P.W q) {y | ∃ x ∈ Λ, y = fun i => GlobalTheory.Mem.Top.KerOne.iw0 Gs u v hg q (x i)} := by
-  first | exact @GlobalTheory.Mem.Top.KerGlob.exists_global_lattice | exact GlobalTheory.Mem.Top.KerGlob.exists_global_lattice | (intros; apply GlobalTheory.Mem.Top.KerGlob.exists_global_lattice <;> assumption)
+  exact @GlobalTheory.Mem.Top.KerGlob.exists_global_lattice

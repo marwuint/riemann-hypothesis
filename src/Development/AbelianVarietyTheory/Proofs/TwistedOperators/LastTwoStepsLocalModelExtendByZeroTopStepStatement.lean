@@ -32,4 +32,4 @@ theorem _root_.GlobalTheory.T.lastTwoSteps_localModel_extendByZero_topStep : ∀
           (.theta D.R.m (j + 1)) (z.submatrix (Fin.cast h₃) (Fin.cast h₄))ᵀ) ∧
         T₂ Φ = fun x => castSch ch.G (show j + 1 + 1 = D.R.m by omega) (f ⟨j + 1, by omega⟩)
           ((rowJac ch.G (j + 1) (by omega) 0 (by omega)).ext0 _ x) := by
-  first | exact @GlobalTheory.LastStepExt0.model_last | exact GlobalTheory.LastStepExt0.model_last | (intros; apply GlobalTheory.LastStepExt0.model_last <;> assumption)
+  exact @GlobalTheory.LastStepExt0.model_last

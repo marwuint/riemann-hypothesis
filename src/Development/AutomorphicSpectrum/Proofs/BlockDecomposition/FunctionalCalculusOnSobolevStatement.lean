@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.functional_calculus_on_sobolev : ∀ (n : ℕ) [Me
       (∀ (f : Mat n → E.V) (hf : cls μ f ∈ Msob μ E.V), Sob μ f → (Ω ⟨cls μ f, hf⟩ : Lp E.V 2 μ) = cls μ (Om f)) →
       ∀ (h : C₀(ℝ, ℂ)) (f : Mat n → E.V), Sob μ f → IsSec E f →
         ∃ f', Sob μ f' ∧ IsSec E f' ∧ cls μ f' = F.Φ h (cls μ f) := by
-  first | exact @GlobalTheory.CompanionTheory.FcSmooth.phi_keeps_sections | exact GlobalTheory.CompanionTheory.FcSmooth.phi_keeps_sections | (intros; apply GlobalTheory.CompanionTheory.FcSmooth.phi_keeps_sections <;> assumption)
+  exact @GlobalTheory.CompanionTheory.FcSmooth.phi_keeps_sections

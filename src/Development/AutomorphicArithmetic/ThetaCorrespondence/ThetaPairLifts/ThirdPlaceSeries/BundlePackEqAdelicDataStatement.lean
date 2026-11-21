@@ -43,5 +43,5 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.E
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.point_lines_of_cusp_rapid_decay : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.HarishChandraFinite → GlobalTheory.Published.CuspRapidDecay → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL), GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (_root_.GlobalTheory.Mem.Top.Bl.BundleLinkage p) (fun _ _ _ _ b => _root_.GlobalTheory.Fam.BundlePointConditions b) := by
-  first | exact @_root_.GlobalTheory.Fam.PtRowsAt.good_linked_ptR_of_cuspRapidDecay | exact _root_.GlobalTheory.Fam.PtRowsAt.good_linked_ptR_of_cuspRapidDecay | (intros; apply _root_.GlobalTheory.Fam.PtRowsAt.good_linked_ptR_of_cuspRapidDecay <;> assumption)
+  exact @_root_.GlobalTheory.Fam.PtRowsAt.good_linked_ptR_of_cuspRapidDecay
 end

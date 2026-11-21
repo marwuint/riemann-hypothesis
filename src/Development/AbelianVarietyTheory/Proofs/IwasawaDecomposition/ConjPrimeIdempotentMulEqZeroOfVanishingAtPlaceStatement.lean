@@ -10,4 +10,4 @@ open Formalism.IndefR.RecTie Formalism.IndefR.Lev Formalism.L2.Rows GlobalTheory
 open GlobalTheory.Mem.R3.LiftBrg
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.conjPrimeIdempotent_mul_eq_zero_of_vanishing_at_place : ∀ {D : D7} (v : HeightOneSpectrum (𝓞 D.host.F)) (Pb : Formalism.L2.DIV.Pl D.host.E) (e : Formalism.L2.Theta.AE D), Formalism.L2.Col.IsOver v Pb → Formalism.L2.NTheta.IsIdemAt e (Formalism.L2.Col.conjPrime₂ Pb) → ∀ z : Formalism.IndefR.Lev.EAf D, Formalism.UG.prV v z = 0 → swapAE D (finPart D e) * z = 0 := by
-  first | exact @GlobalTheory.IdemSupp.idem_mul_eq_zero | exact GlobalTheory.IdemSupp.idem_mul_eq_zero | (intros; apply GlobalTheory.IdemSupp.idem_mul_eq_zero <;> assumption)
+  exact @GlobalTheory.IdemSupp.idem_mul_eq_zero

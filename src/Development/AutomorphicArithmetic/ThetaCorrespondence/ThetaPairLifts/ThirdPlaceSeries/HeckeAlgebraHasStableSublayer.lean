@@ -62,6 +62,6 @@ theorem _root_.GlobalTheory.T.exists_superset_low_heckeRd_of_subset_S0 : _root_.
     ∀ Sb : Finset (PlE (w.D Z).host), (∀ i, Sb ⊆ (w.D Z).ntw.S0 i) → ∃ Sb' : Finset (PlE (w.D Z).host), Sb ⊆ Sb' ∧
       (∀ i, Sb' ⊆ (w.D Z).ntw.S0 i) ∧ GlobalTheory.TwInputs.Eig.Low (w.D Z) Sb' ∧
       GlobalTheory.HeightCounting.RatSide.HeckeRd t.r.z.R t.r.z.cG c.row.kKs c.row.hk Sb' c.row.hecke.hL := by
-  first | exact @_root_.GlobalTheory.HeckeSbLayer.exists_hecke_stable_sublayer_alt | exact _root_.GlobalTheory.HeckeSbLayer.exists_hecke_stable_sublayer_alt | (intros; apply _root_.GlobalTheory.HeckeSbLayer.exists_hecke_stable_sublayer_alt <;> assumption)
+  exact @_root_.GlobalTheory.HeckeSbLayer.exists_hecke_stable_sublayer_alt
 end
 end

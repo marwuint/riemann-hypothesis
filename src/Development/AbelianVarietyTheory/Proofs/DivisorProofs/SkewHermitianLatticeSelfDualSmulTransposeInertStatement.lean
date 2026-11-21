@@ -23,4 +23,4 @@ theorem _root_.GlobalTheory.T.skewHermitianLattice_selfDual_smul_transpose_inert
       s₁ * algebraMap F E t * e ∈ (algebraMap (𝓞 E) E).range) →
     (∀ o : 𝓞 E, IsIntegral ℤ (Algebra.trace ℚ E ((o : E) * (s₂ * (algebraMap F E t)⁻¹)))) →
   GlobalTheory.AdelicU.IsSelfDualAt σ (algebraMap F E t • W.Jᵀ) W.L v := by
-  first | exact @GlobalTheory.SkewScaleInert.isSelfDualAt_smul_transpose | exact GlobalTheory.SkewScaleInert.isSelfDualAt_smul_transpose | (intros; apply GlobalTheory.SkewScaleInert.isSelfDualAt_smul_transpose <;> assumption)
+  exact @GlobalTheory.SkewScaleInert.isSelfDualAt_smul_transpose

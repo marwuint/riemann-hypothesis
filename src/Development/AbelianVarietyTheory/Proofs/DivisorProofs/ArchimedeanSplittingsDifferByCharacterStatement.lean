@@ -24,4 +24,4 @@ theorem _root_.GlobalTheory.T.archimedean_splittings_differ_by_character : ∀ (
         ν (g * h) = ν g * ν h) ∧
       ContinuousOn ν {g : UG (cA σ) JB | At (evI F) ((g.1 : Matrix β β (AE F E)) - 1)} ∧
       ∀ g : UG (cA σ) JB, At (evI F) ((g.1 : Matrix β β (AE F E)) - 1) → ν g ≠ 0 := by
-  first | exact @GlobalTheory.HoweD.SplitScalar.splittings_differ_by_character | exact GlobalTheory.HoweD.SplitScalar.splittings_differ_by_character | (intros; apply GlobalTheory.HoweD.SplitScalar.splittings_differ_by_character <;> assumption)
+  exact @GlobalTheory.HoweD.SplitScalar.splittings_differ_by_character

@@ -26,4 +26,4 @@ theorem _root_.GlobalTheory.T.psiCoordinate_eq_unit_mul_tauCoordinate : ∀ (R :
     [Module O D.X] (oa : D.OAct O) (w0 : O), TraceFormTwistIso D oa w0 → ∀ (y : D.X) (r : R) (x : (FractionRing R)ˣ),
     PsiCoord D y r → GlobalTheory.IndefiniteRowSideFullHecke.GeneratorValues.IsTauCoord D y (w0 • y) x →
     ∃ u : Rˣ, algebraMap R (FractionRing R) r = algebraMap R (FractionRing R) (u : R) * (x : FractionRing R) := by
-  first | exact @GlobalTheory.PsiTauCoordRel.main | exact GlobalTheory.PsiTauCoordRel.main | (intros; apply GlobalTheory.PsiTauCoordRel.main <;> assumption)
+  exact @GlobalTheory.PsiTauCoordRel.main

@@ -13,4 +13,4 @@ theorem _root_.GlobalTheory.T.tupleLayerCompatibilities_of_X_prime : ∀ {B : Ba
       ∀ β (d : XPt (B.primes X) B.R I.sel (I.tup a)) (g' : GA B (B.R.N B.R.m - 1)) (g : GA B (B.R.N B.R.m)), PtOf g' d →
         IsExt (I.rec7 l Z) (z0 X u) (inclE (F := (I.rec7 l Z).host.F) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F)) g'.1 g.1 →
         PtOf (g * k β) (tilF I.sel (I.tup a) u d)) → ∃ (Pt : TwPTiedS Lv) (E : TwPEvzS Pt), TwPAtGS Pt ∧ I.StdP l Z l0 Pt E := by
-  first | exact @GlobalTheory.Mem.Col2.TC.tupleLayer_compatibility | exact GlobalTheory.Mem.Col2.TC.tupleLayer_compatibility | (intros; apply GlobalTheory.Mem.Col2.TC.tupleLayer_compatibility <;> assumption)
+  exact @GlobalTheory.Mem.Col2.TC.tupleLayer_compatibility

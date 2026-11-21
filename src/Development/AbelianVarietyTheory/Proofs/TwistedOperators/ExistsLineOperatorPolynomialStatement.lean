@@ -20,4 +20,4 @@ theorem _root_.GlobalTheory.T.exists_line_operator_polynomial : GlobalTheory.Fun
     IsTriple B G X om om' → ∀ γ ∈ Lines σ G.W,
     ∃ δ : SInf F (Fin a' × Fin (a + a')) →ₗ[ℂ] SInf F (Fin a' × Fin (a + a')), ∀ f ∈ G.M'.Pol B.ψ B.emb,
       δ f ∈ G.M'.Pol B.ψ B.emb ∧ ActsD (evI F) (fun t => om' (1, γ (Multiplicative.ofAdd t))) f (δ f) := by
-  first | exact @GlobalTheory.DerPol.exists_lieDer_model' | exact GlobalTheory.DerPol.exists_lieDer_model' | (intros; apply GlobalTheory.DerPol.exists_lieDer_model' <;> assumption)
+  exact @GlobalTheory.DerPol.exists_lieDer_model'

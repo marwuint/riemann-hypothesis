@@ -17,5 +17,5 @@ theorem _root_.GlobalTheory.T.archimedean_chart_theta_equivariant : ∀ (F E : T
       IsInfFamF (fun w : InfinitePlace F => (B.emb w).1) θ → ∀ ι : (InfinitePlace F → ℂ) →+ AEF F E, IsChartF θ ι →
       ∀ u v : IxF F nS nT → ℂ, B.ψ (symplOHF σ JS JT ξ₀ (iotaVF ι u) (iotaVF ι v)) =
         Complex.exp (Real.pi * Complex.I * ((star v ⬝ᵥ HMF JS JT ξ₀ (fun w : InfinitePlace F => (B.emb w).1) *ᵥ u).im : ℂ)) := by
-  first | exact @_root_.GlobalTheory.RealCharF.psi_symplOHF_iotaVF_k | exact _root_.GlobalTheory.RealCharF.psi_symplOHF_iotaVF_k | (intros; apply _root_.GlobalTheory.RealCharF.psi_symplOHF_iotaVF_k <;> assumption)
+  exact @_root_.GlobalTheory.RealCharF.psi_symplOHF_iotaVF_k
 end

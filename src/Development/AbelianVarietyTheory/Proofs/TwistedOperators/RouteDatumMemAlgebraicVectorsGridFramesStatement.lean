@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.routeDatum_mem_algebraicVectors_grid_frames : ∀ 
     GlobalTheory.SquareDict.IsGridFr W _ A → GlobalTheory.SquareDict.IsGridFr W _ AV → GlobalTheory.SquareDict.IsGridFr W _ AV₁ →
     ∀ (B : Frames G) (ρ : RealMatch W) (Θ : TotT G (routeBig t i j)) (Θ' : TotT G (routeSmall t i j)), IsMatched B t ρ i j Θ Θ' →
       GlobalTheory.SquareDict.datumA W Θ ∈ GlobalTheory.SquareComm.algF W.ψ W.θ true A (GlobalTheory.SquareComm.frSum AV AV₁) := by
-  first | exact @GlobalTheory.SquareAlg.datumA_mem_algF | exact GlobalTheory.SquareAlg.datumA_mem_algF | (intros; apply GlobalTheory.SquareAlg.datumA_mem_algF <;> assumption)
+  exact @GlobalTheory.SquareAlg.datumA_mem_algF

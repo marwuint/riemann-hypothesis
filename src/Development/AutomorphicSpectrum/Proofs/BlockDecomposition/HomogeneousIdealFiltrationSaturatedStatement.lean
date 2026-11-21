@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.homogeneous_ideal_filtration_saturated : ∀ (R : 
     ∃ n₀ : ℕ, ∀ e n, n₀ ≤ n → ∀ f ∈ L e, f.IsHomogeneous n →
       ∃ f' ∈ L (e + 1), f'.IsHomogeneous n ∧
         f - f' ∈ (I ^ (e + 1)).map (C : R →+* MvPolynomial (Fin (N + 1)) R) := by
-  first | exact @GlobalTheory.CompanionTheory.GE.Lift.uniform_lift | exact GlobalTheory.CompanionTheory.GE.Lift.uniform_lift | (intros; apply GlobalTheory.CompanionTheory.GE.Lift.uniform_lift <;> assumption)
+  exact @GlobalTheory.CompanionTheory.GE.Lift.uniform_lift

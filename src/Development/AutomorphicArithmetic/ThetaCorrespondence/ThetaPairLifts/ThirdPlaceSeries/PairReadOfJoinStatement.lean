@@ -13,5 +13,5 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.pairRead_of_join_isTrue_unit : GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), _root_.GlobalTheory.NPin.CharacterChoiceJoin P → ∀ S : Reading P.T, _root_.GlobalTheory.NPin.IsFaithfulReading P S → RowUnit S → PairRead S := by
-  first | exact @_root_.GlobalTheory.NPin.pairRead_of_join_alt | exact _root_.GlobalTheory.NPin.pairRead_of_join_alt | (intros; apply _root_.GlobalTheory.NPin.pairRead_of_join_alt <;> assumption)
+  exact @_root_.GlobalTheory.NPin.pairRead_of_join_alt
 end

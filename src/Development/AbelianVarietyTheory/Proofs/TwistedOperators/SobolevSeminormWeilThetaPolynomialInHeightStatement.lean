@@ -23,4 +23,4 @@ theorem _root_.GlobalTheory.T.sobolevSeminorm_weilTheta_polynomial_in_height : �
     ∃ (N : ℕ) (C : ℝ), 0 ≤ C ∧ ∀ y ∈ C₁, ∀ h : GA D X,
       (GlobalTheory.Size.sobO (V := sgn ε M) (W := X) ψ θ μ 𝓕 k (ω (y, h) Φ)).toReal ≤
         C * (GlobalTheory.IndefiniteRowSideFullHecke.LieAlgebraExponentialFamilies.height θ X h : ℝ) ^ N := by
-  first | exact @GlobalTheory.WeilSobolev.sobO_weil_le_height | exact GlobalTheory.WeilSobolev.sobO_weil_le_height | (intros; apply GlobalTheory.WeilSobolev.sobO_weil_le_height <;> assumption)
+  exact @GlobalTheory.WeilSobolev.sobO_weil_le_height

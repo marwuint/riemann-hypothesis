@@ -20,4 +20,4 @@ open GlobalTheory.Core.Rk.Exh GlobalTheory.RegSW
 open GlobalTheory.Core.Rk.SumBox
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.isPolynomialFockThetaVector_orthogonalBoxProduct : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (A B W H : HSp D) (o : OrthDec B W H) (sA : RealMat A) (sW : RealMat W) (sH : RealMat H), IsStdChar D ψ (-1) → IsInfFam θ → ∀ Φ Φ', IsFockVec ψ θ A W sA sW Φ → IsFockVec ψ θ A H sA sH Φ' → IsFockVec ψ θ A B sA (sumMat o sW sH) (o.boxT A Φ Φ') := by
-  first | exact @GlobalTheory.Core.Rk.FockBoxT.isFockVec_boxT | exact GlobalTheory.Core.Rk.FockBoxT.isFockVec_boxT | (intros; apply GlobalTheory.Core.Rk.FockBoxT.isFockVec_boxT <;> assumption)
+  exact @GlobalTheory.Core.Rk.FockBoxT.isFockVec_boxT

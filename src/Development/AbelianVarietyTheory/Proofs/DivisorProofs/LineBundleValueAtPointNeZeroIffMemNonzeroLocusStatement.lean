@@ -14,4 +14,4 @@ open GlobalTheory.OrbitSep
 open GlobalTheory.Discrepancy GlobalTheory.QCoh
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.lineBundleValueAtPoint_ne_zero_iff_mem_nonzeroLocus : ∀ (K : Type) [Field K] (Y : Scheme.{0}) (q : Y ⟶ Sp K) (L : LB Y) (σ : L.Sec) (z : Sp K ⟶ Y) (i : L.ι) (hi : ⊤ ≤ z ⁻¹ᵁ L.U i), (H0.val (p := q) z i le_top hi (H0.ofSec q ⊤ σ) ≠ 0 ↔ z (IsLocalRing.closedPoint K) ∈ nonzeroLocus σ) := by
-  first | exact @GlobalTheory.ValNe.val_ofSec_ne_zero_iff | exact GlobalTheory.ValNe.val_ofSec_ne_zero_iff | (intros; apply GlobalTheory.ValNe.val_ofSec_ne_zero_iff <;> assumption)
+  exact @GlobalTheory.ValNe.val_ofSec_ne_zero_iff

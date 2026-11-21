@@ -25,4 +25,4 @@ theorem _root_.GlobalTheory.T.levels_kernelData_at_served_place : ∀ {K : Ctx} 
         ThAtServed (Formalism.L2.G.Cmp.kerAtP_of t.Gt KD) E ∧
         Formalism.L2.Herm.SymmetricKernelCompatibleAtPlace t.full.1.base.toHermColsCh t.full.1.g u v hg (Formalism.L2.G.Cmp.kerAtP_of t.Gt KD) ∧
         Formalism.L2.Herm.GIwPos u v hg (Formalism.L2.G.Cmp.kerAtP_of t.Gt KD) := by
-  first | exact @GlobalTheory.Mem.Top.KerOne.kerData_at_served | exact GlobalTheory.Mem.Top.KerOne.kerData_at_served | (intros; apply GlobalTheory.Mem.Top.KerOne.kerData_at_served <;> assumption)
+  exact @GlobalTheory.Mem.Top.KerOne.kerData_at_served

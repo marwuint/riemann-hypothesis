@@ -9,4 +9,4 @@ open NumberField IsDedekindDomain ValuativeRel Matrix Polynomial Formalism.Conju
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.smoothWeilChar_eq_one_of_toAbsGaloisAb_eq_one : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (h : IsPlaceOver A w) (ξ : Weil h →* ℂˣ), GlobalTheory.WeilDeligne.IsSmooth ξ → ∀ σ : Weil h, GlobalTheory.HeckeGal.toAb E Ω σ = 1 → ξ σ = 1 := by
-  first | exact @GlobalTheory.WeilCharKer.apply_eq_one_of_toAb_eq_one | exact GlobalTheory.WeilCharKer.apply_eq_one_of_toAb_eq_one | (intros; apply GlobalTheory.WeilCharKer.apply_eq_one_of_toAb_eq_one <;> assumption)
+  exact @GlobalTheory.WeilCharKer.apply_eq_one_of_toAb_eq_one

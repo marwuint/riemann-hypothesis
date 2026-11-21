@@ -9,4 +9,4 @@ theorem _root_.GlobalTheory.T.whittaker_subquotient_equiv : ∀ (k : Type) [Fiel
     [∀ a, AddCommGroup (X a)] [∀ a, Module ℂ (X a)] (ρ : ∀ a, Representation ℂ (GL (Fin (d a)) k) (X a)),
     T' ≤ T → (subQuot T T').Equiv (piTensor ρ) →
     ⨆ f : (ρ 0).IntertwiningMap (subQuot (whitImg ψ d J T) (whitImg ψ d J T')), LinearMap.range f.toLinearMap = ⊤ := by
-  first | exact @GlobalTheory.CompanionTheory.BZNuPair.WhitCover.main | exact GlobalTheory.CompanionTheory.BZNuPair.WhitCover.main | (intros; apply GlobalTheory.CompanionTheory.BZNuPair.WhitCover.main <;> assumption)
+  exact @GlobalTheory.CompanionTheory.BZNuPair.WhitCover.main

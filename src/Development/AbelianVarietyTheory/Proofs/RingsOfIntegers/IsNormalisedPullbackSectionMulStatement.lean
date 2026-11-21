@@ -9,4 +9,4 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.PlaceInt
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.isNormalisedPullbackSection_mul : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (S : Type) [CommRing S] (x : Sp S ⟶ Xo.X) (a b : 𝓞 E) (k k' k'' : ℕ) (F : SecN Xo x k) (F' : SecN Xo x k') (F'' : SecN Xo x k''), Pulls Xo a F F' → Pulls Xo b F' F'' → Pulls Xo (a * b) F F'' := by
-  first | exact @GlobalTheory.PullComp.pulls_mul | exact GlobalTheory.PullComp.pulls_mul | (intros; apply GlobalTheory.PullComp.pulls_mul <;> assumption)
+  exact @GlobalTheory.PullComp.pulls_mul

@@ -14,4 +14,4 @@ theorem _root_.GlobalTheory.T.irregular_projection_image_null : ∀ (m : ℕ) (n
     (Ψ : GlobalTheory.CompanionTheory.MixZ.ArchEq.LinProj n D) (c : GlobalTheory.AlgChart (i ≫ mpStr ℤ m n) σ₀ D),
     volume (GlobalTheory.CompanionTheory.MixZ.ArchEq.projCoord i Ψ '' {y | y ∈ c.e.source ∧
       (∃ z, GlobalTheory.CompanionTheory.MixZ.ArchEq.Over i y z ∧ Ψ (segre z) 0 ≠ 0) ∧ ¬ GlobalTheory.CompanionTheory.MixZ.ArchEq.IsRegAt i Ψ c y}) = 0 := by
-  first | exact @GlobalTheory.CompanionTheory.MixZ.ArchEq.volume_image_crit | exact GlobalTheory.CompanionTheory.MixZ.ArchEq.volume_image_crit | (intros; apply GlobalTheory.CompanionTheory.MixZ.ArchEq.volume_image_crit <;> assumption)
+  exact @GlobalTheory.CompanionTheory.MixZ.ArchEq.volume_image_crit

@@ -23,4 +23,4 @@ theorem _root_.GlobalTheory.T.vacuum_split_place_indicator_base : GlobalTheory.F
     ∀ g ∈ GlobalTheory.DblVac.KD σ G.V v, ∃ μ : ℂ,
       omd g (boxFun (tens (evFin F v) (G.M.vac v) r) (fun x => star (tens (evFin F v) (G.M.vac v) r x))) =
         μ • boxFun (tens (evFin F v) (G.M.vac v) r) (fun x => star (tens (evFin F v) (G.M.vac v) r x)) := by
-  first | exact @GlobalTheory.VDblEigSplit.vdbl_eigen_split | exact GlobalTheory.VDblEigSplit.vdbl_eigen_split | (intros; apply GlobalTheory.VDblEigSplit.vdbl_eigen_split <;> assumption)
+  exact @GlobalTheory.VDblEigSplit.vdbl_eigen_split

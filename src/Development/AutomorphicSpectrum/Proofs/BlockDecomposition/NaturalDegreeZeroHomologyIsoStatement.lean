@@ -13,4 +13,4 @@ theorem _root_.GlobalTheory.T.natural_degree_zero_homology_iso : ∀ {R : Type} 
       ((ShortComplex.mk i p w).map T₁).ShortExact ∧ ((ShortComplex.mk i p w).map T₂).ShortExact ∧
       ∀ n, IsZero ((T₁.obj I).homology (n + 1)) ∧ IsZero ((T₂.obj I).homology (n + 1))) →
     ∀ (n : ℕ) (G : 𝒜), Nonempty ((T₁.obj G).homology n ≅ (T₂.obj G).homology n) := by
-  first | exact @GlobalTheory.CompanionTheory.Hodge.DimShift.homology_nonempty_iso | exact GlobalTheory.CompanionTheory.Hodge.DimShift.homology_nonempty_iso | (intros; apply GlobalTheory.CompanionTheory.Hodge.DimShift.homology_nonempty_iso <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Hodge.DimShift.homology_nonempty_iso

@@ -26,5 +26,5 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.actRead_at_member_of_recT : ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.MemberAtLayerPoint hL fun _ _ _ _ _ _ _ _ t _ _ _ => GlobalTheory.CenLocAt.ActRead t.r.Y := by
-  first | exact @_root_.GlobalTheory.CenLocAt.actRead_at_mem_of_recT | exact _root_.GlobalTheory.CenLocAt.actRead_at_mem_of_recT | (intros; apply _root_.GlobalTheory.CenLocAt.actRead_at_mem_of_recT <;> assumption)
+  exact @_root_.GlobalTheory.CenLocAt.actRead_at_mem_of_recT
 end

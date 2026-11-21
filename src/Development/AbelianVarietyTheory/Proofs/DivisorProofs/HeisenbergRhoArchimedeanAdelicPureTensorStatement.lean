@@ -10,4 +10,4 @@ theorem _root_.GlobalTheory.T.heisenbergRho_archimedean_adelicPureTensor : ∀ (
     (JA : Matrix α α (AE F E)) (JB : Matrix β β (AE F E)) (d : Darboux (symp (R := AF F) (cA σ) (-1) JA JB) κ),
     IsStd ψ → ∀ u : Matrix α β (AE F E), At (evI F) u → ∀ f : SInf F κ,
       ∃ f₁ : SInf F κ, ∀ h : (κ → Af F) → ℂ, d.rho ψ u (pureA F f h) = pureA F f₁ h := by
-  first | exact @GlobalTheory.ArchHeisPure.rho_pureA | exact GlobalTheory.ArchHeisPure.rho_pureA | (intros; apply GlobalTheory.ArchHeisPure.rho_pureA <;> assumption)
+  exact @GlobalTheory.ArchHeisPure.rho_pureA

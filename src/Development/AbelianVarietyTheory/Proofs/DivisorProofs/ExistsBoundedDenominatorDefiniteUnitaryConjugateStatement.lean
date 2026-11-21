@@ -8,4 +8,4 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.exists_bounded_denominator_definiteUnitary_conjugate : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) (S : Set (Pl E)), IsSection S → ∀ x : finU E n, ∃ d : ℕ, 0 < d ∧ ∀ g : finU E n, (∀ w ∈ S, cLoc w ((x⁻¹ * g * x : finU E n) : UA E n) ∈ GlobalTheory.LFun.KGL w n) → ∀ (w : Pl E) (i j : Fin n), (d : w.adicCompletion E) * (cLoc w (g : UA E n)).val i j ∈ w.adicCompletionIntegers E := by
-  first | exact @GlobalTheory.BCT.StabDenom.exists_denom | exact GlobalTheory.BCT.StabDenom.exists_denom | (intros; apply GlobalTheory.BCT.StabDenom.exists_denom <;> assumption)
+  exact @GlobalTheory.BCT.StabDenom.exists_denom

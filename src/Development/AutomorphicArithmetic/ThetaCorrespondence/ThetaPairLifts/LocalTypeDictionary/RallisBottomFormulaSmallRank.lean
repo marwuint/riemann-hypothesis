@@ -75,5 +75,5 @@ theorem _root_.GlobalTheory.T.theta_bottom_formula_small : _root_.GlobalTheory.F
         ∃ u : ℂ, u ≠ 0 ∧ u ∈ Qbar ∧ (∀ (p : ℕ) [Fact p.Prime], ¬ p ∣ GlobalTheory.SqTop.Qn G s → ∀ lam : Qbar →+* ℂ_[p], ‖lamC lam u‖ = 1) ∧
           ∀ (ea : P'.a = A'.rank) (ed : P'.d = WW.rank) (h : GA D P'.d) (g : GA D WW), GlobalTheory.BotFormula.IsFinPt WW g h →
             ∀ T', X.I' W.ψ W.θ s (GlobalTheory.BotFormula.minorF ea ed T') g = Ω' * u * P'.coord h T' := by
-  first | exact @_root_.GlobalTheory.BotFormula.rallis_bottom_formula_small_rank | exact _root_.GlobalTheory.BotFormula.rallis_bottom_formula_small_rank | (intros; apply _root_.GlobalTheory.BotFormula.rallis_bottom_formula_small_rank <;> assumption)
+  exact @_root_.GlobalTheory.BotFormula.rallis_bottom_formula_small_rank
 end

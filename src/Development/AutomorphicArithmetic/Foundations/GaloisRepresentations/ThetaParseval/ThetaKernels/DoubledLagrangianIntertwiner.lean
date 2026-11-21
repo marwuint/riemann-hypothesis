@@ -25,5 +25,5 @@ theorem _root_.GlobalTheory.T.doubled_lagrangian_intertwiner : ∀ (F E : Type) 
         ξ • incM F JB = incM F (ξ₀ • JS⁻¹) →
         ∀ (a : UG (cA σ) (incM F JA)) (b : UG (cA σ) (incM F JB)),
           ∃ (g : GAF σ JS) (h : GAF σ JT), mtF σ JT h = a.1.1 ∧ mtF σ JS g = (b⁻¹).1.1ᵀ := by
-  first | exact @_root_.GlobalTheory.WeilPairPartnerF.pair_partnerF_k | exact _root_.GlobalTheory.WeilPairPartnerF.pair_partnerF_k | (intros; apply _root_.GlobalTheory.WeilPairPartnerF.pair_partnerF_k <;> assumption)
+  exact @_root_.GlobalTheory.WeilPairPartnerF.pair_partnerF_k
 end

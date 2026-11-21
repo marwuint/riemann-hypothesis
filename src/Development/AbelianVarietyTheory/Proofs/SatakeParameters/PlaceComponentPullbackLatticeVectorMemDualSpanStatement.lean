@@ -12,4 +12,4 @@ theorem _root_.GlobalTheory.T.placeComponent_pullback_latticeVector_mem_dual_spa
     (l : Fin (D.R.N i) → D.host.E), l ∈ latAd x.1 lev.Lb →
     (fun k => prV (E := D.host.E) v (pullV (F := D.host.F) x.1 l k)) ∈ latS (F := D.host.F) (v.adicCompletion D.host.F) (intV D.host.E v)
         (Submodule.span (𝓞 D.host.E) (dualSet (sigD D : D.host.E →+* D.host.E) (gramN D i hi) lev.Lb)) := by
-  first | exact @GlobalTheory.AwayLat.prV_pullV_mem_latS_dual | exact GlobalTheory.AwayLat.prV_pullV_mem_latS_dual | (intros; apply GlobalTheory.AwayLat.prV_pullV_mem_latS_dual <;> assumption)
+  exact @GlobalTheory.AwayLat.prV_pullV_mem_latS_dual

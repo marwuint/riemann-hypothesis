@@ -14,4 +14,4 @@ theorem _root_.GlobalTheory.T.unitary_element_prescribed_blocks : ∀ {n m : ℕ
           Set.range (fun i : A => (1 + x * u + w * xᴴ * Formalism.REAL.Jm ε) *ᵥ fun j => y j i)),
         Formalism.REAL.Jm ε *ᵥ v ∈ Submodule.span ℂ (Set.range (fun i : A => (1 + x * u + w * xᴴ * Formalism.REAL.Jm ε) *ᵥ fun j => x j i) ∪
           Set.range (fun i : A => (1 + x * u + w * xᴴ * Formalism.REAL.Jm ε) *ᵥ fun j => y j i)) := by
-  first | exact @GlobalTheory.CompanionTheory.EichlerTransf.eichler_transformation | exact GlobalTheory.CompanionTheory.EichlerTransf.eichler_transformation | (intros; apply GlobalTheory.CompanionTheory.EichlerTransf.eichler_transformation <;> assumption)
+  exact @GlobalTheory.CompanionTheory.EichlerTransf.eichler_transformation

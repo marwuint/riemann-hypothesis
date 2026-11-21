@@ -14,4 +14,4 @@ theorem _root_.GlobalTheory.T.exists_tensorSquare_equiv_fibreSquare_sections : �
     ∃ e : Γ(X, f ⁻¹ᵁ V₀) ⊗[Γ(Y, V₀)] Γ(X, f ⁻¹ᵁ V₀) ≃+* Γ(pullback f f, pullback.fst f f ⁻¹ᵁ f ⁻¹ᵁ V₀),
       ∀ a b : Γ(X, f ⁻¹ᵁ V₀), e (a ⊗ₜ b) =
         ((pullback.fst f f).app (f ⁻¹ᵁ V₀)).hom a * ((pullback.snd f f).appLE (f ⁻¹ᵁ V₀) _ h).hom b := by
-  first | exact @GlobalTheory.LBDescent.exists_tensorSquare_equiv_sections | exact GlobalTheory.LBDescent.exists_tensorSquare_equiv_sections | (intros; apply GlobalTheory.LBDescent.exists_tensorSquare_equiv_sections <;> assumption)
+  exact @GlobalTheory.LBDescent.exists_tensorSquare_equiv_sections

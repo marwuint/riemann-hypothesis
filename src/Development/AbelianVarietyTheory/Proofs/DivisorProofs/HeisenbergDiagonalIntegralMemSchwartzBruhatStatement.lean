@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.heisenbergDiagonalIntegral_mem_schwartzBruhat : �
     ∀ Φ₀ ∈ SB (κ ⊕ κ → Fv F v), ∀ c : ℂ, c ≠ 0 → ∀ U : Set ((κ → Fv F v) × (κ → Fv F v)), IsOpen U → IsCompact U → 0 ∈ U →
       (∀ w, diagW ψ μ Φ₀ w = U.indicator (fun _ => c) w) →
     ∀ Φ ∈ SB (κ ⊕ κ → Fv F v), diagW ψ μ Φ ∈ SB ((κ → Fv F v) × (κ → Fv F v)) := by
-  first | exact @GlobalTheory.DiagWSB.diagW_mem_SB | exact GlobalTheory.DiagWSB.diagW_mem_SB | (intros; apply GlobalTheory.DiagWSB.diagW_mem_SB <;> assumption)
+  exact @GlobalTheory.DiagWSB.diagW_mem_SB

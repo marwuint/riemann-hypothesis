@@ -34,4 +34,4 @@ theorem _root_.GlobalTheory.T.enlargedBase_coefficientSpaces_isometric_maps : �
       HEq (MvPolynomial.map (w'.st Z').toD7.what₂.embLL v'.1)
         (MvPolynomial.map (B.embLL : B.fields.K →+* ℂ) (φ.1 (LiftBrg.ptL (w.st Z) w.I (usedOf w.I T Wt) i (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt))) 1 1 h)).1) →
       HEq (c0L' i' v') (z.R.B.jL i (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt))) ((by with_unfolding_all exact ((Formalism.L2.Col.mtKGSD (Pr := B.primes w.px) B.wts w.I.Ch w.I.sel (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt))).1 ((i : ℕ) + 1)).res ok φ :))) h) := by
-  first | exact @GlobalTheory.Mem.RsCoef.rs_coef | exact GlobalTheory.Mem.RsCoef.rs_coef | (intros; apply GlobalTheory.Mem.RsCoef.rs_coef <;> assumption)
+  exact @GlobalTheory.Mem.RsCoef.rs_coef

@@ -5,4 +5,4 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Is
 open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.unitarisable_of_square_integrable : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V), IsSmooth π → π.IsIrreducible → IsSqIntCoeff π → IsUnitarisable π := by
-  first | exact @GlobalTheory.SqIntUnit.main | exact GlobalTheory.SqIntUnit.main | (intros; apply GlobalTheory.SqIntUnit.main <;> assumption)
+  exact @GlobalTheory.SqIntUnit.main

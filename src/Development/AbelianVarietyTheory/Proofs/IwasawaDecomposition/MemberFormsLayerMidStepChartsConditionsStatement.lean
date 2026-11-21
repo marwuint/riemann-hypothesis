@@ -21,4 +21,4 @@ theorem _root_.GlobalTheory.T.memberFormsLayer_midStep_charts_conditions : ∀ {
       ∀ (i : ℕ) (hi : i + 1 ≤ (w.D Z).R.m), i + 1 + 1 ≤ (w.D Z).R.m →
       ∃ (Fo : FormsIn ((w.D Z).fm u) (i + 1) hi) (_ : Finite Fo.Ch) (S : StepD t.g.herm u v hg Fo),
         StepTiesD t.g.herm u v hg hi Fo S t.cmp := by
-  first | exact @GlobalTheory.Mem.Top.KerOne.CertEq.stepTiesD_mid | exact GlobalTheory.Mem.Top.KerOne.CertEq.stepTiesD_mid | (intros; apply GlobalTheory.Mem.Top.KerOne.CertEq.stepTiesD_mid <;> assumption)
+  exact @GlobalTheory.Mem.Top.KerOne.CertEq.stepTiesD_mid

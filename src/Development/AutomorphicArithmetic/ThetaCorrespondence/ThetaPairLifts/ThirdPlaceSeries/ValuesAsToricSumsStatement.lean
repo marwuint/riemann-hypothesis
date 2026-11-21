@@ -26,5 +26,5 @@ theorem _root_.GlobalTheory.T.toric_ratio_field_data_conjugate_alt : ∀ {D : D7
       IsToricSum (GlobalTheory.FunObj.SqNum.cmPhi D) s (GlobalTheory.FunObj.SqNum.kap D 1 i j s) (GlobalTheory.FunObj.SqNum.condF d.G.pl) (nuH d.G p.P.A3.A.μ0 i j * p.R.C.delAt (D.what₂.places.resChar w)) T₀ ∧ T₀ ≠ 0 ∧ Λd s = T₀ ∧
       (∀ y, finPart (p.Tp.psi w) y = ψc (QuotientGroup.mk y)) ∧
       (∀ ψ, GlobalTheory.IndefiniteRowSideFullHecke.ToricSymbols.IsTwistedSum (GlobalTheory.FunObj.SqNum.cmPhi D) s (GlobalTheory.FunObj.SqNum.kap D 1 i j s) (condQ (GlobalTheory.FunObj.SqNum.condF d.G.pl) (GlobalTheory.ToricDenom.belowSet (ex.nch.Q w))) (nuH d.G p.P.A3.A.μ0 i j * p.R.C.delAt (D.what₂.places.resChar w)) ψ (T ψ)) ∧ Λ s = T ψc := by
-  first | exact @_root_.GlobalTheory.ThmARatio.values_as_toric_sums_alt | exact _root_.GlobalTheory.ThmARatio.values_as_toric_sums_alt | (intros; apply _root_.GlobalTheory.ThmARatio.values_as_toric_sums_alt <;> assumption)
+  exact @_root_.GlobalTheory.ThmARatio.values_as_toric_sums_alt
 end

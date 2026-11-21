@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.isAlgebraic_mvPolynomialEval_adjoin_etaleTowerCoor
   (letI := cL.toAlgebra; ∀ a : MvPolynomial (Fin r) R,
     IsAlgebraic (Algebra.adjoin ℂ (Set.range (Fin.append (fun i => (τ i : L)) (fun i => (ι (x i) : L)))))
       ((MvPolynomial.eval₂Hom ι τ a : T) : L)) := by
-  first | exact @GlobalTheory.FieldPair.TowerTrdeg.image_isAlgebraic | exact GlobalTheory.FieldPair.TowerTrdeg.image_isAlgebraic | (intros; apply GlobalTheory.FieldPair.TowerTrdeg.image_isAlgebraic <;> assumption)
+  exact @GlobalTheory.FieldPair.TowerTrdeg.image_isAlgebraic

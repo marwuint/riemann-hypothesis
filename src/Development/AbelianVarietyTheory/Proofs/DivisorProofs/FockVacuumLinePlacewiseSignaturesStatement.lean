@@ -17,4 +17,4 @@ theorem _root_.GlobalTheory.T.fock_vacuum_line_placewise_signatures : ∀ (F E :
       ∀ f f' : SInf F κ, SD (fun t => d.rho ψ (realAd F t • u)) f₀ f → SD (fun t => d.rho ψ (realAd F t • u')) f₀ f' →
         f' = Complex.I • f) →
     ∃ z : ℂ, f₀ = z • Φ (PiTensorProduct.tprod ℂ fun _ => 1) := by
-  first | exact @GlobalTheory.HoweD.vacLineD | exact GlobalTheory.HoweD.vacLineD | (intros; apply GlobalTheory.HoweD.vacLineD <;> assumption)
+  exact @GlobalTheory.HoweD.vacLineD

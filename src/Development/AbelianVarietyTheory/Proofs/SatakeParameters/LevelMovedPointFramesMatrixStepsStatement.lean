@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.levelMoved_point_frames_matrixSteps : UnderTie (fu
         (iA D.host.F D.host.E ((qOf (seamP t.seam P.1) : D.host.E))⁻¹ *
           ((((Matrix.GeneralLinearGroup.det κ.1)⁻¹ : (AfE D.host.F D.host.E)ˣ) : AfE D.host.F D.host.E) *
             iA D.host.F D.host.E (t.seam.iE ((LinearEquiv.det ((k P)⁻¹).1 : t.X.Eˣ) : t.X.E)) - 1))) := by
-  first | exact @GlobalTheory.MatFrames.frames_mat | exact GlobalTheory.MatFrames.frames_mat | (intros; apply GlobalTheory.MatFrames.frames_mat <;> assumption)
+  exact @GlobalTheory.MatFrames.frames_mat

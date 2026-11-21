@@ -63,5 +63,5 @@ theorem _root_.GlobalTheory.T.real_lift_exists_fock_map : _root_.GlobalTheory.Fu
       LinearMap.range Φ = Γ.M.Pol Bs.ψ Bs.emb ∧
       GlobalTheory.RealLift.ActsBy Bs.emb A (om.comp (MonoidHom.inl _ _)) Φ
         (Formalism.BasicNotions.TH.fockAct1 (a - Γ.p) Γ.p (a + a' - (Γ.p + Γ.q)) (Γ.p + Γ.q)) c := by
-  first | exact @_root_.GlobalTheory.RealLift.FockFirst.exists_fockMap_first_order_of_real_lift | exact _root_.GlobalTheory.RealLift.FockFirst.exists_fockMap_first_order_of_real_lift | (intros; apply _root_.GlobalTheory.RealLift.FockFirst.exists_fockMap_first_order_of_real_lift <;> assumption)
+  exact @_root_.GlobalTheory.RealLift.FockFirst.exists_fockMap_first_order_of_real_lift
 end

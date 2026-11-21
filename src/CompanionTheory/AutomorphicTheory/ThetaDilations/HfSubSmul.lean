@@ -3,12 +3,11 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.OneVectorCcOfSiegelW
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicUnitaryOrbits.InclRAlgebraMap
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicUnitaryOrbits.StLamOf
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.AdelicUnitaryOrbits.LocalSum
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianFormDiagonalizesOverFieldStatement
 import Mathlib
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianFormDiagonalizesOverField
-import CompanionTheory.SpectralGeometry.CountingDefinitions.AdelicEulerProducts.IsEulerProd
 import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.HermitianDiagonalizeOverReducedTensor
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsNormOneUnitShift
-import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsTraceFormGramMatrixInBasis
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsNormOneUnitShiftStatement
+import CompanionTheory.SpectralGeometry.LocalGlobalProofs.AdelicAnalysis.ExistsTraceFormGramMatrixInBasisStatement
 
 open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberField IsDedekindDomain MeasureTheory Topology
 open scoped TensorProduct ENNReal NNReal Matrix
@@ -117,10 +116,78 @@ theorem witt_diag (hs : ∀ x, s (s x) = x) (hJ : cT s J = J) (D : Fin n → S) 
       rw [e2 _ (by rw [hf_U hg, hX, Matrix.diagonal_apply_ne _ hne]) (by rw [e a ha, hY, Matrix.diagonal_apply_ne _ hne]),
         e a ha]
 
+theorem gram_rm (X : Fin n → Fin M → S) (g : Matrix (Fin n) (Fin n) S) (a b : Fin n) :
+    hform s J (fun i => ∑ c, X c i * g c a) (fun i => ∑ c, X c i * g c b) =
+      (cT s g * (Matrix.of fun a b => hform s J (X a) (X b)) * g) a b := by
+  have e : ∀ (Z : Matrix (Fin n) (Fin M) S) a b, hform s J (Z a) (Z b) = (Z.map s * J * Zᵀ) a b := fun Z a b => by
+    rw [hform_eq]; rfl
+  have e2 : (Matrix.of fun a b => hform s J (X a) (X b)) = (Matrix.of X).map s * J * (Matrix.of X)ᵀ :=
+    Matrix.ext fun a b => e (Matrix.of X) a b
+  have e3 : ∀ a, (fun i => ∑ c, X c i * g c a) = (gᵀ * Matrix.of X) a := fun a => by
+    funext i; simp [Matrix.mul_apply, mul_comm]
+  rw [e3, e3, e, e2, Matrix.map_mul, Matrix.transpose_mul, Matrix.transpose_transpose]
+  simp only [Matrix.mul_assoc]
+  rfl
+
+theorem act_rm (k : Matrix (Fin M) (Fin M) S) (X : Fin n → Fin M → S) (g : Matrix (Fin n) (Fin n) S) (a : Fin n) :
+    k *ᵥ (fun i => ∑ c, X c i * g c a) = fun i => ∑ c, (k *ᵥ X c) i * g c a := by
+  funext i
+  simp only [Matrix.mulVec, dotProduct, Finset.mul_sum, Finset.sum_mul, mul_assoc]
+  exact Finset.sum_comm
+
+theorem rm_rm (X : Fin n → Fin M → S) (g g' : Matrix (Fin n) (Fin n) S) (a : Fin n) (i : Fin M) :
+    ∑ c, (∑ c', X c' i * g c' c) * g' c a = ∑ c, X c i * (g * g') c a := by
+  simp only [Matrix.mul_apply, Finset.mul_sum, Finset.sum_mul, mul_assoc]
+  exact Finset.sum_comm
+
+theorem witt_tuple (hs : ∀ x, s (s x) = x) (hJ : cT s J = J) (D : Fin n → S) (hD : ∀ i, IsUnit (D i))
+    (hl : ∀ i t, ∃ lam, lam * s lam = 1 ∧ IsUnit (D i - s lam * t)) (X Y : Fin n → Fin M → S) (g : GL (Fin n) S)
+    (hX : cT s g.val * (Matrix.of fun a b => hform s J (X a) (X b)) * g.val = Matrix.diagonal D)
+    (hY : ∀ a b, hform s J (Y a) (Y b) = hform s J (X a) (X b)) : ∃ k ∈ UJ s J, ∀ a, k.val *ᵥ X a = Y a := by
+  obtain ⟨k, hk, e⟩ := witt_diag hs hJ D hD hl (fun a i => ∑ c, X c i * g.val c a) (fun a i => ∑ c, Y c i * g.val c a)
+    (fun a b => by rw [gram_rm, hX]) fun a b => by rw [gram_rm]; simp only [hY, hX]
+  refine ⟨k, hk, fun a => funext fun i => ?_⟩
+  have h1 : ∀ c, ∑ c', (k.val *ᵥ X c') i * g.val c' c = ∑ c', Y c' i * g.val c' c := fun c =>
+    congrFun ((act_rm _ _ _ _).symm.trans (e c)) i
+  have h2 := rm_rm (fun c => k.val *ᵥ X c) g.val g⁻¹.val a i
+  simp only [h1, rm_rm, Units.mul_inv, Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq',
+    Finset.mem_univ, if_true] at h2
+  exact h2.symm
+
 end Tuples
 
 theorem cT_JR' {F E : Type} [Field F] [Field E] [Algebra F E] {σ : E →ₐ[F] E} (R : Type) [CommRing R] [Algebra F R]
     {M : ℕ} {J : Matrix (Fin M) (Fin M) E} (hJ : IsHermND σ J) : cT (sigR R σ) (JR R J) = JR R J := by
   ext i j; simp [cT, JR, sigR, inclR, hJ.1]
+
+theorem trans_diag : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (R : Type) [CommRing R] [Algebra F R], PIW.AdelicOrbitU.UnitChoice R → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (n : ℕ) (D : Fin n → Rˣ) (X Y : Fin n → Fin M → R ⊗[F] E), gramR R σ J X = Matrix.diagonal (fun i => algebraMap R (R ⊗[F] E) (D i : R)) → gramR R σ J Y = gramR R σ J X → ∃ h : HA R σ J, actW R σ J h X = Y := by
+  intro F E _ _ _ _ _ σ hcm R _ _ hU M J hJ n D X Y hX hY
+  obtain ⟨g, hg, e⟩ := witt_diag (GlobalTheory.GaussMean.OneVec.sigR_sigR R hcm) (cT_JR' R hJ) _ (fun i => (D i).isUnit.map _)
+    (fun i t => GlobalTheory.T.exists_norm_one_unit_shift F E σ hcm R hU t (D i)) X Y (fun a b => congrFun (congrFun hX a) b)
+    fun a b => congrFun (congrFun (hY.trans hX) a) b
+  exact ⟨⟨g, hg⟩, funext e⟩
+
+theorem gramR_rat {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (R : Type) [CommRing R] [Algebra F R]
+    {M n : ℕ} (J : Matrix (Fin M) (Fin M) E) (X : Fin n → Fin M → E) :
+    gramR R σ J (ratTup R X) = (gramE σ J X).map (inclR R) := by
+  ext a b
+  simp [gramR, gramE, hR, hE, hform, ratTup, JR, sigR, inclR]
+
+theorem trans_uc : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (R : Type) [CommRing R] [Algebra F R], PIW.AdelicOrbitU.UnitChoice R → ∀ (n M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (X : Fin n → Fin M → E) (Y : Fin n → Fin M → R ⊗[F] E), (gramE σ J X).det ≠ 0 → gramR R σ J Y = (gramE σ J X).map (inclR R) → ∃ h : HA R σ J, actW R σ J h (ratTup R X) = Y := by
+  intro F E _ _ _ _ _ σ hcm R _ _ hU n M J hJ X Y hd hY
+  obtain ⟨g, D, hg⟩ := GlobalTheory.T.hermitian_form_diagonalizes_over_field F E σ hcm n (gramE σ J X)
+    ⟨fun a b => hf_conj (s := (σ : E →+* E)) (GlobalTheory.GaussMean.OneVec.sigma_sigma hcm) (Matrix.ext hJ.1) _ _, hd⟩
+  obtain ⟨k, hk, e⟩ := witt_tuple (s := sigR R σ) (GlobalTheory.GaussMean.OneVec.sigR_sigR R hcm) (cT_JR' R hJ)
+    (fun i => algebraMap R (R ⊗[F] E) (Units.map (algebraMap F R : F →* R) (D i) : Rˣ)) (fun i => (Units.isUnit _).map _)
+    (fun i t => GlobalTheory.T.exists_norm_one_unit_shift F E σ hcm R hU t _) (ratTup R X) Y (bc (inclR R) g) (by
+      have h1 := congrArg (fun A => A.map (inclR (F := F) R)) hg
+      simp only [Matrix.map_mul, ← gramR_rat, Matrix.diagonal_map (map_zero _)] at h1
+      have e1 : cT (sigR R σ) (bc (inclR (F := F) R) g).val = (cT (σ : E →+* E) g.val).map (inclR R) := by
+        ext i j; simp [cT, bc, sigR, inclR]
+      rw [e1]
+      exact h1.trans (congrArg Matrix.diagonal (funext fun i =>
+        (Algebra.TensorProduct.includeRight : E →ₐ[F] R ⊗[F] E).commutes _)))
+    fun a b => congrFun (congrFun (hY.trans (gramR_rat σ R J X).symm) a) b
+  exact ⟨⟨k, hk⟩, funext e⟩
 
 end CompanionTheory.PlacePermOperatorBicommutantSpan

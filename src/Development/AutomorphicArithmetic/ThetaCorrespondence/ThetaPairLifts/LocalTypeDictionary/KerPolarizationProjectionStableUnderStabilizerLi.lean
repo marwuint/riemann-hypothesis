@@ -94,5 +94,5 @@ theorem _root_.GlobalTheory.T.ker_polarizationProjection_stable_under_stabilizer
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple Bs Γ Xc om om' →
     ∀ Pi rf rl p p', IsMatch ψ θ A A₁ B α β ωA ωB Pi rf rl p p' →
     ∀ γ ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Lines D.sp.cm.sig Γ.W, ∀ Φ ∈ kerPD ψ θ A₁ B Bs Γ cB p', ∀ Φ₁ ∈ algD Γ.M' Bs.ψ Bs.emb, (∀ x, HasDerivAt (fun t : ℝ => om' (1, γ (Multiplicative.ofAdd t)) Φ x) (Φ₁ x) 0) → Φ₁ ∈ kerPD ψ θ A₁ B Bs Γ cB p' := by
-  first | exact @_root_.GlobalTheory.SquareAgree.ker_polarizationProjection_stabilizer_lie | exact _root_.GlobalTheory.SquareAgree.ker_polarizationProjection_stabilizer_lie | (intros; apply _root_.GlobalTheory.SquareAgree.ker_polarizationProjection_stabilizer_lie <;> assumption)
+  exact @_root_.GlobalTheory.SquareAgree.ker_polarizationProjection_stabilizer_lie
 end

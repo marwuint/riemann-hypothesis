@@ -10,4 +10,4 @@ open NumberField IsDedekindDomain Matrix Formalism.BasicNotions Formalism.MainNo
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.transportedLattice_of_linearAutImage_eq_matrixImage : ∀ {D : D7} {X : Fields} (s : Seam D X) {n : ℕ} (g : Sp X.E n ≃ₗ[X.E] Sp X.E n) (N : Submodule (𝓞 X.E) (Sp X.E n)), s.lat (Formalism.HermitianLatticesTheory.gmap g N) = Formalism.MainNotions.G.KAat.mvL (seamGL s g) (s.lat N) := by
-  first | exact @GlobalTheory.RatLat.lat_gmap | exact GlobalTheory.RatLat.lat_gmap | (intros; apply GlobalTheory.RatLat.lat_gmap <;> assumption)
+  exact @GlobalTheory.RatLat.lat_gmap

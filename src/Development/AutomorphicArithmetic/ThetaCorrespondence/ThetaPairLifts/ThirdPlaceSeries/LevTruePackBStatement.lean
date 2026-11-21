@@ -20,5 +20,5 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.E
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.fam_levTrue_of_bWit : ∀ {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ} (b : _root_.GlobalTheory.Fc.BundleCondition (q.w.D q.Z) q.O c), _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b → _root_.GlobalTheory.Fam.LevelCondition' (_root_.GlobalTheory.Fam.packB_alt b) := by
-  first | exact @_root_.GlobalTheory.Fam.BundleLev.levTrue_packB_of_bWit | exact _root_.GlobalTheory.Fam.BundleLev.levTrue_packB_of_bWit | (intros; apply _root_.GlobalTheory.Fam.BundleLev.levTrue_packB_of_bWit <;> assumption)
+  exact @_root_.GlobalTheory.Fam.BundleLev.levTrue_packB_of_bWit
 end

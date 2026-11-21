@@ -12,4 +12,4 @@ theorem _root_.GlobalTheory.T.hilbertSubgroup_le_ker_of_kills_inertia : ∀ (E �
     IsLocallyConstant z → (∀ v, ∀ σ ∈ Ine (F := E) (Av v), z σ = 0) →
     (∀ c : Ω ≃ₐ[E] Ω, IsComplexConjugation c → z c = 0) →
     ∀ σ ∈ hilbertSubgroup E Ω, z σ = 0 := by
-  first | exact @GlobalTheory.HilbertKill.hilbertSubgroup_le_ker | exact GlobalTheory.HilbertKill.hilbertSubgroup_le_ker | (intros; apply GlobalTheory.HilbertKill.hilbertSubgroup_le_ker <;> assumption)
+  exact @GlobalTheory.HilbertKill.hilbertSubgroup_le_ker

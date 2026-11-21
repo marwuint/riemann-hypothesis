@@ -6,4 +6,4 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 open scoped Formalism.Per NNReal
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.C_mem_deltaCommuteLocusSubring_of_isHausdorff : ∀ (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a] (C : Type) [CommRing C] (DC : Delta l C) (J : Ideal C), (l : C) ∈ J → IsHausdorff J C → ∀ σ : (Wq l a)⟦X⟧ →+* C, ∀ w : Wq l a, PowerSeries.C w ∈ δLocus (deltaS l a) DC σ := by
-  first | exact @GlobalTheory.BSP.C_mem_δLocus_of_hausdorff | exact GlobalTheory.BSP.C_mem_δLocus_of_hausdorff | (intros; apply GlobalTheory.BSP.C_mem_δLocus_of_hausdorff <;> assumption)
+  exact @GlobalTheory.BSP.C_mem_δLocus_of_hausdorff

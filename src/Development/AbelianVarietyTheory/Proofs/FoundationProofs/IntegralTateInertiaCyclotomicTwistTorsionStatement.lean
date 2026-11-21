@@ -8,4 +8,4 @@ theorem _root_.GlobalTheory.T.integral_tate_inertia_cyclotomic_twist_torsion : �
   ∀ (j : ℕ), 1 ≤ j → ∀ F : Finset Ω, ∃ c : ℕ, ∀ (n : ℕ) (x : Ω), x ∈ A →
   (∀ s ∈ Ine (F := ℚ) A, (∀ y ∈ F, s y = y) → CgA A l n (s x) ((((cycMod ℚ Ω l n s : ZMod (l ^ n)).val : ℕ) : Ω) ^ j * x)) →
   CgA A l n ((l : Ω) ^ c * x) 0 := by
-  first | exact @GlobalTheory.IntTate.integral_tate_inertia | exact GlobalTheory.IntTate.integral_tate_inertia | (intros; apply GlobalTheory.IntTate.integral_tate_inertia <;> assumption)
+  exact @GlobalTheory.IntTate.integral_tate_inertia

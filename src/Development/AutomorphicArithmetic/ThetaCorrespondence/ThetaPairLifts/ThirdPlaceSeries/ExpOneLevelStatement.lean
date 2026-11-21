@@ -29,5 +29,5 @@ theorem _root_.GlobalTheory.T.real_datum_normalized_rational_base_alt : GlobalTh
           ν • ρ.theta ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) h P = ∑ k, b k • evW p.nexp p.v₀ j (g k).val ∧
           ∑ k, τ (b k) • evW p.nexp p.v₀ j (g k).val =
             c • (ν • ρ.theta ((Fm.ex x hx i).nch.twI w) j ((Fm.ex x hx i).nch.sd w) h P) := by
-  first | exact @_root_.GlobalTheory.BigOn.Exp.expOne_level_alt | exact _root_.GlobalTheory.BigOn.Exp.expOne_level_alt | (intros; apply _root_.GlobalTheory.BigOn.Exp.expOne_level_alt <;> assumption)
+  exact @_root_.GlobalTheory.BigOn.Exp.expOne_level_alt
 end

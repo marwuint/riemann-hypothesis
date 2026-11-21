@@ -9,4 +9,4 @@ theorem _root_.GlobalTheory.T.etaleChart_localization_finiteType_formallyUnramif
     (MvPolynomial.aeval (fun i => algebraMap (TensorProduct R Ω A ⧸ I) (Localization.Away (Ideal.Quotient.mk I (1 ⊗ₜ[R] h))) (Ideal.Quotient.mk I (1 ⊗ₜ[R] t i)))).toRingHom.toAlgebra
   Algebra.FiniteType (MvPolynomial (Fin g) Ω) (Localization.Away (Ideal.Quotient.mk I (1 ⊗ₜ[R] h))) ∧
     Algebra.FormallyUnramified (MvPolynomial (Fin g) Ω) (Localization.Away (Ideal.Quotient.mk I (1 ⊗ₜ[R] h))) := by
-  first | exact @GlobalTheory.DenseSec.locQuot_finiteType_formallyUnramified | exact GlobalTheory.DenseSec.locQuot_finiteType_formallyUnramified | (intros; apply GlobalTheory.DenseSec.locQuot_finiteType_formallyUnramified <;> assumption)
+  exact @GlobalTheory.DenseSec.locQuot_finiteType_formallyUnramified

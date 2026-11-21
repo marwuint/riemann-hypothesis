@@ -14,4 +14,4 @@ theorem _root_.GlobalTheory.T.partial_fourier_right_isometry_l2 : ∀ (F : Type)
       ∃ c : ℝ≥0∞, ∀ φ ∈ schA F κ', ∫⁻ x, ‖A φ x‖ₑ ^ 2 ∂μ = c * ∫⁻ x, ‖φ x‖ₑ ^ 2 ∂μ) →
     ∀ μ : @Measure (κ ⊕ κ' → AF F) (borel _), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ →
       ∃ c : ℝ≥0∞, ∀ Φ ∈ schA F (κ ⊕ κ'), ∫⁻ x, ‖partR (κ := κ) A Φ x‖ₑ ^ 2 ∂μ = c * ∫⁻ x, ‖Φ x‖ₑ ^ 2 ∂μ := by
-  first | exact @GlobalTheory.DoublingEv.L2RightPartial.partR_lintegral_sq_eq_const_mul_of_mem_schA | exact GlobalTheory.DoublingEv.L2RightPartial.partR_lintegral_sq_eq_const_mul_of_mem_schA | (intros; apply GlobalTheory.DoublingEv.L2RightPartial.partR_lintegral_sq_eq_const_mul_of_mem_schA <;> assumption)
+  exact @GlobalTheory.DoublingEv.L2RightPartial.partR_lintegral_sq_eq_const_mul_of_mem_schA

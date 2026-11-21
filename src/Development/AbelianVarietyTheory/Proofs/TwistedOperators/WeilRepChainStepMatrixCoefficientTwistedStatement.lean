@@ -14,4 +14,4 @@ theorem _root_.GlobalTheory.T.weilRep_chainStep_matrixCoefficient_twisted : ∀ 
   ∀ e : Blocks l t → ℤ, c (mtor ϖ e) = (μ' ϖ : ℂ) ^ (∑ i, e i) *
     ((volAdd ν r * ((resCard k : ℝ) ^ (r * ((l + 1) * t)))⁻¹ : ℝ) : ℂ) *
     (resCard k : ℂ) ^ (-((r + (l + 1) * t : ℕ) : ℂ) / 2 * (sumAbs e : ℂ)) := by
-  first | exact @GlobalTheory.ChainStepCoef.coef | exact GlobalTheory.ChainStepCoef.coef | (intros; apply GlobalTheory.ChainStepCoef.coef <;> assumption)
+  exact @GlobalTheory.ChainStepCoef.coef

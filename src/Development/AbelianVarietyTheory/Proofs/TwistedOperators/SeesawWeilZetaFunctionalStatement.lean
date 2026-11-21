@@ -26,4 +26,4 @@ theorem _root_.GlobalTheory.T.exists_darbAlg_thO_eq_fockF' : GlobalTheory.Publis
       ∀ R Rf, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched Bs Γ Xc om om' R Rf →
         ∀ (g : WO W₁ X → ℂ) (P : PolF D X.rank W₁.rank), IsFinF ψ θ false A₁ B g →
           ∃ Φ ∈ GlobalTheory.TripleAssembly.darbAlg Γ.M' Bs.ψ Bs.emb, GlobalTheory.TripleRead.thO Γ.M' ψ (sgn false W₁).gram e Φ = fockF ψ θ false A₁ B g P := by
-  first | exact @GlobalTheory.DarbImageRevB.exists_darbAlg_thO_eq_fockF | exact GlobalTheory.DarbImageRevB.exists_darbAlg_thO_eq_fockF | (intros; apply GlobalTheory.DarbImageRevB.exists_darbAlg_thO_eq_fockF <;> assumption)
+  exact @GlobalTheory.DarbImageRevB.exists_darbAlg_thO_eq_fockF

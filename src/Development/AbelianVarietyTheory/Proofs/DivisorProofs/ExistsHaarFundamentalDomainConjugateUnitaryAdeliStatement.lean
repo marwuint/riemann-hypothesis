@@ -21,4 +21,4 @@ theorem _root_.GlobalTheory.T.exists_haar_fundamentalDomain_conjugateUnitaryAdel
     (ν : Measure (GA D V)) (fd : Set (GA D V)), ν.IsHaarMeasure → IsFundamentalDomain (GQ V) fd ν →
     ∃ dom : Set (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.UB J), (ν.map (conjU V c hJ)).IsHaarMeasure ∧
       IsFundamentalDomain (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ratU D.sp.cm.sig J) dom (ν.map (conjU V c hJ)) := by
-  first | exact @GlobalTheory.HaarConj.haarConj | exact GlobalTheory.HaarConj.haarConj | (intros; apply GlobalTheory.HaarConj.haarConj <;> assumption)
+  exact @GlobalTheory.HaarConj.haarConj

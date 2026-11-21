@@ -14,4 +14,4 @@ theorem _root_.GlobalTheory.T.hermitian_flag_complement_posDef_factorization : �
       θ * X₂ = u₁ * Y₂ * (X₂.conjTranspose * (J * θ) * X₂) → X₁.conjTranspose * (J * θ) * (Xb + X₁ * A) = 0 →
       θ * (Xb + X₁ * A) = u₁ * Yb * (Xb.conjTranspose * (J * θ) * (Xb + X₁ * A)) ∧
         (Xb.conjTranspose * (J * θ) * (Xb + X₁ * A)).PosDef := by
-  first | exact @GlobalTheory.schur_complement_step_cpx | exact GlobalTheory.schur_complement_step_cpx | (intros; apply GlobalTheory.schur_complement_step_cpx <;> assumption)
+  exact @GlobalTheory.schur_complement_step_cpx

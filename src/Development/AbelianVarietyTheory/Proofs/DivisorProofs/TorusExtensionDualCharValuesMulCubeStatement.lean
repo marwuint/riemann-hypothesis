@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.torusExtension_dualCharValues_mul_cube : ∀ {R : 
     vE (gm.s (χ + χ')) (𝟙 _) ν.J *
         vE (DegPre.cubAtT D (TE R ℂ) (DegPre.cT D (TE R ℂ) χ) (DegPre.cT D (TE R ℂ) χ') gm.b) (𝟙 _) ν.J =
       vE (gm.s χ) (𝟙 _) ν.J * vE (gm.s χ') (𝟙 _) ν.J := by
-  first | exact @GlobalTheory.DualMult.mult_vE | exact GlobalTheory.DualMult.mult_vE | (intros; apply GlobalTheory.DualMult.mult_vE <;> assumption)
+  exact @GlobalTheory.DualMult.mult_vE

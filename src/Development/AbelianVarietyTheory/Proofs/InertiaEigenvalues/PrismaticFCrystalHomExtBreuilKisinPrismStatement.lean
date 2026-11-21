@@ -6,4 +6,4 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 open scoped Formalism.Per NNReal
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.prismaticFCrystalHom_ext_breuilKisin_prism : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (M M' : FCrys l ↥(OL K)) (u u' : FHom M M'), u.u bk.prism = u'.u bk.prism → u = u' := by
-  first | exact @GlobalTheory.BSP.fhom_ext_bk | exact GlobalTheory.BSP.fhom_ext_bk | (intros; apply GlobalTheory.BSP.fhom_ext_bk <;> assumption)
+  exact @GlobalTheory.BSP.fhom_ext_bk

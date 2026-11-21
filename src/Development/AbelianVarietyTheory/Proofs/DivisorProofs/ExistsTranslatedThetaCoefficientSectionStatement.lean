@@ -15,4 +15,4 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.exists_translatedThetaCoefficient_section : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (D : DegPre R) (th : GlobalTheory.UU.SecBT D (𝟙_ _) 1 0) (χ : D.X) (u : LB.Gen (LB.LinComb D.P.L (K := PUnit) (fun _ => (D.c χ).left) (fun _ => -1))), u.IsGen → ∀ b : R, ∃ g : GlobalTheory.UU.SecBT D (𝟙_ _) 1 χ, GlobalTheory.PsiRing.Coef D χ u th g b := by
-  first | exact @GlobalTheory.PsiCoefMk.exists_sec_coef | exact GlobalTheory.PsiCoefMk.exists_sec_coef | (intros; apply GlobalTheory.PsiCoefMk.exists_sec_coef <;> assumption)
+  exact @GlobalTheory.PsiCoefMk.exists_sec_coef

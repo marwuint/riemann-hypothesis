@@ -14,4 +14,4 @@ theorem _root_.GlobalTheory.T.exists_highest_weight_module : ∀ {n : ℕ} (κ :
       Formalism.REAL.KHighest (fun _ => true) E κ u ∧
       (∀ W : Submodule ℂ Z, (∀ x y, ∀ f ∈ W, E x y f ∈ W) → u ∈ W → W = ⊤) ∧ a ≠ 0 ∧
       (∀ x, E (w x) (w x) a = ((κ x : ℝ) : ℂ) • a) ∧ ∀ x y, x < y → E (w x) (w y) a = 0 := by
-  first | exact @GlobalTheory.CompanionTheory.RealCount.Extremal.extremal_module | exact GlobalTheory.CompanionTheory.RealCount.Extremal.extremal_module | (intros; apply GlobalTheory.CompanionTheory.RealCount.Extremal.extremal_module <;> assumption)
+  exact @GlobalTheory.CompanionTheory.RealCount.Extremal.extremal_module

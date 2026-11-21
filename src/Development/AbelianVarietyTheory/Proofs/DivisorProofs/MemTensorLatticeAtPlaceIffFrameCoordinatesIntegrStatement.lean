@@ -17,4 +17,4 @@ theorem _root_.GlobalTheory.T.mem_tensorLatticeAtPlace_iff_frame_coordinates_int
         (fun i => ι (((PW : Matrix (Fin d) (Fin d) L) *ᵥ x) i)) ∈ GlobalTheory.InertSph.latAt W v) →
       ∀ z, z ∈ latAtV X W v ↔ ∃ u : Matrix (Fin d) (Fin n) L, (∀ i j, u i j ∈ Formalism.UG.intL L) ∧
         GlobalTheory.InertLocFrame.xm ι PV PW u = z := by
-  first | exact @GlobalTheory.InertLocFrame.mem_latAtV_iff_xm | exact GlobalTheory.InertLocFrame.mem_latAtV_iff_xm | (intros; apply GlobalTheory.InertLocFrame.mem_latAtV_iff_xm <;> assumption)
+  exact @GlobalTheory.InertLocFrame.mem_latAtV_iff_xm

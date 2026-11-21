@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.galois_action_period_product : ∀ {l : ℕ} [Fact
     ∀ (g : GQ l) (hg : g ∈ GK K), (∀ (μ : ↥K.1 →ₐ[ℚ_[l]] Om l) (x : ↥K.1), g (μ x) = μ x) →
       actB g (∏ μ ∈ s, t μ) =
         algebraMap ℚ_[l] (Formalism.Per6.BdRp l) (Algebra.norm ℚ_[l] ((χ ⟨g, hg⟩ : (↥K.1)ˣ) : ↥K.1)) * ∏ μ ∈ s, t μ := by
-  first | exact @GlobalTheory.CompanionTheory.LTPer.actB_prod_periods | exact GlobalTheory.CompanionTheory.LTPer.actB_prod_periods | (intros; apply GlobalTheory.CompanionTheory.LTPer.actB_prod_periods <;> assumption)
+  exact @GlobalTheory.CompanionTheory.LTPer.actB_prod_periods

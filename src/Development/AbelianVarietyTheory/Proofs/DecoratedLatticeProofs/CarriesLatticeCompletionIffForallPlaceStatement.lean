@@ -26,4 +26,4 @@ open GlobalTheory.FinPl GlobalTheory.LatPair
 open scoped Pointwise
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.carriesLatticeCompletion_iff_forall_place : ∀ {D : D7} (S : HSp D) (g : GA D S) (L : GlobalTheory.FinPl.Lat S), Submodule.IsLattice D.host.E L → ∀ (P : GlobalTheory.FinPl.Pl D → Prop), GlobalTheory.FinPl.Moves S g L L P ↔ ∀ v, P v → GlobalTheory.FinPl.Moves S g L L (· = v) := by
-  first | exact @GlobalTheory.FinPlMovesLoc.moves_iff | exact GlobalTheory.FinPlMovesLoc.moves_iff | (intros; apply GlobalTheory.FinPlMovesLoc.moves_iff <;> assumption)
+  exact @GlobalTheory.FinPlMovesLoc.moves_iff

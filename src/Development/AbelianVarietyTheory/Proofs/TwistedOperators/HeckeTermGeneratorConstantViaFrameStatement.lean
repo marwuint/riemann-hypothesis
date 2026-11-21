@@ -30,4 +30,4 @@ theorem _root_.GlobalTheory.T.heckeTerm_generator_constant_via_frame : ∀ (D : 
                 σ (hkScal T.Q.c 1 P.asIdeal k D.R.nV)) =
             (GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.muAt T R i P)⁻¹ ^ k *
               (T.cE ((i : ℕ) + 1) σ (GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.dictW T i σ hV (h * a)).1 * castDict hV (T.mu ((i : ℕ) + 1) σ) (h * a)) := by
-  first | exact @GlobalTheory.HeckeGenConst.generator_constant | exact GlobalTheory.HeckeGenConst.generator_constant | (intros; apply GlobalTheory.HeckeGenConst.generator_constant <;> assumption)
+  exact @GlobalTheory.HeckeGenConst.generator_constant

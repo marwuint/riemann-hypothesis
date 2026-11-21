@@ -57,5 +57,5 @@ open GlobalTheory.LogPole
 open scoped Classical
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.kodaira_spencer_comparison_along_boundary : _root_.GlobalTheory.CovTop.Hypotheses'' → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (TF : TorFlag Xo c), ∃ s : ℚ, s ≠ 0 ∧ KSCompare TF s := by
-  first | exact @_root_.GlobalTheory.LogPole.exists_kodaira_spencer_comparison_log_pole | exact _root_.GlobalTheory.LogPole.exists_kodaira_spencer_comparison_log_pole | (intros; apply _root_.GlobalTheory.LogPole.exists_kodaira_spencer_comparison_log_pole <;> assumption)
+  exact @_root_.GlobalTheory.LogPole.exists_kodaira_spencer_comparison_log_pole
 end

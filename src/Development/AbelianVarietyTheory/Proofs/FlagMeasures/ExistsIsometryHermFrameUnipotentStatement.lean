@@ -22,4 +22,4 @@ theorem _root_.GlobalTheory.T.exists_isometry_hermFrame_unipotent : ∀ {K V : T
       (∀ y, (∀ a, H.B (e a) y = 0) → m y - y ∈ Submodule.span K (Set.range e)) ∧
       (∀ a, m.symm (e a) - e a ∈ Submodule.span K (e '' {b | b < a})) ∧
       (∀ y, (∀ a, H.B (e a) y = 0) → m.symm y - y ∈ Submodule.span K (Set.range e)) := by
-  first | exact @GlobalTheory.RatIsoFrame.exists_isometry_frame_unipotent | exact GlobalTheory.RatIsoFrame.exists_isometry_frame_unipotent | (intros; apply GlobalTheory.RatIsoFrame.exists_isometry_frame_unipotent <;> assumption)
+  exact @GlobalTheory.RatIsoFrame.exists_isometry_frame_unipotent

@@ -20,4 +20,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.standard_adelic_character_nontrivial_at_places : ∀ {F : Type} [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ →
     ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, GlobalTheory.LatVac.psiAt ψ v ≠ 1 := by
-  first | exact @GlobalTheory.PsiNontriv.psiAt_ne_one | exact GlobalTheory.PsiNontriv.psiAt_ne_one | (intros; apply GlobalTheory.PsiNontriv.psiAt_ne_one <;> assumption)
+  exact @GlobalTheory.PsiNontriv.psiAt_ne_one

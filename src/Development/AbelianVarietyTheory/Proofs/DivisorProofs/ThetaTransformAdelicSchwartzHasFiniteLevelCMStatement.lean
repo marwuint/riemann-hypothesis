@@ -22,4 +22,4 @@ theorem _root_.GlobalTheory.T.thetaTransform_adelicSchwartz_hasFiniteLevel_CM : 
             co.e (incM F x) = (fun i => algebraMap F (AF F) (y i), fun i => algebraMap F (AF F) (z i))) →
           ∀ Φ ∈ schA F κ, ∃ U : AddSubgroup (WOF F E nS nT), IsOpen (U : Set (WOF F E nS nT)) ∧
             ∀ u ∈ U, u.map (infPartF F E) = 0 → heisOF σ JS JT ξ₀ B.ψ u (GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ Φ) = GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ Φ := by
-  first | exact @GlobalTheory.ThetaLevelF.thetaTr_levelF | exact GlobalTheory.ThetaLevelF.thetaTr_levelF | (intros; apply GlobalTheory.ThetaLevelF.thetaTr_levelF <;> assumption)
+  exact @GlobalTheory.ThetaLevelF.thetaTr_levelF

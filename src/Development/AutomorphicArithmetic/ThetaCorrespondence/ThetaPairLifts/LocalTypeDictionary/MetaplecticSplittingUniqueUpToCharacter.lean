@@ -112,5 +112,5 @@ theorem _root_.GlobalTheory.T.metaplectic_splitting_unique_up_to_character : _ro
         ν (g * h) = ν g * ν h) ∧
       ContinuousOn ν {g : UG (cA σ) JB | At (evI F) ((g.1 : Matrix β β (AE F E)) - 1)} ∧
       ∀ g : UG (cA σ) JB, At (evI F) ((g.1 : Matrix β β (AE F E)) - 1) → ν g ≠ 0 := by
-  first | exact @_root_.GlobalTheory.SplitScalar.metaplectic_splittings_differ_by_character | exact _root_.GlobalTheory.SplitScalar.metaplectic_splittings_differ_by_character | (intros; apply _root_.GlobalTheory.SplitScalar.metaplectic_splittings_differ_by_character <;> assumption)
+  exact @_root_.GlobalTheory.SplitScalar.metaplectic_splittings_differ_by_character
 end

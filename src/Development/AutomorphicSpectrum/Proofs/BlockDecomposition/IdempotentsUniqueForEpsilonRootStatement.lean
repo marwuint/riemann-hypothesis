@@ -9,4 +9,4 @@ theorem _root_.GlobalTheory.T.idempotents_unique_for_epsilon_root : ∀ {l : ℕ
   CompleteOrthogonalIdempotents e → CompleteOrthogonalIdempotents e' →
   (∀ c, t.sharp (e c) * (x - t.sharp (t.s (ε.e m)) ^ c.val) = 0) →
   (∀ c, t.sharp (e' c) * (x - t.sharp (t.s (ε.e m)) ^ c.val) = 0) → e = e' := by
-  first | exact @GlobalTheory.CompanionTheory.ContUniv.idem_unique | exact GlobalTheory.CompanionTheory.ContUniv.idem_unique | (intros; apply GlobalTheory.CompanionTheory.ContUniv.idem_unique <;> assumption)
+  exact @GlobalTheory.CompanionTheory.ContUniv.idem_unique

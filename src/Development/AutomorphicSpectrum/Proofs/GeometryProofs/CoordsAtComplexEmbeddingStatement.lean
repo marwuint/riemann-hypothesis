@@ -12,4 +12,4 @@ theorem _root_.GlobalTheory.T.coords_at_complex_embedding : ∀ (X : Scheme.{0})
     (y : (Σ k, J k) → Ω) (L : Type) [Field L] [NumberField L] (w : (Σ k, J k) → L) (z : Sp (𝓞 L) ⟶ X) (σ : L →+* ℂ),
     CoordsAt ξ y (spMap (algebraMap (𝓞 L) L) ≫ z) w →
     CoordsAt ξ y (spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ z) (fun p => σ (w p)) := by
-  first | exact @GlobalTheory.CompanionTheory.Ar.RootHt.PullCoords.coordsAt_embedding | exact GlobalTheory.CompanionTheory.Ar.RootHt.PullCoords.coordsAt_embedding | (intros; apply GlobalTheory.CompanionTheory.Ar.RootHt.PullCoords.coordsAt_embedding <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Ar.RootHt.PullCoords.coordsAt_embedding

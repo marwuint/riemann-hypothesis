@@ -74,6 +74,6 @@ set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.clsQ_of_choiceSide_twOK_at_state : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, AllSt fun _ _ _ T w P x => ∀ (l : _root_.GlobalTheory.HeightCounting.Up.ThirdIntermediateLevel hL x) (ch : NChoice (Dof x)) (tp : TupTied (Dof x) (cfOf x) ch), tp.xi = w.I.xi → tp.psi = T.psi → ch.Q = QOf P → (∀ v, TwistedAt (Dof x) v → ch.k' v = T.k v) → ChoiceSide (Dof x) (cfOf x) l.mt.M l.b.Bs.exp ch tp → ∀ v, TwistedAt (Dof x) v → IntegralHeckeForms.TwOK (ch.twI v) (ch.k' v) (ch.Q v) (GlobalTheory.PlaceRead.chr ch v) →
   IntegralHeckeForms.ClsQ (D := Dof x) (ch.Q v) ∧ ∀ (j : Fin (Dof x).R.m) (ι : GlobalTheory.PlaceRead.KE ch v →+* ℂ), (∀ y, ι (ch.embW v y) = (Dof x).what₂.embLL y) →
     GlobalTheory.ConjTwist.IsTupOf x.m.z.R.toRealDat (l.b.ser.ex.ρ.B (ch.twI v) j (ch.sd v)) (GlobalTheory.PlaceRead.twVia l.b.ser.ex.ρ ι) (x.r.Y.tupT ((Dof x).what₂.muTw v)) := by
-  first | exact @_root_.GlobalTheory.PlaceRead.TupAt.clsQ_at_state_of_choiceSide | exact _root_.GlobalTheory.PlaceRead.TupAt.clsQ_at_state_of_choiceSide | (intros; apply _root_.GlobalTheory.PlaceRead.TupAt.clsQ_at_state_of_choiceSide <;> assumption)
+  exact @_root_.GlobalTheory.PlaceRead.TupAt.clsQ_at_state_of_choiceSide
 end
 end

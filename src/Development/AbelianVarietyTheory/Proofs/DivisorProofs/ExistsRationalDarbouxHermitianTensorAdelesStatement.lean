@@ -22,4 +22,4 @@ theorem _root_.GlobalTheory.T.exists_rational_darboux_hermitian_tensor_adeles : 
     ∃ co : GlobalTheory.WeilM.Darboux (GlobalTheory.WeilM.symp (R := AF F) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) (-1) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F X.J) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F Y.J)) (Fin n × Fin d),
       ∀ x : Matrix (Fin n) (Fin d) E, ∃ y z : Fin n × Fin d → F,
         co.e (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F x) = (fun k => algebraMap F (AF F) (y k), fun k => algebraMap F (AF F) (z k)) := by
-  first | exact @GlobalTheory.RatDarboux.exists_rational_darboux | exact GlobalTheory.RatDarboux.exists_rational_darboux | (intros; apply GlobalTheory.RatDarboux.exists_rational_darboux <;> assumption)
+  exact @GlobalTheory.RatDarboux.exists_rational_darboux

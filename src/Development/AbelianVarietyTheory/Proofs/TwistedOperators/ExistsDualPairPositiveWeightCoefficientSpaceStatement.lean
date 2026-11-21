@@ -22,4 +22,4 @@ open GlobalTheory.SepRows GlobalTheory.CoreOnto
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.exists_dualPair_positiveWeightCoefficientSpace : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (θ : InfFam D), IsInfFam θ → ∀ (M : DSModel (G.V (.core D.R.m)) (Node.par D sc.cGap (.core D.R.m))), ∃ pr : (coefPlus G θ).W →ₗ[ℂ] SmT M →ₗ[ℂ] ℂ, IsDualPair θ M (coefPlus G θ) pr := by
-  first | exact @GlobalTheory.TopCoefPair.exists_dualPair | exact GlobalTheory.TopCoefPair.exists_dualPair | (intros; apply GlobalTheory.TopCoefPair.exists_dualPair <;> assumption)
+  exact @GlobalTheory.TopCoefPair.exists_dualPair

@@ -20,5 +20,5 @@ theorem _root_.GlobalTheory.T.finite_lattice_theta_level : ∀ (F E : Type) [Fie
         (lam : ℕ →* ℂ) (Om : GAF σ JS × GAF σ JT →* Module.End ℂ (GlobalTheory.WeilPartsF.thetaSubF σ JS JT ξ₀ B.ψ)),
         _root_.UpperTheory.TP.W.IsLatRepL σ JS JT ξ₀ B.ψ hc Λ w lam Om →
         ∀ f (w : WOF F E nS nT), Continuous fun p : GAF σ JS × GAF σ JT => (Om p f : WOF F E nS nT → ℂ) w := by
-  first | exact @_root_.GlobalTheory.FinLatF.latRepF_cont_k | exact _root_.GlobalTheory.FinLatF.latRepF_cont_k | (intros; apply _root_.GlobalTheory.FinLatF.latRepF_cont_k <;> assumption)
+  exact @_root_.GlobalTheory.FinLatF.latRepF_cont_k
 end

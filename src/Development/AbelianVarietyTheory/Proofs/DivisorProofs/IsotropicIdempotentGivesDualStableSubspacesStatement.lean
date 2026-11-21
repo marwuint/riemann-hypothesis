@@ -32,4 +32,4 @@ open scoped TensorProduct
 
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.isotropicIdempotent_gives_dual_stable_subspaces : ∀ {D : D7} {V : HSp D} (γ : GF V) (ε : Matrix (Fin V.rank) (Fin V.rank) D.host.E), ε ∈ GlobalTheory.IndefiniteRowSideFullHecke.CentralizerTensorForms.genAlg γ.1.1 → ε * ε = ε → ε ≠ 0 → Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) ε * V.gram * ε = 0 → ∃ X X' : Submodule D.host.E V.V, X ≠ ⊥ ∧ X ≤ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.perp V X ∧ X' ≤ GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.perp V X' ∧ (∀ x ∈ X, GlobalTheory.Cusp.ratAct D.sp.cm V γ x ∈ X) ∧ (∀ x ∈ X', GlobalTheory.Cusp.ratAct D.sp.cm V γ x ∈ X') ∧ (∀ x ∈ X, (∀ y ∈ X', V.hD x y = 0) → x = 0) ∧ (∀ y ∈ X', (∀ x ∈ X, V.hD x y = 0) → y = 0) := by
-  first | exact @GlobalTheory.IdemIsotropic.idem_isotropic_pair | exact GlobalTheory.IdemIsotropic.idem_isotropic_pair | (intros; apply GlobalTheory.IdemIsotropic.idem_isotropic_pair <;> assumption)
+  exact @GlobalTheory.IdemIsotropic.idem_isotropic_pair

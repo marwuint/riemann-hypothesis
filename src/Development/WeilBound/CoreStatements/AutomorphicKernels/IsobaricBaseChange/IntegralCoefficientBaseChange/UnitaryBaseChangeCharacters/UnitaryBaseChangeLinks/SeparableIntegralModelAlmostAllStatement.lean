@@ -11,4 +11,4 @@ open scoped Classical TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.separable_integral_model_almost_all : ∀ (E : Type) [Field E] [NumberField E] (P : E[X]), P.Separable → ∀ᶠ w in (cofinite : Filter (Pl E)), ∃ Q₀ : (intL (w.adicCompletion E))[X], Q₀.Separable ∧ Q₀.map (intL (w.adicCompletion E)).subtype = P.map (algebraMap E (w.adicCompletion E)) := by
-  first | exact @GlobalTheory.GoodPlaces.goodPlaces | exact GlobalTheory.GoodPlaces.goodPlaces | (intros; apply GlobalTheory.GoodPlaces.goodPlaces <;> assumption)
+  exact @GlobalTheory.GoodPlaces.goodPlaces

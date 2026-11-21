@@ -14,4 +14,4 @@ theorem _root_.GlobalTheory.T.fourierJacobiPhase_lastInnerVertex_invariant : ∀
     (∀ i : Fin (Γ.m - 1), i.val ≠ j → e' i = e i) →
     stepPt (x' j) (e' ⟨j, by omega⟩) = ((embX (Γ.m - 2 - j) κ)⁻¹).val * stepPt (x j) (e ⟨j, by omega⟩) →
     phase x e = phase x' e' := by
-  first | exact @GlobalTheory.TopLevelInv.phase_eq_of_lastMove | exact GlobalTheory.TopLevelInv.phase_eq_of_lastMove | (intros; apply GlobalTheory.TopLevelInv.phase_eq_of_lastMove <;> assumption)
+  exact @GlobalTheory.TopLevelInv.phase_eq_of_lastMove

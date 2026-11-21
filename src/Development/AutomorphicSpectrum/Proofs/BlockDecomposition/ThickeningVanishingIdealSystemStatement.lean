@@ -21,4 +21,4 @@ theorem _root_.GlobalTheory.T.thickening_vanishing_ideal_system : ∀ (R : Type)
     (∀ e, ∀ f ∈ vanIdeal (i e ≫ thickι R I N e), ∀ k, ∃ m : ℕ, X k ^ m * f ∈
         vanIdeal (i (e + 1) ≫ thickι R I N (e + 1)) ⊔
           (I ^ (e + 1)).map (C : R →+* MvPolynomial (Fin (N + 1)) R)) := by
-  first | exact @GlobalTheory.CompanionTheory.GE.Family.vanIdeal_family | exact GlobalTheory.CompanionTheory.GE.Family.vanIdeal_family | (intros; apply GlobalTheory.CompanionTheory.GE.Family.vanIdeal_family <;> assumption)
+  exact @GlobalTheory.CompanionTheory.GE.Family.vanIdeal_family

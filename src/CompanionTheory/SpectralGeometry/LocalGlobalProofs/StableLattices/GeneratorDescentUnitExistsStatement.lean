@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.generator_descent_unit_exists : ∀ {Z P Q : Schem
       ∀ (W : Scheme.{0}) (a b : W ⟶ Z) (hab : a ≫ g ≫ f = b ≫ g ≫ f) (w : W) (J : (W ⟶ P) → M.ι), Good M w J →
         gm (pullback.lift a b hab) w ⊤ hu.unit =
           val τ a w J * val c (pullback.lift (a ≫ g) (b ≫ g) (by simpa using hab)) w J * (val τ b w J)⁻¹ := by
-  first | exact @GlobalTheory.CompanionTheory.RigDesc.exists_unit_of_gen | exact GlobalTheory.CompanionTheory.RigDesc.exists_unit_of_gen | (intros; apply GlobalTheory.CompanionTheory.RigDesc.exists_unit_of_gen <;> assumption)
+  exact @GlobalTheory.CompanionTheory.RigDesc.exists_unit_of_gen

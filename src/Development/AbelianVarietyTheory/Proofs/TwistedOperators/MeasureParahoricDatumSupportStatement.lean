@@ -8,4 +8,4 @@ theorem _root_.GlobalTheory.T.measure_parahoricDatumSupport : ∀ (k : Type) [Fi
     ∀ (r : ℕ) (D E : Type) [Fintype D] [DecidableEq D] [Fintype E] [DecidableEq E],
     MeasurableSet {x : Matrix (Fin r ⊕ E) (Fin r ⊕ D) k | InSupp x} ∧
     (volM ν (Fin r ⊕ E) (Fin r ⊕ D)).real {x | InSupp x} = volAdd ν r * ((resCard k : ℝ) ^ (r * Fintype.card E))⁻¹ := by
-  first | exact @GlobalTheory.SupportVolume.measure_support | exact GlobalTheory.SupportVolume.measure_support | (intros; apply GlobalTheory.SupportVolume.measure_support <;> assumption)
+  exact @GlobalTheory.SupportVolume.measure_support

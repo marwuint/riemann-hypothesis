@@ -23,4 +23,4 @@ theorem _root_.GlobalTheory.T.unfoldingExpansion_productFunction_localInvariant 
       (y : ∀ i : Fin D.R.m, WO (G.pS (.chi i D.R.m : Pair T)) (G.pT (.chi i D.R.m : Pair T))),
       (τ.sum fun d a => a * (c₁ * c₂) * (∏ j', movedFn S d j hj ((S.N.u (.top (j + 1)))⁻¹ * k * S.N.u (.top (j + 1)) : FinPt G (.top (j + 1))) j' (x j')) * ∏ i, (d.2 i).fn (y i)) =
         τ.sum fun d a => a * (∏ j', (d.1 j').fn (x j')) * ∏ i, (d.2 i).fn (y i) := by
-  first | exact @GlobalTheory.TopLevelInv.local_invariant | exact GlobalTheory.TopLevelInv.local_invariant | (intros; apply GlobalTheory.TopLevelInv.local_invariant <;> assumption)
+  exact @GlobalTheory.TopLevelInv.local_invariant

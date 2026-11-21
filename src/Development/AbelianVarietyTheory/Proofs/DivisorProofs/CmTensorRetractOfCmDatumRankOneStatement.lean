@@ -11,4 +11,4 @@ theorem _root_.GlobalTheory.T.cmTensor_retract_of_cmDatum_rank_one : ∀ (E : Ty
     ∃ (n : ℕ) (f : Fin n → (A.t.G ⟶ B.t.G)) (g : Fin n → (B.t.G ⟶ A.t.G)),
       (∀ i, Serre.IsLinearHom A.t.act B.t.act (f i)) ∧ (∀ i, Serre.IsLinearHom B.t.act A.t.act (g i)) ∧
       ∏ i, (g i ≫ f i) = 𝟙 B.t.G := by
-  first | exact @GlobalTheory.CM.isTen_retract_of_rank_one | exact GlobalTheory.CM.isTen_retract_of_rank_one | (intros; apply GlobalTheory.CM.isTen_retract_of_rank_one <;> assumption)
+  exact @GlobalTheory.CM.isTen_retract_of_rank_one

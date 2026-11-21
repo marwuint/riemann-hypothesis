@@ -36,5 +36,5 @@ section
 open NumberField IsDedekindDomain Module Formalism.BasicNotions Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.CompHt GlobalTheory.FlatCore
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.boundary_isUnit_at_eqChar_points : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.CanonicalExtensionRankOne → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ), Laws U x → ∀ (Z : Comp Xo c) (τ : Psi H), Nonempty (ArchSec U x Z (flatWt Dw τ)) → ∃ s₀ : ArchSec U x Z (flatWt Dw τ), ∀ (T : CDVR) (io : c.F →+* T.Fr) (y₀ : IntFr Xo c T io), (∀ a, a ≠ 0 → vV T.V (io a) = 0) → (letI := io.toAlgebra; LiesOn Z y₀.1) → nval T.V 1 (evI y₀ s₀.sig) = 0 := by
-  first | exact @_root_.GlobalTheory.BdryUnit.boundary_unit_at_equalCharacteristic_points | exact _root_.GlobalTheory.BdryUnit.boundary_unit_at_equalCharacteristic_points | (intros; apply _root_.GlobalTheory.BdryUnit.boundary_unit_at_equalCharacteristic_points <;> assumption)
+  exact @_root_.GlobalTheory.BdryUnit.boundary_unit_at_equalCharacteristic_points
 end

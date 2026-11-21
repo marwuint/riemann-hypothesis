@@ -21,4 +21,4 @@ theorem _root_.GlobalTheory.T.exists_chart_from_coordinates : ∀ {O R : Type} [
     letI := (strV q V).toAlgebra
     ∃ (c' : Chart γ 0 q κ V d) (e : R ⊗[O] Γ(X, V) ≃+* c'.D.B), TF l s c'.D ∧ (∀ r, e (r ⊗ₜ 1) = c'.D.i r) ∧
       (∀ i, e (1 ⊗ₜ c.t i) = c'.t i) ∧ ∀ f, ev c'.D c'.inV f = Ideal.Quotient.mk _ (e (1 ⊗ₜ f)) := by
-  first | exact @GlobalTheory.CompanionTheory.ChartAlg.chart_exists | exact GlobalTheory.CompanionTheory.ChartAlg.chart_exists | (intros; apply GlobalTheory.CompanionTheory.ChartAlg.chart_exists <;> assumption)
+  exact @GlobalTheory.CompanionTheory.ChartAlg.chart_exists

@@ -19,4 +19,4 @@ theorem _root_.GlobalTheory.T.exists_linear_model_archimedean_schroedinger_stand
       (P : (Fin n ⊕ Fin n → ℝ) ≃ₗ[ℝ] ((κ → mixedEmbedding.mixedSpace F) × (κ → mixedEmbedding.mixedSpace F))),
       ∀ w (φ : (κ → mixedEmbedding.mixedSpace F) → ℂ),
         GlobalTheory.WeilAdm.schrInf F ψ (P w) φ ∘ Q = GlobalTheory.RealWeil.rhoFun w (φ ∘ Q) := by
-  first | exact @GlobalTheory.WeilAdm.RealModel.exists_model | exact GlobalTheory.WeilAdm.RealModel.exists_model | (intros; apply GlobalTheory.WeilAdm.RealModel.exists_model <;> assumption)
+  exact @GlobalTheory.WeilAdm.RealModel.exists_model

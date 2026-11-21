@@ -9,4 +9,4 @@ theorem _root_.GlobalTheory.T.exists_open_conjStable_subgroup_of_splitLevel : �
     IsLevel (MonoidHom.id _) (KL n w) K' → ∃ N : Subgroup (GLw n w), IsOpen (N : Set (GLw n w)) ∧
       N ≤ K'.map (UL n w).subtype ∧ (∀ k ∈ GlobalTheory.LFun.KGL w n, ∀ x ∈ N, k⁻¹ * x * k ∈ N) ∧
       (K' = KL n w → N = GlobalTheory.LFun.KGL w n) := by
-  first | exact @GlobalTheory.BCT.CtLevel.exists_open_conjStable_sub_level | exact GlobalTheory.BCT.CtLevel.exists_open_conjStable_sub_level | (intros; apply GlobalTheory.BCT.CtLevel.exists_open_conjStable_sub_level <;> assumption)
+  exact @GlobalTheory.BCT.CtLevel.exists_open_conjStable_sub_level

@@ -20,4 +20,4 @@ theorem _root_.GlobalTheory.T.howeDuality_realPlaces_trivialChar_fockLift_smallP
         StrictMono N → (∀ i, GlobalTheory.Published.ThetaSubInf G.M' Bs.ψ Bs.emb om' (N i)) → m ≤ L) ∧
       ∀ N : Submodule ℂ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin a' × Fin (a + a'))), GlobalTheory.Published.ThetaSubInf G.M' Bs.ψ Bs.emb om' N →
         N ≠ G.M'.Pol Bs.ψ Bs.emb → ∀ f ∈ N, R.p' f = 0 := by
-  first | exact @GlobalTheory.HoweRealSmall.howe_real_ker' | exact GlobalTheory.HoweRealSmall.howe_real_ker' | (intros; apply GlobalTheory.HoweRealSmall.howe_real_ker' <;> assumption)
+  exact @GlobalTheory.HoweRealSmall.howe_real_ker'

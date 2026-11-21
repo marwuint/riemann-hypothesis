@@ -14,4 +14,4 @@ theorem _root_.GlobalTheory.T.weilOperator_latticeStabiliser_left_preserves_vacu
         (B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V.J) (incM F G.W.J) γ γ) • φ)) → Acts (evFin F v) (om (k, 1)) φ φ₁ →
       (∀ γ ∈ latAtV G.V G.W v, Acts (evFin F v) (G.M.co.rho B.ψ γ) φ₁
         (B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V.J) (incM F G.W.J) γ γ) • φ₁)) := by
-  first | exact @GlobalTheory.VacTransportLeft.transport_left | exact GlobalTheory.VacTransportLeft.transport_left | (intros; apply GlobalTheory.VacTransportLeft.transport_left <;> assumption)
+  exact @GlobalTheory.VacTransportLeft.transport_left

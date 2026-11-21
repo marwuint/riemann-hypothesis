@@ -21,5 +21,5 @@ theorem _root_.GlobalTheory.T.form_to_vector_map_continuous_invariant : ∀ (hL 
     (hμ : Formalism.IndefR.RecTie.Used0 D (D.nd.mu i)) (F : ↥(NG.AFall D.host.E D.R.nV (P.M.loc i).wt.ρ)),
     Continuous (_root_.GlobalTheory.ThetaTri.formToVectorMap A i j hj hμ F) ∧
       ∀ γ ∈ GQ (Vc D j), ∀ h, _root_.GlobalTheory.ThetaTri.formToVectorMap A i j hj hμ F (γ * h) = _root_.GlobalTheory.ThetaTri.formToVectorMap A i j hj hμ F h := by
-  first | exact @_root_.GlobalTheory.ThetaFormV.formToVectorMap_continuous_and_left_invariant | exact _root_.GlobalTheory.ThetaFormV.formToVectorMap_continuous_and_left_invariant | (intros; apply _root_.GlobalTheory.ThetaFormV.formToVectorMap_continuous_and_left_invariant <;> assumption)
+  exact @_root_.GlobalTheory.ThetaFormV.formToVectorMap_continuous_and_left_invariant
 end

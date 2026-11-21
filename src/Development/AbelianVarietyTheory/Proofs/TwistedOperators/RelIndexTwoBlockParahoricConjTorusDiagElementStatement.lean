@@ -9,4 +9,4 @@ theorem _root_.GlobalTheory.T.relIndex_twoBlockParahoric_conj_torusDiagElement :
     (((parahoric k A D).map (MulAut.conj (mtor (A := A) ϖ e)).toMonoidHom).relIndex (parahoric k A D) : ℝ) =
       (resCard k : ℝ) ^ ((Fintype.card A : ℤ) * sumAbs e) *
         (((KO k D).map (MulAut.conj (torusElt k D ϖ e)).toMonoidHom).relIndex (KO k D) : ℝ) := by
-  first | exact @GlobalTheory.ParIdx.relIndex_parahoric_conj_mtor | exact GlobalTheory.ParIdx.relIndex_parahoric_conj_mtor | (intros; apply GlobalTheory.ParIdx.relIndex_parahoric_conj_mtor <;> assumption)
+  exact @GlobalTheory.ParIdx.relIndex_parahoric_conj_mtor

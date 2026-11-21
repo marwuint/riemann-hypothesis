@@ -102,5 +102,5 @@ theorem _root_.GlobalTheory.T.twist_polarization_datum_lie_derivative : _root_.G
     (∀ i, ActsD (evI D.host.F) (fun t => om (1, γ (Multiplicative.ofAdd t))) (f i) (f₁ i)) →
     IsDatum Γ.M ψ cA (∑ i, pure (f i) (φ i)) Φ →
     ∀ Φ'D, IsDatum Γ.M ψ cA Φ'D Φ' → Φ'D = ∑ i, pure (f₁ i) (φ i) := by
-  first | exact @_root_.GlobalTheory.SquareAgree.DatA.polarization_datum_lie_derivative | exact _root_.GlobalTheory.SquareAgree.DatA.polarization_datum_lie_derivative | (intros; apply _root_.GlobalTheory.SquareAgree.DatA.polarization_datum_lie_derivative <;> assumption)
+  exact @_root_.GlobalTheory.SquareAgree.DatA.polarization_datum_lie_derivative
 end

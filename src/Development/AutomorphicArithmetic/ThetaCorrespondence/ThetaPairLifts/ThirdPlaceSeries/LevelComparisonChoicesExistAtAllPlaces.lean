@@ -136,6 +136,6 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.stageCExists_of_casselmanWallach : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.HarishChandraModules → _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → SerN → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.ThirdStageExists hL := by
-  first | exact @_root_.GlobalTheory.LevCmp.stageCExists_of_harishChandra_serN | exact _root_.GlobalTheory.LevCmp.stageCExists_of_harishChandra_serN | (intros; apply _root_.GlobalTheory.LevCmp.stageCExists_of_harishChandra_serN <;> assumption)
+  exact @_root_.GlobalTheory.LevCmp.stageCExists_of_harishChandra_serN
 end
 end

@@ -6,4 +6,4 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.automorphic_multiplicity_eq_of_iso : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (π π' : NG.AutRep L n),
     π.Iso π' → π.mult = π'.mult := by
-  first | exact @GlobalTheory.MultIso.mult_eq_of_iso | exact GlobalTheory.MultIso.mult_eq_of_iso | (intros; apply GlobalTheory.MultIso.mult_eq_of_iso <;> assumption)
+  exact @GlobalTheory.MultIso.mult_eq_of_iso

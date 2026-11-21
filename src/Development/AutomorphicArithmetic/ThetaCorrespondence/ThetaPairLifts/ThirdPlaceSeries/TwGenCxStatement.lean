@@ -29,5 +29,5 @@ theorem _root_.GlobalTheory.T.twisted_embedding_compatibility_rows_alt : GlobalT
     ∀ y : Fin n → Fin ((R2 p).nW j) → (Fm.D x i).what₂.LL,
       (∀ k, ∀ v : ∀ τ, lowT ((R2 p).MW j (sg0 (Fm.D x i) p.P.A3.A)) τ, adForm (R2 p) j (y k) (fun τ => v τ) = levelTrace (R2 p) j (F2 p).P0 (F2 p).ψ0⁻¹ (singleSeries (R2 p) j ((R2 p).ωP j ((R2 p).mu ((Fm.D x i).plEq w))) ((R2 p).vP j ((R2 p).mu ((Fm.D x i).plEq w))) (h k) (w' k) v)) →
       rdK (rdAt p w j hρ ν) hρ ((Fm.ex x hx i).nch.k' w) z = κ • ∑ k, (e (algebraMap ((Fm.ex x hx i).nch.Oe w) (FractionRing ((Fm.ex x hx i).nch.Oe w)) (a k)) * ν⁻¹) • adForm (R2 p) j (y k) (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A)) := by
-  first | exact @_root_.GlobalTheory.BigOn.Exp.TwCx.twGen_cx_alt | exact _root_.GlobalTheory.BigOn.Exp.TwCx.twGen_cx_alt | (intros; apply _root_.GlobalTheory.BigOn.Exp.TwCx.twGen_cx_alt <;> assumption)
+  exact @_root_.GlobalTheory.BigOn.Exp.TwCx.twGen_cx_alt
 end

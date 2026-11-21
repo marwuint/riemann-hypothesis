@@ -26,4 +26,4 @@ theorem _root_.GlobalTheory.T.exists_even_cubicalTriv_translate_order_two : ∀ 
         (∀ r, HEq (J' r) (fun _ : PUnit.{1} => J (r ≫ ((toUnit G ≫ a) * 𝟙 G).left))) →
         cubV P.c z J' x y u = cubV P₁.c z J x y ((toUnit T ≫ a) * u) * (cubV P₁.c z J x y (toUnit T ≫ a))⁻¹) →
     ∃ σ : GlobalTheory.UU.CubTriv P.c Q.i, σ.Even := by
-  first | exact @GlobalTheory.TranslateEvenTriv.exists_even_cubTriv | exact GlobalTheory.TranslateEvenTriv.exists_even_cubTriv | (intros; apply GlobalTheory.TranslateEvenTriv.exists_even_cubTriv <;> assumption)
+  exact @GlobalTheory.TranslateEvenTriv.exists_even_cubTriv

@@ -9,4 +9,4 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts G
 open scoped Matrix ContDiff ComplexOrder
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.topDegreeDensityComplexForm_aeval_dzWedgeDzbar : ∀ (n : ℕ) (P : MvPolynomial (Fin n × Fin n) ℂ), dens ((aeval sym P : Ev n) : Alt n) = topCoeff P / (Complex.I / 2) ^ n := by
-  first | exact @GlobalTheory.ChernCalc.DensTop.dens_aeval_sym | exact GlobalTheory.ChernCalc.DensTop.dens_aeval_sym | (intros; apply GlobalTheory.ChernCalc.DensTop.dens_aeval_sym <;> assumption)
+  exact @GlobalTheory.ChernCalc.DensTop.dens_aeval_sym

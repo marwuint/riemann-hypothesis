@@ -19,4 +19,4 @@ theorem _root_.GlobalTheory.T.inertPlace_tensorLattice_selfDual_symplectic : ∀
     ∀ z : Matrix (Fin n) (Fin d) (AE F E), At (evFin F v) z →
       (z ∈ latAtV X Y v ↔ ∀ γ ∈ latAtV X Y v,
         B.ψ (symp (R := AF F) (cA σ) (-1) (incM F X.J) (incM F Y.J) z γ) = 1) := by
-  first | exact @GlobalTheory.InertLatSelfDual.latAtV_selfDual_inert | exact GlobalTheory.InertLatSelfDual.latAtV_selfDual_inert | (intros; apply GlobalTheory.InertLatSelfDual.latAtV_selfDual_inert <;> assumption)
+  exact @GlobalTheory.InertLatSelfDual.latAtV_selfDual_inert

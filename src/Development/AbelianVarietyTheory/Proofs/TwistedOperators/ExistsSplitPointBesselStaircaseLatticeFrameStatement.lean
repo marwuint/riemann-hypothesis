@@ -24,4 +24,4 @@ theorem _root_.GlobalTheory.T.exists_splitPoint_besselStaircaseLattice_frame : O
   (∀ r i, β.b i (κ r) = (ϖ : k) ^ (G.pl.depth sc v * (r.1 + 1)) * p.pr (incA D ((G.colDec (2 * (σ + 1) + 1) (by omega) (by omega)).a i r))) ∧
   (∀ j, j ∉ Set.range κ → ∀ r, ((Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (G.colDec (2 * (σ + 1) + 1) (by omega) (by omega)).a * (G.V (.grid (2 * (σ + 1) + 1) 0)).gram).map
       (fun c => p.pr (incA D c)) * β.b) r j = 0) := by
-  first | exact @GlobalTheory.StairFrame.frame_shape | exact GlobalTheory.StairFrame.frame_shape | (intros; apply GlobalTheory.StairFrame.frame_shape <;> assumption)
+  exact @GlobalTheory.StairFrame.frame_shape

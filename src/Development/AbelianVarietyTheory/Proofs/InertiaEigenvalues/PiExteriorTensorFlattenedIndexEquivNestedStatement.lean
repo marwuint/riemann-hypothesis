@@ -10,4 +10,4 @@ theorem _root_.GlobalTheory.T.piExteriorTensor_flattenedIndex_equiv_nested : ∀
     Nonempty (Representation.Equiv ((piTensor fun c : Fin (∑ a, t a) =>
         ρ (finSigmaFinEquiv.symm c).1 (finSigmaFinEquiv.symm c).2).comp (flatHom Γ))
       (piTensor fun a => piTensor (ρ a))) := by
-  first | exact @GlobalTheory.JacStages.piTensor_flatHom_equiv | exact GlobalTheory.JacStages.piTensor_flatHom_equiv | (intros; apply GlobalTheory.JacStages.piTensor_flatHom_equiv <;> assumption)
+  exact @GlobalTheory.JacStages.piTensor_flatHom_equiv

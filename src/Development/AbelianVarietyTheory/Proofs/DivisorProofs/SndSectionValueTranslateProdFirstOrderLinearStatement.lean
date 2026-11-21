@@ -22,4 +22,4 @@ theorem _root_.GlobalTheory.T.snd_sectionValue_translate_prod_first_order_linear
     ∀ (O : G.left.Opens) (f : Γ(G.left, O)), ⊤ ≤ g₀ ⁻¹ᵁ O →
     (valR (g' * (List.ofFn fun c => smT x0 (r c) (y c)).prod).left O f).snd =
       ∑ c, r c * (valR (g' * y c).left O f).snd := by
-  first | exact @GlobalTheory.KSLin.snd_valR_translate_prod | exact GlobalTheory.KSLin.snd_valR_translate_prod | (intros; apply GlobalTheory.KSLin.snd_valR_translate_prod <;> assumption)
+  exact @GlobalTheory.KSLin.snd_valR_translate_prod

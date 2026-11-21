@@ -21,4 +21,4 @@ theorem _root_.GlobalTheory.T.alpha_div_beta_ramified_at_level : ∀ {D : D7} {T
     (i j : Fin D.R.m) (w : HeightOneSpectrum (𝓞 D.host.E)) (P : HeightOneSpectrum (𝓞 D.host.E)), P ∈ L.Q t →
       P.under (𝓞 D.host.F) = w.under (𝓞 D.host.F) → w.under (𝓞 D.host.F) ∉ G.pl.S0 →
       ¬ GlobalTheory.LFun.UnrAt (F := D.host.F) (E := D.host.E) (alpha G t i j / beta G i j) w := by
-  first | exact @GlobalTheory.TwistRam.not_unrAt_alpha_div_beta | exact GlobalTheory.TwistRam.not_unrAt_alpha_div_beta | (intros; apply GlobalTheory.TwistRam.not_unrAt_alpha_div_beta <;> assumption)
+  exact @GlobalTheory.TwistRam.not_unrAt_alpha_div_beta

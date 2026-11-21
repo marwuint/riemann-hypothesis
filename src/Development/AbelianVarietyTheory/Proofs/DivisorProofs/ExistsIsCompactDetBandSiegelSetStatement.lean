@@ -14,4 +14,4 @@ theorem _root_.GlobalTheory.T.exists_isCompact_detBand_siegelSet : ∀ (E : Type
         ∀ k ∈ (GroundTheory.Automorphic.Reduction.maxCompact (K := E) (n := a)),
           b * GroundTheory.Automorphic.Reduction.diagUnits a (fun i => GroundTheory.Automorphic.Reduction.posIdele (K := E) (ρ i) (hρ i)) * k ∈ band E a →
           b * GroundTheory.Automorphic.Reduction.diagUnits a (fun i => GroundTheory.Automorphic.Reduction.posIdele (K := E) (ρ i) (hρ i)) * k ∈ C := by
-  first | exact @GlobalTheory.SiegelBand.exists_isCompact_band_siegel | exact GlobalTheory.SiegelBand.exists_isCompact_band_siegel | (intros; apply GlobalTheory.SiegelBand.exists_isCompact_band_siegel <;> assumption)
+  exact @GlobalTheory.SiegelBand.exists_isCompact_band_siegel

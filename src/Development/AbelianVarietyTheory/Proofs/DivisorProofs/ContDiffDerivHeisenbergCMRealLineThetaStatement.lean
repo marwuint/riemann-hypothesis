@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.contDiff_deriv_heisenbergCM_real_line_theta : ∀ 
       ∀ f : Formalism.IndefR.DatumF.WOF F E nS nT → ℂ, Formalism.IndefR.DatumF.IsThetaFunOF σ JS JT ξ₀ B.ψ f → ∀ L : ℝ →+ Formalism.IndefR.DatumF.WOF F E nS nT, Continuous L → (∀ t, (L t).map (Formalism.IndefR.DatumF.finPartF F E) = 0) →
       ∀ (k : ℕ) (L' : (Fin k → ℝ) →+ Formalism.IndefR.DatumF.WOF F E nS nT), Continuous L' → (∀ t, (L' t).map (Formalism.IndefR.DatumF.finPartF F E) = 0) →
       ∀ w : Formalism.IndefR.DatumF.WOF F E nS nT, ContDiff ℝ ∞ fun x => deriv (fun t : ℝ => Formalism.IndefR.DatumF.heisOF σ JS JT ξ₀ B.ψ (L t) f (w + L' x)) 0 := by
-  first | exact @GlobalTheory.ThetaLineSmoothF.contDiff_deriv_heisOF_line | exact GlobalTheory.ThetaLineSmoothF.contDiff_deriv_heisOF_line | (intros; apply GlobalTheory.ThetaLineSmoothF.contDiff_deriv_heisOF_line <;> assumption)
+  exact @GlobalTheory.ThetaLineSmoothF.contDiff_deriv_heisOF_line

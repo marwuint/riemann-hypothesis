@@ -14,4 +14,4 @@ theorem _root_.GlobalTheory.T.integral_witt_unitary_mod_uniformizer : ∀ (L : T
     (∀ i j, GlobalTheory.Hk3.IntWitt.DvdPow ϖ 1 (Formalism.UG.hform σ (JT : Matrix (Fin n') (Fin n') L) (z' i) (z' j) - Formalism.UG.hform σ (JT : Matrix (Fin n') (Fin n') L) (z i) (z j))) →
     ∃ h : Formalism.UG.UJ σ (JT : Matrix (Fin n') (Fin n') L), (h : GL (Fin n') L) ∈ Formalism.UG.GLint (Fin n') (Formalism.UG.intL L) ∧
       ∀ i r, GlobalTheory.Hk3.IntWitt.DvdPow ϖ 1 ((((h : GL (Fin n') L) : Matrix (Fin n') (Fin n') L) *ᵥ z i) r - z' i r) := by
-  first | exact @GlobalTheory.Hk3.IntWittBase.witt_mod_base | exact GlobalTheory.Hk3.IntWittBase.witt_mod_base | (intros; apply GlobalTheory.Hk3.IntWittBase.witt_mod_base <;> assumption)
+  exact @GlobalTheory.Hk3.IntWittBase.witt_mod_base

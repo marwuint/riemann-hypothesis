@@ -9,4 +9,4 @@ open GlobalTheory.FlagFibre (Low)
 open scoped Matrix ContDiff ComplexOrder ENNReal Classical
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.topDegreeDensity_baseForm_mul_fibreVolume : ∀ (n d : ℕ) (J : Type) [Fintype J] (ε : Fin n ≃ Fin d ⊕ J) (α : Alt d), dens (pull (bsL ε) α * ((∏ j : J, (Complex.I / 2) • sym (ε.symm (.inr j), ε.symm (.inr j)) : Ev n) : Alt n)) = dens α := by
-  first | exact @GlobalTheory.FlagCell2.BaseVol.dens_pull_mul_vol | exact GlobalTheory.FlagCell2.BaseVol.dens_pull_mul_vol | (intros; apply GlobalTheory.FlagCell2.BaseVol.dens_pull_mul_vol <;> assumption)
+  exact @GlobalTheory.FlagCell2.BaseVol.dens_pull_mul_vol

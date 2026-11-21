@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.norm_character_unit_eq_one_heisenberg : ∀ {k : T
     ∀ φ0 ∈ GlobalTheory.WeilM.SB (Fin n × Fin d → k), ι φ0 = GlobalTheory.HeisUnit.intInd k n d →
     (∀ μ : @Measure (Fin n × Fin d → k) (borel _), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ → ∫⁻ y, ‖φ0 y‖ₑ ^ 2 ∂μ ≠ 0 ∧ ∫⁻ y, ‖φ0 y‖ₑ ^ 2 ∂μ ≠ ⊤) →
     ∀ (_i0 : Fin n) (u : kˣ), valuation k (u : k) = 1 → ‖(χ u : ℂ)‖ = 1 := by
-  first | exact @GlobalTheory.HeisUnit.norm_char_unit_eq_one | exact GlobalTheory.HeisUnit.norm_char_unit_eq_one | (intros; apply GlobalTheory.HeisUnit.norm_char_unit_eq_one <;> assumption)
+  exact @GlobalTheory.HeisUnit.norm_char_unit_eq_one

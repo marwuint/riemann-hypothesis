@@ -12,4 +12,4 @@ open GlobalTheory.StdUnn PositivityTheory.GramSchwartzFunctions PositivityTheory
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.lattice_twisted_sum_periodic : ∀ {D : D7} {ρ p : ℕ} (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ → ∀ (b₀ : HermE D ρ) (Φ φ : Mx D ρ p → ℂ) (ξ₁ ξ₂ : Matrix (Fin ρ) (Fin p) D.host.E) (v : Mx D ρ p × Mx D ρ p), GlobalTheory.CompanionTheory.FJE.Ap ψ b₀ Φ φ (v + (GlobalTheory.CompanionTheory.FJE.rt ξ₁, GlobalTheory.CompanionTheory.FJE.rt ξ₂)) = GlobalTheory.CompanionTheory.FJE.Ap ψ b₀ Φ φ v := by
-  first | exact @GlobalTheory.CompanionTheory.FJE.ap_periodic_all | exact GlobalTheory.CompanionTheory.FJE.ap_periodic_all | (intros; apply GlobalTheory.CompanionTheory.FJE.ap_periodic_all <;> assumption)
+  exact @GlobalTheory.CompanionTheory.FJE.ap_periodic_all

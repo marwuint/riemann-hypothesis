@@ -8,4 +8,4 @@ theorem _root_.GlobalTheory.T.heckeComparisonUnitAtFrobenius_eq_delta : ∀ (D :
     ∀ σ : Formalism.ConjugateSelfDual.G D.host.E D.nd.Om, IsFrob (F := D.host.E) (D.nd.plOm.1 P) (normV P) σ →
     cHkT D T i b P = Units.map (algebraMap (T.O0 i) (T.O i)).toMonoidHom
       (if b then T.delta i σ else (T.delta i σ)⁻¹) := by
-  first | exact @GlobalTheory.HeightCounting.FormsStep.cHkT_eq_of_isFrob | exact GlobalTheory.HeightCounting.FormsStep.cHkT_eq_of_isFrob | (intros; apply GlobalTheory.HeightCounting.FormsStep.cHkT_eq_of_isFrob <;> assumption)
+  exact @GlobalTheory.HeightCounting.FormsStep.cHkT_eq_of_isFrob

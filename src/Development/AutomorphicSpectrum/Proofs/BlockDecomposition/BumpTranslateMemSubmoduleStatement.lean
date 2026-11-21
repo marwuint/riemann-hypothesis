@@ -10,4 +10,4 @@ theorem _root_.GlobalTheory.T.bump_translate_mem_submodule : ∀ {G W : Type} [G
     (hv : ∀ a : H, (a : G) ∈ K₁ → ρ a v = v) (S : Submodule ℂ (cIndSpace H ρ))
     (hS : ∀ g, ∀ b ∈ S, cInd H ρ g b ∈ S) (b : cIndSpace H ρ) (hb : IsBump H ρ K₂ 1 v b) (hbS : b ∈ S)
     (B : cIndSpace H ρ) (hB : IsBump H ρ K₁ 1 v B), B ∈ S := by
-  first | exact @GlobalTheory.CompanionTheory.BZPhiPG.OntoO.Avg.bump_mem_of_bump | exact GlobalTheory.CompanionTheory.BZPhiPG.OntoO.Avg.bump_mem_of_bump | (intros; apply GlobalTheory.CompanionTheory.BZPhiPG.OntoO.Avg.bump_mem_of_bump <;> assumption)
+  exact @GlobalTheory.CompanionTheory.BZPhiPG.OntoO.Avg.bump_mem_of_bump

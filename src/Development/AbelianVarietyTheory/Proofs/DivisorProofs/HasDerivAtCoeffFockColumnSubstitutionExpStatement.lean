@@ -7,4 +7,4 @@ theorem _root_.GlobalTheory.T.hasDerivAt_coeff_fockColumnSubstitution_exp : ∀ 
     (m : GlobalTheory.MinorFrame.Var ι d a →₀ ℕ),
     HasDerivAt (fun h : ℝ => MvPolynomial.coeff m (GlobalTheory.MinorFrame.colSub (GlobalTheory.ColLie.atPl τ (NormedSpace.exp ((h : ℂ) • S))) R))
       (MvPolynomial.coeff m (GlobalTheory.ColLie.colDer τ S R)) 0 := by
-  first | exact @GlobalTheory.ColLie.hasDerivAt_coeff_colSub_exp | exact GlobalTheory.ColLie.hasDerivAt_coeff_colSub_exp | (intros; apply GlobalTheory.ColLie.hasDerivAt_coeff_colSub_exp <;> assumption)
+  exact @GlobalTheory.ColLie.hasDerivAt_coeff_colSub_exp

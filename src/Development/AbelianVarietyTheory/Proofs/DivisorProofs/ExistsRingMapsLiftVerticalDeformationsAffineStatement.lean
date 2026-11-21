@@ -17,4 +17,4 @@ theorem _root_.GlobalTheory.T.exists_ringMaps_lift_vertical_deformations_affine 
         X.F.ChartFr k _ hk Q → ∀ b : VIx Dw, ∃ w : FrPt Xo c (DualNumber K),
           IsVert Q (Pi.single b.toF (1 : K)) w ∧
           spMap ((dualMap ψ).comp (e b)) ≫ tau hW ≫ toFlag M = X.ptY w := by
-  first | exact @GlobalTheory.CompHS.exists_vertLift | exact GlobalTheory.CompHS.exists_vertLift | (intros; apply GlobalTheory.CompHS.exists_vertLift <;> assumption)
+  exact @GlobalTheory.CompHS.exists_vertLift

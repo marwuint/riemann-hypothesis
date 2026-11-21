@@ -10,4 +10,4 @@ theorem _root_.GlobalTheory.T.almost_finite_module_bounded_torsion : ∀ (R : Ty
     ∀ (M : Type 1) [AddCommGroup M] [Module R M], AFG c M → ∃ k : ℕ,
       (∀ (x : M) (n : ℕ), c ^ n • x = 0 → c ^ k • x = 0) ∧ (∀ x : M, (∀ n : ℕ, ∃ y, x = c ^ n • y) → c ^ k • x = 0) ∧
       ∀ x : ℕ → M, (∀ n, ∃ y, x (n + 1) - x n = c ^ n • y) → ∃ z : M, ∀ n, ∃ y, z - c ^ k • x n = c ^ n • y := by
-  first | exact @GlobalTheory.CompanionTheory.AlmostFinite.afg_separated_complete | exact GlobalTheory.CompanionTheory.AlmostFinite.afg_separated_complete | (intros; apply GlobalTheory.CompanionTheory.AlmostFinite.afg_separated_complete <;> assumption)
+  exact @GlobalTheory.CompanionTheory.AlmostFinite.afg_separated_complete

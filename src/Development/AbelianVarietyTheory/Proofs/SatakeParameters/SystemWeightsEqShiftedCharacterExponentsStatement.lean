@@ -5,4 +5,4 @@ open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions F
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.systemWeights_eq_shifted_character_exponents : Sites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => ∀ j (hj : j < D.R.m), (sysS H X std).Lv.comp (j + 1) → FillAt (hT := hT) (H := H) (X := X) std j hj) := by
-  first | exact @GlobalTheory.TwV.Xc.fillAt_of_comp | exact GlobalTheory.TwV.Xc.fillAt_of_comp | (intros; apply GlobalTheory.TwV.Xc.fillAt_of_comp <;> assumption)
+  exact @GlobalTheory.TwV.Xc.fillAt_of_comp

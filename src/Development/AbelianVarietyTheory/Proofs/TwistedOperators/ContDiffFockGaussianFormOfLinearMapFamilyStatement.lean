@@ -12,4 +12,4 @@ theorem _root_.GlobalTheory.T.contDiff_fockGaussianFormOfLinearMap_family : ∀ 
     (∀ t, IsUnit (GlobalTheory.FockFamily.blockB (J t))) →
     (∀ x y, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) fun t => GlobalTheory.FockFamily.fockForm β (J t) x y) ∧
       ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun p : ℝ × V => GlobalTheory.FockFamily.fockForm β (J p.1) p.2 p.2) := by
-  first | exact @GlobalTheory.FockFamily.fockForm_family_contDiff | exact GlobalTheory.FockFamily.fockForm_family_contDiff | (intros; apply GlobalTheory.FockFamily.fockForm_family_contDiff <;> assumption)
+  exact @GlobalTheory.FockFamily.fockForm_family_contDiff

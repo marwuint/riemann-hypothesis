@@ -10,4 +10,4 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.besselGroup_split_real_finite : ∀ (D : D7) (V V₀ A L : HSp D) (ρ : ℕ) (d : HypDec V V₀ ρ) (o : OrthDec V₀ A L), ∀ a ∈ GinfC V, ∀ b ∈ GfC V, a * b ∈ besGrp d o → a ∈ besGrp d o ∧ b ∈ besGrp d o := by
-  first | exact @GlobalTheory.BesSplit.besGrp_split | exact GlobalTheory.BesSplit.besGrp_split | (intros; apply GlobalTheory.BesSplit.besGrp_split <;> assumption)
+  exact @GlobalTheory.BesSplit.besGrp_split

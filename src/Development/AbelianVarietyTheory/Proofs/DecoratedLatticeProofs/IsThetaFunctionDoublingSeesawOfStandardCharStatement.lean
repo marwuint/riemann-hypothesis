@@ -12,4 +12,4 @@ open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.isThetaFunction_doublingSeesaw_of_standard_char : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D), IsStdChar D ψ (-1) → ∀ f₁ f₂, IsThetaFunO ψ A B f₁ → IsThetaFunO ψ A B f₂ → IsThetaFunO ψ (dblSp A) B (delta A B f₁ f₂) := by
-  first | exact @GlobalTheory.Core.Rk.DeltaTheta.main | exact GlobalTheory.Core.Rk.DeltaTheta.main | (intros; apply GlobalTheory.Core.Rk.DeltaTheta.main <;> assumption)
+  exact @GlobalTheory.Core.Rk.DeltaTheta.main

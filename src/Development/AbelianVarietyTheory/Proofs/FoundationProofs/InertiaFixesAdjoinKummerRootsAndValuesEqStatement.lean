@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.inertia_fixes_adjoin_kummer_roots_and_values_eq : 
       ∀ g : Ω ≃ₐ[K] Ω, GlobalTheory.NeedB.Inert B g → ∀ c ∈ IntermediateField.adjoin K {α, β}, c ≠ 0 →
         B.valuation (θ ^ N / (θ₀ ^ N * c ^ N)) = 1 →
         g ∈ (IntermediateField.adjoin K {α, β}).fixingSubgroup ∧ GlobalTheory.NeedB.kum (N := N) ζ θ g = GlobalTheory.NeedB.kum ζ θ₀ g := by
-  first | exact @GlobalTheory.InertKummer.inert_fixes_adjoin_and_kum_eq | exact GlobalTheory.InertKummer.inert_fixes_adjoin_and_kum_eq | (intros; apply GlobalTheory.InertKummer.inert_fixes_adjoin_and_kum_eq <;> assumption)
+  exact @GlobalTheory.InertKummer.inert_fixes_adjoin_and_kum_eq

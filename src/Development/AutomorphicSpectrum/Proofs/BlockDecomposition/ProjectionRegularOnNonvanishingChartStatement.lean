@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.projection_regular_on_nonvanishing_chart : ∀ (m 
     ∀ (c : GlobalTheory.AlgChart (i ≫ mpStr ℤ m n) σ₀ D) (y : GlobalTheory.CxPts (i ≫ mpStr ℤ m n) σ₀) (z : (Σ k, Bk n k) → ℂ),
       y ∈ c.e.source → GlobalTheory.CompanionTheory.MixZ.ArchEq.Over i y z → eval z (map (Int.castRingHom ℂ) N) ≠ 0 → Ψ (segre z) 0 ≠ 0 →
       GlobalTheory.CompanionTheory.MixZ.ArchEq.IsRegAt i Ψ c y → y ∈ GlobalTheory.CompanionTheory.MixZ.ArchEq.pieceSet i Ψ N := by
-  first | exact @GlobalTheory.CompanionTheory.MixZ.ArchEq.PieceAt.mem_pieceSet | exact GlobalTheory.CompanionTheory.MixZ.ArchEq.PieceAt.mem_pieceSet | (intros; apply GlobalTheory.CompanionTheory.MixZ.ArchEq.PieceAt.mem_pieceSet <;> assumption)
+  exact @GlobalTheory.CompanionTheory.MixZ.ArchEq.PieceAt.mem_pieceSet

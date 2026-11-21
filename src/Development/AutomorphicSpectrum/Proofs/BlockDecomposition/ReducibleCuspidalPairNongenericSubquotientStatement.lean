@@ -11,4 +11,4 @@ theorem _root_.GlobalTheory.T.reducible_cuspidal_pair_nongeneric_subquotient : �
     ∀ (x y : IrrGL k) (N : ℕ) (hd : ∑ a, (![x, y] a).1 = N), x.IsCusp → y.IsCusp →
       ¬ (prodIrr ![x, y] hd).IsIrreducible →
       ∃ τ : IrrRep (GL (Fin N) k), IsSubquotient τ.ρ (prodIrr ![x, y] hd) ∧ ¬ IsGenericFor ψ τ.ρ := by
-  first | exact @GlobalTheory.CompanionTheory.CuspPair.exists_nongeneric_subquotient | exact GlobalTheory.CompanionTheory.CuspPair.exists_nongeneric_subquotient | (intros; apply GlobalTheory.CompanionTheory.CuspPair.exists_nongeneric_subquotient <;> assumption)
+  exact @GlobalTheory.CompanionTheory.CuspPair.exists_nongeneric_subquotient

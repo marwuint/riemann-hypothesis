@@ -21,5 +21,5 @@ theorem _root_.GlobalTheory.T.lagrangian_darboux_theta_model : ∀ (F E : Type) 
         GlobalTheory.WeilSchrodinger.thetaTr F (GlobalTheory.WeilSchrodinger.DblTargetF.coDbl hA co) B.ψ (boxFun φ₁ φ₂) =
           GlobalTheory.DblTargetDelta.deltaT (GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ φ₁)
             (GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ (fun x => starRingEnd ℂ (φ₂ (-x)))) := by
-  first | exact @_root_.GlobalTheory.DblThetaProd.thetaTr_coDbl_boxFun_k | exact _root_.GlobalTheory.DblThetaProd.thetaTr_coDbl_boxFun_k | (intros; apply _root_.GlobalTheory.DblThetaProd.thetaTr_coDbl_boxFun_k <;> assumption)
+  exact @_root_.GlobalTheory.DblThetaProd.thetaTr_coDbl_boxFun_k
 end

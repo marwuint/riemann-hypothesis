@@ -18,4 +18,4 @@ theorem _root_.GlobalTheory.T.fockCoefficient_extremal_eq_discreteSeries : ∀ (
         ∏ ρ, ⟪((v ρ : (R.MW i (sg0 D A)).sm ρ) : (R.MW i (sg0 D A)).H ρ),
           (R.MW i (sg0 D A)).rep ρ (infMat D.sp.cm.sig (Wc D i).gram (R.θ ρ) u)
             ((v ρ : (R.MW i (sg0 D A)).sm ρ) : (R.MW i (sg0 D A)).H ρ)⟫_ℂ := by
-  first | exact @GlobalTheory.RawLift.FockCoef.coef_extremal | exact GlobalTheory.RawLift.FockCoef.coef_extremal | (intros; apply GlobalTheory.RawLift.FockCoef.coef_extremal <;> assumption)
+  exact @GlobalTheory.RawLift.FockCoef.coef_extremal

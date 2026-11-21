@@ -33,5 +33,5 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.square_convolution_estimate : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.SquareSt.WeilConvergence → GlobalTheory.SquareSt.LocalMatching → GlobalTheory.SquareSt.ThetaIntegralsAgree → Big fun ch => ∀ i j t (M : Vol ch.G), M.Is t → ∀ Θ Θ', IsMatched ch.S.B t ch.rm i j Θ Θ' → ∀ g g₁,
     IntegrableOn (kerBig ch.W Θ g g₁) (M.fd _) (M.ν _) := by
-  first | exact @_root_.GlobalTheory.SquareConv.square_convolution_large_bound | exact _root_.GlobalTheory.SquareConv.square_convolution_large_bound | (intros; apply _root_.GlobalTheory.SquareConv.square_convolution_large_bound <;> assumption)
+  exact @_root_.GlobalTheory.SquareConv.square_convolution_large_bound
 end

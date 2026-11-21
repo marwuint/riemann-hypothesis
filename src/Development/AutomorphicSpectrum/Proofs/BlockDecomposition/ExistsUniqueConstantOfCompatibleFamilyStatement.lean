@@ -14,4 +14,4 @@ theorem _root_.GlobalTheory.T.exists_unique_constant_of_compatible_family : ∀ 
     Stein F' → ∀ z : ∀ T : C, M ⊗[R] F.obj T,
       (∀ (T T' : C) (φ : T ⟶ T'), z T' = (mp F φ).toLinearMap.lTensor M (z T)) →
       ∃! m : M, ∀ T, z T = m ⊗ₜ[R] (1 : F.obj T) := by
-  first | exact @GlobalTheory.CompanionTheory.Axis.existsUnique_const_of_trivSqZeroExt | exact GlobalTheory.CompanionTheory.Axis.existsUnique_const_of_trivSqZeroExt | (intros; apply GlobalTheory.CompanionTheory.Axis.existsUnique_const_of_trivSqZeroExt <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Axis.existsUnique_const_of_trivSqZeroExt

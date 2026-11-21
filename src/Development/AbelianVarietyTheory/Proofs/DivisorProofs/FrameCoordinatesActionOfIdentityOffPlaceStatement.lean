@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.frame_coordinates_action_of_identity_off_place : �
         mat h = (1 - ι 1) • (1 : Matrix (Fin d) (Fin d) (AE F E)) + C.map ι →
         ∀ x, actAB (cA σ) (g, h) (GlobalTheory.InertLocFrame.xm ι PV PW x) =
           (A * (PV : Matrix (Fin n) (Fin n) L) * xᵀ * (PW : Matrix (Fin d) (Fin d) L)ᵀ * Cᵀ).map ι := by
-  first | exact @GlobalTheory.InertLocFrame.actAB_xm_frame | exact GlobalTheory.InertLocFrame.actAB_xm_frame | (intros; apply GlobalTheory.InertLocFrame.actAB_xm_frame <;> assumption)
+  exact @GlobalTheory.InertLocFrame.actAB_xm_frame

@@ -8,4 +8,4 @@ theorem _root_.GlobalTheory.T.parahoricDatum_eigenvector_twoBlockParahoric : ∀
     (ξ μ₀ : kˣ →* ℂˣ), IsTame ξ → IsUnram μ₀ →
     ∀ j ∈ parahoric k A D, ∀ d : kˣ, (d : k) = (j : Matrix (A ⊕ D) (A ⊕ D) k).toBlocks₂₂.det →
     om (μ₀ * ξ) j (1 : GL (A ⊕ E) k) (datum ξ : Matrix (A ⊕ E) (A ⊕ D) k → ℂ) = fun x => (ξ d : ℂ) * datum ξ x := by
-  first | exact @GlobalTheory.DatumEigen.om_datum | exact GlobalTheory.DatumEigen.om_datum | (intros; apply GlobalTheory.DatumEigen.om_datum <;> assumption)
+  exact @GlobalTheory.DatumEigen.om_datum

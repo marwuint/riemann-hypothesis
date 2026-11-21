@@ -14,4 +14,4 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.exists_inducedTranslation_frobeniusOnSections : LL → AllUF fun {R} _ _ {I} {D} {A} {G} _ _ U F _ _ => ∀ (k : ℕ), 1 ≤ k → ∀ p : QkPt D.toPre F k, ∃ x : TFK (R := R) F ⟶ A.A, ∀ (n N : ℕ), 1 ≤ n → N = k * n → ∀ q : QkPt D.toPre F N, q.y = n • p.y → q.g = p.g → IndAt U.toUnifPre F N q (translT A.A x) := by
-  first | exact @GlobalTheory.InducedTranslation.exists_translT_indAt | exact GlobalTheory.InducedTranslation.exists_translT_indAt | (intros; apply GlobalTheory.InducedTranslation.exists_translT_indAt <;> assumption)
+  exact @GlobalTheory.InducedTranslation.exists_translT_indAt

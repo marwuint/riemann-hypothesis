@@ -24,4 +24,4 @@ theorem _root_.GlobalTheory.T.exists_sigmaStable_summand_from_lifted_eigenCoords
   ∃ G₀ M₀ : Submodule C H, G₀ ⊓ M₀ = ⊥ ∧ G₀ ⊔ M₀ = LinearMap.range π ∧ (∀ c, ∀ x ∈ G₀, σ c x ∈ G₀) ∧
     G₀ ⊔ I • LinearMap.range π = F ⊓ LinearMap.range π ∧
     ∀ d ∈ LinearMap.range π, ∃ w : Fin a → H, (∀ i c, σ c (w i) - χ i c • w i ∈ G₀) ∧ d - ∑ i, w i ∈ G₀ := by
-  first | exact @GlobalTheory.HTSummand.summand_of_liftedCoords | exact GlobalTheory.HTSummand.summand_of_liftedCoords | (intros; apply GlobalTheory.HTSummand.summand_of_liftedCoords <;> assumption)
+  exact @GlobalTheory.HTSummand.summand_of_liftedCoords

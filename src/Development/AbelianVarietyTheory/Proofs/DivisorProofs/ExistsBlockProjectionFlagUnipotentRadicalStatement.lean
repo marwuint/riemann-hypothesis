@@ -27,4 +27,4 @@ theorem _root_.GlobalTheory.T.exists_blockProjection_flagUnipotentRadical : ∀ 
           (∀ (a : GlobalTheory.StdPar.unip σ J Xf (insert k S)) x, (a : GAd σ J) = ι (GlobalTheory.CuspRep.unip x) → π a = x) ∧
           (∀ a : GlobalTheory.StdPar.unip σ J Xf (insert k S), π a = 0 ↔ (a : GAd σ J) ∈ GlobalTheory.StdPar.unip σ J Xf S) ∧
           (∀ a : GlobalTheory.StdPar.unip σ J Xf (insert k S), (a : GAd σ J) ∈ ratPts σ J → π a ∈ GlobalTheory.CuspRep.ratN E d r') := by
-  first | exact @GlobalTheory.BlockForms.Proj.exists_blockProj | exact GlobalTheory.BlockForms.Proj.exists_blockProj | (intros; apply GlobalTheory.BlockForms.Proj.exists_blockProj <;> assumption)
+  exact @GlobalTheory.BlockForms.Proj.exists_blockProj

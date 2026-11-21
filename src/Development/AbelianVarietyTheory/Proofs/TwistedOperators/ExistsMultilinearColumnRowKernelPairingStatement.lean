@@ -11,4 +11,4 @@ theorem _root_.GlobalTheory.T.exists_multilinear_columnRowKernelPairing : ∀ {D
       ∀ fs gs, M fs gs = (brPair (listedWt G (.grid D.R.m D.R.m)) G.sp.topDec.rank.symm (wt G (.top D.R.m))).compl₁₂
         (colMapV S (fun j => (fs j : WO (G.pS (.top t j)) (G.pT (.top t j)) → ℂ)) x)
         (rowMapV S (fun i => (gs i : WO (G.pS (.chi i D.R.m : Pair T)) (G.pT (.chi i D.R.m : Pair T)) → ℂ)) y) Ψ₀ F₀ := by
-  first | exact @GlobalTheory.ArrowMultilinear.pairing_multilinear | exact GlobalTheory.ArrowMultilinear.pairing_multilinear | (intros; apply GlobalTheory.ArrowMultilinear.pairing_multilinear <;> assumption)
+  exact @GlobalTheory.ArrowMultilinear.pairing_multilinear

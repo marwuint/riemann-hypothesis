@@ -19,4 +19,4 @@ theorem _root_.GlobalTheory.T.fockVacuum_thetaFunction_derivative_complex_struct
     ∀ x x' : WO S T, (∀ τ, compAt θ τ x' = cplxO (sS τ) (sT τ) (compAt θ τ x)) → ∀ w : WO S T, ∃ a : ℂ,
       HasDerivAt (fun t : ℝ => heisO ψ S T (realAd D.host.F t • x) f w) a 0 ∧
       HasDerivAt (fun t : ℝ => heisO ψ S T (realAd D.host.F t • x') f w) (Complex.I * a) 0 := by
-  first | exact @GlobalTheory.FockLineJ.fock_line_J | exact GlobalTheory.FockLineJ.fock_line_J | (intros; apply GlobalTheory.FockLineJ.fock_line_J <;> assumption)
+  exact @GlobalTheory.FockLineJ.fock_line_J

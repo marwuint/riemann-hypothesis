@@ -12,4 +12,4 @@ theorem _root_.GlobalTheory.T.stepPoint_pulledDualVector_mem_localBaseLattice : 
     (l : Fin (D.R.N i) → D.host.E), l ∈ dualSet (sigD D : D.host.E →+* D.host.E) (gramN D i hi) (latAd x.1 lev.Lb) →
     (fun k => prV (E := D.host.E) v (pullV (F := D.host.F) x.1 l k)) ∈ latS (F := D.host.F) (v.adicCompletion D.host.F) (intV D.host.E v)
         (Submodule.span (𝓞 D.host.E) (dualSet (sigD D : D.host.E →+* D.host.E) (gramN D i hi) lev.Lb)) := by
-  first | exact @GlobalTheory.ZDual.pullV_dual_mem_latS | exact GlobalTheory.ZDual.pullV_dual_mem_latS | (intros; apply GlobalTheory.ZDual.pullV_dual_mem_latS <;> assumption)
+  exact @GlobalTheory.ZDual.pullV_dual_mem_latS

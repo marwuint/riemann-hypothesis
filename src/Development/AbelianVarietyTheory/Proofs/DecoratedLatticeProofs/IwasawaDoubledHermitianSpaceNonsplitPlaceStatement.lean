@@ -12,4 +12,4 @@ open GlobalTheory.Core.Rk.IP
 
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.iwasawa_doubled_hermitian_space_nonsplit_place : ∀ (D : D7) (A : HSp D) (L : Lat A), IsSelfDualC A L → ∀ v : FinPl D, ¬ Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v → HasIwasawa D.sp.cm.sig (dblSp A).gram (KFin D.sp.cm.sig (dblSp A).gram L v) := by
-  first | exact @GlobalTheory.InertIwasawa.hasIwasawa_inert | exact GlobalTheory.InertIwasawa.hasIwasawa_inert | (intros; apply GlobalTheory.InertIwasawa.hasIwasawa_inert <;> assumption)
+  exact @GlobalTheory.InertIwasawa.hasIwasawa_inert

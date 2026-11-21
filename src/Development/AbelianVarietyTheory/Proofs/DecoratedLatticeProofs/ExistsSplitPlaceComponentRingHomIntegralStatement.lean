@@ -22,4 +22,4 @@ theorem _root_.GlobalTheory.T.exists_splitPlace_component_ringHom_integral : ∀
       ∀ z, z ∈ Formalism.UG.tensInt (F := D.host.F) (p.v.adicCompletion D.host.F) (Formalism.UG.intOE D.host.E)
           (p.v.adicCompletionIntegers D.host.F).toSubring ↔
         φ z ∈ 𝒪[k] ∧ φ (Formalism.UG.sigR (sigD D) (p.v.adicCompletion D.host.F) z) ∈ 𝒪[k] := by
-  first | exact @GlobalTheory.FinPl.SplitPhi.exists_ringHom_int | exact GlobalTheory.FinPl.SplitPhi.exists_ringHom_int | (intros; apply GlobalTheory.FinPl.SplitPhi.exists_ringHom_int <;> assumption)
+  exact @GlobalTheory.FinPl.SplitPhi.exists_ringHom_int

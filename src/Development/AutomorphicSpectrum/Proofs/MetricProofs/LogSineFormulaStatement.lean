@@ -6,4 +6,4 @@ open scoped ComplexOrder Classical
 open GlobalTheory.CompanionTheory.Ar.PB.WSq GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.log_sine_formula : ∀ (G : Matrix (Fin 2) (Fin 2) ℂ) (a₀ a₁ : ℂ), G.PosDef → a₀ ≠ a₁ → logSin G a₀ a₁ = Real.log ‖a₁ - a₀‖ + (1 / 2) * (xiPot G a₀ + xiPot G a₁) := by
-  first | exact @GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.LogSin.logSin_eq_log_add_xiPot | exact GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.LogSin.logSin_eq_log_add_xiPot | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.LogSin.logSin_eq_log_add_xiPot <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib.LogSin.logSin_eq_log_add_xiPot

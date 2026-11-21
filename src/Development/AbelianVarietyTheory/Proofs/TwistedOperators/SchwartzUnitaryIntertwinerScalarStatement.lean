@@ -10,4 +10,4 @@ theorem _root_.GlobalTheory.T.schwartz_unitary_intertwiner_scalar : GlobalTheory
       ⇑(U h₁) = GlobalTheory.RealWeil.rhoFun w ⇑(U h)) →
     (∀ h : GlobalTheory.RealWeil.Sch l, ∫⁻ x, ‖U h x‖ₑ ^ 2 = ∫⁻ x, ‖h x‖ₑ ^ 2) →
     ∃ a : ℂ, ‖a‖ = 1 ∧ ∀ h, U h = a • h := by
-  first | exact @GlobalTheory.RealWeil.SchurSchwartz.schur_schwartz | exact GlobalTheory.RealWeil.SchurSchwartz.schur_schwartz | (intros; apply GlobalTheory.RealWeil.SchurSchwartz.schur_schwartz <;> assumption)
+  exact @GlobalTheory.RealWeil.SchurSchwartz.schur_schwartz

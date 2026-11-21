@@ -25,4 +25,4 @@ theorem _root_.GlobalTheory.T.exists_logCanonical_cut_angehrnSiu_induction : Glo
         (∀ C : Closeds X, IsCompleteCurve ℂ C → (interNumRed ℂ C ![toLB D₀] : ℚ) / m' =
           lam * interNumRed ℂ C ![N₀] / r - μ * interNumRed ℂ C ![toLB A]) ∧
         LcCut p n (Δ + qWeil D₀ m') x j' := by
-  first | exact @GlobalTheory.PairStep.exists_lcCut_induction | exact GlobalTheory.PairStep.exists_lcCut_induction | (intros; apply GlobalTheory.PairStep.exists_lcCut_induction <;> assumption)
+  exact @GlobalTheory.PairStep.exists_lcCut_induction

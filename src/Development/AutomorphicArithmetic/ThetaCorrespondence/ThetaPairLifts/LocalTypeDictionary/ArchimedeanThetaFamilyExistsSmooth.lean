@@ -63,5 +63,5 @@ theorem _root_.GlobalTheory.T.archimedean_theta_family_exists_smooth : _root_.Gl
     ∃ T : ℝ → SInf F (Fin n × Fin d) →ₗ[ℂ] SInf F (Fin n × Fin d),
       (∀ t (f : SInf F (Fin n × Fin d)), Acts (evI F) (om (1, γ (Multiplicative.ofAdd t))) ⇑f ⇑(T t f)) ∧
       (∀ s t (f : SInf F (Fin n × Fin d)), T (s + t) f = T s (T t f)) ∧ ∀ f : SInf F (Fin n × Fin d), T 0 f = f := by
-  first | exact @_root_.GlobalTheory.ArchFamily.exists_archimedean_theta_family | exact _root_.GlobalTheory.ArchFamily.exists_archimedean_theta_family | (intros; apply _root_.GlobalTheory.ArchFamily.exists_archimedean_theta_family <;> assumption)
+  exact @_root_.GlobalTheory.ArchFamily.exists_archimedean_theta_family
 end

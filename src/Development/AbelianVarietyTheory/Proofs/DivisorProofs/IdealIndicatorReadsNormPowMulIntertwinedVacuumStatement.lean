@@ -22,4 +22,4 @@ theorem _root_.GlobalTheory.T.idealIndicator_reads_norm_pow_mul_intertwinedVacuu
   ∀ Tm : (WO S T → ℂ) →ₗ[ℂ] (WO S T → ℂ),
     IsPlaceModel ψ (symplO S T) (heisO ψ S T) e (latO S T (stdL D S.rank : Set (Fin S.rank → D.host.E)) (stdL D T.rank : Set (Fin T.rank → D.host.E)) fun _ => True) 1 v Tm →
   Reads ψ θ hS hT ⊤ δ 1 (cosV δ 𝔪 0 G) (Tm (cosInd e 𝔪 hS hT 0)) := by
-  first | exact @GlobalTheory.IopRead.indicator_reads | exact GlobalTheory.IopRead.indicator_reads | (intros; apply GlobalTheory.IopRead.indicator_reads <;> assumption)
+  exact @GlobalTheory.IopRead.indicator_reads

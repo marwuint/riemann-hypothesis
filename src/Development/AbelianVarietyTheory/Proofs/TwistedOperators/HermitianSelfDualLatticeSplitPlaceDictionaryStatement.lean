@@ -28,4 +28,4 @@ theorem _root_.GlobalTheory.T.hermitian_selfDual_lattice_split_place_dictionary 
       ∃ S : Matrix (Fin d) (Fin d) (v.adicCompletionIntegers F), IsUnit S.det ∧
         S.map (fun x => (x : Fv F v)) =
           (b₁ : Matrix (Fin d) (Fin d) (Fv F v))ᵀ * (incM F V.J).map π₁ * (b₂ : Matrix (Fin d) (Fin d) (Fv F v)) := by
-  first | exact @GlobalTheory.SplitDictHerm.split_dict_herm | exact GlobalTheory.SplitDictHerm.split_dict_herm | (intros; apply GlobalTheory.SplitDictHerm.split_dict_herm <;> assumption)
+  exact @GlobalTheory.SplitDictHerm.split_dict_herm

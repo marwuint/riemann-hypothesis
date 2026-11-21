@@ -13,4 +13,4 @@ theorem _root_.GlobalTheory.T.eigen_intertwiner_extension : ∀ (F E : Type) [Fi
     (ι : Matrix (Fin n) (Fin n₁) E) (ι' : Matrix (Fin d) (Fin d₁) E) (I : Set (Matrix (Fin n) (Fin d) (AE F E)))
     (e : Fn F n d →ₗ[ℂ] Fn F n₁ d₁), M.IsGood B.ψ → M₁.IsGood B.ψ → IsEv B M M₁ ι ι' I e →
       ∃ Φ ∈ schA F (Fin n × Fin d), e Φ ≠ 0 := by
-  first | exact @GlobalTheory.ThK.EvNeZero.exists_ne_zero | exact GlobalTheory.ThK.EvNeZero.exists_ne_zero | (intros; apply GlobalTheory.ThK.EvNeZero.exists_ne_zero <;> assumption)
+  exact @GlobalTheory.ThK.EvNeZero.exists_ne_zero

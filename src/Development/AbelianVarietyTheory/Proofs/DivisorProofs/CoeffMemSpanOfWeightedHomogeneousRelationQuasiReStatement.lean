@@ -8,4 +8,4 @@ theorem _root_.GlobalTheory.T.coeff_mem_span_of_weightedHomogeneous_relation_qua
     IsQuasiRegularSeq R z → ∀ (D : ℕ) (F : MvPolynomial (Fin n) R),
     F.IsWeightedHomogeneous w D → MvPolynomial.eval z F = 0 →
     ∀ α : Fin n →₀ ℕ, F.coeff α ∈ Ideal.span (Set.range z) := by
-  first | exact @GlobalTheory.weightedRelation_coeff_mem_span | exact GlobalTheory.weightedRelation_coeff_mem_span | (intros; apply GlobalTheory.weightedRelation_coeff_mem_span <;> assumption)
+  exact @GlobalTheory.weightedRelation_coeff_mem_span

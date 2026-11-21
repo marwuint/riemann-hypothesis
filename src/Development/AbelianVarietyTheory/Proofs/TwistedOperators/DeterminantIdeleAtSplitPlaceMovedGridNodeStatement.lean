@@ -18,4 +18,4 @@ theorem _root_.GlobalTheory.T.determinantIdeleAtSplitPlace_moved_gridNode : ∀ 
     detIdl (idemAt w) (G.V (.grid (j + 1) D.R.m)) (moved S j k) =
       GlobalTheory.LFun.locIdele D.host.F w (gdet (inBasis (rank_vertex G t w (X := (j + 1, D.R.m)) ⟨hj.le, le_rfl⟩)
         (S.B.β (j + 1) D.R.m) w (finG (G.V (.grid (j + 1) D.R.m)) k))) := by
-  first | exact @GlobalTheory.RowDetLocal.detIdl_moved_eq_locIdele | exact GlobalTheory.RowDetLocal.detIdl_moved_eq_locIdele | (intros; apply GlobalTheory.RowDetLocal.detIdl_moved_eq_locIdele <;> assumption)
+  exact @GlobalTheory.RowDetLocal.detIdl_moved_eq_locIdele

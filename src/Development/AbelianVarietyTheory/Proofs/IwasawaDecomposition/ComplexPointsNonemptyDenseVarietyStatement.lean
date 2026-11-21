@@ -6,4 +6,4 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 open scoped Matrix CategoryTheory.Obj Topology
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.complexPoints_nonempty_dense_variety : ∀ (F : Type) [Field F] (Y : GlobalTheory.ProjVar.Var F) (σ : F →+* ℂ), Nonempty (CxPts Y.str σ) ∧ ∀ W : Y.X.Opens, (W : Set Y.X).Nonempty → Dense (CxPts.ptsIn Y.str σ W) := by
-  first | exact @GlobalTheory.CxPtsDense.nonempty_and_dense | exact GlobalTheory.CxPtsDense.nonempty_and_dense | (intros; apply GlobalTheory.CxPtsDense.nonempty_and_dense <;> assumption)
+  exact @GlobalTheory.CxPtsDense.nonempty_and_dense

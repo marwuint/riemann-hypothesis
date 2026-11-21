@@ -9,4 +9,4 @@ theorem _root_.GlobalTheory.T.frobenius_ratio_pi_congr_tame_unit : ∀ (E Ω : T
     t ^ (normV v - 1) = algebraMap E Ω (u : E) → ∀ τ τ' : G E Ω, IsFrob (F := E) A (normV v) τ →
     IsFrob (F := E) A (normV v) τ' → τ π = π → τ' (π * t) = π * t →
     A.valuation ((τ'⁻¹ * τ) π / π - algebraMap E Ω (u : E)) < 1 := by
-  first | exact @GlobalTheory.TameRatio.ratio_cong | exact GlobalTheory.TameRatio.ratio_cong | (intros; apply GlobalTheory.TameRatio.ratio_cong <;> assumption)
+  exact @GlobalTheory.TameRatio.ratio_cong

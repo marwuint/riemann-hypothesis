@@ -13,4 +13,4 @@ theorem _root_.GlobalTheory.T.exists_admissible_linear_functional : ∀ (L : Typ
       (∀ (F : L → ℂ) (c : L), IsAdm w F → c ≠ 0 →
         IsAdm w (fun x => F (c * x)) ∧ I (fun x => F (c * x)) = (q : ℂ) ^ (2 * ordL c) * I F) ∧
       IsAdm w (sphFn (L := L) w) ∧ I (sphFn w) = (1 - w) / (1 - w * (q : ℂ) ^ 2) := by
-  first | exact @GlobalTheory.CompanionTheory.SwapInt.exists_invariant_integral | exact GlobalTheory.CompanionTheory.SwapInt.exists_invariant_integral | (intros; apply GlobalTheory.CompanionTheory.SwapInt.exists_invariant_integral <;> assumption)
+  exact @GlobalTheory.CompanionTheory.SwapInt.exists_invariant_integral

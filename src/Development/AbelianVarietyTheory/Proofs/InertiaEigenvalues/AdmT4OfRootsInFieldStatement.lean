@@ -7,4 +7,4 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.admT4_of_roots_in_field : ∀ (D : D7) (ρ : Setup D.ntw) (hρ : ρ.Good) (rd : Rds D.nexp ρ), FullTie hρ rd → (∀ (k : Fin 2) (z : ℂ), z ^ (D.host.g k * (D.host.g k - 1)) = 1 → z ∈ (Formalism.L2.Host.embLL0 D).fieldRange) → ∀ E : IntegralHeckeForms.XD D, IntegralHeckeForms.admT4 D.nexp E := by
-  first | exact @GlobalTheory.TwInputs.admT4_of_full_compatibility | exact GlobalTheory.TwInputs.admT4_of_full_compatibility | (intros; apply GlobalTheory.TwInputs.admT4_of_full_compatibility <;> assumption)
+  exact @GlobalTheory.TwInputs.admT4_of_full_compatibility

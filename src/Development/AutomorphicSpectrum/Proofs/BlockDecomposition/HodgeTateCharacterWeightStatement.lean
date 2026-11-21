@@ -18,4 +18,4 @@ theorem _root_.GlobalTheory.T.hodge_tate_character_weight : ∀ {l : ℕ} [Fact 
     (∀ σ : Gal(Om l/↥L), (∀ w ∈ GroundTheory.PAdicHodge.unramifiedClosure l, σ w = w) →
       a σ = (((GroundTheory.PAdicHodge.cycloChar L σ : ℤ_[l]ˣ) : ℤ_[l]) : ℚ_[l])) →
     n = 1 := by
-  first | exact @GlobalTheory.CompanionTheory.LTPer.eq_one_of_tpow_mul_unit_eigen | exact GlobalTheory.CompanionTheory.LTPer.eq_one_of_tpow_mul_unit_eigen | (intros; apply GlobalTheory.CompanionTheory.LTPer.eq_one_of_tpow_mul_unit_eigen <;> assumption)
+  exact @GlobalTheory.CompanionTheory.LTPer.eq_one_of_tpow_mul_unit_eigen

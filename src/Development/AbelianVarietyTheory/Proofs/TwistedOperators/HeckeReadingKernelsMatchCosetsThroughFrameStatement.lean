@@ -33,4 +33,4 @@ theorem _root_.GlobalTheory.T.heckeReading_kernels_match_cosets_through_frame : 
               (T.cE ((i : ℕ) + 1) σ (GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.dictW T i σ hV h).1 * castDict hV (T.mu ((i : ℕ) + 1) σ) h) *
               σ (hkScal T.Q.c 1 P.asIdeal k D.R.nV) * toC (evR (T.Q.Xo ((i : ℕ) + 1)) T.Q.c f z) =
             (GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.muAt T R i P)⁻¹ ^ k * GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.phiW T i σ hV (wtA (κ i)) f (h * (e C : GA D (Wc D i))) := by
-  first | exact @GlobalTheory.HeckeTerm.heckeTerm | exact GlobalTheory.HeckeTerm.heckeTerm | (intros; apply GlobalTheory.HeckeTerm.heckeTerm <;> assumption)
+  exact @GlobalTheory.HeckeTerm.heckeTerm

@@ -24,4 +24,4 @@ theorem _root_.GlobalTheory.T.exists_goodProj_first_coordinate : ∀ (K : Type) 
     IsCxVar Q e → (∃ z ∈ conePts Q, segre z i ≠ 0) →
     ∃ Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ),
       IsSetGoodProj (conePts Q) Ψ ∧ ∀ w, Ψ w 0 = w i := by
-  first | exact @GlobalTheory.CompanionTheory.Ar.Pub.CxGoodProj.exists_goodProj_coord | exact GlobalTheory.CompanionTheory.Ar.Pub.CxGoodProj.exists_goodProj_coord | (intros; apply GlobalTheory.CompanionTheory.Ar.Pub.CxGoodProj.exists_goodProj_coord <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Ar.Pub.CxGoodProj.exists_goodProj_coord

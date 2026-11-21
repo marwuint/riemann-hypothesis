@@ -12,4 +12,4 @@ theorem _root_.GlobalTheory.T.block_data_level_forms_transport_field_map : ∀ {
     ∃ Gm : Matrix (Fin (B'.dZ ℓ' Z')) (Fin (B.dZ ℓ Z)) K', Function.Bijective Gm.mulVec ∧
       B'.Tl ℓ' Z' = Submodule.span (𝓞 K') ((fun x : Fin (B.dZ ℓ Z) → K => Matrix.mulVec Gm (fun k => φ (x k))) '' (B.Tl ℓ Z : Set (Fin (B.dZ ℓ Z) → K))) ∧
       ∀ x y : Fin (B.dZ ℓ Z) → K, Formalism.DivisionValues.hform (B'.HZ ℓ' Z') (Matrix.mulVec Gm (fun k => φ (x k))) (Matrix.mulVec Gm (fun k => φ (y k))) = φ (Formalism.DivisionValues.hform (B.HZ ℓ Z) x y) := by
-  first | exact @GlobalTheory.Mem.R3.DefLatBC.defLat_of_blockBC | exact GlobalTheory.Mem.R3.DefLatBC.defLat_of_blockBC | (intros; apply GlobalTheory.Mem.R3.DefLatBC.defLat_of_blockBC <;> assumption)
+  exact @GlobalTheory.Mem.R3.DefLatBC.defLat_of_blockBC

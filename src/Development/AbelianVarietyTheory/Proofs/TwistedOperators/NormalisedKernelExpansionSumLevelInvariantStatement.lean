@@ -23,4 +23,4 @@ theorem _root_.GlobalTheory.T.normalisedKernelExpansionSum_levelInvariant : ∀ 
       pairPts S τ (Function.update x D.R.m (finEmb G.sp.topDec (y D.R.m * k))) (Function.update y D.R.m (y D.R.m * k))
         (Ψ (Function.update x D.R.m (finEmb G.sp.topDec (y D.R.m * k)) 0)) (F (Function.update y D.R.m (y D.R.m * k) 0)) =
       pairPts S τ x y (Ψ (x 0)) (F (y 0))) := by
-  first | exact @GlobalTheory.ExpansionInvariance.levels_invariant | exact GlobalTheory.ExpansionInvariance.levels_invariant | (intros; apply GlobalTheory.ExpansionInvariance.levels_invariant <;> assumption)
+  exact @GlobalTheory.ExpansionInvariance.levels_invariant

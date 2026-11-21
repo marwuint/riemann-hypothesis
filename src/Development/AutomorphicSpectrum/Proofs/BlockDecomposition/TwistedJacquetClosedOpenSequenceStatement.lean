@@ -32,4 +32,4 @@ theorem _root_.GlobalTheory.T.twisted_jacquet_closed_open_sequence : ∀ {G M Z 
     (hlocC : ∀ f, eC f = 0 → ∀ p ∈ C, AvgVanish H σ U θ f p)
     (hlocO : ∀ f, eO f = 0 → ∀ p, p ∉ C → AvgVanish H σ U θ f p),
   ∃ S : Subrepresentation ρ, Nonempty ((subQuot S ⊥).Equiv πO) ∧ Nonempty ((subQuot ⊤ S).Equiv πC) := by
-  first | exact @GlobalTheory.CompanionTheory.BZPhiPG.Glue.extension | exact GlobalTheory.CompanionTheory.BZPhiPG.Glue.extension | (intros; apply GlobalTheory.CompanionTheory.BZPhiPG.Glue.extension <;> assumption)
+  exact @GlobalTheory.CompanionTheory.BZPhiPG.Glue.extension

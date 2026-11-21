@@ -26,4 +26,4 @@ theorem _root_.GlobalTheory.T.standardFrame_nonsplit_maxCompact_in_level : OverR
           Formalism.IndefR.Lev.levChi _ (z.R.toRealDat.βV i)
             (Formalism.IndefR.RecTie.datVP z.R.toRealDat i (Y.tupT (w.st Z).toD7.what₂.mu0) (z.R.toRealDat.levR z.F.lv2 false))
             (P.ψ κ) = 1 := by
-  first | exact @GlobalTheory.NonSplitLevel.lift_level | exact GlobalTheory.NonSplitLevel.lift_level | (intros; apply GlobalTheory.NonSplitLevel.lift_level <;> assumption)
+  exact @GlobalTheory.NonSplitLevel.lift_level

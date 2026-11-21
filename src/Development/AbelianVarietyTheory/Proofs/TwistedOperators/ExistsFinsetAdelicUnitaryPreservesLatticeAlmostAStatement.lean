@@ -20,4 +20,4 @@ theorem _root_.GlobalTheory.T.exists_finset_adelicUnitary_preserves_lattice_almo
     (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n), X.L.IsLattice E → ∀ g : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.UA σ X.J,
     ∃ S₁ : Finset (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F), ∀ w ∉ S₁, ∀ z ∈ GlobalTheory.InertSph.latAt X w,
       GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat g *ᵥ z ∈ GlobalTheory.InertSph.latAt X w ∧ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat g⁻¹ *ᵥ z ∈ GlobalTheory.InertSph.latAt X w := by
-  first | exact @GlobalTheory.LatAlmostAll.exists_finset_keeps | exact GlobalTheory.LatAlmostAll.exists_finset_keeps | (intros; apply GlobalTheory.LatAlmostAll.exists_finset_keeps <;> assumption)
+  exact @GlobalTheory.LatAlmostAll.exists_finset_keeps

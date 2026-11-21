@@ -10,4 +10,4 @@ open GlobalTheory.MixModel GlobalTheory.MixPer GlobalTheory.Grow GlobalTheory.Ro
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.cell_masses_against_level_volumes_large_depth : Big fun ch => ∀ s, WtAt ch s := by
-  first | exact @GlobalTheory.RowWt.wtAt_big | exact GlobalTheory.RowWt.wtAt_big | (intros; apply GlobalTheory.RowWt.wtAt_big <;> assumption)
+  exact @GlobalTheory.RowWt.wtAt_big

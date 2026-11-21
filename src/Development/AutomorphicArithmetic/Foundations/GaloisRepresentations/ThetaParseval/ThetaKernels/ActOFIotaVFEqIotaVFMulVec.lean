@@ -19,5 +19,5 @@ theorem _root_.GlobalTheory.T.actOF_iotaVF_eq_iotaVF_mulVec : ∀ (F E : Type) [
       IsInfFamF (fun w : InfinitePlace F => (B.emb w).1) θ → ∀ ι : (InfinitePlace F → ℂ) →+ AEF F E, IsChartF θ ι →
       ∀ (g : GAF σ JS) (h : GAF σ JT) (v : IxF F nS nT → ℂ),
         actOF σ JS JT g h (iotaVF ι v) = iotaVF ι (mMF σ JS JT θ (g, h) *ᵥ v) := by
-  first | exact @_root_.GlobalTheory.RealWeilF.actOF_iotaVF_k | exact _root_.GlobalTheory.RealWeilF.actOF_iotaVF_k | (intros; apply _root_.GlobalTheory.RealWeilF.actOF_iotaVF_k <;> assumption)
+  exact @_root_.GlobalTheory.RealWeilF.actOF_iotaVF_k
 end

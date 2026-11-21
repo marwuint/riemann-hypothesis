@@ -23,4 +23,4 @@ theorem _root_.GlobalTheory.T.vacuum_split_place_indicator_target : GlobalTheory
     ∀ R : (Fin a' × Fin (a + a') → AF F) → ℂ, R 0 ≠ 0 → Rest (evFin F v) (G.M'.vac v) R →
     ∀ n ∈ GlobalTheory.InertDbl.NabD σ G.W v, omd n (GlobalTheory.InertDbl.dblFun (tens (evFin F v) (G.M'.vac v) R)) =
       GlobalTheory.InertDbl.dblFun (tens (evFin F v) (G.M'.vac v) R) := by
-  first | exact @GlobalTheory.NabFixSplit.nab_fix_split | exact GlobalTheory.NabFixSplit.nab_fix_split | (intros; apply GlobalTheory.NabFixSplit.nab_fix_split <;> assumption)
+  exact @GlobalTheory.NabFixSplit.nab_fix_split

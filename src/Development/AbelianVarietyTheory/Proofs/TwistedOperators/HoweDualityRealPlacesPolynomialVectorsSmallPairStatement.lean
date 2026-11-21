@@ -33,4 +33,4 @@ theorem _root_.GlobalTheory.T.howeDuality_realPlaces_polynomialVectors_smallPair
     (∀ N : Submodule ℂ ↥(G.M'.Pol Bs.ψ Bs.emb), GlobalTheory.HoweGlobalPair.relInf G.M' Bs.ψ Bs.emb om' ≤ N → (∀ g ∈ GlobalTheory.HoweGlobalPair.opInf G.M' Bs.ψ Bs.emb om', ∀ x ∈ N, g x ∈ N) → N ≠ ⊤ → N ≤ LinearMap.ker (R.p' ∘ₗ (G.M'.Pol Bs.ψ Bs.emb).subtype)) ∧
     GlobalTheory.HoweGlobalPair.relInf G.M' Bs.ψ Bs.emb om' ≤ LinearMap.ker (R.p' ∘ₗ (G.M'.Pol Bs.ψ Bs.emb).subtype) ∧
     ∀ g ∈ GlobalTheory.HoweGlobalPair.opInf G.M' Bs.ψ Bs.emb om', ∀ x ∈ LinearMap.ker (R.p' ∘ₗ (G.M'.Pol Bs.ψ Bs.emb).subtype), g x ∈ LinearMap.ker (R.p' ∘ₗ (G.M'.Pol Bs.ψ Bs.emb).subtype) := by
-  first | exact @GlobalTheory.HoweGlobalPair.RealPlaceSmall.realTransfer' | exact GlobalTheory.HoweGlobalPair.RealPlaceSmall.realTransfer' | (intros; apply GlobalTheory.HoweGlobalPair.RealPlaceSmall.realTransfer' <;> assumption)
+  exact @GlobalTheory.HoweGlobalPair.RealPlaceSmall.realTransfer'

@@ -6,4 +6,4 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open scoped LaurentSeries
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.tangentVector_pow_scale_inv_eq : ∀ (P : Out.PolAV (Sp ℂ)) (v : epsR ℂ ⟶ P.A) (n : ℕ), 0 < n → IsTangent v → spMap (epsScaleR ((n : ℂ)⁻¹)) ≫ (v ^ n).left = v.left := by
-  first | exact @GlobalTheory.AbelianLetters.scale_tangent_pow | exact GlobalTheory.AbelianLetters.scale_tangent_pow | (intros; apply GlobalTheory.AbelianLetters.scale_tangent_pow <;> assumption)
+  exact @GlobalTheory.AbelianLetters.scale_tangent_pow

@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.classSum_regroup_finerLevel_cosets : ∀ {G Γ : T
     ∀ (Φ : G → ℂ), (∀ γ g, Φ (ι γ * g) = Φ g) → (∀ k ∈ J₀, ∀ g, Φ (g * k) = Φ g) →
     ∑ i, ((Nat.card (Bridge.stab ι J₀ (y₀ i)) : ℂ))⁻¹ * Φ (y₀ i) =
       ∑ i, ((Nat.card (Bridge.stab ι J (y i)) : ℂ))⁻¹ * ∑ u ∈ F, Φ (y i * u) := by
-  first | exact @GlobalTheory.ClassRefineBridge.sum_isReps_refine | exact GlobalTheory.ClassRefineBridge.sum_isReps_refine | (intros; apply GlobalTheory.ClassRefineBridge.sum_isReps_refine <;> assumption)
+  exact @GlobalTheory.ClassRefineBridge.sum_isReps_refine

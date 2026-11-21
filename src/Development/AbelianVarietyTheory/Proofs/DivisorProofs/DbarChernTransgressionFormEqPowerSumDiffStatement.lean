@@ -9,4 +9,4 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts G
 open scoped Matrix ContDiff ComplexOrder
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.dbar_chernTransgressionForm_eq_power_sum_diff : ∀ (n : ℕ) (r : Type) [Fintype r] [DecidableEq r] (G G' : V n → Matrix r r ℂ) (v : V n), MContDiffAt ∞ G v → IsUnit (G v).det → MContDiffAt ∞ G' v → IsUnit (G' v).det → ∀ k, dbarAt (fun x => transAt G G' x k) v = (powAt G v k : Alt n) - powAt G' v k := by
-  first | exact @GlobalTheory.ChernCalc.dbarAt_transAt | exact GlobalTheory.ChernCalc.dbarAt_transAt | (intros; apply GlobalTheory.ChernCalc.dbarAt_transAt <;> assumption)
+  exact @GlobalTheory.ChernCalc.dbarAt_transAt

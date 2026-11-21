@@ -13,4 +13,4 @@ theorem _root_.GlobalTheory.T.tangent_section_additive : ∀ (S : Scheme.{0}) (G
     (h1 : ⊤ ≤ (1 : epsAt y ⟶ G).left ⁻¹ᵁ U) (s : Γ(G.left, U)),
     ((v * w).left.appLE U ⊤ hvw).hom s + ((1 : epsAt y ⟶ G).left.appLE U ⊤ h1).hom s =
       (v.left.appLE U ⊤ hv).hom s + (w.left.appLE U ⊤ hw).hom s := by
-  first | exact @GlobalTheory.CompanionTheory.Ar.SqAdd.tan_mul_add | exact GlobalTheory.CompanionTheory.Ar.SqAdd.tan_mul_add | (intros; apply GlobalTheory.CompanionTheory.Ar.SqAdd.tan_mul_add <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Ar.SqAdd.tan_mul_add

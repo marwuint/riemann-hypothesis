@@ -12,4 +12,4 @@ theorem _root_.GlobalTheory.T.exists_rosatiCoordinates_divisible_of_pow : ∀ (E
     GlobalTheory.Serre.IsLinearHom (X.A true).t.act X.B.t.act f →
     f ^ n = ∏ a, ((X.A true).t.act.act (x a) ≫ GlobalTheory.FlatCM.phiP X a) →
     ∀ a, ∃ y : 𝓞 E, (n : 𝓞 E) * y = ∑ b, gP a b * H.bar (x b) := by
-  first | exact @GlobalTheory.FlatCM.RosatiCoord.exists_mul_eq_gram_sum | exact GlobalTheory.FlatCM.RosatiCoord.exists_mul_eq_gram_sum | (intros; apply GlobalTheory.FlatCM.RosatiCoord.exists_mul_eq_gram_sum <;> assumption)
+  exact @GlobalTheory.FlatCM.RosatiCoord.exists_mul_eq_gram_sum

@@ -14,4 +14,4 @@ open GlobalTheory.Unf GlobalTheory.Unf.FB
 
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.x0_mem_ratMx_and_exists_rat_leftInverse : ∀ (D : D7) (σ : ℕ) (B : BesLev D σ), (∃ P ∈ ratMx D (σ + 1) B.V.rank, P ⬝ x0 B = 1) ∧ x0 B ∈ ratMx D B.V.rank (σ + 1) := by
-  first | exact @GlobalTheory.Unf.FB.fourierBesselBasePoint_rational_with_rational_leftInverse | exact GlobalTheory.Unf.FB.fourierBesselBasePoint_rational_with_rational_leftInverse | (intros; apply GlobalTheory.Unf.FB.fourierBesselBasePoint_rational_with_rational_leftInverse <;> assumption)
+  exact @GlobalTheory.Unf.FB.fourierBesselBasePoint_rational_with_rational_leftInverse

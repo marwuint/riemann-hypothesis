@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.flagUnipotentRadical_le_standardParabolicUnipotent
     ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y →
       ∀ (S : Finset (Fin r)) (m : Fin r), m ∈ S → (∀ k ∈ S, k ≤ m) →
         GlobalTheory.UAut.unipFlag σ J (GlobalTheory.StdPar.initCols X m) (fun i => (S.filter fun k => k.val < i.val).card) ≤ GlobalTheory.StdPar.unip σ J X S := by
-  first | exact @GlobalTheory.FlagRad.unipFlag_le_unip | exact GlobalTheory.FlagRad.unipFlag_le_unip | (intros; apply GlobalTheory.FlagRad.unipFlag_le_unip <;> assumption)
+  exact @GlobalTheory.FlagRad.unipFlag_le_unip

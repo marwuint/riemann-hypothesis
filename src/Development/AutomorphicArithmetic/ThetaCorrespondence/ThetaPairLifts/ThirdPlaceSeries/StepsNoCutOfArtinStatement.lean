@@ -40,5 +40,5 @@ section
 open Formalism Formalism.MainNotions Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Module GlobalTheory.Pass Formalism.MainNotions.PairedCharacterCondition Formalism.MainNotions.PairedCharacterCondition.CongruenceModules
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.no_cut_passes_of_artin_reciprocity : GlobalTheory.Published.GlobalArtinReciprocity → _root_.GlobalTheory.Pass.NoCutStatement := by
-  first | exact @_root_.GlobalTheory.Pass.stepsNoCut_of_artin_alt | exact _root_.GlobalTheory.Pass.stepsNoCut_of_artin_alt | (intros; apply _root_.GlobalTheory.Pass.stepsNoCut_of_artin_alt <;> assumption)
+  exact @_root_.GlobalTheory.Pass.stepsNoCut_of_artin_alt
 end

@@ -10,4 +10,4 @@ theorem _root_.GlobalTheory.T.finiteDimensional_functionField_stalk_imageGeneric
     (hK : IsField (Z.presheaf.stalk (GlobalTheory.NormSheafDescent.genPt π))),
     letI := GlobalTheory.NormSheafDescent.fieldK π hK; letI := GlobalTheory.NormSheafDescent.algKL π
     FiniteDimensional (Z.presheaf.stalk (GlobalTheory.NormSheafDescent.genPt π)) Y.functionField := by
-  first | exact @GlobalTheory.NormSheafDescent.finiteDimensional_functionField | exact GlobalTheory.NormSheafDescent.finiteDimensional_functionField | (intros; apply GlobalTheory.NormSheafDescent.finiteDimensional_functionField <;> assumption)
+  exact @GlobalTheory.NormSheafDescent.finiteDimensional_functionField

@@ -12,4 +12,4 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.exists_compactOpen_latticeStabilizerAtPlaces : ∀ (D : D7) (V : HSp D) (L : Lat V), IsSelfDualC V L → ∀ P : Pl D → Prop, ∃ K : Subgroup (GA D V), (∀ g, g ∈ K ↔ InK V L P g) ∧ IsCompact (K : Set (GA D V)) ∧ IsOpen ((K.subgroupOf (grpAt V P) : Subgroup _) : Set (grpAt V P)) := by
-  first | exact @GlobalTheory.FinPl.KOpen.exists_compact_open | exact GlobalTheory.FinPl.KOpen.exists_compact_open | (intros; apply GlobalTheory.FinPl.KOpen.exists_compact_open <;> assumption)
+  exact @GlobalTheory.FinPl.KOpen.exists_compact_open

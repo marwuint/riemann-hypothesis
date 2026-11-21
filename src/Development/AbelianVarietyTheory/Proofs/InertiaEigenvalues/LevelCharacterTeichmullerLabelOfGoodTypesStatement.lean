@@ -26,4 +26,4 @@ theorem _root_.GlobalTheory.T.levelCharacter_teichmullerLabel_of_goodTypes : ∀
           (Units.map (iso : ZMod (D.host.g k) →* kP PP)))) c ∧
         (c = ((D.nd.chiT k v i : (ZMod (D.host.g k))ˣ) : ZMod (D.host.g k)) ∨
           c = (((D.nd.chiT k v i)⁻¹ : (ZMod (D.host.g k))ˣ) : ZMod (D.host.g k))) := by
-  first | exact @GlobalTheory.CharLabTransport.charLab_of_goodTypes | exact GlobalTheory.CharLabTransport.charLab_of_goodTypes | (intros; apply GlobalTheory.CharLabTransport.charLab_of_goodTypes <;> assumption)
+  exact @GlobalTheory.CharLabTransport.charLab_of_goodTypes

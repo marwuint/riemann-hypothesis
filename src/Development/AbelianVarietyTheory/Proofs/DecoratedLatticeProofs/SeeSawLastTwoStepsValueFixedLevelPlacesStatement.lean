@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.seeSaw_lastTwoSteps_value_fixedLevel_places : ∀ 
     Vac c.ψ _ _ (v.N (j + 1)) v.NT (· ∈ v.gP) Ψ₂ →
     c.lst j h (v.τ j h) s₁ (comb c.ψ _ _ (v.eG j) Ψ₁) (comb c.ψ _ _ (v.eGT j h) Ψ₂) =
       C • biComb c.ψ _ _ _ (v.dG j) (v.dG (j + 1)) (c.lst j h (v.τ j h) s₁ Ψ₁ Ψ₂) := by
-  first | exact @GlobalTheory.LevelLast.last_value | exact GlobalTheory.LevelLast.last_value | (intros; apply GlobalTheory.LevelLast.last_value <;> assumption)
+  exact @GlobalTheory.LevelLast.last_value

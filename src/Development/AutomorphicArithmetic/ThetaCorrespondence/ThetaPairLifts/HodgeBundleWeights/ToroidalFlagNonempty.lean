@@ -42,5 +42,5 @@ open GlobalTheory.FlagTan (dimFlag)
 open GlobalTheory.HSApp
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.torFlag_nonempty_of_one_le_dimFlag : _root_.GlobalTheory.CovTop.Hypotheses'' → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), 1 ≤ dimFlag Dw → Nonempty (TorFlag Xo c) := by
-  first | exact @_root_.GlobalTheory.CompHS.TorFlagEx.nonempty_torFlag_alt | exact _root_.GlobalTheory.CompHS.TorFlagEx.nonempty_torFlag_alt | (intros; apply _root_.GlobalTheory.CompHS.TorFlagEx.nonempty_torFlag_alt <;> assumption)
+  exact @_root_.GlobalTheory.CompHS.TorFlagEx.nonempty_torFlag_alt
 end

@@ -18,4 +18,4 @@ theorem _root_.GlobalTheory.T.finite_sum_fiber_decomposition : ∀ {Γ H : Type}
     (hφ : ∀ u ∈ L, ∀ x, φ (x * u) = φ x) (hfin : {q : Γ ⧸ L | φ q.out ≠ 0}.Finite),
     ∑ᶠ q : Γ ⧸ L, φ q.out =
       ∑ᶠ m : H ⧸ V, ∑ᶠ q : Γ ⧸ L, (V : Set H).indicator (1 : H → ℂ) (p q.out) * φ (e m.out * q.out) := by
-  first | exact @GlobalTheory.CompanionTheory.FinActS.SumFiber.finsum_cosets_retraction | exact GlobalTheory.CompanionTheory.FinActS.SumFiber.finsum_cosets_retraction | (intros; apply GlobalTheory.CompanionTheory.FinActS.SumFiber.finsum_cosets_retraction <;> assumption)
+  exact @GlobalTheory.CompanionTheory.FinActS.SumFiber.finsum_cosets_retraction

@@ -7,4 +7,4 @@ theorem _root_.GlobalTheory.T.inertPrime_value_le_planBlocks : ∀ (P : RF.Par) 
   (∀ z ∈ Pk.Z, ∀ a i, i0 P.k l ≤ i → (p z).y a i = 0) →
   (∀ z ∈ Pk.Z, ∀ a i, (p z).y a i ≠ 0 → (RF.GlobalTheory.bi (RF.bg a) a i ((p z).y a i)).Attains (Pk.R.X z) (Pk.R.F z) (RF.blockBd l (P.k - 1) P.m i ((p z).y a i))) →
   Pk.ν ≤ (∑ z ∈ Pk.Z, (p z).bound (P.k - 1) P.m) + Pk.rest / ((l : ℝ) - 1) := by
-  first | exact @GlobalTheory.PlanValue.val_le_plan | exact GlobalTheory.PlanValue.val_le_plan | (intros; apply GlobalTheory.PlanValue.val_le_plan <;> assumption)
+  exact @GlobalTheory.PlanValue.val_le_plan

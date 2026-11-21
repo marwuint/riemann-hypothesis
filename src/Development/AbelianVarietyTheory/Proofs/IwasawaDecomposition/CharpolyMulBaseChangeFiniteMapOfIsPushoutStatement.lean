@@ -8,4 +8,4 @@ theorem _root_.GlobalTheory.T.charpolyMulBaseChangeFinite_map_of_isPushout : ∀
     IsPushout (CommRingCat.ofHom φ) (CommRingCat.ofHom α) (CommRingCat.ofHom β) (CommRingCat.ofHom φ') →
     ∀ (hφ : φ.Finite) (hφ' : φ'.Finite) (ι : K →+* K'), (∀ a : A, ι (algebraMap A K a) = algebraMap A' K' (α a)) →
     ∀ b : B, charK φ' hφ' K' (β b) = (charK φ hφ K b).map ι := by
-  first | exact @GlobalTheory.NormalDescent.charK_map_of_isPushout | exact GlobalTheory.NormalDescent.charK_map_of_isPushout | (intros; apply GlobalTheory.NormalDescent.charK_map_of_isPushout <;> assumption)
+  exact @GlobalTheory.NormalDescent.charK_map_of_isPushout

@@ -44,4 +44,4 @@ theorem _root_.GlobalTheory.T.exists_pureTensorSum_datum_routeThroughSmallVertex
             GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Acts (evFin D.host.F Bs.v₁) (Γ.M'.co.rho Bs.ψ γ) φ₀
               (Bs.ψ (⅟(2 : AF D.host.F) * symp (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) (inclR (F := D.host.F) (AF D.host.F) (θ : D.host.E))
                 (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Γ.V'.J) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Γ.W.J) γ γ) • φ₀)) := by
-  first | exact @GlobalTheory.SmallDatumPure.exists_datum_pure_selfdual | exact GlobalTheory.SmallDatumPure.exists_datum_pure_selfdual | (intros; apply GlobalTheory.SmallDatumPure.exists_datum_pure_selfdual <;> assumption)
+  exact @GlobalTheory.SmallDatumPure.exists_datum_pure_selfdual

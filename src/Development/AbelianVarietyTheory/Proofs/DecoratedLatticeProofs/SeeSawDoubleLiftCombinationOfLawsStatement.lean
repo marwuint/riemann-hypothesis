@@ -10,4 +10,4 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.seeSawDoubleLiftCombination_of_laws : ∀ (D : D7) (c : Comm D) (𝒯 : Type) (t : 𝒯 → Tup c), BiAct D → CenFock D → LiftSum D → c.Is → (∀ s, (t s).Is) → RealEq t → KerX t → RdX t → TwoX t := by
-  first | exact @GlobalTheory.SeeSaw.twoX_of_laws | exact GlobalTheory.SeeSaw.twoX_of_laws | (intros; apply GlobalTheory.SeeSaw.twoX_of_laws <;> assumption)
+  exact @GlobalTheory.SeeSaw.twoX_of_laws

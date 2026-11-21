@@ -25,4 +25,4 @@ theorem _root_.GlobalTheory.T.gridTopVertex_frame_point_transport_lattice : ∀ 
       (∀ i, fr.1 i (Formalism.L2.Col.Br.iL G.sp.topDec.rank.symm) = G.sp.topDec.a i 0) ∧
       HMul.hMul (mt (G.V (.top D.R.m)) u.1) (topEmb G) = HMul.hMul (topEmb G) (mt (G.V (.grid D.R.m D.R.m)) u₀.1) ∧
       mt (G.V (.top D.R.m)) u.1 *ᵥ topVec G = topVec G := by
-  first | exact @GlobalTheory.FunObj.top_transport | exact GlobalTheory.FunObj.top_transport | (intros; apply GlobalTheory.FunObj.top_transport <;> assumption)
+  exact @GlobalTheory.FunObj.top_transport

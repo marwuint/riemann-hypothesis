@@ -13,4 +13,4 @@ open GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.cm_conjugation_compat_complex_conj : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (τ : E →+* ℂ) (a : 𝓞 E),
     ComplexEmbedding.conjugate τ (a : E) = τ (H.bar a : 𝓞 E) ∧ H.bar (H.bar a) = a := by
-  first | exact @GlobalTheory.CompanionTheory.Ar.Flat.CPoint.conjugate_coe_eq_bar | exact GlobalTheory.CompanionTheory.Ar.Flat.CPoint.conjugate_coe_eq_bar | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.CPoint.conjugate_coe_eq_bar <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Ar.Flat.CPoint.conjugate_coe_eq_bar

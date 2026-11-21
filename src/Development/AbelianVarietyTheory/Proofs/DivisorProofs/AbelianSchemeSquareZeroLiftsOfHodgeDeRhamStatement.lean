@@ -9,4 +9,4 @@ open CategoryTheory AlgebraicGeometry KaehlerDifferential DividedPowers Reciproc
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.abelianSchemeSquareZeroLifts_of_hodgeDeRham : CrystallineSmoothLift → AbelianHodgeDeRham → AbelianSchemeLifts := by
-  first | exact @GlobalTheory.LiftSys.abelianSchemeLifts_of_hodgeDeRham | exact GlobalTheory.LiftSys.abelianSchemeLifts_of_hodgeDeRham | (intros; apply GlobalTheory.LiftSys.abelianSchemeLifts_of_hodgeDeRham <;> assumption)
+  exact @GlobalTheory.LiftSys.abelianSchemeLifts_of_hodgeDeRham

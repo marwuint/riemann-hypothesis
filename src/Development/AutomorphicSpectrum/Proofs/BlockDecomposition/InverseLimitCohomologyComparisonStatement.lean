@@ -22,4 +22,4 @@ theorem _root_.GlobalTheory.T.inverse_limit_cohomology_comparison : ∀ {R : Typ
     (∀ x : ℕ → K.H j, (∀ n, ∃ y, x (n + 1) - x n = c ^ n • y) → ∃ z : K.H j, ∀ n, ∃ y, z - c ^ k • x n = c ^ n • y) →
     (∀ x : ∀ n, (Kn n).H j, (∀ n, (tr n).mapH j (x (n + 1)) = x n) → ∃ z : K.H j, ∀ n, (red n).mapH j z = c ^ (2 * k) • x n) ∧
     ∀ z : K.H j, (∀ n, (red n).mapH j z = 0) → c ^ k • z = 0 := by
-  first | exact @GlobalTheory.CompanionTheory.LimLift.lim_lift | exact GlobalTheory.CompanionTheory.LimLift.lim_lift | (intros; apply GlobalTheory.CompanionTheory.LimLift.lim_lift <;> assumption)
+  exact @GlobalTheory.CompanionTheory.LimLift.lim_lift

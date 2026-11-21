@@ -22,5 +22,5 @@ theorem _root_.GlobalTheory.T.small_place_block_decomposition_alt : ∀ {D : D7}
       (labOf p j (p.R.mu w) Q).under (𝓞 (maximalRealSubfield D.host.E)) = (plOf p j (p.R.mu w) Q).under (𝓞 (maximalRealSubfield D.host.E)) ∧
       Ideal.absNorm (labOf p j (p.R.mu w) Q).asIdeal = (blk p j (p.R.mu w)).q Q ∧
       (((Formalism.EigenvalueLevelCeiling.plc w : ℕ) : 𝓞 D.host.E) ∈ (labOf p j (p.R.mu w) Q).asIdeal ↔ ((Formalism.EigenvalueLevelCeiling.plc w : ℕ) : 𝓞 D.host.E) ∈ (plOf p j (p.R.mu w) Q).asIdeal) := by
-  first | exact @_root_.GlobalTheory.FrameLab.labels_ok_alt | exact _root_.GlobalTheory.FrameLab.labels_ok_alt | (intros; apply _root_.GlobalTheory.FrameLab.labels_ok_alt <;> assumption)
+  exact @_root_.GlobalTheory.FrameLab.labels_ok_alt
 end

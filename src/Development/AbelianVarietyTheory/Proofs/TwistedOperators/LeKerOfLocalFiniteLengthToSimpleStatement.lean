@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.le_ker_of_local_finite_length_to_simple : ∀ {M W
     (∀ g ∈ Op, ∀ b ∈ B, act g * b = b * act g) →
     (∀ U : Submodule ℂ W, GlobalTheory.TensHead.Stab (act '' Op ∪ B) U → U = ⊥ ∨ U = ⊤) →
     K ≤ LinearMap.ker φ := by
-  first | exact @GlobalTheory.TensHead.le_ker_of_simple_commuting | exact GlobalTheory.TensHead.le_ker_of_simple_commuting | (intros; apply GlobalTheory.TensHead.le_ker_of_simple_commuting <;> assumption)
+  exact @GlobalTheory.TensHead.le_ker_of_simple_commuting

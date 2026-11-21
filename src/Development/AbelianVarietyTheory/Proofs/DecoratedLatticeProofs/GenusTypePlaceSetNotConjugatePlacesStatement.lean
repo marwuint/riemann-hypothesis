@@ -9,4 +9,4 @@ open scoped TensorProduct InnerProductSpace Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.genusTypePlaceSet_not_conjugatePlaces : ∀ {D : D7} (Pg : Finset (Pl D.host.E)), GlobalTheory.Core.Mi.IsTypePlaces Pg → (∃ e, IsIdemSum e Pg) → ∀ PP ∈ Pg, ∀ PP' ∈ Pg, ¬ IsConjPl (D := D) PP PP' := by
-  first | exact @GlobalTheory.SeeConjPg.pg_places_not_isConjPl | exact GlobalTheory.SeeConjPg.pg_places_not_isConjPl | (intros; apply GlobalTheory.SeeConjPg.pg_places_not_isConjPl <;> assumption)
+  exact @GlobalTheory.SeeConjPg.pg_places_not_isConjPl

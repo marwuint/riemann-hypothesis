@@ -8,4 +8,4 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.nonGeneric_term_classes_eq_rows_in_double_coset : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word), ConcTie X Y → ClsRow (Y.tO u u').ngSet (clsOf Y u u') := by
-  first | exact @GlobalTheory.Unfold.RowCls.clsRow_ngSet | exact GlobalTheory.Unfold.RowCls.clsRow_ngSet | (intros; apply GlobalTheory.Unfold.RowCls.clsRow_ngSet <;> assumption)
+  exact @GlobalTheory.Unfold.RowCls.clsRow_ngSet

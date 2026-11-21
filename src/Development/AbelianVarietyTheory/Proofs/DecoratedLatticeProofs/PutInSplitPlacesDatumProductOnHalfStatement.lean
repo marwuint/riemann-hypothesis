@@ -18,4 +18,4 @@ theorem _root_.GlobalTheory.T.putInSplitPlaces_datum_product_on_half : ∀ (D : 
     ∀ (Ψ : ι → Matrix n n' k → ℂ) (f f' : WO S T → ℂ), IsThetaFunO ψ S T f → IsLatVac (heisO ψ S T) (stdHom S T) f →
     OverAll ψ α β LS LT Ψ J f f' →
     IsRatDatum ψ S T e (fun γ => (J.map fun i => Ψ i (rd (α i) (β i) (γ.map (incA D)))).prod) f f' := by
-  first | exact @GlobalTheory.FinPl.PutIn.ratDatum_of_overAll | exact GlobalTheory.FinPl.PutIn.ratDatum_of_overAll | (intros; apply GlobalTheory.FinPl.PutIn.ratDatum_of_overAll <;> assumption)
+  exact @GlobalTheory.FinPl.PutIn.ratDatum_of_overAll

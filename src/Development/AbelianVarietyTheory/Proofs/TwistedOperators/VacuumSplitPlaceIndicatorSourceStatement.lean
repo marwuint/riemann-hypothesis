@@ -13,4 +13,4 @@ theorem _root_.GlobalTheory.T.vacuum_split_place_indicator_source : GlobalTheory
     ∀ (v : Pl F), Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v → v ∉ X.T → PsiUnr B.ψ v → (2 : 𝓞 F) ∉ v.asIdeal →
     G.M.vac v = Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 →
     ∀ k ∈ GlobalTheory.InertSph.KAt σ G.V v, ∀ c : ℂ, Acts (evFin F v) (om (k, 1)) (G.M.vac v) (c • G.M.vac v) → c = 1 := by
-  first | exact @GlobalTheory.SplitVacV.eigen_eq_one | exact GlobalTheory.SplitVacV.eigen_eq_one | (intros; apply GlobalTheory.SplitVacV.eigen_eq_one <;> assumption)
+  exact @GlobalTheory.SplitVacV.eigen_eq_one

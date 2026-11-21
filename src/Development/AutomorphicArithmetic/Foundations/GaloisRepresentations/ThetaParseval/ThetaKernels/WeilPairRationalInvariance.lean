@@ -31,5 +31,5 @@ theorem _root_.GlobalTheory.T.weil_pair_rational_invariance : ∀ (F E : Type) [
               GlobalTheory.WeilSchrodinger.IsTransportF σ B.ψ co ω om → ∀ Φ ∈ schA F κ, ∀ (y : κ → FiniteAdeleRing (𝓞 F) F) p0 (k n : ℕ), ∃ C : ℝ,
       ∀ᶠ p in nhds p0, ∀ x : κ → mixedEmbedding.mixedSpace F,
         ‖x‖ ^ k * ‖iteratedFDeriv ℝ n (fun x => om p Φ (GlobalTheory.WeilCont.adeleJoin F x y)) x‖ ≤ C := by
-  first | exact @_root_.GlobalTheory.WeilContF.slice_bounds_k | exact _root_.GlobalTheory.WeilContF.slice_bounds_k | (intros; apply _root_.GlobalTheory.WeilContF.slice_bounds_k <;> assumption)
+  exact @_root_.GlobalTheory.WeilContF.slice_bounds_k
 end

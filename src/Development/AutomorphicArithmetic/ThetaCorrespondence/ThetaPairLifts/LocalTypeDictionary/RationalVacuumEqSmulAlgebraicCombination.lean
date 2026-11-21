@@ -80,5 +80,5 @@ theorem _root_.GlobalTheory.T.rational_vacuum_algebraic_combination : ∀ {D : D
       γ * a ∈ GfC A → γ' * a' ∈ GfC WW →
       ∃ (κ : ℂ) (F : WO (GlobalTheory.Grid.neg A) WW → ℂ), GlobalTheory.MovedAlg.IsAlgComb W.ψ (GlobalTheory.Grid.neg A) WW X.vac F ∧
         X.ω t (γ, γ') X.vac = κ • F := by
-  first | exact @_root_.GlobalTheory.RatVacAlg.rational_vacuum_eq_smul_algebraic_combination | exact _root_.GlobalTheory.RatVacAlg.rational_vacuum_eq_smul_algebraic_combination | (intros; apply _root_.GlobalTheory.RatVacAlg.rational_vacuum_eq_smul_algebraic_combination <;> assumption)
+  exact @_root_.GlobalTheory.RatVacAlg.rational_vacuum_eq_smul_algebraic_combination
 end

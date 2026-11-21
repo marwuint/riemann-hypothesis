@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.exists_oppositeSubmodule_improved_mod_prime_of_ort
     (m : D.La) (hm : m ∈ perp D Z ⊓ perp D Z') (hym : y m ∉ img D y Z' 𝔭)
     (hA : 𝔭.map (H.bar : 𝓞 E →+* 𝓞 E) ≠ 𝔭 ∨ Z.map y ≤ img D y Z' 𝔭),
     ∃ Z'', Improves D y n 𝔭 Z Z' Z'' := by
-  first | exact @GlobalTheory.LowFilt.exists_improves_of_perp | exact GlobalTheory.LowFilt.exists_improves_of_perp | (intros; apply GlobalTheory.LowFilt.exists_improves_of_perp <;> assumption)
+  exact @GlobalTheory.LowFilt.exists_improves_of_perp

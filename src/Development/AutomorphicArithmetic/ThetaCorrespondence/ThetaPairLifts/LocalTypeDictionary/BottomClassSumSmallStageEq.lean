@@ -112,5 +112,5 @@ theorem _root_.GlobalTheory.T.bottom_classSum_smallStage_eq : _root_.GlobalTheor
               X.I' W.ψ W.θ s (GlobalTheory.BotFormula.minorF ea ed T') g =
                 Ω₁ * ∑ᶠ x, ((GlobalTheory.NormSum.gam D (GlobalTheory.NormSum.intG D P'.a) x.out : ℂ))⁻¹ *
                   X.ker' W.ψ W.θ s (GlobalTheory.BotFormula.minorF ea ed T') g (gx x) := by
-  first | exact @_root_.GlobalTheory.BotClassSumSmall.classSum_smallStage | exact _root_.GlobalTheory.BotClassSumSmall.classSum_smallStage | (intros; apply _root_.GlobalTheory.BotClassSumSmall.classSum_smallStage <;> assumption)
+  exact @_root_.GlobalTheory.BotClassSumSmall.classSum_smallStage
 end

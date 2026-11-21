@@ -12,4 +12,4 @@ theorem _root_.GlobalTheory.T.cell_multiplicity_positive_cone : ∀ {O : Type} [
     LinearIndependent ℤ δ → toReal (β : LinearMap.BilinForm ℤ X) = ∑ i, c i • toReal (δ i : LinearMap.BilinForm ℤ X) →
     0 < c j → (∀ i, i ∈ Set.range e ↔ i ≠ j) → 0 < cellMult bar δ →
     (cellMult bar (Fin.cons β (fun k => δ (e k)) : Fin (p + 1) → balForms bar X) : ℝ) = c j * cellMult bar δ := by
-  first | exact @GlobalTheory.PolFan.ConsMult.cellMult_cons_eq | exact GlobalTheory.PolFan.ConsMult.cellMult_cons_eq | (intros; apply GlobalTheory.PolFan.ConsMult.cellMult_cons_eq <;> assumption)
+  exact @GlobalTheory.PolFan.ConsMult.cellMult_cons_eq

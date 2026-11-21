@@ -12,4 +12,4 @@ theorem _root_.GlobalTheory.T.normCoefficientIdealFamily_eq_top_of_disjoint : �
       FiniteDimensional (Z.presheaf.stalk (GlobalTheory.NormSheafDescent.genPt π)) Y.functionField)
     (I : Y.IdealSheafData) (U : Z.affineOpens), (∀ y ∈ I.support, π y ∉ (U : Set Z)) →
     GlobalTheory.NormSheafDescent.famIdeal π hK hfd I U = ⊤ := by
-  first | exact @GlobalTheory.NormSheafDescent.famIdeal_eq_top_of_disjoint | exact GlobalTheory.NormSheafDescent.famIdeal_eq_top_of_disjoint | (intros; apply GlobalTheory.NormSheafDescent.famIdeal_eq_top_of_disjoint <;> assumption)
+  exact @GlobalTheory.NormSheafDescent.famIdeal_eq_top_of_disjoint

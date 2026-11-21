@@ -21,5 +21,5 @@ theorem _root_.GlobalTheory.T.theta_function_moderate_growth : ∀ (F E : Type) 
       ∀ f : Formalism.IndefR.DatumF.WOF F E nS nT → ℂ, Formalism.IndefR.DatumF.IsThetaFunOF σ JS JT ξ₀ B.ψ f → ∀ L : ℝ →+ Formalism.IndefR.DatumF.WOF F E nS nT, Continuous L → (∀ t, (L t).map (Formalism.IndefR.DatumF.finPartF F E) = 0) →
       ∀ (γ : Matrix (Fin nT) (Fin nS) E) (w : Formalism.IndefR.DatumF.WOF F E nS nT),
       deriv (fun t : ℝ => Formalism.IndefR.DatumF.heisOF σ JS JT ξ₀ B.ψ (L t) f (Formalism.IndefR.DatumF.ratWF γ + w)) 0 = B.ψ (-(Formalism.IndefR.DatumF.symplOHF σ JS JT ξ₀ (Formalism.IndefR.DatumF.ratWF γ) w)) * deriv (fun t : ℝ => Formalism.IndefR.DatumF.heisOF σ JS JT ξ₀ B.ψ (L t) f (w)) 0 := by
-  first | exact @_root_.GlobalTheory.ThetaDerivQuasi.deriv_heis_quasi_k | exact _root_.GlobalTheory.ThetaDerivQuasi.deriv_heis_quasi_k | (intros; apply _root_.GlobalTheory.ThetaDerivQuasi.deriv_heis_quasi_k <;> assumption)
+  exact @_root_.GlobalTheory.ThetaDerivQuasi.deriv_heis_quasi_k
 end

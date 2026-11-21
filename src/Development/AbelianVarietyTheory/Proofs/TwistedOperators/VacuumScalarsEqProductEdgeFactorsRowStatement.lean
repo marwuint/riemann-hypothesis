@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.vacuum_scalars_eq_product_edge_factors_row : ∀ {
     c₁ * c₂ = ∏ w : locPl G t, ((oppositePath D.R.m).map ((locGrid G t w.1).edgeFactor .one (Pi.mulSingle (j + 1, D.R.m)
       (inBasis (rank_vertex G t w.1 (X := (j + 1, D.R.m)) ⟨hj.le, le_rfl⟩) (S.B.β (j + 1) D.R.m) w.1
         (finG (G.V (.grid (j + 1) D.R.m)) k))))).prod := by
-  first | exact @GlobalTheory.RowVacScalar.scalars_eq_edgeFactors | exact GlobalTheory.RowVacScalar.scalars_eq_edgeFactors | (intros; apply GlobalTheory.RowVacScalar.scalars_eq_edgeFactors <;> assumption)
+  exact @GlobalTheory.RowVacScalar.scalars_eq_edgeFactors

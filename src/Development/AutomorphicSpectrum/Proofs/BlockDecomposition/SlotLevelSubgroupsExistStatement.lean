@@ -19,4 +19,4 @@ theorem _root_.GlobalTheory.T.position_level_subgroups_exist : ∀ {E : Type} [F
       (∀ i, ∀ k ∈ L i, ∀ x, sf φ₁ φ₂ i (x * k) = sf φ₁ φ₂ i x) ∧
       (∀ i : Slot S, HasCompactSupport (sf φ₁ φ₂ i)) ∧
       ∀ᶠ i : Slot S in cofinite, sf φ₁ φ₂ i = (K2 a b i.pl : Set (GLw a i.pl × GLw b i.pl)).indicator 1 := by
-  first | exact @GlobalTheory.CompanionTheory.PositionTest.exists_factor_level₂ | exact GlobalTheory.CompanionTheory.PositionTest.exists_factor_level₂ | (intros; apply GlobalTheory.CompanionTheory.PositionTest.exists_factor_level₂ <;> assumption)
+  exact @GlobalTheory.CompanionTheory.PositionTest.exists_factor_level₂

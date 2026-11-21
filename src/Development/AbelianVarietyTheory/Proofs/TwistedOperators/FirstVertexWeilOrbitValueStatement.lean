@@ -19,4 +19,4 @@ theorem _root_.GlobalTheory.T.first_vertex_weil_orbit_value : GlobalTheory.FunPr
           ∏ w : locPl ch.G t, GlobalTheory.FirstRowEndLaw.endLam ch.G t w.1 (GlobalTheory.FirstRowTermLaw.kapAt ch.S.toGridChoice t w.1 k) =
         ∏ w : locPl ch.G t, (locGrid ch.G t w).edgeFactor .one
           (Pi.mulSingle (0, D.R.m) (GlobalTheory.FirstRowTermLaw.kapAt ch.S.toGridChoice t w k)) (.ex 0 D.R.m) := by
-  first | exact @GlobalTheory.FirstRowScalar.scalar | exact GlobalTheory.FirstRowScalar.scalar | (intros; apply GlobalTheory.FirstRowScalar.scalar <;> assumption)
+  exact @GlobalTheory.FirstRowScalar.scalar

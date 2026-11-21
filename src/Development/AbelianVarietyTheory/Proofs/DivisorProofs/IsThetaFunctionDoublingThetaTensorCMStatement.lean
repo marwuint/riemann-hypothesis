@@ -14,4 +14,4 @@ theorem _root_.GlobalTheory.T.isThetaFunction_doublingThetaTensor_CM : ∀ (F E 
       ∀ f₁ f₂ : Formalism.IndefR.DatumF.WOF F E nS nT → ℂ,
         Formalism.IndefR.DatumF.IsThetaFunOF σ JS JT ξ₀ B.ψ f₁ → Formalism.IndefR.DatumF.IsThetaFunOF σ JS JT ξ₀ B.ψ f₂ →
         Formalism.IndefR.DatumF.IsThetaFunOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ (GlobalTheory.DblTargetDelta.deltaT f₁ f₂) := by
-  first | exact @GlobalTheory.DblTargetThetaF.main | exact GlobalTheory.DblTargetThetaF.main | (intros; apply GlobalTheory.DblTargetThetaF.main <;> assumption)
+  exact @GlobalTheory.DblTargetThetaF.main

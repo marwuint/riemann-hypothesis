@@ -70,5 +70,5 @@ theorem _root_.GlobalTheory.T.bottomClasses_finite : ∀ {D : D7} {T : Type} [Fi
     IsBottomTri W i j X →
     ∀ J : Subgroup (GA D WW), IsOpen (J : Set (GA D WW)) → ∃ H : Finset (GA D WW), (∀ h ∈ H, h ∈ GfC WW) ∧
       ∀ h ∈ GfC WW, ∃ γ ∈ GQ WW, ∃ r ∈ GinfC WW, ∃ h₀ ∈ H, ∃ κ ∈ J, κ ∈ GfC WW ∧ h = γ * r * h₀ * κ := by
-  first | exact @_root_.GlobalTheory.BotClassFin.bottomClass_exists_finite_reps | exact _root_.GlobalTheory.BotClassFin.bottomClass_exists_finite_reps | (intros; apply _root_.GlobalTheory.BotClassFin.bottomClass_exists_finite_reps <;> assumption)
+  exact @_root_.GlobalTheory.BotClassFin.bottomClass_exists_finite_reps
 end

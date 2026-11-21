@@ -13,4 +13,4 @@ theorem _root_.GlobalTheory.T.arch_lie_derivative_exists : ∀ (E : Type) [Field
     ∃ D : AutomorphicForm.archGroup E a → ℂ, Continuous D ∧ HasCompactSupport D ∧ ∀ g : AdelicGLn.AdelicGL E a,
       ((AutomorphicForm.uAction (CuspidalSpectrum.uJ (K := E) (n := a) k J) (⟨φ.1, hs⟩ : ↥(AutomorphicForm.archSmooth E a)) :
         ↥(AutomorphicForm.archSmooth E a)) : AdelicGLn.AdelicGL E a → ℂ) g = ∫ y, φ.1 (g * AutomorphicForm.infEmb E a y) * D y ∂μ) := by
-  first | exact @GlobalTheory.CompanionTheory.HCRep.uJ_eq_conv | exact GlobalTheory.CompanionTheory.HCRep.uJ_eq_conv | (intros; apply GlobalTheory.CompanionTheory.HCRep.uJ_eq_conv <;> assumption)
+  exact @GlobalTheory.CompanionTheory.HCRep.uJ_eq_conv

@@ -25,4 +25,4 @@ theorem _root_.GlobalTheory.T.exists_scalar_finiteTensor_eq_datum_smallModel : �
         (IsLocVec W (.mu t i j) ε (ρ.vT i j)) (IsLocVec W (.chi i j) ε (ρ.vX i j)) τ Ψ →
       ∀ φ, IsFinPart Γ.M' X.T φ → (∀ w ∈ locPl G t, ι w (φ (w.under (𝓞 D.host.F))) = Ψ w) →
         IsDatumB W e Γ τ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (s • f₀) φ) := by
-  first | exact @GlobalTheory.SmallPlaces.exists_scalar_datum | exact GlobalTheory.SmallPlaces.exists_scalar_datum | (intros; apply GlobalTheory.SmallPlaces.exists_scalar_datum <;> assumption)
+  exact @GlobalTheory.SmallPlaces.exists_scalar_datum

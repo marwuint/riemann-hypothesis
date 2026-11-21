@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.affine_ideal_locus_criterion : ∀ (Y : Scheme.{0}
       (P (Spec (CommRingCat.of R')) (Spec.map (CommRingCat.ofHom g) ≫ hU.fromSpec) ↔ J ≤ RingHom.ker g)) →
     ∃ (Z : Scheme.{0}) (i : Z ⟶ Y), IsClosedImmersion i ∧
       ∀ (T : Scheme.{0}) (t : T ⟶ Y), P T t ↔ ∃ z : T ⟶ Z, z ≫ i = t := by
-  first | exact @GlobalTheory.CompanionTheory.TrivLoc.Glue.exists_closed_subscheme | exact GlobalTheory.CompanionTheory.TrivLoc.Glue.exists_closed_subscheme | (intros; apply GlobalTheory.CompanionTheory.TrivLoc.Glue.exists_closed_subscheme <;> assumption)
+  exact @GlobalTheory.CompanionTheory.TrivLoc.Glue.exists_closed_subscheme

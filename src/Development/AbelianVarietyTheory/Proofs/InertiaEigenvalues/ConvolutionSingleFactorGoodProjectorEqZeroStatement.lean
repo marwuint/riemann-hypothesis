@@ -23,4 +23,4 @@ theorem _root_.GlobalTheory.T.convolution_singleFactor_goodProjector_eq_zero : �
       M * D.ntypes.eSer kv0.1 (Formalism.CyclotomicNorms.monicOf (a kv0)) = 0) → ∀ x : G,
     ∑ y : G, (open Classical in if ∀ kv, kv ≠ kv0 → eR y kv = 1 then M.coeff (eR y kv0) else 0) *
       D.ntypes.e0.coeff (eR (y⁻¹ * x)) = 0 := by
-  first | exact @GlobalTheory.DownLift.conv_single_goodProj_eq_zero | exact GlobalTheory.DownLift.conv_single_goodProj_eq_zero | (intros; apply GlobalTheory.DownLift.conv_single_goodProj_eq_zero <;> assumption)
+  exact @GlobalTheory.DownLift.conv_single_goodProj_eq_zero

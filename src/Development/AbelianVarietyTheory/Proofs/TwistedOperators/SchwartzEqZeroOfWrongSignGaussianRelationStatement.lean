@@ -7,4 +7,4 @@ theorem _root_.GlobalTheory.T.schwartz_eq_zero_of_wrong_sign_gaussian_relation :
     (∀ y, fderiv ℝ f y a₂ + (-(2 * Real.pi * Complex.I) * (ℓ₂ y : ℂ)) * f y =
       Complex.I * (fderiv ℝ f y a₁ + (-(2 * Real.pi * Complex.I) * (ℓ₁ y : ℂ)) * f y)) →
     ℓ₂ a₁ - ℓ₁ a₂ < 0 → f = 0 := by
-  first | exact @GlobalTheory.WrongSignGauss.vanish | exact GlobalTheory.WrongSignGauss.vanish | (intros; apply GlobalTheory.WrongSignGauss.vanish <;> assumption)
+  exact @GlobalTheory.WrongSignGauss.vanish

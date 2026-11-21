@@ -21,4 +21,4 @@ theorem _root_.GlobalTheory.T.exists_genuineSplitting_adelicSchwartz_placeSignat
       (∀ l ∈ (adeleClass F).adm κ, ∀ φ ∈ schA F κ,
         ContinuousOn (fun g => l (ω₀ g φ)) {g : UG (cA σ) JB | At (evI F) ((g.1 : Matrix β β (AE F E)) - 1)}) ∧
       ActsByD τ C ω₀ Φ (fun w => fockAct2 (P w) (Q w) (R w) (S w)) c₀ := by
-  first | exact @GlobalTheory.GenRepD.genRepD | exact GlobalTheory.GenRepD.genRepD | (intros; apply GlobalTheory.GenRepD.genRepD <;> assumption)
+  exact @GlobalTheory.GenRepD.genRepD

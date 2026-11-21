@@ -33,4 +33,4 @@ theorem _root_.GlobalTheory.T.traceSymplectic_add_self_expansion_half_idempotent
             (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F Y.J) γ γ' +
           GlobalTheory.WeilM.symp (R := AF F) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) (-1) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F X.J)
             (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F Y.J) γ γ' := by
-  first | exact @GlobalTheory.VacExpand.symp_add_self_expand | exact GlobalTheory.VacExpand.symp_add_self_expand | (intros; apply GlobalTheory.VacExpand.symp_add_self_expand <;> assumption)
+  exact @GlobalTheory.VacExpand.symp_add_self_expand

@@ -22,5 +22,5 @@ theorem _root_.GlobalTheory.T.doubled_lagrangian_continuous : ∀ (F E : Type) [
             co.e (incM F x) = (fun i => algebraMap F (AF F) (y i), fun i => algebraMap F (AF F) (z i))) →
           ∀ Φ ∈ schA F κ, ∀ (γ : Matrix (Fin nT) (Fin nS) E) (w : WOF F E nS nT),
             GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ Φ (ratWF γ + w) = B.ψ (-(symplOHF σ JS JT ξ₀ (ratWF γ) w)) * GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ Φ w := by
-  first | exact @_root_.GlobalTheory.ThetaQuasiRatF.thetaTr_ratWF_add_k | exact _root_.GlobalTheory.ThetaQuasiRatF.thetaTr_ratWF_add_k | (intros; apply _root_.GlobalTheory.ThetaQuasiRatF.thetaTr_ratWF_add_k <;> assumption)
+  exact @_root_.GlobalTheory.ThetaQuasiRatF.thetaTr_ratWF_add_k
 end

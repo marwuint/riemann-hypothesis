@@ -98,5 +98,5 @@ theorem _root_.GlobalTheory.T.tripleProduct_lieDeriv_readoff : GlobalTheory.Publ
           (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f₁ i) (φ i)) ∈ GlobalTheory.TripleAssembly.darbAlg Γ.M' Bs.ψ Bs.emb ∧
           Φ = GlobalTheory.TripleRead.thO Γ.M' ψ (sgn false W₁).gram e (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f i) (φ i)) ∧
           Φ' = GlobalTheory.TripleRead.thO Γ.M' ψ (sgn false W₁).gram e (∑ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (f₁ i) (φ i)) := by
-  first | exact @_root_.GlobalTheory.TripleAssembly.ReadDerB.tripleProduct_read_lieDeriv_second_factor | exact _root_.GlobalTheory.TripleAssembly.ReadDerB.tripleProduct_read_lieDeriv_second_factor | (intros; apply _root_.GlobalTheory.TripleAssembly.ReadDerB.tripleProduct_read_lieDeriv_second_factor <;> assumption)
+  exact @_root_.GlobalTheory.TripleAssembly.ReadDerB.tripleProduct_read_lieDeriv_second_factor
 end

@@ -125,5 +125,5 @@ theorem _root_.GlobalTheory.T.line_polarization_match_derivative : _root_.Global
     (∀ x, HasDerivAt (fun t : ℝ => om (1, γ (Multiplicative.ofAdd t)) Φ x) (Φ₁ x) 0) →
     (∀ x, HasDerivAt (fun t : ℝ => om' (1, γ (Multiplicative.ofAdd t)) Φ' x) (Φ₁' x) 0) →
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.PolMatch B G X R Rf Φ₁ Φ₁' := by
-  first | exact @_root_.GlobalTheory.LineMatch.polarization_match_deriv | exact _root_.GlobalTheory.LineMatch.polarization_match_deriv | (intros; apply _root_.GlobalTheory.LineMatch.polarization_match_deriv <;> assumption)
+  exact @_root_.GlobalTheory.LineMatch.polarization_match_deriv
 end

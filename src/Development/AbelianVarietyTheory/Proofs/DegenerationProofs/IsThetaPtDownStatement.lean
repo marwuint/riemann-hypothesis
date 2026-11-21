@@ -8,4 +8,4 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.Ex
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.isThetaPt_pow_of_isThetaPt_mul : Laws → ∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Sp K)) (n m : ℕ) (Ix : Type) (x : Ix → (baseOver (Sp K) ⟶ P.A)) (v : Ix → Γ((baseOver (Sp K)).left, ⊤)), (∀ i, (x i ^ n) ^ m ^ 2 = 1) → IsThetaPt P (n * m) x v → IsThetaPt P m (fun i => x i ^ n) v := by
-  first | exact @GlobalTheory.ThetaNest.isThetaPt_down | exact GlobalTheory.ThetaNest.isThetaPt_down | (intros; apply GlobalTheory.ThetaNest.isThetaPt_down <;> assumption)
+  exact @GlobalTheory.ThetaNest.isThetaPt_down

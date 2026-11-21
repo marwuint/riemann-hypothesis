@@ -14,4 +14,4 @@ theorem _root_.GlobalTheory.T.character_integral_orthogonality : ∀ (D : D7) (�
     ∀ q : Matrix (Fin V.rank) (Fin s) D.host.E,
       (q = 0 → ∫ y in 𝓕s, ψ (trA (Matrix.trace (inner V (rat q) y))) ∂μs = 1) ∧
       (q ≠ 0 → ∫ y in 𝓕s, ψ (trA (Matrix.trace (inner V (rat q) y))) ∂μs = 0) := by
-  first | exact @GlobalTheory.CompanionTheory.EisUnfold.Orth.orthogonality | exact GlobalTheory.CompanionTheory.EisUnfold.Orth.orthogonality | (intros; apply GlobalTheory.CompanionTheory.EisUnfold.Orth.orthogonality <;> assumption)
+  exact @GlobalTheory.CompanionTheory.EisUnfold.Orth.orthogonality

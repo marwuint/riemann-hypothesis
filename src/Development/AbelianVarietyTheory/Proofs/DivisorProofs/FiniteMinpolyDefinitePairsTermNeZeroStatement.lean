@@ -11,4 +11,4 @@ theorem _root_.GlobalTheory.T.finite_minpoly_definitePairs_term_ne_zero : ∀ (p
       (∀ k ∈ K', ∀ k' ∈ K', ∀ g, f' (k * g * k') = f' g) →
       {P0 : Polynomial G.F | ∃ P : GlobalTheory.LKDef.DPair G, P.pol = P0 ∧ Irreducible P.pol ∧
         P.term L.K.toSubgroup f 1 K' f' ≠ 0}.Finite := by
-  first | exact @GlobalTheory.LKDef.FinPol.finite_pol_term_ne_zero | exact GlobalTheory.LKDef.FinPol.finite_pol_term_ne_zero | (intros; apply GlobalTheory.LKDef.FinPol.finite_pol_term_ne_zero <;> assumption)
+  exact @GlobalTheory.LKDef.FinPol.finite_pol_term_ne_zero

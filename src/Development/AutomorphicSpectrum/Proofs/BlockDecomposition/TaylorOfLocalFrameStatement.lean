@@ -13,4 +13,4 @@ theorem _root_.GlobalTheory.T.taylor_of_local_frame : ∀ {K : Type} [Field K] [
     letI := (strV q W).toAlgebra
     ∀ (D : Fin d → Derivation K Γ(X, W) Γ(X, W)), (∀ k j, D k (c.t j) = if k = j then 1 else 0) →
     Taylor (sFil (KS q s {W})) E (fun k x => ε (D k (ε.symm x))) := by
-  first | exact @GlobalTheory.CompanionTheory.ConeLocal.taylor_loc | exact GlobalTheory.CompanionTheory.ConeLocal.taylor_loc | (intros; apply GlobalTheory.CompanionTheory.ConeLocal.taylor_loc <;> assumption)
+  exact @GlobalTheory.CompanionTheory.ConeLocal.taylor_loc

@@ -24,5 +24,5 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.HeightCounting.Up GlobalTheory.Mem.SRe GlobalTheory.Mem.R3.Rw
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.slot_mv_extension_with_origin_geo_cl : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (cDep : ℝ) (Γ : GeoP), PositionMv (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension (_root_.GlobalTheory.HeightCounting.Up.extensionWithOrigin hL cDep) SExt.none (geoCl Γ)).s := by
-  first | exact @_root_.GlobalTheory.HeightCounting.Up.movable_prmR_nel_alt | exact _root_.GlobalTheory.HeightCounting.Up.movable_prmR_nel_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.movable_prmR_nel_alt <;> assumption)
+  exact @_root_.GlobalTheory.HeightCounting.Up.movable_prmR_nel_alt
 end

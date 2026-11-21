@@ -13,4 +13,4 @@ theorem _root_.GlobalTheory.T.twisted_centralizer_unitary_iff : ∀ (E : Type) [
   ∀ g : GL (Fin n) (Af E), g ∈ twCent (thF E n) (ratF E n δ) ↔
     g ∈ UJ (conjFin (IsCMField.complexConj E).toRingEquiv) (H.map (algebraMap E (Af E))) ∧
       g * ratF E n (δ * thE E n δ) = ratF E n (δ * thE E n δ) * g := by
-  first | exact @GlobalTheory.CompanionTheory.TwCentNorm.mem_twCent_ratF_iff | exact GlobalTheory.CompanionTheory.TwCentNorm.mem_twCent_ratF_iff | (intros; apply GlobalTheory.CompanionTheory.TwCentNorm.mem_twCent_ratF_iff <;> assumption)
+  exact @GlobalTheory.CompanionTheory.TwCentNorm.mem_twCent_ratF_iff

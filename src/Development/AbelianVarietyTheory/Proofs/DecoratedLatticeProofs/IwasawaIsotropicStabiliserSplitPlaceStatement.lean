@@ -17,4 +17,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.Exh GlobalTheory.RegSW
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.iwasawa_isotropic_stabiliser_split_place : ∀ (D : D7) (T T₀ : HSp D) (r : ℕ) (d : HypDec T T₀ r) (v : FinPl D), Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v → ∀ y : Gv T v, ∃ q k : Gv T v, emb D.sp.cm.sig T.gram v q ∈ stab d ∧ k ∈ stabLoc D.sp.cm.sig T.gram (frameLat T) v ∧ y = q * k := by
-  first | exact @GlobalTheory.Core.Rk.IwFlagSplit.iwasawa_stab_split | exact GlobalTheory.Core.Rk.IwFlagSplit.iwasawa_stab_split | (intros; apply GlobalTheory.Core.Rk.IwFlagSplit.iwasawa_stab_split <;> assumption)
+  exact @GlobalTheory.Core.Rk.IwFlagSplit.iwasawa_stab_split

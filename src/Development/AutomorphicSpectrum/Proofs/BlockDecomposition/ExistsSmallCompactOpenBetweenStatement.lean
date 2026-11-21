@@ -10,4 +10,4 @@ theorem _root_.GlobalTheory.T.exists_small_compact_open_between : ∀ {G : Type}
     (N : Set G) (hN : N ∈ 𝓝 (1 : G)),
     ∃ K : Subgroup G, IsOpen (K : Set G) ∧ IsCompact (K : Set G) ∧ C ≤ K ∧ K ≤ K₀ ∧
       ∀ x ∈ K, ∃ n ∈ N, ∃ c ∈ C, x = n * c := by
-  first | exact @GlobalTheory.CompanionTheory.BZPhiPG.OntoO.exists_compactOpen_between_mul_small | exact GlobalTheory.CompanionTheory.BZPhiPG.OntoO.exists_compactOpen_between_mul_small | (intros; apply GlobalTheory.CompanionTheory.BZPhiPG.OntoO.exists_compactOpen_between_mul_small <;> assumption)
+  exact @GlobalTheory.CompanionTheory.BZPhiPG.OntoO.exists_compactOpen_between_mul_small

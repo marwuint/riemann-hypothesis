@@ -83,6 +83,19 @@ theorem proj_thDn (hP : GlobalTheory.Published.CuspRapidDecay) (hC : GlobalTheor
 
 end CompanionTheory.Member.ThetaDownProjection
 
+theorem CompanionTheory.Member.projection_of_functoriality : GlobalTheory.FunPr.Hypotheses₂ → StepProj := by
+  intro hP
+  refine ⟨0, fun ε CF _ => ⟨0, ?_⟩⟩
+  intro D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch _ _ t x hx
+  rw [← ch.cv.thDn_w s.core.chain]
+  exact CompanionTheory.Member.ThetaDownProjection.proj_thDn hP.cuspRapidDecay s.core t x hx _
+
 end
 
 end ThetaProjectionIdempotent
+section
+open GlobalTheory.RowClaim
+theorem _root_.GlobalTheory.Adopt.projection_of_functoriality_adopted : GlobalTheory.FunPr.Hypotheses₂ → StepProj := by
+  exact @ThetaProjectionIdempotent.CompanionTheory.Member.projection_of_functoriality
+
+end

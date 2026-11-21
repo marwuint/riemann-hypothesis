@@ -22,5 +22,5 @@ theorem _root_.GlobalTheory.T.doubled_lagrangian_unitary : ∀ (F E : Type) [Fie
             co.e (incM F x) = (fun i => algebraMap F (AF F) (y i), fun i => algebraMap F (AF F) (z i))) →
           ∀ Φ ∈ schA F κ, ∃ U : AddSubgroup (WOF F E nS nT), IsOpen (U : Set (WOF F E nS nT)) ∧
             ∀ u ∈ U, u.map (infPartF F E) = 0 → heisOF σ JS JT ξ₀ B.ψ u (GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ Φ) = GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ Φ := by
-  first | exact @_root_.GlobalTheory.ThetaLevelF.thetaTr_levelF_k | exact _root_.GlobalTheory.ThetaLevelF.thetaTr_levelF_k | (intros; apply _root_.GlobalTheory.ThetaLevelF.thetaTr_levelF_k <;> assumption)
+  exact @_root_.GlobalTheory.ThetaLevelF.thetaTr_levelF_k
 end

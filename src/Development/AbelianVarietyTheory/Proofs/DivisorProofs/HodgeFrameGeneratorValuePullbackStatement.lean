@@ -24,4 +24,4 @@ theorem _root_.GlobalTheory.T.hodge_frame_generator_value_pullback : ∀ {S' T Z
     (J : (Z ⟶ S') → (hodge G g).ι), Good (hodge G g) z J →
     val (L := hodge G g) (φ := fun _ : PUnit => x) (ε := fun _ => 1) (gen h ha) r z J =
       val (L := hodge G g) (φ := fun _ : PUnit => x') (ε := fun _ => 1) (gen h' hb) (𝟙 Z) z J := by
-  first | exact @GlobalTheory.HodgeFrameGen.val_gen_pull | exact GlobalTheory.HodgeFrameGen.val_gen_pull | (intros; apply GlobalTheory.HodgeFrameGen.val_gen_pull <;> assumption)
+  exact @GlobalTheory.HodgeFrameGen.val_gen_pull

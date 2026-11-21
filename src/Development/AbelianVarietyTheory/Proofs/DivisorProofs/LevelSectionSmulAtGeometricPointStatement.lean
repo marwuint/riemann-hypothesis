@@ -24,4 +24,4 @@ theorem _root_.GlobalTheory.T.levelSection_smul_at_geometricPoint : ∀ {E : Typ
     (φ : X' ⟶ X₀ TF.Y Z) (ℓ : V₀ TF.Y Z ⟶ X') (hℓ : ℓ ≫ φ = j₀ TF.Y Z) (Ω : Type) [Field Ω] [IsAlgClosed Ω] (x : Sp Ω ⟶ V₀ TF.Y Z) (a : LevelMod Dw l)
     (r : 𝓞 E) (A B : Over.mk (x ≫ ℓ) ⟶ GlobalTheory.EqvAct.pullG TF Z φ) (hA : A.left = x ≫ GlobalTheory.TorsSpec.etaSecL TF Z φ ℓ hℓ a)
     (hB : B.left = x ≫ GlobalTheory.TorsSpec.etaSecL TF Z φ ℓ hℓ (r • a)), B = A ≫ (GlobalTheory.EqvAct.pullAct TF Z φ).act r := by
-  first | exact @GlobalTheory.TorsSpec.etaSecL_smul_geom | exact GlobalTheory.TorsSpec.etaSecL_smul_geom | (intros; apply GlobalTheory.TorsSpec.etaSecL_smul_geom <;> assumption)
+  exact @GlobalTheory.TorsSpec.etaSecL_smul_geom

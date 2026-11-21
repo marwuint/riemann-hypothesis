@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.local_character_induced_tied : ∀ {E Ω : Type} [
       (J₁ J₂ : (↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥LL'.1) → ℤ),
       PositivityTheory.HodgeLocalCharacter.HLC.IsdRJ Bw P LL' ψ₁ J₁ → PositivityTheory.HodgeLocalCharacter.HLC.IsdRJ Bw P LL' ψ₂ J₂ →
       PositivityTheory.HodgeLocalCharacter.HLC.IsdRJ Bw P LL' (ψ₁ * ψ₂) (J₁ + J₂) := by
-  first | exact @GlobalTheory.CompanionTheory.HLCMul.isdRJ_mul | exact GlobalTheory.CompanionTheory.HLCMul.isdRJ_mul | (intros; apply GlobalTheory.CompanionTheory.HLCMul.isdRJ_mul <;> assumption)
+  exact @GlobalTheory.CompanionTheory.HLCMul.isdRJ_mul

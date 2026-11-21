@@ -11,4 +11,4 @@ theorem _root_.GlobalTheory.T.baseChange_polynomial_annihilates_descent : ∀ (K
       Polynomial.aeval (LinearMap.baseChange L0 T0) q z = 0) →
     ∀ y ∈ LinearMap.range (∑ g ∈ s, rd (a g) • LinearMap.baseChange KB (ρ g)),
       Polynomial.aeval (LinearMap.baseChange KB T0) (q.map rd) y = 0 := by
-  first | exact @GlobalTheory.baseChange_polynomial_kills_descent | exact GlobalTheory.baseChange_polynomial_kills_descent | (intros; apply GlobalTheory.baseChange_polynomial_kills_descent <;> assumption)
+  exact @GlobalTheory.baseChange_polynomial_kills_descent

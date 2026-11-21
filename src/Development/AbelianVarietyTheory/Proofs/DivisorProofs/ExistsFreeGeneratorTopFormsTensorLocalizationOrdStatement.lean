@@ -24,4 +24,4 @@ theorem _root_.GlobalTheory.T.exists_freeGenerator_topForms_tensorLocalization_o
         (fun i => algebraMap (K ⊗[ℂ] κ') L (x i ⊗ₜ 1))) =
       ((q : L) * (algebraMap (K ⊗[ℂ] κ') L ((t : K) ⊗ₜ 1)) ^ E.formOrd (dForm (algebraMap ℂ K) x)) •
         dForm (algebraMap ℂ L) (fun i => (y i : L)) := by
-  first | exact @GlobalTheory.GraphLocal.exists_isFreeGen_locAt_formOrd | exact GlobalTheory.GraphLocal.exists_isFreeGen_locAt_formOrd | (intros; apply GlobalTheory.GraphLocal.exists_isFreeGen_locAt_formOrd <;> assumption)
+  exact @GlobalTheory.GraphLocal.exists_isFreeGen_locAt_formOrd

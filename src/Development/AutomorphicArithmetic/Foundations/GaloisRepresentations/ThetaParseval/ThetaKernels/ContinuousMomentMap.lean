@@ -17,5 +17,5 @@ theorem _root_.GlobalTheory.T.continuous_moment_map : ∀ (F E : Type) [Field F]
     (B : Base F E), _root_.UpperTheory.TP.W.GoodK σ B → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E)
       (θ : InfinitePlace F → (Ainf F ⊗[F] E →+* ℂ)),
       IsInfFamF (fun w : InfinitePlace F => (B.emb w).1) θ → Continuous (mMF σ JS JT θ) := by
-  first | exact @_root_.GlobalTheory.RealWeilF.MCont.continuous_mMF_k | exact _root_.GlobalTheory.RealWeilF.MCont.continuous_mMF_k | (intros; apply _root_.GlobalTheory.RealWeilF.MCont.continuous_mMF_k <;> assumption)
+  exact @_root_.GlobalTheory.RealWeilF.MCont.continuous_mMF_k
 end

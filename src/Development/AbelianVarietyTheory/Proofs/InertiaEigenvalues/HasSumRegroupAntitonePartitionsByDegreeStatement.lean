@@ -7,4 +7,4 @@ theorem _root_.GlobalTheory.T.hasSum_regroup_antitonePartitions_by_degree : ∀ 
     Summable (fun d => ‖∑ l ∈ GlobalTheory.JSW.antiParts m d, G l‖) ∧
     ∀ s, HasSum (fun d => ∑ l ∈ GlobalTheory.JSW.antiParts m d, G l) s →
       HasSum (fun l : {l : Fin m → ℕ // Antitone l} => G l.1) s := by
-  first | exact @GlobalTheory.JSW.regroup_antiParts | exact GlobalTheory.JSW.regroup_antiParts | (intros; apply GlobalTheory.JSW.regroup_antiParts <;> assumption)
+  exact @GlobalTheory.JSW.regroup_antiParts

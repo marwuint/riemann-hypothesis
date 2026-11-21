@@ -52,5 +52,5 @@ theorem _root_.GlobalTheory.T.bottom_large_level_kernel : _root_.GlobalTheory.Fu
       (X : Tri T A A' WW), IsBottomTri W i j X → ∀ (t : T) (Pf : PolF D WW.rank A.rank) (g : Formalism.L2.Theta.GA D WW) (n : ℕ) (x : Formalism.MainNotions.StandardLatticesGL3.GA D n)
         (k : Formalism.L2.Theta.GA D A), x ∈ GlobalTheory.NormSum.intG D n → GlobalTheory.BotFormula.IsFinPt A k x →
         ∀ y, X.ker W.ψ W.θ t Pf g (y * k) = X.ker W.ψ W.θ t Pf g y := by
-  first | exact @_root_.GlobalTheory.BotBigLevel.bottom_kernel_mul_large_level | exact _root_.GlobalTheory.BotBigLevel.bottom_kernel_mul_large_level | (intros; apply _root_.GlobalTheory.BotBigLevel.bottom_kernel_mul_large_level <;> assumption)
+  exact @_root_.GlobalTheory.BotBigLevel.bottom_kernel_mul_large_level
 end

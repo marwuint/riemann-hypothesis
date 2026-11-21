@@ -20,4 +20,4 @@ theorem _root_.GlobalTheory.T.inert_place_unramified_skew_space : ∀ (F E : Typ
       ∃ JT : GL (Fin n) L, JT ∈ Formalism.UG.GLint (Fin n) (Formalism.UG.intL L) ∧
         (JT : Matrix (Fin n) (Fin n) L) = -δ⁻¹ • (GlobalTheory.InertLocFrame.gram σL ι P X.J)ᵀ ∧
         ∀ i j, σL ((JT : Matrix (Fin n) (Fin n) L) i j) = (JT : Matrix (Fin n) (Fin n) L) j i := by
-  first | exact @GlobalTheory.InertGramSkew.gram_skew_unimodular | exact GlobalTheory.InertGramSkew.gram_skew_unimodular | (intros; apply GlobalTheory.InertGramSkew.gram_skew_unimodular <;> assumption)
+  exact @GlobalTheory.InertGramSkew.gram_skew_unimodular

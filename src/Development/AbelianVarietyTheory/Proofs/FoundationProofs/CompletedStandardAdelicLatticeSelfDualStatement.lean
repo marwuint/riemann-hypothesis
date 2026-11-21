@@ -7,4 +7,4 @@ open NumberField Classical Formalism.BasicNotions Formalism.MainNotions Formalis
 open scoped BigOperators
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.completedStandardAdelicLattice_selfDual : ∀ (D : D7), admG1 D → ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → ∀ ψ : AE D → ℂ, IsPsi D cc δ ψ → ∀ (N N' : ℕ), SelfDual (gamA ψ) (latA D cc N N') := by
-  first | exact @GlobalTheory.FinWeil.LatSelfDual.latA_selfDual | exact GlobalTheory.FinWeil.LatSelfDual.latA_selfDual | (intros; apply GlobalTheory.FinWeil.LatSelfDual.latA_selfDual <;> assumption)
+  exact @GlobalTheory.FinWeil.LatSelfDual.latA_selfDual

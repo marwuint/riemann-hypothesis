@@ -18,4 +18,4 @@ theorem _root_.GlobalTheory.T.liftForm_at_evaluationVector_eq_realisationLift : 
   ∀ x ∈ Idx.TjV D (D.what₂.muTw w) (j.1 + 1),
   (X.R.HW j (sg0 D X.A3.A)).e (Y.mj.eW j (D.what₂.thetaP (D.what₂.muTw w) (j.1 + 1) (D.what₂.jMt (D.what₂.muTw w) (j.1 + 1) x))) (X.geo.v₀ j (sg0 D X.A3.A)) =
     X.R.thF j (Y.tupT (D.what₂.muTw w)) (formOf Y (used_of_tw H.tw) j (D.what₂.jMt (D.what₂.muTw w) (j.1 + 1) x)) (X.geo.v₀ j (sg0 D X.A3.A)) := by
-  first | exact @GlobalTheory.PlaceLift.lift_read_at | exact GlobalTheory.PlaceLift.lift_read_at | (intros; apply GlobalTheory.PlaceLift.lift_read_at <;> assumption)
+  exact @GlobalTheory.PlaceLift.lift_read_at

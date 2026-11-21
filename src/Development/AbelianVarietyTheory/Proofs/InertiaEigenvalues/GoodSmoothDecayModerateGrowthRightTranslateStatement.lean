@@ -17,4 +17,4 @@ open NumberField Matrix MeasureTheory GlobalTheory.CuspRep GlobalTheory.CuspRep.
 open scoped Pointwise
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.goodSmoothDecayModerateGrowth_rightTranslate : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (F : GA E a → ℂ) (h : GA E a), GlobalTheory.MSpanDecay.Good F → GlobalTheory.MSpanDecay.Good (fun g => F (g * h)) := by
-  first | exact @GlobalTheory.RtGood.good_mul_right | exact GlobalTheory.RtGood.good_mul_right | (intros; apply GlobalTheory.RtGood.good_mul_right <;> assumption)
+  exact @GlobalTheory.RtGood.good_mul_right

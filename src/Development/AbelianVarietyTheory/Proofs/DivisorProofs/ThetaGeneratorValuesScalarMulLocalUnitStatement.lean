@@ -31,4 +31,4 @@ theorem _root_.GlobalTheory.T.thetaGenerator_values_scalar_mul_localUnit : ∀ (
     ∃ κ : K, ∀ p : 𝟙_ (Over (Sp V₁)) ⟶ D.P.A, DefOver k₀ (spMap ev ≫ p.left ≫ β) → ∃ c ∈ k₀,
       sval (θ : LB.Sec (LB.LinComb D.P.L (D.famφB 0) (DegPre.famε 1))) (spMap ev ≫ p.left) z J =
         ((GlobalTheory.USep.EvG.gwx w z J J₀ (spMap ev ≫ p.left))⁻¹).val * toStk z (κ * c) := by
-  first | exact @GlobalTheory.USep.EvG.ThetaVal.theta_values | exact GlobalTheory.USep.EvG.ThetaVal.theta_values | (intros; apply GlobalTheory.USep.EvG.ThetaVal.theta_values <;> assumption)
+  exact @GlobalTheory.USep.EvG.ThetaVal.theta_values

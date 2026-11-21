@@ -71,5 +71,5 @@ open NumberField ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRes
 open AlgebraicGeometry CategoryTheory
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.exists_kodaira_spencer_flag_tangent : _root_.GlobalTheory.CovTop.Hypotheses'' → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (K : Type) [Field K] [Algebra c.F K] (y : FrPt Xo c K) (x' : Sp (DualNumber K) ⟶ Xo.X), 1 ≤ Dw.p + Dw.q → GlobalTheory.FlagTan.IsTanX y x' → ∃ M : GlobalTheory.FlagTan.HIx Dw (GlobalTheory.FlagTan.psiSet H) → K, GlobalTheory.FlagTan.IsKS (GlobalTheory.FlagTan.psiSet H) y x' M := by
-  first | exact @_root_.GlobalTheory.KSExist.exists_kodaira_spencer_map | exact _root_.GlobalTheory.KSExist.exists_kodaira_spencer_map | (intros; apply _root_.GlobalTheory.KSExist.exists_kodaira_spencer_map <;> assumption)
+  exact @_root_.GlobalTheory.KSExist.exists_kodaira_spencer_map
 end

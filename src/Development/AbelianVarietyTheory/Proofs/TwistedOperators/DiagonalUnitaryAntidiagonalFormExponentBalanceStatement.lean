@@ -11,4 +11,4 @@ open scoped TensorProduct
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.diagonal_unitary_antidiagonalForm_exponent_balance : ∀ {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] (ϖ : L) (c : L →+* L) (q : ℕ), IsUnramInv ϖ c q → ∀ (r : ℕ) (d : Fin r → ℤ) (t : GU c r), t.1.1 = Matrix.diagonal (fun i => ϖ ^ d i) → ∑ i, max (-d i) 0 = ∑ i, max (d i) 0 := by
-  first | exact @GlobalTheory.diag_unitary_exp_sym | exact GlobalTheory.diag_unitary_exp_sym | (intros; apply GlobalTheory.diag_unitary_exp_sym <;> assumption)
+  exact @GlobalTheory.diag_unitary_exp_sym

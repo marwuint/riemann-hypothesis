@@ -14,4 +14,4 @@ theorem _root_.GlobalTheory.T.minor_expansion_of_scaled_product : ∀ {Ψ : Type
     (S : Finset (Fin (p + q))) (hS : S.card = (t.2 : ℕ) + 1),
     ∑ I, cMin A t J I * minorIJ (tMat Ts τ * h) I S =
       x ^ (m t.1 * ((t.2 : ℕ) + 1)) * ∑ I, cMin C t J I * minorIJ h I S := by
-  first | exact @GlobalTheory.CompanionTheory.Ar.PB.FMX.Frm.sum_cMin_tMat_mul | exact GlobalTheory.CompanionTheory.Ar.PB.FMX.Frm.sum_cMin_tMat_mul | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.FMX.Frm.sum_cMin_tMat_mul <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Ar.PB.FMX.Frm.sum_cMin_tMat_mul

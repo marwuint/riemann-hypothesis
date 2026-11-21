@@ -23,4 +23,4 @@ theorem _root_.GlobalTheory.T.exists_archimedean_pair_negative_symplectic_pairin
         (((ε' w' : ℤ) : ℂ) * Complex.I) • (X.θ w' * u.map (piInf (B.emb w')) * (W.θ w')ᵀ)) ∧
       Algebra.trace ℝ (mixedEmbedding.mixedSpace F)
         (evI F (GlobalTheory.WeilM.symp (cA σ) (-1) (incM F X.J) (incM F W.J) u u')) < 0 := by
-  first | exact @GlobalTheory.WrongSignPair.exists_neg_pair | exact GlobalTheory.WrongSignPair.exists_neg_pair | (intros; apply GlobalTheory.WrongSignPair.exists_neg_pair <;> assumption)
+  exact @GlobalTheory.WrongSignPair.exists_neg_pair

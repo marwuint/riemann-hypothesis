@@ -9,4 +9,4 @@ set_option maxHeartbeats 2000000
 open GlobalTheory.HeightCounting.SerMove
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.linkedStates_tuplePlaces_over_fixedCharacterPrime : ∀ {K : Ctx} {B B' : Base} {f : Top.Fr B.toPre} {f' : Top.Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'} {P : Pre2 K w} {P' : Pre2 K w'} (x : St P) (x' : St P') (ι : (Dof x).what₂.LL →+* (Dof x').what₂.LL) (e : ↥(Dof x').LL0 ≃+* ↥(Dof x).LL0) (g : Geo x) (g' : Geo x'), Link x x' ι e g g' → ∀ (hg : GlobalTheory.RealGeo.InGeo g) (hg' : GlobalTheory.RealGeo.InGeo g') (a : BigHost (Dof x)) (a' : BigHost (Dof x')), PlCl (sideAt x g hg a) (sideAt x' g' hg' a') := by
-  first | exact @GlobalTheory.HeightCounting.SerMove.Places.plCl_of_link | exact GlobalTheory.HeightCounting.SerMove.Places.plCl_of_link | (intros; apply GlobalTheory.HeightCounting.SerMove.Places.plCl_of_link <;> assumption)
+  exact @GlobalTheory.HeightCounting.SerMove.Places.plCl_of_link

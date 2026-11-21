@@ -39,5 +39,5 @@ theorem _root_.GlobalTheory.T.twist_firstRow_scalar_multiple : _root_.GlobalTheo
           ∏ w : locPl ch.G t, GlobalTheory.FirstRowEndLaw.endLam ch.G t w.1 (GlobalTheory.FirstRowTermLaw.kapAt ch.S.toGridChoice t w.1 k) =
         ∏ w : locPl ch.G t, (locGrid ch.G t w).edgeFactor .one
           (Pi.mulSingle (0, D.R.m) (GlobalTheory.FirstRowTermLaw.kapAt ch.S.toGridChoice t w k)) (.ex 0 D.R.m) := by
-  first | exact @_root_.GlobalTheory.FirstRowScalar.firstRow_scalar_multiple | exact _root_.GlobalTheory.FirstRowScalar.firstRow_scalar_multiple | (intros; apply _root_.GlobalTheory.FirstRowScalar.firstRow_scalar_multiple <;> assumption)
+  exact @_root_.GlobalTheory.FirstRowScalar.firstRow_scalar_multiple
 end

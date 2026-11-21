@@ -8,4 +8,4 @@ theorem _root_.GlobalTheory.T.cohomology_vanishing_short_exact : ∀ {R : Type} 
     (β : F₂ ⟶ F₃), (∀ T, Function.Injective (α.app T).hom) → (∀ T, Function.Exact (α.app T).hom (β.app T).hom) →
     (∀ T, Function.Surjective (β.app T).hom) → (∀ n, Subsingleton (CH.H F₂ n)) → (∀ n, Subsingleton (CH.H F₃ n)) →
     ∀ n, Subsingleton (CH.H F₁ n) := by
-  first | exact @GlobalTheory.CompanionTheory.Cohomology.subsingleton_H_of_ses | exact GlobalTheory.CompanionTheory.Cohomology.subsingleton_H_of_ses | (intros; apply GlobalTheory.CompanionTheory.Cohomology.subsingleton_H_of_ses <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Cohomology.subsingleton_H_of_ses

@@ -23,4 +23,4 @@ theorem _root_.GlobalTheory.T.integral_fundamentalDomain_eq_vol_mul_classSum : �
         ∀ h, Φ (h * k) = Φ h) →
       ∫ g in fd, Φ g ∂m = v * ∑ᶠ x : GlobalTheory.NormSum.Cls D n (GlobalTheory.NormSum.intG D n),
         ((GlobalTheory.NormSum.gam D (GlobalTheory.NormSum.intG D n) x.out : ℂ))⁻¹ * Φ (pt x.out) := by
-  first | exact @GlobalTheory.BotClassMeas.integral_eq_vol_mul_classSum | exact GlobalTheory.BotClassMeas.integral_eq_vol_mul_classSum | (intros; apply GlobalTheory.BotClassMeas.integral_eq_vol_mul_classSum <;> assumption)
+  exact @GlobalTheory.BotClassMeas.integral_eq_vol_mul_classSum

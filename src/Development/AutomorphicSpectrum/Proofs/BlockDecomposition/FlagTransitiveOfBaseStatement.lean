@@ -6,4 +6,4 @@ open Formalism.UG (cT)
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.flag_transitive_of_base : ∀ {R : Type} [CommRing R] (c : R →+* R) (𝔬 : Subring R), IsHermRing c 𝔬 → HasBase c 𝔬 → FlagTransitive c 𝔬 := by
-  first | exact @GlobalTheory.CompanionTheory.KFin.Flag.flagTransitive | exact GlobalTheory.CompanionTheory.KFin.Flag.flagTransitive | (intros; apply GlobalTheory.CompanionTheory.KFin.Flag.flagTransitive <;> assumption)
+  exact @GlobalTheory.CompanionTheory.KFin.Flag.flagTransitive

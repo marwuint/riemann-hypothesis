@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.definiteBottomTriple_transport_same_ranks_constant
     (A A' WW : HSp D) (X : Tri T A A' WW) (B B' WW₁ : HSp D) (Y : Tri T B B' WW₁),
     IsBottomTri W i j X → IsBottomTri W i j Y →
     ∃ X₁ : Tri T B B' WW₁, IsBottomTri W i j X₁ ∧ ∀ c : T → ℂ, X₁.IsConst W.ψ W.θ c → X.IsConst W.ψ W.θ c := by
-  first | exact @GlobalTheory.SpaceMove.bottom_transport | exact GlobalTheory.SpaceMove.bottom_transport | (intros; apply GlobalTheory.SpaceMove.bottom_transport <;> assumption)
+  exact @GlobalTheory.SpaceMove.bottom_transport

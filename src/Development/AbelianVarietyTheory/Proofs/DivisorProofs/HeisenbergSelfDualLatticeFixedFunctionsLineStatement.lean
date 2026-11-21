@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.heisenbergSelfDualLattice_fixedFunctions_line : �
         (B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V.J) (incM F G.W.J) γ γ) • φ₀)) →
     ∀ φ ∈ SB (Fin a × Fin (a + a') → Fv F v), (∀ γ ∈ latAtV G.V G.W v, Acts (evFin F v) (G.M.co.rho B.ψ γ) φ
         (B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V.J) (incM F G.W.J) γ γ) • φ)) → ∃ c : ℂ, φ = c • φ₀ := by
-  first | exact @GlobalTheory.LatVacLine.vacuum_line | exact GlobalTheory.LatVacLine.vacuum_line | (intros; apply GlobalTheory.LatVacLine.vacuum_line <;> assumption)
+  exact @GlobalTheory.LatVacLine.vacuum_line

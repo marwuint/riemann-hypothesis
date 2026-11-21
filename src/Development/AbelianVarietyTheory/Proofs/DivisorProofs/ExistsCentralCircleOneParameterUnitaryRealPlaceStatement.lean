@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.exists_central_circle_oneParameter_unitary_realPla
       (∀ t : ℝ, ((γ (Multiplicative.ofAdd t)).1 : Matrix β β (AE F E)) = (z t : AE F E) • (1 : Matrix β β (AE F E))) ∧
       (∀ t : ℝ, At (evI F) ((z t : AE F E) - 1)) ∧
       ∀ (t : ℝ) (w : InfinitePlace F), piInf (τ w) (z t : AE F E) = if w = w₀ then Complex.exp (t * Complex.I) else 1 := by
-  first | exact @GlobalTheory.CentralLine.exists_central_line | exact GlobalTheory.CentralLine.exists_central_line | (intros; apply GlobalTheory.CentralLine.exists_central_line <;> assumption)
+  exact @GlobalTheory.CentralLine.exists_central_line

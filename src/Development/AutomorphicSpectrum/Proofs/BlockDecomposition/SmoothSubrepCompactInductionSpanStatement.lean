@@ -11,4 +11,4 @@ theorem _root_.GlobalTheory.T.smooth_subrep_compact_induction_span : ∀ {G W : 
       ∃ B ∈ I, (∀ (a : H), ∀ x ∈ K, B.1.1.1 ((a : G) * x) = ρ a v) ∧
         ∀ g, (¬ ∃ a : H, ∃ x ∈ K, g = (a : G) * x) → B.1.1.1 g = 0)
     (y : cIndSpace H ρ), y ∈ I := by
-  first | exact @GlobalTheory.CompanionTheory.PRep.CIndGlue.eq_top_of_bumps | exact GlobalTheory.CompanionTheory.PRep.CIndGlue.eq_top_of_bumps | (intros; apply GlobalTheory.CompanionTheory.PRep.CIndGlue.eq_top_of_bumps <;> assumption)
+  exact @GlobalTheory.CompanionTheory.PRep.CIndGlue.eq_top_of_bumps

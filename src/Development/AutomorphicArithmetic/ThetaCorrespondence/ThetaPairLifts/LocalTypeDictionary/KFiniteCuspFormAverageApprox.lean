@@ -77,5 +77,5 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.Glob
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.kFinite_cuspForm_average_approx : ∀ {D : D7} (θ : InfFam D), IsInfFam θ → _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (N : GlobalTheory.Grid.Node D) (τ : D.what₂.Tau) (e : Formalism.REAL.KG (N.M.ε τ) → ℂ), Continuous e → ∀ φ : GA D N.V → ℂ, IsAutFunSm θ N.V φ → IsCuspFun N.V φ → IsCuspFun N.V (GlobalTheory.KFinCuspApprox.avgN θ N τ e φ) := by
-  first | exact @_root_.GlobalTheory.KFinCuspApprox.isCuspForm_kFinite_average | exact _root_.GlobalTheory.KFinCuspApprox.isCuspForm_kFinite_average | (intros; apply _root_.GlobalTheory.KFinCuspApprox.isCuspForm_kFinite_average <;> assumption)
+  exact @_root_.GlobalTheory.KFinCuspApprox.isCuspForm_kFinite_average
 end

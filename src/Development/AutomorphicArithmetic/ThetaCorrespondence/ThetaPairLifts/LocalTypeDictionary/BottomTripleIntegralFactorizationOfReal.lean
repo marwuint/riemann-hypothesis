@@ -167,5 +167,5 @@ theorem _root_.GlobalTheory.T.bottom_triple_integral_factorization_of_real : _ro
       (p' : PolF D WW.rank A'.rank →ₗ[ℂ] Pi) (J : T → (Pi →ₗ[ℂ] (GA D WW → ℂ))), Function.Surjective p ∧
       (∀ t, J t = 0 ∨ Function.Injective (J t)) ∧ (∀ t, ∃ lam : ℂ, ∀ P, X.I W.ψ W.θ t P = lam • J t (p P)) ∧
       ∀ t P', X.I' W.ψ W.θ t P' = J t (p' P') := by
-  first | exact @_root_.GlobalTheory.BotFac.bottom_triple_integral_factorization_real | exact _root_.GlobalTheory.BotFac.bottom_triple_integral_factorization_real | (intros; apply _root_.GlobalTheory.BotFac.bottom_triple_integral_factorization_real <;> assumption)
+  exact @_root_.GlobalTheory.BotFac.bottom_triple_integral_factorization_real
 end

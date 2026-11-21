@@ -21,4 +21,4 @@ theorem _root_.GlobalTheory.T.darboux_schrodinger_compatibility : GlobalTheory.F
       (∀ l ∈ (adeleClass F).adm κ, ∀ φ ∈ schA F κ,
         ContinuousOn (fun g => l (ω₀ g φ)) {g : UG (cA σ) JB | At (evI F) ((g.1 : Matrix β β (AE F E)) - 1)}) ∧
       ActsBy τ C ω₀ Φ (fockAct2 P Q R S) c₀ := by
-  first | exact @GlobalTheory.GenRep.genRep | exact GlobalTheory.GenRep.genRep | (intros; apply GlobalTheory.GenRep.genRep <;> assumption)
+  exact @GlobalTheory.GenRep.genRep

@@ -22,4 +22,4 @@ theorem _root_.GlobalTheory.T.thetaTransform_rationalTranslate_quasiInvariant_cm
             co.e (incM F x) = (fun i => algebraMap F (AF F) (y i), fun i => algebraMap F (AF F) (z i))) →
           ∀ Φ ∈ schA F κ, ∀ (γ : Matrix (Fin nT) (Fin nS) E) (w : WOF F E nS nT),
             GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ Φ (ratWF γ + w) = B.ψ (-(symplOHF σ JS JT ξ₀ (ratWF γ) w)) * GlobalTheory.WeilSchrodinger.thetaTr F co B.ψ Φ w := by
-  first | exact @GlobalTheory.ThetaQuasiRatF.thetaTr_ratWF_add | exact GlobalTheory.ThetaQuasiRatF.thetaTr_ratWF_add | (intros; apply GlobalTheory.ThetaQuasiRatF.thetaTr_ratWF_add <;> assumption)
+  exact @GlobalTheory.ThetaQuasiRatF.thetaTr_ratWF_add

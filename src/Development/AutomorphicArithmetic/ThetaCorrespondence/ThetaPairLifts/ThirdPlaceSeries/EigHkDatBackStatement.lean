@@ -13,5 +13,5 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.eigAd_of_yRel_at_level_c : ∀ {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w} {x : St P} (L : LocAll (lay0 (Dof x))) (l : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel hL x) {p0 : BaseLevelRowSide (w.D (oL x L).Z)} (Y : YT x L p0), YRel L Y → EigAd Y (_root_.GlobalTheory.HeightCounting.Fin3.smallPlaceSet L l) (_root_.GlobalTheory.HeightCounting.Fin3.localEigenvalueDegree L l) := by
-  first | exact @_root_.GlobalTheory.HeightCounting.Fin3.eigAd_smallPlaceSet_of_yRel | exact _root_.GlobalTheory.HeightCounting.Fin3.eigAd_smallPlaceSet_of_yRel | (intros; apply _root_.GlobalTheory.HeightCounting.Fin3.eigAd_smallPlaceSet_of_yRel <;> assumption)
+  exact @_root_.GlobalTheory.HeightCounting.Fin3.eigAd_smallPlaceSet_of_yRel
 end

@@ -14,4 +14,4 @@ theorem _root_.GlobalTheory.T.laplacian_power_casimir_bound : ∀ (n : ℕ) [Mea
     (∀ f ∈ CE E, ∀ g ∈ GLs n, GlobalTheory.CompanionTheory.FcSmooth.Lap f g = -Om f g + Q (f g)) →
     ∀ j : ℕ, ∃ C : ℝ, ∀ f : Mat n → E.V, Sob μ f → IsSec E f →
       ‖cls μ (GlobalTheory.CompanionTheory.FcSmooth.Lap^[j] f)‖ ≤ C * ∑ i ∈ range (j + 1), ‖cls μ (Om^[i] f)‖ := by
-  first | exact @GlobalTheory.CompanionTheory.LapSec.sectionBound | exact GlobalTheory.CompanionTheory.LapSec.sectionBound | (intros; apply GlobalTheory.CompanionTheory.LapSec.sectionBound <;> assumption)
+  exact @GlobalTheory.CompanionTheory.LapSec.sectionBound

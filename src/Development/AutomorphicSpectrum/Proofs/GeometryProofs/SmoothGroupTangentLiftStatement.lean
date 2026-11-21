@@ -13,4 +13,4 @@ theorem _root_.GlobalTheory.T.smooth_group_tangent_lift : ∀ (S : Scheme.{0}) (
     RingHom.Smooth (G.hom.appLE V U hUV).hom ∧
     ∃ u : Γ(G.left, U) →+* Localization.Away f,
       (1 : Over.mk (spMap (algebraMap R (Localization.Away f)) ≫ x) ⟶ G).left = spMap u ≫ hU.fromSpec := by
-  first | exact @GlobalTheory.CompanionTheory.Ar.Chart.exists_chart_at_point | exact GlobalTheory.CompanionTheory.Ar.Chart.exists_chart_at_point | (intros; apply GlobalTheory.CompanionTheory.Ar.Chart.exists_chart_at_point <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Ar.Chart.exists_chart_at_point

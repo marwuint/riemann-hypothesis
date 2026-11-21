@@ -22,4 +22,4 @@ theorem _root_.GlobalTheory.T.exists_holUnif_pull_along_groupHom : ∀ (A B : Ov
       DifferentiableOn ℂ (fun z => valAt' (ex z).left U f) {z | ⊤ ≤ (ex z).left ⁻¹ᵁ U}) →
     (∀ z, ex z ≫ φ = u'.ex z) → Λ ≤ u'.Λ → u'.IsAH Hm χ' →
     ∃ (u : HolUnif A (L.pull φ.left) g) (χ : u.Λ → ℂ), (∀ w, w ∈ u.Λ ↔ w ∈ Λ) ∧ u.IsAH Hm χ := by
-  first | exact @GlobalTheory.PullUnifHom.exists_holUnif_pull_hom | exact GlobalTheory.PullUnifHom.exists_holUnif_pull_hom | (intros; apply GlobalTheory.PullUnifHom.exists_holUnif_pull_hom <;> assumption)
+  exact @GlobalTheory.PullUnifHom.exists_holUnif_pull_hom

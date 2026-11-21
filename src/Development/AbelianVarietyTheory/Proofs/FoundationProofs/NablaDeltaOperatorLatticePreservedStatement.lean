@@ -12,4 +12,4 @@ open NumberField IsDedekindDomain MvPolynomial Formalism.BasicNotions Formalism.
 open scoped Matrix ComplexOrder
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.nablaDeltaOperator_lattice_preserved : NabDelLattice := by
-  first | exact @GlobalTheory.TransLattice.nabDelLattice | exact GlobalTheory.TransLattice.nabDelLattice | (intros; apply GlobalTheory.TransLattice.nabDelLattice <;> assumption)
+  exact @GlobalTheory.TransLattice.nabDelLattice

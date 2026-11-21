@@ -18,4 +18,4 @@ theorem _root_.GlobalTheory.T.formallyEtale_polynomialPlace_to_place : ∀ {K L 
     (∀ g : R, j (g : K) = (ι g : L)) → ∀ (hA : ∀ f ∈ P0.ring, j f ∈ P.ring)
     (hτ : ∀ i, (τ i : L) ∈ P.ring),
     (MvPolynomial.eval₂Hom (j.restrict P0.ring P.ring hA) (fun i => (⟨τ i, hτ i⟩ : P.ring))).FormallyEtale := by
-  first | exact @GlobalTheory.FieldPair.formallyEtale_polyPlace | exact GlobalTheory.FieldPair.formallyEtale_polyPlace | (intros; apply GlobalTheory.FieldPair.formallyEtale_polyPlace <;> assumption)
+  exact @GlobalTheory.FieldPair.formallyEtale_polyPlace

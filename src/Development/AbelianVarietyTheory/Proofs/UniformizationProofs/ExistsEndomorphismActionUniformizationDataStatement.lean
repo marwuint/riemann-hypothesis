@@ -14,4 +14,4 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.UT
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.exists_endomorphism_action_uniformization_data : LL → AllU fun {R} _ _ {I} {D} {A} {G} _ _ U => ∀ (aG : G ⟶ G) (aA : A.A ⟶ A.A), IsMonHom aG → IsMonHom aA → (Over.pullback (jK R)).map aG ≫ U.gen.hom = U.gen.hom ≫ aA → ∃ E : EndU U.toUnifPre, E.aG = aG ∧ E.aA = aA := by
-  first | exact @GlobalTheory.EndData.exists_endU | exact GlobalTheory.EndData.exists_endU | (intros; apply GlobalTheory.EndData.exists_endU <;> assumption)
+  exact @GlobalTheory.EndData.exists_endU

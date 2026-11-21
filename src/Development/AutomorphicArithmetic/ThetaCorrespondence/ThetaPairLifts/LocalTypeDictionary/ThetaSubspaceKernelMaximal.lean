@@ -275,5 +275,5 @@ theorem _root_.GlobalTheory.T.theta_subspace_kernel_maximal : _root_.GlobalTheor
     ∃ K, GlobalTheory.CoinvKer.IsThetaSub om Bs.emb (algD Γ.M Bs.ψ Bs.emb) K ∧ K ≠ algD Γ.M Bs.ψ Bs.emb ∧
       (∀ N, GlobalTheory.CoinvKer.IsThetaSub om Bs.emb (algD Γ.M Bs.ψ Bs.emb) N → K ≤ N → N = K ∨ N = algD Γ.M Bs.ψ Bs.emb) ∧
       ∀ Φ ∈ algF ψ θ true A B, ∀ ΦD ∈ algD Γ.M Bs.ψ Bs.emb, IsDatum Γ.M ψ cA ΦD Φ → (ΦD ∈ K ↔ p Φ = 0) := by
-  first | exact @_root_.GlobalTheory.SquareAgree.kernel_maximal_theta_subspace | exact _root_.GlobalTheory.SquareAgree.kernel_maximal_theta_subspace | (intros; apply _root_.GlobalTheory.SquareAgree.kernel_maximal_theta_subspace <;> assumption)
+  exact @_root_.GlobalTheory.SquareAgree.kernel_maximal_theta_subspace
 end

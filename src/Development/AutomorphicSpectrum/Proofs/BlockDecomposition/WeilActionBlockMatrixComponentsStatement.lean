@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.weil_action_block_matrix_components : ∀ (D : D7)
         -HMul.hMul (colJoin y₁ (0 : Mx D m s)) (rat a) ∧
       yPart (HMul.hMul (zy (colJoin y₁ y₂)) ((repMat (D.sp.cm.sig : D.host.E →+* D.host.E) b a).map (incA D))) =
         HMul.hMul (colJoin (-HMul.hMul y₁ (rat b)) y₂) (rat (cT (D.sp.cm.sig : D.host.E →+* D.host.E) a)⁻¹) := by
-  first | exact @GlobalTheory.CompanionTheory.EisUnfold.Parts.parts | exact GlobalTheory.CompanionTheory.EisUnfold.Parts.parts | (intros; apply GlobalTheory.CompanionTheory.EisUnfold.Parts.parts <;> assumption)
+  exact @GlobalTheory.CompanionTheory.EisUnfold.Parts.parts

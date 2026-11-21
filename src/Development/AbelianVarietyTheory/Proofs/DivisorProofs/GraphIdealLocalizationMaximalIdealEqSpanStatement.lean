@@ -24,4 +24,4 @@ theorem _root_.GlobalTheory.T.graphIdeal_localization_maximalIdeal_eq_span : ∀
   letI := isLocalRing_locAt (L := L) 𝔭 (IsFractionRing.injective (K ⊗[ℂ] κ') L)
   IsLocalRing.maximalIdeal (locAt (L := L) 𝔭) =
     Ideal.span (Set.range fun i => toQ 𝔭 (gens E R π ρ hER t zR i)) := by
-  first | exact @GlobalTheory.GraphLocal.MaxGen.maximalIdeal_locAt_eq_span | exact GlobalTheory.GraphLocal.MaxGen.maximalIdeal_locAt_eq_span | (intros; apply GlobalTheory.GraphLocal.MaxGen.maximalIdeal_locAt_eq_span <;> assumption)
+  exact @GlobalTheory.GraphLocal.MaxGen.maximalIdeal_locAt_eq_span

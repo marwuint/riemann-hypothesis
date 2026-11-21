@@ -32,5 +32,5 @@ open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.log_kap_le_and_lenT_mul_le_sqrt : _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.CoversCondition fun Fm x _ ι p i Y PP _ => Real.log (kap p i) ≤ 2 * (Fm.L x ι).sc.L ∧ (lenT p i PP : ℝ) * PP ≤ Real.sqrt (Fm.L x ι).sc.b := by
-  first | exact @_root_.GlobalTheory.CovTop.CovSz.kapT_alt | exact _root_.GlobalTheory.CovTop.CovSz.kapT_alt | (intros; apply _root_.GlobalTheory.CovTop.CovSz.kapT_alt <;> assumption)
+  exact @_root_.GlobalTheory.CovTop.CovSz.kapT_alt
 end

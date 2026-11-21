@@ -8,4 +8,4 @@ theorem _root_.GlobalTheory.T.kaehler_relation_derivationModIntegral : ∀ (p : 
   ∀ D : Ω → Ω, IsDer S D → ∀ a b c x y z : On p n,
   a • KaehlerDifferential.D (O0 p) (On p n) x = b • KaehlerDifferential.D (O0 p) (On p n) y + c • KaehlerDifferential.D (O0 p) (On p n) z →
   IsInt p (ι a * D (ι x) - ι b * D (ι y) - ι c * D (ι z)) := by
-  first | exact @GlobalTheory.KumDlog.kaehler_rel_isInt | exact GlobalTheory.KumDlog.kaehler_rel_isInt | (intros; apply GlobalTheory.KumDlog.kaehler_rel_isInt <;> assumption)
+  exact @GlobalTheory.KumDlog.kaehler_rel_isInt

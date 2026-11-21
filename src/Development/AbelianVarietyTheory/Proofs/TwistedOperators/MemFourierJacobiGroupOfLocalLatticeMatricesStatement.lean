@@ -17,4 +17,4 @@ theorem _root_.GlobalTheory.T.mem_fourierJacobiGroup_of_local_lattice_matrices :
     1 ≤ σ → ∀ (r : GA D (ch.G.V (.grid D.R.m j))) (g : ∀ w : locPl ch.G t, GL (Fin ((locGrid ch.G t w.1).rank (D.R.m, j))) (Kw w.1)),
     HasLoc t ch.S.B hj r g → (∀ w, g w ∈ rowR (G := locGrid ch.G t w.1) one_le_sLen (j := j) hj') →
     r ∈ jacGrp (rowJac ch.G j hj' σ hσ) := by
-  first | exact @GlobalTheory.RowLift.mem_jacGrp_of_hasLoc | exact GlobalTheory.RowLift.mem_jacGrp_of_hasLoc | (intros; apply GlobalTheory.RowLift.mem_jacGrp_of_hasLoc <;> assumption)
+  exact @GlobalTheory.RowLift.mem_jacGrp_of_hasLoc

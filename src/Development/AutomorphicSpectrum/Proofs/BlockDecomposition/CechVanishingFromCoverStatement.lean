@@ -12,4 +12,4 @@ theorem _root_.GlobalTheory.T.cech_vanishing_from_cover : ∀ {R : Type} [CommRi
     ((∀ S : Finset ι, S.Nonempty → ∀ j, Subsingleton (HU F (capS U S) j)) → ∀ j, Subsingleton (CH.H F j)) ∧
     ((∀ S : Finset ι, S.Nonempty → ∀ j > s, Subsingleton (HU F (capS U S) j)) →
       ∀ j, s + Fintype.card ι ≤ j → Subsingleton (CH.H F j)) := by
-  first | exact @GlobalTheory.CompanionTheory.CosieveMV.vanishing_of_cover | exact GlobalTheory.CompanionTheory.CosieveMV.vanishing_of_cover | (intros; apply GlobalTheory.CompanionTheory.CosieveMV.vanishing_of_cover <;> assumption)
+  exact @GlobalTheory.CompanionTheory.CosieveMV.vanishing_of_cover

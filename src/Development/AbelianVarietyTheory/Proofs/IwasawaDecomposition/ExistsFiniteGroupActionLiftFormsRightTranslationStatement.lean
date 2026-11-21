@@ -12,4 +12,4 @@ theorem _root_.GlobalTheory.T.exists_finiteGroupAction_liftForms_rightTranslatio
         (LiftBrg.envL X I hX U Xg tr L cV i t).lev.ch ((famR X I hX U Xg tr).A.leftGroupActionLift i t),
       ∀ q : (levEnv (Vc X.toD7 i) (L.βV i) (L.datVt i t)).Q,
         eG (a.red q) = rTup (L.βV i) (L.datVt i t) (Formalism.UG.bc (swapAE X.toD7) ((q : Bridge.Gf (Vc X.toD7 i)) : GL _ _)) := by
-  first | exact @GlobalTheory.Mem.R3.LiftBrg.ActQ.exists_actTie | exact GlobalTheory.Mem.R3.LiftBrg.ActQ.exists_actTie | (intros; apply GlobalTheory.Mem.R3.LiftBrg.ActQ.exists_actTie <;> assumption)
+  exact @GlobalTheory.Mem.R3.LiftBrg.ActQ.exists_actTie

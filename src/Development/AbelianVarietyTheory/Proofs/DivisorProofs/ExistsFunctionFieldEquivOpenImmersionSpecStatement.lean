@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.exists_functionFieldEquiv_openImmersionSpec : ∀ 
       (∀ a : ℂ, e (GlobalTheory.Cartier.constFn p a) = algebraMap ℂ (FractionRing S) a) ∧
       ∀ (q : PrimeSpectrum S) (g : FractionRing S), g ∈ (locRing (j.base q)).map e.toRingHom ↔
         ∃ a b : S, b ∉ q.asIdeal ∧ g * algebraMap S (FractionRing S) b = algebraMap S (FractionRing S) a := by
-  first | exact @GlobalTheory.OpenSpecField.exists_fieldEquiv | exact GlobalTheory.OpenSpecField.exists_fieldEquiv | (intros; apply GlobalTheory.OpenSpecField.exists_fieldEquiv <;> assumption)
+  exact @GlobalTheory.OpenSpecField.exists_fieldEquiv

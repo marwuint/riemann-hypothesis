@@ -22,4 +22,4 @@ theorem _root_.GlobalTheory.T.standardPairFirstMember_integralFrame_eq : ∀ {D 
     if IsHalf e t ∧ (∀ i j, toEAf D (t i j) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E) ∧
         ∀ i j, S.rank ≤ i.1 → InId 𝔪 (toEAf D (t i j)) then
       unitChar ν e (HMul.hMul (topL S.rank (Matrix.of fun i j => toEAf D (t i j))) β.val) else 0 := by
-  first | exact @GlobalTheory.StdReadFrame.stdFst_frame | exact GlobalTheory.StdReadFrame.stdFst_frame | (intros; apply GlobalTheory.StdReadFrame.stdFst_frame <;> assumption)
+  exact @GlobalTheory.StdReadFrame.stdFst_frame

@@ -14,5 +14,5 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.TypeRec.factG
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.tame_gen_support_compat_of_is_rc : GlobalTheory.Published.ZelevinskyPolynomialRing → ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (T : GlobalTheory.RowTie.WDTie D.nd D.naut) (I : Ident D) (rc : GlobalTheory.SerSys.Corr D), _root_.GlobalTheory.TypeRec.IsSeriesCorrespondence hL T I rc → ∀ k v, TameGen.SupportCompat (fun a => D.naut.inePol a (D.ntypes.tg k v)) (fun π : Supp.GLRep _ => rc k v π.1 π.2) := by
-  first | exact @_root_.UpperTheory.One.M.supportCompat_alt_alt | exact _root_.UpperTheory.One.M.supportCompat_alt_alt | (intros; apply _root_.UpperTheory.One.M.supportCompat_alt_alt <;> assumption)
+  exact @_root_.UpperTheory.One.M.supportCompat_alt_alt
 end

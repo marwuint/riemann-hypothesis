@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.flat_tensorSubalgebraMvPolynomialEval_of_flat_aeva
     (m : ℕ) (v : Fin m → A),
     (MvPolynomial.aeval v : MvPolynomial (Fin m) ℂ →ₐ[ℂ] A).toRingHom.Flat →
     (polyMap (κ' := κ') A v).Flat := by
-  first | exact @GlobalTheory.GraphLocal.flat_polyMap_of_flat_aeval | exact GlobalTheory.GraphLocal.flat_polyMap_of_flat_aeval | (intros; apply GlobalTheory.GraphLocal.flat_polyMap_of_flat_aeval <;> assumption)
+  exact @GlobalTheory.GraphLocal.flat_polyMap_of_flat_aeval

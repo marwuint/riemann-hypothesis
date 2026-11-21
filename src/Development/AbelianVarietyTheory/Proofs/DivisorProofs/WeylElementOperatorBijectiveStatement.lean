@@ -9,4 +9,4 @@ set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.weyl_element_operator_bijective : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → (∀ᶠ v in cofinite, PsiUnr ψ v) →
     (∀ v : Pl F, ∃ x, psiLoc ψ v x ≠ 1) → ∀ (κ : Type) [Fintype κ] [DecidableEq κ],
     GlobalTheory.SympChangeBij.HasOpB ψ (GlobalTheory.SympChange.weylM (F := F) (κ := κ)) := by
-  first | exact @GlobalTheory.WeylBij.weyl_hasOpB | exact GlobalTheory.WeylBij.weyl_hasOpB | (intros; apply GlobalTheory.WeylBij.weyl_hasOpB <;> assumption)
+  exact @GlobalTheory.WeylBij.weyl_hasOpB

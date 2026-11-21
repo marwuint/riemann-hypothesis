@@ -26,4 +26,4 @@ theorem _root_.GlobalTheory.T.psi_sq_genericPoint_eq_monomial_mul_symmetric : �
             (val D.sym ((toUnit (TF (R := V) (FractionRing V))).left ≫ (D.c mu).left) z J *
               (val (τ₀ mu (-mu)) (toUnit (TF (R := V) (FractionRing V))).left z J)⁻¹ *
               (rigV D (toUnit (TF (R := V) (FractionRing V))).left z J ^ 2)⁻¹).val := by
-  first | exact @GlobalTheory.PsiSqGeneric.main | exact GlobalTheory.PsiSqGeneric.main | (intros; apply GlobalTheory.PsiSqGeneric.main <;> assumption)
+  exact @GlobalTheory.PsiSqGeneric.main

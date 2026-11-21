@@ -12,4 +12,4 @@ theorem _root_.GlobalTheory.T.adelicSymplecticTraceForm_alternating_swap : ∀ (
     (∀ e, σ (σ e) = e) → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),
     IsHermND σ JS → IsHermND σ JT → ∀ ξ₀ : E, σ ξ₀ = -ξ₀ → ∀ x y : WOF F E nS nT,
       symplOF σ JS JT ξ₀ y x = -symplOF σ JS JT ξ₀ x y := by
-  first | exact @GlobalTheory.SymplSkew.symplOF_swap | exact GlobalTheory.SymplSkew.symplOF_swap | (intros; apply GlobalTheory.SymplSkew.symplOF_swap <;> assumption)
+  exact @GlobalTheory.SymplSkew.symplOF_swap

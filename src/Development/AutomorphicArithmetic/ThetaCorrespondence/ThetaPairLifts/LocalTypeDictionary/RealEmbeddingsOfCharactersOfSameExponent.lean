@@ -79,5 +79,5 @@ theorem _root_.GlobalTheory.T.characters_real_valued_of_equal_exponent : _root_.
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (a a' : ℕ) (Γ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a') (Xa Xb : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E) oa oa' ob ob' R,
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple B Γ Xa oa oa' → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsTriple B Γ Xb ob ob' →
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsRealMaps B Γ oa oa' R → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsRealMaps B Γ ob ob' R := by
-  first | exact @_root_.GlobalTheory.RealMapsChars.real_embeddings_of_characters_of_same_exponent | exact _root_.GlobalTheory.RealMapsChars.real_embeddings_of_characters_of_same_exponent | (intros; apply _root_.GlobalTheory.RealMapsChars.real_embeddings_of_characters_of_same_exponent <;> assumption)
+  exact @_root_.GlobalTheory.RealMapsChars.real_embeddings_of_characters_of_same_exponent
 end

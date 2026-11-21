@@ -39,5 +39,5 @@ set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.weilRepresentation_square_comm : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) →
     ∀ (W W₁ X : HSp D) (α β : (AE D)ˣ →* Circle), IsTriple W W₁ X α β →
       ∃ (ωA : WRep W X) (ωB : WRep W₁ X), IsWeil ψ true W X β (β / α) ωA ∧ IsWeil ψ false W₁ X α (α / β) ωB := by
-  first | exact @_root_.GlobalTheory.SquareComm.WeilOfTriple.exists_weilPair_of_triple | exact _root_.GlobalTheory.SquareComm.WeilOfTriple.exists_weilPair_of_triple | (intros; apply _root_.GlobalTheory.SquareComm.WeilOfTriple.exists_weilPair_of_triple <;> assumption)
+  exact @_root_.GlobalTheory.SquareComm.WeilOfTriple.exists_weilPair_of_triple
 end

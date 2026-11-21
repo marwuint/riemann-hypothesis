@@ -17,4 +17,4 @@ set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.level_twist_character_mem_coefficientIntegers : ∀ (D : D7) (X : RealSide D) (X0 : BaseLevelRowSide D) (Y : GlobalTheory.Mem.R3.Read (A3 := X.A3) X.R.toRealDat X.F.lv2 X0) (S : NX.RatDat D.ntw) (YS : NX.NExpRealS X.R X.cG S) (Z : ExportTie YS X.geo.v₀) (c : NChoice D) (w : D.what₂.places.Pl) (j : Fin D.R.m) (H : AtPlace Y Z c w j),
   ∀ ι : KE c w →+* ℂ, (∀ x, ι (c.embW w x) = D.what₂.embLL x) →
   ∀ k : (baseOf Z c w j).levJ (twVia Z.ρ ι), (((baseOf Z c w j).levLam (twVia Z.ρ ι) k : ℂˣ) : ℂ) ∈ intLL D := by
-  first | exact @GlobalTheory.PlaceRead.LevVal.levLam_twVia_mem_intLL | exact GlobalTheory.PlaceRead.LevVal.levLam_twVia_mem_intLL | (intros; apply GlobalTheory.PlaceRead.LevVal.levLam_twVia_mem_intLL <;> assumption)
+  exact @GlobalTheory.PlaceRead.LevVal.levLam_twVia_mem_intLL

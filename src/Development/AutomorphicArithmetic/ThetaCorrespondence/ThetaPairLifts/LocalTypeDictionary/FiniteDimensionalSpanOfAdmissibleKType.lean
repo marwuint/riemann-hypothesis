@@ -145,5 +145,5 @@ theorem _root_.GlobalTheory.T.admissible_KType_span_finiteDimensional : _root_.G
         b x (Rder θ V τ X y) = -b (Rder θ V τ X x) y) →
     FiniteDimensional ℂ (GlobalTheory.KTypeProj.typeSpan (GlobalTheory.KTypeProj.rhoK θ M) (W ⊓ GlobalTheory.CuspGK.gkGen θ M ψ)
       (GlobalTheory.CuspGK.gkGen θ M ψ)) := by
-  first | exact @_root_.GlobalTheory.KTypeAdm.finiteDimensional_span_of_admissible_KType | exact _root_.GlobalTheory.KTypeAdm.finiteDimensional_span_of_admissible_KType | (intros; apply _root_.GlobalTheory.KTypeAdm.finiteDimensional_span_of_admissible_KType <;> assumption)
+  exact @_root_.GlobalTheory.KTypeAdm.finiteDimensional_span_of_admissible_KType
 end

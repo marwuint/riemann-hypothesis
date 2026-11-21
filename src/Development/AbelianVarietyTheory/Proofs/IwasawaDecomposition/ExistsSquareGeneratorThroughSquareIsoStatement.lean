@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.exists_square_generator_through_squareIso : ∀ {X
           (Z.presheaf.stalk z)ˣ,
         ∀ (Z : Scheme.{0}) (r : Z ⟶ Y) (z : Z) (J : (Z ⟶ X) → L.ι) (J' : (Z ⟶ X') → L'.ι),
           Good L z J → Good L' z J' → val t r z J = W Z z (fun k => r ≫ φ' k) J J' * val a r z J' ^ 2 := by
-  first | exact @GlobalTheory.SqLB.exists_sq_gen | exact GlobalTheory.SqLB.exists_sq_gen | (intros; apply GlobalTheory.SqLB.exists_sq_gen <;> assumption)
+  exact @GlobalTheory.SqLB.exists_sq_gen

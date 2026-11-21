@@ -20,4 +20,4 @@ theorem _root_.GlobalTheory.T.vacuum_split_place_indicator_lift : GlobalTheory.F
       ∀ z ∈ GlobalTheory.InertSph.latAt G.W v, (t : Matrix (Fin (a + a')) (Fin (a + a')) (AE F E)) *ᵥ z ∈ GlobalTheory.InertSph.latAt G.W v ∧
         ((t⁻¹ : GL (Fin (a + a')) (AE F E)) : Matrix (Fin (a + a')) (Fin (a + a')) (AE F E)) *ᵥ z ∈ GlobalTheory.InertSph.latAt G.W v) →
       X.α (Matrix.GeneralLinearGroup.det t) = 1 := by
-  first | exact @GlobalTheory.SplitDetChr.alpha_det_eq_one | exact GlobalTheory.SplitDetChr.alpha_det_eq_one | (intros; apply GlobalTheory.SplitDetChr.alpha_det_eq_one <;> assumption)
+  exact @GlobalTheory.SplitDetChr.alpha_det_eq_one

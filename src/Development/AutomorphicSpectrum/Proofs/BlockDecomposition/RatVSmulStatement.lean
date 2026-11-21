@@ -4,4 +4,4 @@ import Development.WeilBound.RepresentationTheoryGL.EisensteinSeries.SiegelEisen
 open PositivityTheory.RgEis PositivityTheory.RgEis.MG
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.lines_decomposition : Lines := by
-  first | exact @GlobalTheory.CompanionTheory.RgEisLines.lines | exact GlobalTheory.CompanionTheory.RgEisLines.lines | (intros; apply GlobalTheory.CompanionTheory.RgEisLines.lines <;> assumption)
+  exact @GlobalTheory.CompanionTheory.RgEisLines.lines

@@ -10,4 +10,4 @@ theorem _root_.GlobalTheory.T.doubleCosetVolumeWeightedSum_conj : ∀ (H : Type)
   (∀ s ∈ T, ∀ t ∈ T, s * t = t * s) → (∀ t ∈ T, ∀ x, Ψ (t * x) = Ψ x) → (∀ l ∈ L, ∀ x, Ψ (x * l) = Ψ x) →
   GlobalTheory.OrbDesc.dsum T L U Ψ = GlobalTheory.OrbDesc.dsum (T.map (MulAut.conj c).toMonoidHom) (L.map (MulAut.conj c).toMonoidHom)
     (U.map (MulAut.conj c).toMonoidHom) (fun x => Ψ (c⁻¹ * x * c)) := by
-  first | exact @GlobalTheory.OrbDesc.dsum_conj | exact GlobalTheory.OrbDesc.dsum_conj | (intros; apply GlobalTheory.OrbDesc.dsum_conj <;> assumption)
+  exact @GlobalTheory.OrbDesc.dsum_conj

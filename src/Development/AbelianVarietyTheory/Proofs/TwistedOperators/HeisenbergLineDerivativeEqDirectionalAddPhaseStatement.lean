@@ -21,4 +21,4 @@ theorem _root_.GlobalTheory.T.heisenbergLineDerivative_eq_directional_add_phase 
     h y = fderiv ℝ (g : (Fin n × Fin d → mixedEmbedding.mixedSpace F) → ℂ) y (fun i => evI F ((M.co.e u).1 i)) +
       (-(2 * Real.pi * Complex.I) *
         ((Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (y ⬝ᵥ fun i => evI F ((M.co.e u).2 i)) : ℝ) : ℂ)) * g y := by
-  first | exact @GlobalTheory.HeisDerivFormula.heisLine_deriv_eq | exact GlobalTheory.HeisDerivFormula.heisLine_deriv_eq | (intros; apply GlobalTheory.HeisDerivFormula.heisLine_deriv_eq <;> assumption)
+  exact @GlobalTheory.HeisDerivFormula.heisLine_deriv_eq

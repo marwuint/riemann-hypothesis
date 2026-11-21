@@ -16,4 +16,4 @@ open scoped ContDiff
 
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.thetaSeries_schwartzBruhat_continuous_schrodinger : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (A B : HSp D) (ν : Measure (WO A B)) (𝓨 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓨 → ∀ φ : Mx D B.rank A.rank → ℂ, GlobalTheory.IndefiniteRowSideFullHecke.SchwartzBruhatMixedFamilies.IsSchwartzBruhat φ → ∀ f : WO (dblSp A) B → ℂ, (∀ w : WO (dblSp A) B, f w = ψ (-(symplOH (dblSp A) B ((dblDec A).extX B (HMul.hMul w (dblDec A).jX)) ((dblDec A).extY B (HMul.hMul w (dblDec A).jY)))) * ∑' ξ : Matrix (Fin B.rank) (Fin A.rank) D.host.E, ψ (symplO (dblSp A) B ((dblDec A).extX B (HMul.hMul w (dblDec A).jX + rat ξ)) ((dblDec A).extY B (HMul.hMul w (dblDec A).jY))) * φ (HMul.hMul w (dblDec A).jX + rat ξ)) → Continuous f ∧ sch ψ A B ν 𝓨 f = φ := by
-  first | exact @GlobalTheory.Core.Rk.ThetaOf.theta_series_sch | exact GlobalTheory.Core.Rk.ThetaOf.theta_series_sch | (intros; apply GlobalTheory.Core.Rk.ThetaOf.theta_series_sch <;> assumption)
+  exact @GlobalTheory.Core.Rk.ThetaOf.theta_series_sch

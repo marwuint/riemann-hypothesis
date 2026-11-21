@@ -19,4 +19,4 @@ theorem _root_.GlobalTheory.T.compact_conjugate_rational_entries_bounded : ∀ (
       ∀ (y : GL (Fin a) (Cinf E)) (γ : GL (Fin a) E) (n : ℤ), |n| ≤ n₀ →
         (g₀ * infGL E a y)⁻¹ * (ratGL E a γ * splitCentre E a 1 ^ n) * (g₀ * infGL E a y) ∈ Q →
         ∀ i j, algebraMap E (Af E) (γ.val i j) ∈ Qf ∧ ∀ w : InfinitePlace E, w (γ.val i j) ≤ C * height y ^ 2 := by
-  first | exact @GlobalTheory.CompanionTheory.GrowthEntries.entries_bound | exact GlobalTheory.CompanionTheory.GrowthEntries.entries_bound | (intros; apply GlobalTheory.CompanionTheory.GrowthEntries.entries_bound <;> assumption)
+  exact @GlobalTheory.CompanionTheory.GrowthEntries.entries_bound

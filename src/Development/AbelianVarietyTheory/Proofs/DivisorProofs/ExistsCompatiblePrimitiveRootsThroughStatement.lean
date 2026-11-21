@@ -15,4 +15,4 @@ open GlobalTheory.Mum
 
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.exists_compatible_primitiveRoots_through : ∀ (K : Type) [Field K] [IsAlgClosed K] [CharZero K] (A : ℕ) (ω : K), 0 < A → IsPrimitiveRoot ω A → ∃ ζ : ℕ → Kˣ, (∀ n, 0 < n → IsPrimitiveRoot (ζ n) n) ∧ (∀ n m, 0 < n → 0 < m → ζ (n * m) ^ m = ζ n) ∧ (ζ A : K) = ω := by
-  first | exact @GlobalTheory.RootSystem.exists_compatible_roots_through | exact GlobalTheory.RootSystem.exists_compatible_roots_through | (intros; apply GlobalTheory.RootSystem.exists_compatible_roots_through <;> assumption)
+  exact @GlobalTheory.RootSystem.exists_compatible_roots_through

@@ -12,5 +12,5 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.L2.D
 open GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.OntoChain GlobalTheory.RealIndexBound GlobalTheory.OnTies
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.leafLevelSq_and_leafYBound : _root_.GlobalTheory.BigOn.ForallRecordObjects fun Fm x _ i p _ O => LeafLevelSq O (Res (R2 p)) (Fm.D x i).R.f ∧ LeafYBound O := by
-  first | exact @_root_.GlobalTheory.BigOn.levelSq_yBound_atRec_alt | exact _root_.GlobalTheory.BigOn.levelSq_yBound_atRec_alt | (intros; apply _root_.GlobalTheory.BigOn.levelSq_yBound_atRec_alt <;> assumption)
+  exact @_root_.GlobalTheory.BigOn.levelSq_yBound_atRec_alt
 end

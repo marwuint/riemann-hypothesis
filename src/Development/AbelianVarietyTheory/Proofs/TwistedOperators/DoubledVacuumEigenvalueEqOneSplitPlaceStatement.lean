@@ -18,4 +18,4 @@ theorem _root_.GlobalTheory.T.doubledVacuum_eigenvalue_eq_one_splitPlace : ∀ (
     ∀ p ∈ GlobalTheory.DblVac.KD σ G.W v, p ∈ GlobalTheory.DblVac.PDiag σ G.W → ∀ μ : ℂ,
       omd p (boxFun (tens (evFin F v) (G.M.vac v) r) (fun x => star (tens (evFin F v) (G.M.vac v) r x))) =
         μ • boxFun (tens (evFin F v) (G.M.vac v) r) (fun x => star (tens (evFin F v) (G.M.vac v) r x)) → μ = 1 := by
-  first | exact @GlobalTheory.DblVacSiegelAny.eigen_eq_one_of_diag_split | exact GlobalTheory.DblVacSiegelAny.eigen_eq_one_of_diag_split | (intros; apply GlobalTheory.DblVacSiegelAny.eigen_eq_one_of_diag_split <;> assumption)
+  exact @GlobalTheory.DblVacSiegelAny.eigen_eq_one_of_diag_split

@@ -23,4 +23,4 @@ theorem _root_.GlobalTheory.T.levelSection_injective_at_geometricPoint : ∀ {E 
     {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} (TF : TorFlag Xo c) (Z : Comp Xo c) {X' : Scheme.{0}}
     (φ : X' ⟶ X₀ TF.Y Z) (ℓ : V₀ TF.Y Z ⟶ X') (hℓ : ℓ ≫ φ = j₀ TF.Y Z) (Ω : Type) [Field Ω] [IsAlgClosed Ω] (x : Sp Ω ⟶ V₀ TF.Y Z) (c c' : LevelMod Dw l)
     (h : x ≫ GlobalTheory.TorsSpec.etaSecL TF Z φ ℓ hℓ c = x ≫ GlobalTheory.TorsSpec.etaSecL TF Z φ ℓ hℓ c'), c = c' := by
-  first | exact @GlobalTheory.TorsSpec.etaSecL_injective_at | exact GlobalTheory.TorsSpec.etaSecL_injective_at | (intros; apply GlobalTheory.TorsSpec.etaSecL_injective_at <;> assumption)
+  exact @GlobalTheory.TorsSpec.etaSecL_injective_at

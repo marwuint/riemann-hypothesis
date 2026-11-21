@@ -19,4 +19,4 @@ theorem _root_.GlobalTheory.T.expansion_sumProd_lastVertex_moved_eq : ∀ {D : D
         (cc • moveFn (colPt S t (finEmb G.sp.topDec k)) (d.1 (lastIx D)).fn) j (x j)) *
       ∏ i, Function.update (fun i => (d.2 i).fn) (lastIx D) (cr • moveFn (rowPt S k) (d.2 (lastIx D)).fn) i (y i)) =
     τ.sum fun d a => a * (∏ j, (d.1 j).fn (x j)) * ∏ i, (d.2 i).fn (y i) := by
-  first | exact @GlobalTheory.LastVertexLoc.sum_prod_moved_eq | exact GlobalTheory.LastVertexLoc.sum_prod_moved_eq | (intros; apply GlobalTheory.LastVertexLoc.sum_prod_moved_eq <;> assumption)
+  exact @GlobalTheory.LastVertexLoc.sum_prod_moved_eq

@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.exists_equivariantLift_functional_quotient_project
   (σ : A →+* Module.End C H), (letI := GlobalTheory.HTSummand.tensorModOf σ; Module.Projective (C ⊗[ℤ] A) H) →
   ∀ (χ : A →+* C) (l₀ : H →ₗ[C] C ⧸ I), (∀ a x, l₀ (σ a x) = Ideal.Quotient.mk I (χ a) * l₀ x) →
   ∃ l : H →ₗ[C] C, (∀ a x, l (σ a x) = χ a * l x) ∧ ∀ x, Ideal.Quotient.mk I (l x) = l₀ x := by
-  first | exact @GlobalTheory.eqLift_tensorModOf | exact GlobalTheory.eqLift_tensorModOf | (intros; apply GlobalTheory.eqLift_tensorModOf <;> assumption)
+  exact @GlobalTheory.eqLift_tensorModOf

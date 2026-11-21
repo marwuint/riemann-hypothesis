@@ -90,5 +90,5 @@ theorem _root_.GlobalTheory.T.theta_line_vector_annihilation : _root_.GlobalTheo
     ∀ γ ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Lines D.sp.cm.sig Γ.V, ∀ ΦD ∈ algD Γ.M Bs.ψ Bs.emb, ∀ Φ₁D ∈ algD Γ.M Bs.ψ Bs.emb,
     (∀ x, HasDerivAt (fun t : ℝ => om (γ (Multiplicative.ofAdd t), 1) ΦD x) (Φ₁D x) 0) → ∀ Φ₁,
     IsDatum Γ.M ψ cA Φ₁D Φ₁ → p Φ₁ = 0 := by
-  first | exact @_root_.GlobalTheory.LineKillV.line_vector_annihilated | exact _root_.GlobalTheory.LineKillV.line_vector_annihilated | (intros; apply _root_.GlobalTheory.LineKillV.line_vector_annihilated <;> assumption)
+  exact @_root_.GlobalTheory.LineKillV.line_vector_annihilated
 end

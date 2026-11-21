@@ -38,4 +38,4 @@ theorem _root_.GlobalTheory.T.inertPlace_unimodular_hermitianFrame_coordinates :
           iV g ∈ GlobalTheory.InertSph.KAt σ G.V v) ∧
         (∀ h : Formalism.UG.UJ σL (JT : Matrix (Fin (a + a')) (Fin (a + a')) L),
           (h : GL (Fin (a + a')) L) ∈ Formalism.UG.GLint (Fin (a + a')) (Formalism.UG.intL L) → iW h ∈ GlobalTheory.InertSph.KAt σ G.W v) := by
-  first | exact @GlobalTheory.InertLocFrame.frame | exact GlobalTheory.InertLocFrame.frame | (intros; apply GlobalTheory.InertLocFrame.frame <;> assumption)
+  exact @GlobalTheory.InertLocFrame.frame

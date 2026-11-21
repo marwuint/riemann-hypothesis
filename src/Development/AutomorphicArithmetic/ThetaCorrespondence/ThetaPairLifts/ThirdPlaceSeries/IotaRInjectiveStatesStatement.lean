@@ -18,5 +18,5 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.iotaR_injective_at_level_a : ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, StepW Start fun K B f T w => ∀ (P : Pre2 K w) (x : St P), _root_.GlobalTheory.HeightCounting.Up.SameGaloisLevel hL x → ∀ i : Fin (Dof x).R.m, Function.Injective (GlobalTheory.EigSpanDesc.iotaR x.m.z.R i) := by
-  first | exact @_root_.GlobalTheory.EigSpanDesc.iotaR_injective_states_alt | exact _root_.GlobalTheory.EigSpanDesc.iotaR_injective_states_alt | (intros; apply _root_.GlobalTheory.EigSpanDesc.iotaR_injective_states_alt <;> assumption)
+  exact @_root_.GlobalTheory.EigSpanDesc.iotaR_injective_states_alt
 end

@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.exists_compatible_isometries_coisotropic_kernels :
       ∃ g : ℕ → D.La ≃ₗ[𝓞 E] D.La, (∀ n a b, D.EF (g n a) (g n b) = D.EF a b) ∧
         (∀ n m, 0 < n → 0 < m → ∀ a, ∃ e, g (n * m) a = g n a + n • e) ∧ (∀ n a, ∃ e, g n a = a + N • e) ∧
         ∀ n, 0 < n → ∀ a, (∃ e, y n (g n a) = n • e) ↔ ∃ b ∈ perp D Z, ∃ e, a = b + n • e := by
-  first | exact @GlobalTheory.LowFilt.exists_compatible_isometries | exact GlobalTheory.LowFilt.exists_compatible_isometries | (intros; apply GlobalTheory.LowFilt.exists_compatible_isometries <;> assumption)
+  exact @GlobalTheory.LowFilt.exists_compatible_isometries

@@ -1,9 +1,8 @@
-import Mathlib
+import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.TamagawaNumberSpecialUnitary
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatBoundOfAnchor
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.ToKnownTheoremsOf
 import Development.AutomorphicArithmetic.ThetaCorrespondence.ThetaPairLifts.HodgeBundleWeights.UnramifiedPointsAtDeepLevel
-import Development.AbelianVarietyTheory.Definitions.Divisors.CovolXOfCovol
-import Development.AbelianVarietyTheory.Definitions.Divisors.ToKnownTheoremsOf
+import Development.AbelianVarietyTheory.Proofs.DivisorProofs.FlatBoundOfAnchorStatement
 
 section
 set_option synthInstance.maxHeartbeats 400000
@@ -11,6 +10,14 @@ noncomputable section
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions Formalism.L2 Formalism.L2.Theta Formalism.L2.DIV Formalism.L2.Pj Formalism.IndefR.Links Formalism.IndefR.FWT
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.BigTop GlobalTheory.CovTop GlobalTheory.FlatLine GlobalTheory.FlatTw
 namespace GlobalTheory.FlatSplit
+section Congr
+variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
+  {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {r : ℕ} {D : D7}
+end Congr
+section Weights
+variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H)
+  (a : (E →+* ℂ) × ℕ → ℕ)
+end Weights
 end GlobalTheory.FlatSplit
 namespace GlobalTheory.FlatSplit
 end GlobalTheory.FlatSplit
@@ -32,7 +39,7 @@ theorem flat_at_of_split_covering (p : PtAt ex Csz) (i : Fin D.R.m) (Y : Cov p i
   have hUn := _root_.GlobalTheory.T.unramified_points_of_deep_cover hP D p.T ((i : ℕ) + 1) Y _ _ p.fw.laws hj hY.1
   have hrank : 1 ≤ (dat p i).p + (dat p i).q := Inhab.rank_pos p.T.toCore p.fw.laws.pins ((i : ℕ) + 1) hj
   have hev : Even (p.κ i).n := hW.dom.2
-  have hFL := ((_root_.GlobalTheory.FlatRootTwist.flat_root_twist hP.p5 D p.T.Q.H (dat p i) Y.d.l₂ Y.d.Xo₂ Y.d.c₂ D.R.r Y.U (fun _ => D.sp.W ((i : ℕ) + 1))
+  have hFL := ((GlobalTheory.T.flatLine_thetaRoot_twist_twistingSection hP.p5 D p.T.Q.H (dat p i) Y.d.l₂ Y.d.Xo₂ Y.d.c₂ D.R.r Y.U (fun _ => D.sp.W ((i : ℕ) + 1))
     Y.dict hcx hY.1.geo hrank hgood hflat hUn (anchor (dat p i) (wtA (p.κ i)) (p.κ i).n (D.R.k - 1))
     ((p.κ i).n / 2)).2 (uM p i) 0).2 hDG.2.2.2.1
   obtain ⟨-, hrk, hdeg⟩ := hFL
@@ -83,7 +90,23 @@ theorem flat_at_of_split_covering (p : PtAt ex Csz) (i : Fin D.R.m) (Y : Cov p i
   linarith
 end GlobalTheory.FlatSplit
 namespace GlobalTheory.FlatSplit
+theorem flat_alt : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → DeepGood → FlatDeg → Anchor → Flat := by
+  intro hP hDG hFD hA
+  refine Closed.imp (Closed.and (Closed.and (Closed.and (Closed.and hDG (GlobalTheory.T.flat_line_c1_log_bound hFD)) hA) GlobalTheory.T.weight_bound_holds)
+    (GlobalTheory.CovTop.Sizes.hostN 0)) ?_
+  rintro eps Fm CH - ⟨⟨⟨⟨⟨C1, -, h1⟩, ⟨C2, -, h2⟩⟩, ⟨CA, hCA, h3⟩⟩, ⟨C4, -, h4⟩⟩, ⟨C5, -, h5⟩⟩
+  refine ⟨11 * CA + 83, by positivity, ?_⟩
+  obtain ⟨x0, hx⟩ := (((h1.and h2).and h3).and h4).and h5
+  refine ⟨x0, fun x hx' hle ι p hp i hi Y hY => ?_⟩
+  obtain ⟨⟨⟨⟨a1, a2⟩, a3⟩, a4⟩, a5⟩ := hx x hx' hle ι p hp
+  exact _root_.GlobalTheory.FlatSplit.flat_at_of_split_covering p i Y hY hP (a1 i hi Y hY) (a2 i hi Y hY) (a3 i) (a4 i) (a5 i)
 end GlobalTheory.FlatSplit
 end
 end
 
+section
+open GlobalTheory.CovTop GlobalTheory.BigTop
+set_option maxHeartbeats 1000000 in
+theorem _root_.GlobalTheory.T.flat_of_anchor : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → DeepGood → FlatDeg → Anchor → Flat := by
+  exact @_root_.GlobalTheory.FlatSplit.flat_alt
+end

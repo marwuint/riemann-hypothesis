@@ -21,4 +21,4 @@ theorem _root_.GlobalTheory.T.hasDerivAt_thetaSum_archimedeanHeisenbergLine : �
       ∀ u' : Matrix (Fin n) (Fin d) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.AE F E),
         HasDerivAt (fun t : ℝ => GlobalTheory.WeilM.thetaSum F (M.co.rho ψ u' (M.heisLine ψ u t (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g φ))))
           (GlobalTheory.WeilM.thetaSum F (M.co.rho ψ u' (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g₁ φ))) 0 := by
-  first | exact @GlobalTheory.ThetaLinePure.hasDerivAt_thetaSum_heisLine | exact GlobalTheory.ThetaLinePure.hasDerivAt_thetaSum_heisLine | (intros; apply GlobalTheory.ThetaLinePure.hasDerivAt_thetaSum_heisLine <;> assumption)
+  exact @GlobalTheory.ThetaLinePure.hasDerivAt_thetaSum_heisLine

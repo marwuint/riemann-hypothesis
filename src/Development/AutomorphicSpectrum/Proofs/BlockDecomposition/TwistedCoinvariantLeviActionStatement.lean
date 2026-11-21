@@ -8,4 +8,4 @@ theorem _root_.GlobalTheory.T.twisted_coinvariant_levi_action : ∀ (k : Type) [
   qO τ σ ψ (extTensor (mtw τ (((t + 1 : ℕ) : ℝ) / 2)).ρ (σ.tw (-((i + 1 + 1 : ℕ) : ℝ) / 2)).ρ (sEmb k i a, w) v) =
     (((dpowM i (1 / 2) a : ℂˣ) : ℂ) * ((dpow (t + 1) (-1 / 2) w : ℂˣ) : ℂ)) •
       extTensor (mtw (phiN ψ τ) (((t + 1 : ℕ) : ℝ) / 2)).ρ (σ.tw (-((i + 1 : ℕ) : ℝ) / 2)).ρ (a, w) (qO τ σ ψ v) := by
-  first | exact @GlobalTheory.CompanionTheory.BZPhiPG.Coinv.intertwine | exact GlobalTheory.CompanionTheory.BZPhiPG.Coinv.intertwine | (intros; apply GlobalTheory.CompanionTheory.BZPhiPG.Coinv.intertwine <;> assumption)
+  exact @GlobalTheory.CompanionTheory.BZPhiPG.Coinv.intertwine

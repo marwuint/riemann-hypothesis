@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.capelli_polynomial_permutation_match : ∀ (n M : 
     ∃ σ : Equiv.Perm (Fin n), ∀ i : Fin M,
       ∑ a ∈ univ.filter (fun a => lev a = (i : ℕ)), χ (σ a) =
         (P i).nextCoeff + ((univ.filter fun a => lev a = (i : ℕ)).card : ℂ) * s i := by
-  first | exact @GlobalTheory.CompanionTheory.RgCOBlock.exists_perm_of_monic_factors | exact GlobalTheory.CompanionTheory.RgCOBlock.exists_perm_of_monic_factors | (intros; apply GlobalTheory.CompanionTheory.RgCOBlock.exists_perm_of_monic_factors <;> assumption)
+  exact @GlobalTheory.CompanionTheory.RgCOBlock.exists_perm_of_monic_factors

@@ -12,4 +12,4 @@ theorem _root_.GlobalTheory.T.kummerCochain_eq_dlog_explicitReciprocity : ∀ (l
     GlobalTheory.Col.KumVal m ζ (P.eval ζ) s k → s ζ' = ζ ^ t.val * ζ' →
     GlobalTheory.Glue.CgA A l m ((l : Ω) ^ c * (k.val : Ω))
       ((l : Ω) ^ c * ((t.val : Ω) * (ζ * (Polynomial.derivative P).eval ζ / P.eval ζ)) + (s x - x)) := by
-  first | exact @GlobalTheory.RecOne.kummer_eq_dlog_one | exact GlobalTheory.RecOne.kummer_eq_dlog_one | (intros; apply GlobalTheory.RecOne.kummer_eq_dlog_one <;> assumption)
+  exact @GlobalTheory.RecOne.kummer_eq_dlog_one

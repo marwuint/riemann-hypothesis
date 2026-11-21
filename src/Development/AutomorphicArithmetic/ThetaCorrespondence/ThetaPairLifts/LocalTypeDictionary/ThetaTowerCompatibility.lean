@@ -54,5 +54,5 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.IP
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.theta_tower_compatibility : GlobalTheory.Published.WeilRepresentationUnitaryPair → GlobalTheory.Published.CuspRapidDecay → _root_.GlobalTheory.Published.DoublingMethodLocalZetaIntegrals → ∀ D : D7, GlobalTheory.BottomRallis.SiegelWeilFockAniso D → GlobalTheory.BottomRallis.GlobalFormAniso D := by
-  first | exact @_root_.GlobalTheory.BottomRallis.globalFormAniso_of_siegelWeilFockAniso_nc | exact _root_.GlobalTheory.BottomRallis.globalFormAniso_of_siegelWeilFockAniso_nc | (intros; apply _root_.GlobalTheory.BottomRallis.globalFormAniso_of_siegelWeilFockAniso_nc <;> assumption)
+  exact @_root_.GlobalTheory.BottomRallis.globalFormAniso_of_siegelWeilFockAniso_nc
 end

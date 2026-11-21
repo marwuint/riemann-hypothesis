@@ -55,5 +55,5 @@ section
 open GlobalTheory.SumSize GlobalTheory.RowClaim
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.depthK_of_sumOKK : _root_.GlobalTheory.FunPr.ThetaLocalInputs → SumOKK → DepthK := by
-  first | exact @_root_.GlobalTheory.DepthUnf.depthK_of_hypotheses_alt | exact _root_.GlobalTheory.DepthUnf.depthK_of_hypotheses_alt | (intros; apply _root_.GlobalTheory.DepthUnf.depthK_of_hypotheses_alt <;> assumption)
+  exact @_root_.GlobalTheory.DepthUnf.depthK_of_hypotheses_alt
 end

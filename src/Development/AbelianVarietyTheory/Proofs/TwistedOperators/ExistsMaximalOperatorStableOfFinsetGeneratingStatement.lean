@@ -11,4 +11,4 @@ theorem _root_.GlobalTheory.T.exists_maximal_operatorStable_of_finset_generating
     ∀ N : Submodule ℂ V, R ≤ N → GlobalTheory.TensHead.Stab G N → N ≠ ⊤ →
       ∃ N' : Submodule ℂ V, N ≤ N' ∧ GlobalTheory.TensHead.Stab G N' ∧ N' ≠ ⊤ ∧
         ∀ U : Submodule ℂ V, GlobalTheory.TensHead.Stab G U → N' ≤ U → U = N' ∨ U = ⊤ := by
-  first | exact @GlobalTheory.TensHead.exists_maximal_stab_of_finset | exact GlobalTheory.TensHead.exists_maximal_stab_of_finset | (intros; apply GlobalTheory.TensHead.exists_maximal_stab_of_finset <;> assumption)
+  exact @GlobalTheory.TensHead.exists_maximal_stab_of_finset

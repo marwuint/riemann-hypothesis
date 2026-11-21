@@ -19,4 +19,4 @@ theorem _root_.GlobalTheory.T.exists_isotropic_saturated_weight_filtration : ∀
       ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F],
         ∃ I : (letI := H.starRing; TateIsoQ Dw C.P.D.toPre C.P.oD F),
           GlobalTheory.LowDat.XFLevel C tK m1 m2 F I ∧ GlobalTheory.LowDat.FiltGraded C Z F I := by
-  first | exact @GlobalTheory.LowFilt.exists_filt | exact GlobalTheory.LowFilt.exists_filt | (intros; apply GlobalTheory.LowFilt.exists_filt <;> assumption)
+  exact @GlobalTheory.LowFilt.exists_filt

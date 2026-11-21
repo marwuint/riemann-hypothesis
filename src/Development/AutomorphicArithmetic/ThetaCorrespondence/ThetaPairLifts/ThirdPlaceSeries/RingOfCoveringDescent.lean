@@ -65,6 +65,6 @@ section
 open GlobalTheory.CovTop GlobalTheory.BigTop
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.covering_ring_of_prints_gram_deepGood : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → _root_.GlobalTheory.CovTop.GramCondition → _root_.GlobalTheory.CovTop.DeepGoodness → _root_.GlobalTheory.CovTop.RingCondition := by
-  first | exact @_root_.GlobalTheory.CovTop.RingStep.ring_of_covering_descent_alt | exact _root_.GlobalTheory.CovTop.RingStep.ring_of_covering_descent_alt | (intros; apply _root_.GlobalTheory.CovTop.RingStep.ring_of_covering_descent_alt <;> assumption)
+  exact @_root_.GlobalTheory.CovTop.RingStep.ring_of_covering_descent_alt
 end
 end

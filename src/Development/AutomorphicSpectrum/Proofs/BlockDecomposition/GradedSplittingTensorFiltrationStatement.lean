@@ -20,4 +20,4 @@ theorem _root_.GlobalTheory.T.graded_splitting_tensor_filtration : ∀ {O A Γ :
     ∃ g : (∀ i, S.N i ⊗[O] Γ) ≃ₗ[O] A ⊗[O] Γ, (∀ i n x, g (Pi.single i (n ⊗ₜ x)) = S.ν i n ⊗ₜ x) ∧
       ∀ (r : ℕ) (z : ∀ i, S.N i ⊗[O] Γ), g z ∈ (pdP γ r).map (Algebra.TensorProduct.includeLeftRingHom (R := O) (A := A) (B := Γ)) ↔
         ∀ i : Fin m, (i : ℕ) < r → z i = 0 := by
-  first | exact @GlobalTheory.CompanionTheory.GrTens.main | exact GlobalTheory.CompanionTheory.GrTens.main | (intros; apply GlobalTheory.CompanionTheory.GrTens.main <;> assumption)
+  exact @GlobalTheory.CompanionTheory.GrTens.main

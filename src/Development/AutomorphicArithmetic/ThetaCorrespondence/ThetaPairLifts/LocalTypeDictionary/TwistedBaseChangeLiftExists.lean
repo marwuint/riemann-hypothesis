@@ -59,5 +59,5 @@ theorem _root_.GlobalTheory.T.twisted_base_change_lift_exists : _root_.GlobalThe
     HidaSetting large₂ R F → ∀ (ch : Choice R), ch.IsBase → ∀ (CF : ℝ), ch.AtScale CF large₂.sc.b → ∀ (a : Fin ch.n) (u : R.HE.H),
     ThetaConv ch.W ch.M ch.ρ (ch.Phi a) (ch.form u) ∧
       IsAutFun (ch.G.V (.grid D.R.m 0)) (thetaChi ch.W ch.M ch.ρ (ch.Phi a) (ch.form u)) := by
-  first | exact @_root_.GlobalTheory.RowLift.twisted_lift_from_base_field | exact _root_.GlobalTheory.RowLift.twisted_lift_from_base_field | (intros; apply _root_.GlobalTheory.RowLift.twisted_lift_from_base_field <;> assumption)
+  exact @_root_.GlobalTheory.RowLift.twisted_lift_from_base_field
 end

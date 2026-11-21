@@ -19,4 +19,4 @@ open GlobalTheory.AscFin
 
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.exists_adelicBump_periodic_under_adjointLattice : ∀ (D : D7) (V₀ W W₀ : HSp D) (σ : ℕ) (dW : HypDec W W₀ σ) (B₂ : AddSubgroup (Mx D σ V₀.rank)), FinLat B₂ → ∀ y : Mx D V₀.rank σ, ∃ β : Mx D V₀.rank σ → ℂ, IsBump β ∧ β y ≠ 0 ∧ (∀ η ∈ B₂, ∀ b, dW.incAdj V₀ b = dW.incY V₀ η → ∀ z, β (z + b) = β z) ∧ ∀ z, β z ≠ 0 → ∃ r : Mx D V₀.rank σ, r.map (finPart D) = 0 ∧ ∃ η ∈ B₂, dW.incAdj V₀ (z - (y + r)) = dW.incY V₀ η := by
-  first | exact @GlobalTheory.AscFinBumpAdj.exists_bump_adj | exact GlobalTheory.AscFinBumpAdj.exists_bump_adj | (intros; apply GlobalTheory.AscFinBumpAdj.exists_bump_adj <;> assumption)
+  exact @GlobalTheory.AscFinBumpAdj.exists_bump_adj

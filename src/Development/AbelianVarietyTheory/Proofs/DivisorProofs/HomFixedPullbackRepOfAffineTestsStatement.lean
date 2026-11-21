@@ -23,4 +23,4 @@ theorem _root_.GlobalTheory.T.homFixedPullbackRep_of_affineTests : ∀ (S : Sche
       LBIso (L.pull φA') ((M.pull φB').pull Φ'.left) →
       ∃! h : T ⟶ H, h ≫ π = t ∧ ∃ (ψA : A'.left ⟶ AH.left) (ψB : B'.left ⟶ BH.left), IsGrpPullback A' AH h ψA ∧
         IsGrpPullback B' BH h ψB ∧ ψA ≫ φA = φA' ∧ ψB ≫ φB = φB' ∧ Φ'.left ≫ ψB = ψA ≫ Φ.left := by
-  first | exact @GlobalTheory.EndLoc.HomFixGlue.rep_of_affine | exact GlobalTheory.EndLoc.HomFixGlue.rep_of_affine | (intros; apply GlobalTheory.EndLoc.HomFixGlue.rep_of_affine <;> assumption)
+  exact @GlobalTheory.EndLoc.HomFixGlue.rep_of_affine

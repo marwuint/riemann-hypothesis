@@ -21,4 +21,4 @@ open GlobalTheory.Core.Rk.Exh GlobalTheory.RegSW
 
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.zeta_integral_eisenstein_residue : ∀ (D : D7) (V : HSp D) (μ : (AE D)ˣ →* Circle), IsHeckeChar D μ → ∀ (m : Measure (GA D V)), m.IsHaarMeasure → ∀ (Φ : ℂ → GA D (dblSp V) → ℂ), GlobalTheory.Eis.EisContinues V Φ → (∀ g, AnalyticOnNhd ℂ (GlobalTheory.Eis.eisSer V Φ g) (rightOf (V.rank / 2))) → (∀ s₀, ∃ k, GlobalTheory.Eis.EisRegularAt V Φ s₀ k) → ∀ f₁ f₂ : GA D V → ℂ, GlobalTheory.Grow.RapidDec V f₁ → GlobalTheory.Grow.RapidDec V f₂ → GlobalTheory.Eis.IsZetaFamily V μ m Φ f₁ f₂ → ∀ (s₀ : ℂ) (E₁ : GA D (dblSp V) → ℂ), GlobalTheory.Eis.EisCoeffAt V Φ s₀ (-1) E₁ → CoeffAt (GlobalTheory.Eis.zeta V μ m Φ f₁ f₂) s₀ (-1) (GlobalTheory.Eis.dblInt V μ m E₁ f₁ f₂) := by
-  first | exact @GlobalTheory.CompanionTheory.Eis.coeffAt_neg_one_zeta | exact GlobalTheory.CompanionTheory.Eis.coeffAt_neg_one_zeta | (intros; apply GlobalTheory.CompanionTheory.Eis.coeffAt_neg_one_zeta <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Eis.coeffAt_neg_one_zeta

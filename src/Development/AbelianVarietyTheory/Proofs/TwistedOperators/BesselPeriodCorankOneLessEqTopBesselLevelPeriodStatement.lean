@@ -15,4 +15,4 @@ set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.besselPeriodCorankOneLess_eq_topBesselLevel_period : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) (Wl : G.Weil) (t : T) (M : GlobalTheory.FunObj.Vol G)
     (hM : M.Is t) (φ : Fn G (.top 0)) (F : Fn G (.grid D.R.m 0)),
     Bplus Wl M φ F = (GlobalTheory.RowChain.topLev G hM).per Wl.ψ φ F := by
-  first | exact @GlobalTheory.RowChain.TopPer.bplus_eq_topLev_per | exact GlobalTheory.RowChain.TopPer.bplus_eq_topLev_per | (intros; apply GlobalTheory.RowChain.TopPer.bplus_eq_topLev_per <;> assumption)
+  exact @GlobalTheory.RowChain.TopPer.bplus_eq_topLev_per

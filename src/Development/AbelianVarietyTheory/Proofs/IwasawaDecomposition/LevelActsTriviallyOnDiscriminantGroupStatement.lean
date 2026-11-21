@@ -18,4 +18,4 @@ theorem _root_.GlobalTheory.T.level_acts_trivially_on_discriminant_group : ∀ {
     (x : GL (Fin n) (E ⊗[F] v.adicCompletion F)) (_ : x ∈ S.Uloc v),
     ∀ y ∈ latS (F := F) (v.adicCompletion F) (intV E v) (Submodule.span (𝓞 E) (dualSet (σ : E →+* E) (1 : Matrix (Fin n) (Fin n) E) S.Lb)),
       (x : Matrix (Fin n) (Fin n) (E ⊗[F] v.adicCompletion F)) *ᵥ y - y ∈ latS (F := F) (v.adicCompletion F) (intV E v) S.Lb := by
-  first | exact @GlobalTheory.uloc_acts_trivially_on_dual_quotient | exact GlobalTheory.uloc_acts_trivially_on_dual_quotient | (intros; apply GlobalTheory.uloc_acts_trivially_on_dual_quotient <;> assumption)
+  exact @GlobalTheory.uloc_acts_trivially_on_dual_quotient

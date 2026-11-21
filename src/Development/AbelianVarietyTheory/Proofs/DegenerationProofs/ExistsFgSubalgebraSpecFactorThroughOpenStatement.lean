@@ -12,4 +12,4 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.ThetaReal
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.exists_fg_subalgebra_spec_factor_through_open : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (R : Subalgebra o Ω), R.FG → ∀ V : (Sp R).Opens, (V : Set (Sp R)).Nonempty → ∃ (R' : Subalgebra o Ω) (h : R ≤ R'), R'.FG ∧ ∃ τ : Sp R' ⟶ V.toScheme, τ ≫ V.ι = spMap (Subalgebra.inclusion h).toRingHom := by
-  first | exact @GlobalTheory.exists_fg_subalgebra_spec_factors_open | exact GlobalTheory.exists_fg_subalgebra_spec_factors_open | (intros; apply GlobalTheory.exists_fg_subalgebra_spec_factors_open <;> assumption)
+  exact @GlobalTheory.exists_fg_subalgebra_spec_factors_open

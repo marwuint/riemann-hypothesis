@@ -14,4 +14,4 @@ open scoped ComplexConjugate TensorProduct
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.isRegularSemisimple_torusEllipticElement_realPlace : ∀ {D : D7} (V : HSp D) (P : PPol D.sp.cm.sig V.rank) (ρ : D.what₂.Tau) {x φ}
     (h : IsIsom P (placeOf D ρ).Completion V.gram x φ), IsRegSS (matAt V ρ (gam h)) := by
-  first | exact @GlobalTheory.RegularGamma.isRegSS_gam | exact GlobalTheory.RegularGamma.isRegSS_gam | (intros; apply GlobalTheory.RegularGamma.isRegSS_gam <;> assumption)
+  exact @GlobalTheory.RegularGamma.isRegSS_gam

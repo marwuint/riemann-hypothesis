@@ -9,4 +9,4 @@ theorem _root_.GlobalTheory.T.finite_length_witt_cohomology : ∀ {l : ℕ} [Fac
     (q : X ⟶ Spec (CommRingCat.of O)) (ρ : O →+* k) (j : ℕ),
     Module.Finite (Wc.Wm l k 1) (HO (St (γ := Wc.pd l k 1) (p := l) (q := q) (κ := (Wc.res l k 1).comp ρ) ⊤ {⊤}) j) →
     IsFiniteLength (WittVector l k) (CH.H (Wc.OM l (B.schFn q) ρ 1) j) := by
-  first | exact @GlobalTheory.CompanionTheory.LevelOne.finiteLength_level_one | exact GlobalTheory.CompanionTheory.LevelOne.finiteLength_level_one | (intros; apply GlobalTheory.CompanionTheory.LevelOne.finiteLength_level_one <;> assumption)
+  exact @GlobalTheory.CompanionTheory.LevelOne.finiteLength_level_one

@@ -10,4 +10,4 @@ theorem _root_.GlobalTheory.T.parahoricDatum_torus_integrand_eq_indicator : ∀ 
     datum ξ (x * (mtor ϖ e : GL (A ⊕ D) k).val) * starRingEnd ℂ (datum ξ x) =
       Set.indicator {y : Matrix (A ⊕ E) (A ⊕ D) k | InSupp (y * (mtor ϖ (fun i => -max 0 (-e i)) : GL (A ⊕ D) k).val)}
         (fun _ => (1 : ℂ)) x := by
-  first | exact @GlobalTheory.TorusIntegrand.integrand | exact GlobalTheory.TorusIntegrand.integrand | (intros; apply GlobalTheory.TorusIntegrand.integrand <;> assumption)
+  exact @GlobalTheory.TorusIntegrand.integrand

@@ -12,4 +12,4 @@ theorem _root_.GlobalTheory.T.average_det_char_monomial_eq_sum_prod_minors : ∀
     ∫ g, (∏ τ, (ρ g τ : Matrix (Fin a) (Fin a) ℂ).det ^ (m τ)) *
       Λ (GlobalTheory.MinorFrame.colSub (fun τ => (ρ g τ : Matrix (Fin a) (Fin a) ℂ)) (MvPolynomial.monomial k 1)) ∂ν =
     ∑ p, r p * Λ (GlobalTheory.MinorFrame.prodMinors (U p)) := by
-  first | exact @GlobalTheory.MinorFrame.AvgCore.average_monomial_eq_sum_prodMinors | exact GlobalTheory.MinorFrame.AvgCore.average_monomial_eq_sum_prodMinors | (intros; apply GlobalTheory.MinorFrame.AvgCore.average_monomial_eq_sum_prodMinors <;> assumption)
+  exact @GlobalTheory.MinorFrame.AvgCore.average_monomial_eq_sum_prodMinors

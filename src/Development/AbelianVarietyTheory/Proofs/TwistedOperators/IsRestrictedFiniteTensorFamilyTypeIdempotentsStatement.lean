@@ -16,4 +16,4 @@ open scoped Classical
 open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.TrIdem
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.isRestrictedFiniteTensorFamily_typeIdempotents : ∀ (D : D7) (V : HSp D) (T : TypeDataG V) (U : AuxiliaryPlaceHermitianSpace V) (μf : ∀ v, Measure (GLoc D.sp.cm.sig V.gram v)), (∀ v, (μf v).IsHaarMeasure) → (∀ᶠ v in cofinite, μf v (Kv V v) = 1) → U.u ∉ T.S → ∀ A, IsFinFamily D.sp.cm.sig V.gram (frameLat V) (fam T U μf A) := by
-  first | exact @GlobalTheory.TrIdem.isFinFamily_fam | exact GlobalTheory.TrIdem.isFinFamily_fam | (intros; apply GlobalTheory.TrIdem.isFinFamily_fam <;> assumption)
+  exact @GlobalTheory.TrIdem.isFinFamily_fam

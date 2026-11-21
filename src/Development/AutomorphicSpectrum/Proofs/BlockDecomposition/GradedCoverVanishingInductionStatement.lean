@@ -23,4 +23,4 @@ theorem _root_.GlobalTheory.T.graded_cover_vanishing_induction : ∀ {R : Type} 
         (∀ σ, f σ ∈ (Fil n).S _) ∧ (∀ σ, CH.d _ n f σ ∈ (Fil ((n : ℤ) + 1)).S _) ∧
         Rep ((Fil ((n : ℤ) + 1)).res (capS W Finset.univ).ι) ((Fil ((n : ℤ) + 1 + 1)).res (capS W Finset.univ).ι)
           (CH.d _ n f) (c - ∑ i, ((resU (gr Fil ((n : ℤ) + 1)) (capS_univ_le W (Finset.univ.erase i))).pull (n + 1)) (ω i)) := by
-  first | exact @GlobalTheory.CompanionTheory.ConeZig.cech_top_cup_power | exact GlobalTheory.CompanionTheory.ConeZig.cech_top_cup_power | (intros; apply GlobalTheory.CompanionTheory.ConeZig.cech_top_cup_power <;> assumption)
+  exact @GlobalTheory.CompanionTheory.ConeZig.cech_top_cup_power

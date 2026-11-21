@@ -12,4 +12,4 @@ theorem _root_.GlobalTheory.T.indefiniteUnitaryCharacter_eq_one_cayleyRotation :
     ∀ (i0 : Fin R) (j0 : Fin S) (x : ℝ),
       χ (Matrix.fromBlocks (Matrix.diagonal (Function.update 1 i0 ((1 + 2 * Complex.I * x) / (1 - 2 * Complex.I * x)))) 0 0
         (Matrix.diagonal (Function.update 1 j0 ((1 - 2 * Complex.I * x) / (1 + 2 * Complex.I * x))))) = 1 := by
-  first | exact @GlobalTheory.UnitaryCharRot.char_eq_one_rot | exact GlobalTheory.UnitaryCharRot.char_eq_one_rot | (intros; apply GlobalTheory.UnitaryCharRot.char_eq_one_rot <;> assumption)
+  exact @GlobalTheory.UnitaryCharRot.char_eq_one_rot

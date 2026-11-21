@@ -93,5 +93,5 @@ theorem _root_.GlobalTheory.T.split_place_vacuum_algebraic : ∀ {D : D7} {T : T
     IsBottomTri W i j X → ∀ (t : T) (N : ℕ) (e : AE D) (P : Pl D.host.E), Formalism.L2.NTheta.IsIdemAt e P → ((N : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal →
     ∀ h ∈ GfC WW, Formalism.L2.Theta.SuppAt e WW h →
       GlobalTheory.MovedAlg.IsAlgComb W.ψ (GlobalTheory.Grid.neg A) WW X.vac (X.ω t (1, h) X.vac) := by
-  first | exact @_root_.GlobalTheory.SplitVacAlg.split_vacuum_algebraic_combination | exact _root_.GlobalTheory.SplitVacAlg.split_vacuum_algebraic_combination | (intros; apply _root_.GlobalTheory.SplitVacAlg.split_vacuum_algebraic_combination <;> assumption)
+  exact @_root_.GlobalTheory.SplitVacAlg.split_vacuum_algebraic_combination
 end

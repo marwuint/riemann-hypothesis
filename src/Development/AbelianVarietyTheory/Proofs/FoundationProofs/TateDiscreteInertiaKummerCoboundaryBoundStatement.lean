@@ -11,4 +11,4 @@ theorem _root_.GlobalTheory.T.tate_discrete_inertia_kummer_coboundary_bound : �
   (∀ s, s ∈ Ine (F := ℚ) A → cycMod ℚ Ω l m s = 1 → ∀ t : ZMod (l ^ m), s ζ' = ζ ^ t.val * ζ' →
     GlobalTheory.Glue.CgA A l k ((t.val : Ω) * o) (s x - x)) →
   GlobalTheory.Glue.CgA A l k ((l : Ω) ^ c * o) 0 := by
-  first | exact @GlobalTheory.HTTrace.main | exact GlobalTheory.HTTrace.main | (intros; apply GlobalTheory.HTTrace.main <;> assumption)
+  exact @GlobalTheory.HTTrace.main

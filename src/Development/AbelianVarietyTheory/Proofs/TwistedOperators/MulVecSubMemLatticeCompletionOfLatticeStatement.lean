@@ -11,4 +11,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.mulVec_sub_mem_latticeCompletion_of_lattice : ∀ (D : D7) {k : ℕ} (L L' : Lt D.host.E k) (m : Matrix (Fin k) (Fin k) (AfE D)), (∀ x ∈ L, m *ᵥ toAf x - toAf x ∈ hatV L') → ∀ u ∈ hatV L, m *ᵥ u - u ∈ hatV L' := by
-  first | exact @GlobalTheory.LevExt.mulVec_sub_mem_hatV | exact GlobalTheory.LevExt.mulVec_sub_mem_hatV | (intros; apply GlobalTheory.LevExt.mulVec_sub_mem_hatV <;> assumption)
+  exact @GlobalTheory.LevExt.mulVec_sub_mem_hatV

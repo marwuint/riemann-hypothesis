@@ -9,4 +9,4 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.S Fo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LabPin.instCM
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.cmField_splitPlace_eq_of_place_eq : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (s s' : ReciprocityTheory.Aut.SplitPlace L), s.w = s'.w → s = s' := by
-  first | exact @GlobalTheory.SplitUniq.splitPlace_eq_of_w_eq | exact GlobalTheory.SplitUniq.splitPlace_eq_of_w_eq | (intros; apply GlobalTheory.SplitUniq.splitPlace_eq_of_w_eq <;> assumption)
+  exact @GlobalTheory.SplitUniq.splitPlace_eq_of_w_eq

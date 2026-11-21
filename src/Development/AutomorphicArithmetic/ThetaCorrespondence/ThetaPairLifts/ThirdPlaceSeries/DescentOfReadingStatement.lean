@@ -26,5 +26,5 @@ theorem _root_.GlobalTheory.T.realization_embedding_compatible_alt : _root_.Glob
     (n : ℕ) (a : Fin n → (Fm.ex x hx i).nch.Oe w) (y : Fin n → Fin ((R2 p).nW j) → (Fm.D x i).what₂.LL), (∀ k, y k ∈ Submodule.span (Fm.D x i).what₂.LL ((p.nexp.fi j).e '' ((p.Sx.A ((j : ℕ) + 1)).WK : Set _))) →
     rdK (rdAt p w j hρ ν) hρ ((Fm.ex x hx i).nch.k' w) z = ∑ k, (e (algebraMap ((Fm.ex x hx i).nch.Oe w) (FractionRing ((Fm.ex x hx i).nch.Oe w)) (a k)) * ν⁻¹) • adForm (R2 p) j (y k) (p.v₀ j (sg0 (Fm.D x i) p.P.A3.A)) →
     incl (Fm.D x i).nexp ((Fm.ex x hx i).nch.twI w) _ ((Fm.ex x hx i).nch.sd w) ((Fm.ex x hx i).nch.Oe w) ((Fm.ex x hx i).nch.k' w) z = ∑ k, a k • rd (y k) := by
-  first | exact @_root_.GlobalTheory.BigOn.Exp.descent_of_reading_alt | exact _root_.GlobalTheory.BigOn.Exp.descent_of_reading_alt | (intros; apply _root_.GlobalTheory.BigOn.Exp.descent_of_reading_alt <;> assumption)
+  exact @_root_.GlobalTheory.BigOn.Exp.descent_of_reading_alt
 end

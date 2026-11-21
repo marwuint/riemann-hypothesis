@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.support_levelPlace_symmetricChain_secondHalf : ∀
   ∀ h, SuppAt p.e B'.V h → GlobalTheory.Unf.contr l J.W₀ vL (flatBF s₁ (T₁ Φ₁)) (flatFB s₂ (s₂.om (1, h) (T₂ Φ₂))) ≠ 0 →
     ∃ r ∈ besGrp B'.d B'.o, SuppAt p.e B'.V r ∧
       ∃ u uk, p.IsLoc F.G₂ u uk ∧ uk ∈ ((S.T t).lev (j + 1 + 1) (c + 1) (by omega)).J ∧ h = r * u := by
-  first | exact @GlobalTheory.LocMod.GSuppTwo.gsupp2_std | exact GlobalTheory.LocMod.GSuppTwo.gsupp2_std | (intros; apply GlobalTheory.LocMod.GSuppTwo.gsupp2_std <;> assumption)
+  exact @GlobalTheory.LocMod.GSuppTwo.gsupp2_std

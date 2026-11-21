@@ -11,4 +11,4 @@ theorem _root_.GlobalTheory.T.penultimateStepPsi_rationalRep_eq_columnsDatum : �
     IsOrd xPos e' → IsOrd xPos e → ∀ (x₀ : HomE X.E (R.N s) (R.N (s + 1))) (y' : Sp X.E (R.N (s + 1))),
       (W.T s R).Psi g (toLoc ι e e' x₀) (fun a => ι (y' (e a))) =
         sgn sel mu P W γ (R.N (s + 1) + cOf R (s + 1)) * σ₀ (PsiAt Ch sel mu cst s P γ x₀ y') := by
-  first | exact @GlobalTheory.TwBridge.psi_rat_agree | exact GlobalTheory.TwBridge.psi_rat_agree | (intros; apply GlobalTheory.TwBridge.psi_rat_agree <;> assumption)
+  exact @GlobalTheory.TwBridge.psi_rat_agree

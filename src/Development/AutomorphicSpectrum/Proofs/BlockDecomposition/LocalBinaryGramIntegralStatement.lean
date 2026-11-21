@@ -13,4 +13,4 @@ theorem _root_.GlobalTheory.T.local_binary_gram_integral : ∀ (F E : Type) [Fie
   Continuous (fun s : Fv F v => (m (hermScal (Fv F v) σ s) A).toReal) ∧
   HasCompactSupport (fun s : Fv F v => (m (hermScal (Fv F v) σ s) A).toReal) ∧
   ENNReal.ofReal (∫ s, (m (hermScal (Fv F v) σ s) A).toReal ∂lam) = coordW (Fv F v) b lam 1 2 A := by
-  first | exact @GlobalTheory.CompanionTheory.SW.FibreCpt.fibre_masses | exact GlobalTheory.CompanionTheory.SW.FibreCpt.fibre_masses | (intros; apply GlobalTheory.CompanionTheory.SW.FibreCpt.fibre_masses <;> assumption)
+  exact @GlobalTheory.CompanionTheory.SW.FibreCpt.fibre_masses

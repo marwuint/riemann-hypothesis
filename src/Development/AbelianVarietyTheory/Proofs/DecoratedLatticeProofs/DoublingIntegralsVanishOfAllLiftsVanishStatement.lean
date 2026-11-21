@@ -17,4 +17,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Core.Rk.Exh GlobalTheory.RegSW
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.doubling_integrals_vanish_of_all_lifts_vanish : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A W : HSp D) (χA χW : (AE D)ˣ →* Circle) (om : WRep A W) (omh : WRep (dblSp A) W), HSpace.SigOK A → HSpace.IsPosDef A → IsWeilDatumO ψ A W χA χW om → IsWeilDatumO ψ (dblSp A) W 1 χW omh → ∀ m : Measure (GA D A), m.IsHaarMeasure → ∀ u : GA D A → ℂ, Continuous u → (∀ γ ∈ GQ A, ∀ g, u (γ * g) = u g) → NoLift ψ om m u → Kills ψ χW omh m u := by
-  first | exact @GlobalTheory.Core.Rk.Kill.kills_of_noLift | exact GlobalTheory.Core.Rk.Kill.kills_of_noLift | (intros; apply GlobalTheory.Core.Rk.Kill.kills_of_noLift <;> assumption)
+  exact @GlobalTheory.Core.Rk.Kill.kills_of_noLift

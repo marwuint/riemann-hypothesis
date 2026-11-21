@@ -12,4 +12,4 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 open GlobalTheory.IndefiniteRowSideFullHecke.CongruenceModuleMatrices GlobalTheory.ConsExists GlobalTheory.SpanRing
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.exists_inertia_cyclotomic_generates_units_mod : ∀ {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (i : N.Loc), (∀ v ∈ placesOver H.E (N.l i), v.asIdeal.ramificationIdx ℤ = 1) → ∃ w ∈ placesOver H.E (N.l i), ∃ g0 ∈ Ine (F := H.E) (N.plOm.1 w), orderOf (PadicInt.toZMod ((cycZ (F := H.E) (Ω := N.Om) (N.l i) g0 : ℤ_[N.l i]ˣ) : ℤ_[N.l i])) = N.l i - 1 := by
-  first | exact @GlobalTheory.CycGen.main | exact GlobalTheory.CycGen.main | (intros; apply GlobalTheory.CycGen.main <;> assumption)
+  exact @GlobalTheory.CycGen.main

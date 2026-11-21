@@ -11,4 +11,4 @@ set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.val_at_complex_embedding : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (L : Type) [Field L] [NumberField L]
     (z : Sp (𝓞 L) ⟶ X) (σ : L →+* ℂ) (a : Ω) (u : L),
     ValAt ξ (spMap (algebraMap (𝓞 L) L) ≫ z) a u → ValAt ξ (spMap (σ.comp (algebraMap (𝓞 L) L)) ≫ z) a (σ u) := by
-  first | exact @GlobalTheory.CompanionTheory.Ar.RootHt.PullVal.valAt_complex | exact GlobalTheory.CompanionTheory.Ar.RootHt.PullVal.valAt_complex | (intros; apply GlobalTheory.CompanionTheory.Ar.RootHt.PullVal.valAt_complex <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Ar.RootHt.PullVal.valAt_complex

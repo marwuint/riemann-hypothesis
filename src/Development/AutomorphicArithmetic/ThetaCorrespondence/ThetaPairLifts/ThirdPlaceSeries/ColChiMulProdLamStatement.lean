@@ -64,5 +64,5 @@ theorem _root_.GlobalTheory.T.true_geometry_final_bound_alt : ∀ {B : GlobalThe
         Ideal.Quotient.mk (a.pl i).1.asIdeal z = (_root_.GlobalTheory.FamTraceChi.reductionYZero_alt W ((show GA (I.rec7 l Z) ((I.rec7 l Z).sp.Y 0) from a.g.b 0)⁻¹ * embA a.d.B.d a.d.B.o κ * (show GA (I.rec7 l Z) ((I.rec7 l Z).sp.Y 0) from a.g.b 0)) (a.pl i)).val p' q' →
         valuation (a.G i).k (((x i : GL (Fin (I.rec7 l Z).R.k ⊕ Fin ((a.G i).s + 1)) (a.G i).k)).val p q - (ofSplit (a.G i).q).pr (z : (I.rec7 l Z).host.E)) < 1) ∧
       (((_root_.GlobalTheory.MiTop.formsAtZero W u).cls0.lev.chi ⟨_, hy⟩ : ℂˣ) : ℂ) * ∏ i, (((a.G i).S.P.lam (x i) : ℂˣ) : ℂ) = 1 := by
-  first | exact @_root_.GlobalTheory.FamTraceChiCol.colChi_mul_prod_lam_alt | exact _root_.GlobalTheory.FamTraceChiCol.colChi_mul_prod_lam_alt | (intros; apply _root_.GlobalTheory.FamTraceChiCol.colChi_mul_prod_lam_alt <;> assumption)
+  exact @_root_.GlobalTheory.FamTraceChiCol.colChi_mul_prod_lam_alt
 end

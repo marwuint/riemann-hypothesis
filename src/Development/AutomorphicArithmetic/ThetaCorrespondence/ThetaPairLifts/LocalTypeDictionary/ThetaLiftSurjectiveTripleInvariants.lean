@@ -87,5 +87,5 @@ theorem _root_.GlobalTheory.T.triple_invariant_theta_surjective : GlobalTheory.P
             GlobalTheory.TripleRead.thO Γ.M ψ (sgn true W).gram e Ψ = Φ) ∧
           ∀ Φ ∈ algF ψ θ false A₁ B, ∃ Ψ ∈ GlobalTheory.TripleAssembly.darbAlg Γ.M' Bs.ψ Bs.emb,
             GlobalTheory.TripleRead.thO Γ.M' ψ (sgn false W₁).gram e Ψ = Φ := by
-  first | exact @_root_.GlobalTheory.TripleInv.theta_lift_surjective_triple_invariants | exact _root_.GlobalTheory.TripleInv.theta_lift_surjective_triple_invariants | (intros; apply _root_.GlobalTheory.TripleInv.theta_lift_surjective_triple_invariants <;> assumption)
+  exact @_root_.GlobalTheory.TripleInv.theta_lift_surjective_triple_invariants
 end

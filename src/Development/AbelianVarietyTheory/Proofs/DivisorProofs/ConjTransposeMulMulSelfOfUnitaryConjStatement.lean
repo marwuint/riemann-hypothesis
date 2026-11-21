@@ -11,4 +11,4 @@ theorem _root_.GlobalTheory.T.conjTranspose_mul_self_of_witt_frame_unitary : ∀
       let m : GL (Fin d) ℂ := y₀ * k * y₀⁻¹
       let G : Matrix (Fin n) (Fin n) ℂ := 1 + Xb * (m.1 - 1) * (Yb.conjTranspose * J) + Yb * ((m⁻¹).1.conjTranspose - 1) * (Xb.conjTranspose * J)
       G.conjTranspose * P * G = P := by
-  first | exact @GlobalTheory.conjTranspose_mul_mul_self_of_unitary_conj | exact GlobalTheory.conjTranspose_mul_mul_self_of_unitary_conj | (intros; apply GlobalTheory.conjTranspose_mul_mul_self_of_unitary_conj <;> assumption)
+  exact @GlobalTheory.conjTranspose_mul_mul_self_of_unitary_conj

@@ -103,5 +103,5 @@ open Formalism.REAL Formalism.MainNotions.S GlobalTheory.SmoothGlob GlobalTheory
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.placewise_decomposition_translation_invariant : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (N : GlobalTheory.Grid.Node D) (U : Subgroup (GA D N.V)) (W : D.what₂.Tau → Type) [∀ τ, AddCommGroup (W τ)] [∀ τ, Module ℂ (W τ)] (ρ : ∀ τ, Representation ℂ (Formalism.REAL.KG (N.M.ε τ)) (W τ)) (τ : D.what₂.Tau), ∀ g ∈ UJset (N.M.ε τ), HasCtp θ N U (TyOf θ N ρ) τ (N.M.σ τ g) := by
-  first | exact @_root_.GlobalTheory.PlaceDecomp.placeDecomposition_translate | exact _root_.GlobalTheory.PlaceDecomp.placeDecomposition_translate | (intros; apply _root_.GlobalTheory.PlaceDecomp.placeDecomposition_translate <;> assumption)
+  exact @_root_.GlobalTheory.PlaceDecomp.placeDecomposition_translate
 end

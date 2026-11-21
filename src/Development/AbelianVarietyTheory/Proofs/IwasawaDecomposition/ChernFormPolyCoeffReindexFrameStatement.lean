@@ -10,4 +10,4 @@ open scoped ComplexOrder
 
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.chernFormPolyCoeff_reindex_frame : ∀ {n a b : ℕ} (e : Fin a ≃ Fin b) (F : ReciprocityTheory.L2DbarEstimates.V n → Matrix (Fin a) (Fin a) ℂ) (v : ReciprocityTheory.L2DbarEstimates.V n) (k : ℕ), chernPoly (fun u => Matrix.reindex e e (F u)) v k = chernPoly F v k := by
-  first | exact @GlobalTheory.ChernReindex.chernPoly_reindex | exact GlobalTheory.ChernReindex.chernPoly_reindex | (intros; apply GlobalTheory.ChernReindex.chernPoly_reindex <;> assumption)
+  exact @GlobalTheory.ChernReindex.chernPoly_reindex

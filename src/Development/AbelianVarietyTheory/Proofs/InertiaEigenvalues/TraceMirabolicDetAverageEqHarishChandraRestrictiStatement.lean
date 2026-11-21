@@ -9,4 +9,4 @@ theorem _root_.GlobalTheory.T.trace_mirabolicDetAverage_eq_harishChandraRestrict
         (g : ℂ) ^ n * ∑ x : Gn g 1, ((θ (Matrix.GeneralLinearGroup.det x) : ℂˣ) : ℂ) * res n 1 ψ 1 x ∧
       tr (mirEl θ (Pi.single 0 1) true) ψ =
         (g : ℂ) ^ n * ∑ x : Gn g 1, ((θ (Matrix.GeneralLinearGroup.det x) : ℂˣ) : ℂ) * res 1 n ψ x 1 := by
-  first | exact @GlobalTheory.ResTr.trace_mir | exact GlobalTheory.ResTr.trace_mir | (intros; apply GlobalTheory.ResTr.trace_mir <;> assumption)
+  exact @GlobalTheory.ResTr.trace_mir

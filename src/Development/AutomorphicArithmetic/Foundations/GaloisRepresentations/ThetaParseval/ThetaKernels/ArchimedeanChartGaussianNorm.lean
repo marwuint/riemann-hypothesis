@@ -19,5 +19,5 @@ theorem _root_.GlobalTheory.T.archimedean_chart_gaussian_norm : ∀ (F E : Type)
       IsInfFamF (fun w : InfinitePlace F => (B.emb w).1) θ → ∀ ι : (InfinitePlace F → ℂ) →+ AEF F E, IsChartF θ ι →
       ∀ (hψ : IsCharAF F B.ψ) (f : BBF σ JS JT ξ₀ B.ψ), IsThetaFunOF σ JS JT ξ₀ B.ψ f.1 →
         Sm (rhoVF σ JS JT ξ₀ B.ψ hψ ι) f := by
-  first | exact @_root_.GlobalTheory.ThetaSmoothF.sm_of_thetaF_k | exact _root_.GlobalTheory.ThetaSmoothF.sm_of_thetaF_k | (intros; apply _root_.GlobalTheory.ThetaSmoothF.sm_of_thetaF_k <;> assumption)
+  exact @_root_.GlobalTheory.ThetaSmoothF.sm_of_thetaF_k
 end

@@ -58,6 +58,6 @@ open GlobalTheory.LevCmp
 open GlobalTheory.TwistChoice (Reading ReadsAt)
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.joint_level_of_cm_datum_twOK : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, AllSt fun _ B _ T w P x => ∀ (l : _root_.GlobalTheory.HeightCounting.Up.ThirdIntermediateLevel hL x) (v : B.places.Pl) (i : (Dof x).ntw.Tw) (b : Bool) (ψ : G (Dof x).host.E (Dof x).nd.Om →* ((Dof x).ntw.Ok i (T.k v))ˣ) (hA : NX.AdmTw (Dof x) i (T.k v) (QOf P v) ψ) (j : Fin (Dof x).R.m), TwistedAt (Dof x) v → (Dof x).ntw.l i = B.places.resChar v → IntegralHeckeForms.TwOK i (T.k v) (QOf P v) ψ → Joint (D := Dof x) (eta (D := Dof x) (cfOf x) w.I.xi v j) (mtAt (D := Dof x) l.mt.M v j) l.b.Bs.exp b hA j := by
-  first | exact @_root_.GlobalTheory.JointLevel.joint_level_of_twOK_at_twisted | exact _root_.GlobalTheory.JointLevel.joint_level_of_twOK_at_twisted | (intros; apply _root_.GlobalTheory.JointLevel.joint_level_of_twOK_at_twisted <;> assumption)
+  exact @_root_.GlobalTheory.JointLevel.joint_level_of_twOK_at_twisted
 end
 end

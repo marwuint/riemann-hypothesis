@@ -25,4 +25,4 @@ theorem _root_.GlobalTheory.T.exists_levelGroup_transport_uniformisation_compone
           ∃ hw : Matrix.mulVec (tr g k : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E) w ∈ Lf k,
             Submodule.Quotient.mk (p := p.T.Q.l.Mb • (⊤ : Submodule (𝓞 D.host.E) (Lf k))) ⟨_, hw⟩ =
               φ k ((r.lev i g ^ n) ((φ k).symm (Submodule.Quotient.mk w))) := by
-  first | exact @GlobalTheory.ShareOn.exists_transport | exact GlobalTheory.ShareOn.exists_transport | (intros; apply GlobalTheory.ShareOn.exists_transport <;> assumption)
+  exact @GlobalTheory.ShareOn.exists_transport

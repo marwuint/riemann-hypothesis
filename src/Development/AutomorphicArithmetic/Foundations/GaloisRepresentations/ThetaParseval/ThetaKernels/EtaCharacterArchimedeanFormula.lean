@@ -15,5 +15,5 @@ theorem _root_.GlobalTheory.T.eta_character_archimedean_formula : ∀ (F E : Typ
     _root_.UpperTheory.TP.W.GoodK σ B → ∀ η : (AF F)ˣ →* Circle, IsEtaF E η → ∀ a : (AF F)ˣ, At (evI F) ((a : AF F) - 1) →
       (η a : ℂ) = ∏ w, piInf (B.emb w) ((idFF F E a : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) /
         ((‖piInf (B.emb w) ((idFF F E a : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E)‖ : ℝ) : ℂ) := by
-  first | exact @_root_.GlobalTheory.EtaSignReal.eta_eq_prod_sign_k | exact _root_.GlobalTheory.EtaSignReal.eta_eq_prod_sign_k | (intros; apply _root_.GlobalTheory.EtaSignReal.eta_eq_prod_sign_k <;> assumption)
+  exact @_root_.GlobalTheory.EtaSignReal.eta_eq_prod_sign_k
 end

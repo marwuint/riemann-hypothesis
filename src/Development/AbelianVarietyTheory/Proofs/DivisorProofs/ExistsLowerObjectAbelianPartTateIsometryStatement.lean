@@ -30,4 +30,4 @@ theorem _root_.GlobalTheory.T.exists_lowerObject_abelianPart_tateIsometry : ∀ 
       (I : (letI := H.starRing; TateIsoQ Dw C.P.D.toPre C.P.oD F)),
       GlobalTheory.LowDat.XFLevel C tK m1 m2 F I → GlobalTheory.LowDat.FiltGraded C Z F I →
       ∃ I' : GlobalTheory.LowDat.LowTate C D' o' F, GlobalTheory.LowDat.LowGraded C Z D' f o' φB F I I' := by
-  first | exact @GlobalTheory.LowDat.LowObj.exists_lowObj | exact GlobalTheory.LowDat.LowObj.exists_lowObj | (intros; apply GlobalTheory.LowDat.LowObj.exists_lowObj <;> assumption)
+  exact @GlobalTheory.LowDat.LowObj.exists_lowObj

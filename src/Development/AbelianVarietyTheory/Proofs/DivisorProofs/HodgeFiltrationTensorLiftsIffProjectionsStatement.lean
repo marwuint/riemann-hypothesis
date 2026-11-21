@@ -17,4 +17,4 @@ theorem _root_.GlobalTheory.T.hodgeFiltration_tensor_lifts_iff_projections : ∀
     ∀ (wl : l ≫ (X ⊗ Y).hom = (A₀ ⊗ B₀).hom ≫ spMap π) (d : Crys κ (spMap π) (A₀ ⊗ B₀)),
     d ∈ schemeFil κ (A₀ ⊗ B₀) (X ⊗ Y) l wl ↔
       push κ (spMap π) (fst A₀ B₀) d ∈ schemeFil κ A₀ X i wi ∧ push κ (spMap π) (snd A₀ B₀) d ∈ schemeFil κ B₀ Y j wj := by
-  first | exact @GlobalTheory.SqLift.ProdFil.schemeFil_tensor_iff | exact GlobalTheory.SqLift.ProdFil.schemeFil_tensor_iff | (intros; apply GlobalTheory.SqLift.ProdFil.schemeFil_tensor_iff <;> assumption)
+  exact @GlobalTheory.SqLift.ProdFil.schemeFil_tensor_iff

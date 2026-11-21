@@ -28,4 +28,4 @@ theorem _root_.GlobalTheory.T.weilDatum_finite_pair_vacuum_algebraic_combination
     {χS χT : (Formalism.L2.Theta.AE D)ˣ →* Circle} {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)}, IsVacO ψ θ S T sS sT (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E)) v → IsSelfDualC S ΛS → IsSelfDualC T ΛT →
     (∀ τ, IsCartanInv (gramAt D S τ) (sS τ)) → (∀ τ, IsCartanInv (gramAt D T τ) (sT τ)) → IsWeilDatumO ψ S T χS χT om →
     ∀ x ∈ GfC S, ∀ h ∈ GfC T, ∃ (κ : ℂ) (F : WO S T → ℂ), GlobalTheory.MovedAlg.IsAlgComb ψ S T v F ∧ om (x, h) v = κ • F := by
-  first | exact @GlobalTheory.FinWeilAlg.om_vac_algComb | exact GlobalTheory.FinWeilAlg.om_vac_algComb | (intros; apply GlobalTheory.FinWeilAlg.om_vac_algComb <;> assumption)
+  exact @GlobalTheory.FinWeilAlg.om_vac_algComb

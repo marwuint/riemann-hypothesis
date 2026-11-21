@@ -26,4 +26,4 @@ theorem _root_.GlobalTheory.T.standardAddChar_symplectic_local_lattice_eq_one : 
     ∀ γ ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.latAtV X Y v, ∀ γ' ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.latAtV X Y v,
       B.ψ (b * GlobalTheory.WeilM.symp (R := AF F) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) (inclR (F := F) (AF F) (θ : E))
         (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F X.J) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F Y.J) γ γ') = 1 := by
-  first | exact @GlobalTheory.LatVacArith.psi_symp_latAtV | exact GlobalTheory.LatVacArith.psi_symp_latAtV | (intros; apply GlobalTheory.LatVacArith.psi_symp_latAtV <;> assumption)
+  exact @GlobalTheory.LatVacArith.psi_symp_latAtV

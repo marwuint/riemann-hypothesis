@@ -17,4 +17,4 @@ theorem _root_.GlobalTheory.T.exists_positive_complex_structure_darboux_pair : �
       ∀ u u' : Matrix (Fin n) (Fin d) (AE F E), At (evI F) u → At (evI F) u' →
         (∀ w, u'.map (piInf (B.emb w)) = Complex.I • (X.θ w * u.map (piInf (B.emb w)) * (W.θ w)ᵀ)) →
         ((fun i => evI F ((M.co.e u').1 i), fun i => evI F ((M.co.e u').2 i)) : (Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → mixedEmbedding.mixedSpace F)) = J₀ ((fun i => evI F ((M.co.e u).1 i), fun i => evI F ((M.co.e u).2 i)) : (Fin n × Fin d → mixedEmbedding.mixedSpace F) × (Fin n × Fin d → mixedEmbedding.mixedSpace F)) := by
-  first | exact @GlobalTheory.GaussFockPair.exists_pos_complex_structure | exact GlobalTheory.GaussFockPair.exists_pos_complex_structure | (intros; apply GlobalTheory.GaussFockPair.exists_pos_complex_structure <;> assumption)
+  exact @GlobalTheory.GaussFockPair.exists_pos_complex_structure

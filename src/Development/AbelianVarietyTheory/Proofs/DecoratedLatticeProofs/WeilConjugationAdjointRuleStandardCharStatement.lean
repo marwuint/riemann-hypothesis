@@ -11,4 +11,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.weilConjugationAdjointRule_standard_char : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ S T : HSp D, GlobalTheory.IndefiniteRowSideFullHecke.ConjugateAdjointDagger.ConjAdjoint ψ S T := by
-  first | exact @GlobalTheory.WeilConjAdjoint.conjAdjoint_holds | exact GlobalTheory.WeilConjAdjoint.conjAdjoint_holds | (intros; apply GlobalTheory.WeilConjAdjoint.conjAdjoint_holds <;> assumption)
+  exact @GlobalTheory.WeilConjAdjoint.conjAdjoint_holds

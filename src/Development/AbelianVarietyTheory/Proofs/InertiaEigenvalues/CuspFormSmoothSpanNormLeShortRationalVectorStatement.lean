@@ -23,4 +23,4 @@ theorem _root_.GlobalTheory.T.cuspFormSmoothSpan_norm_le_shortRationalVector : �
           ‖(GlobalTheory.GLFin.word l φ).1 (g * c)‖ ≤
             C * (‖fun i => pInf E (((fun j => algebraMap E (Ad E) (ξ j)) ᵥ* g.val) i)‖ ^ (a * Module.finrank ℚ E) /
               (ideleModule E (GeneralLinearGroup.det g) : ℝ)) ^ N := by
-  first | exact @GlobalTheory.MSpanDecay.norm_le_of_short_vector_mspanR | exact GlobalTheory.MSpanDecay.norm_le_of_short_vector_mspanR | (intros; apply GlobalTheory.MSpanDecay.norm_le_of_short_vector_mspanR <;> assumption)
+  exact @GlobalTheory.MSpanDecay.norm_le_of_short_vector_mspanR

@@ -13,4 +13,4 @@ theorem _root_.GlobalTheory.T.isNegHermitianSquare_curvature_of_holomorphic_fram
     (∀ᶠ u in 𝓝 v, DifferentiableAt ℂ Z u) → (∀ i j, ∀ᶠ u in 𝓝 v, DifferentiableAt ℂ (fun u => W u i j) u) →
     IsUnit (W v).det → (1 - Matrix.of (Z v) * (Matrix.of (Z v))ᴴ).PosDef →
     IsNegSq (curv (domGram m r) (Z v)) r → IsNegSq (curv G v) r := by
-  first | exact @GlobalTheory.PointFormSign.isNegSq_curv_of_changeFrame_comp | exact GlobalTheory.PointFormSign.isNegSq_curv_of_changeFrame_comp | (intros; apply GlobalTheory.PointFormSign.isNegSq_curv_of_changeFrame_comp <;> assumption)
+  exact @GlobalTheory.PointFormSign.isNegSq_curv_of_changeFrame_comp

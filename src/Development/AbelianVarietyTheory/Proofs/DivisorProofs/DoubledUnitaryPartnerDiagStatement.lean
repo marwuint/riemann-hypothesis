@@ -29,4 +29,4 @@ theorem _root_.GlobalTheory.T.transportedWeil_preserves_schwartz_heisenberg_equi
                        (∀ p, ∀ φ ∈ GlobalTheory.WeilM.schA D.host.F κ, om p φ ∈ GlobalTheory.WeilM.schA D.host.F κ) ∧
                        ∀ p w, ∀ φ ∈ GlobalTheory.WeilM.schA D.host.F κ,
                          om p (co.rho ψ w φ) = co.rho ψ (GlobalTheory.WeilM.actAB (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) p w) (om p φ) := by
-  first | exact @GlobalTheory.WeilSchrodinger.PresImpl.pres_impl | exact GlobalTheory.WeilSchrodinger.PresImpl.pres_impl | (intros; apply GlobalTheory.WeilSchrodinger.PresImpl.pres_impl <;> assumption)
+  exact @GlobalTheory.WeilSchrodinger.PresImpl.pres_impl

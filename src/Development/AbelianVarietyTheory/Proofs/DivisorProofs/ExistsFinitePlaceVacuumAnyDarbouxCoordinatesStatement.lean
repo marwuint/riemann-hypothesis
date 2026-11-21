@@ -21,4 +21,4 @@ theorem _root_.GlobalTheory.T.exists_finitePlace_vacuum_any_darboux_coordinates 
     (B : Base F E), B.IsGood σ → ∀ {n d : ℕ} (X : Spc F E n) (Y : Spc F E d) (r s r' s' : ℕ),
     X.IsHerm σ B r s → Y.IsSkew σ B r' s' → ∀ (co : GlobalTheory.WeilM.Darboux (GlobalTheory.WeilM.symp (R := AF F) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) (-1) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F X.J) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F Y.J)) (Fin n × Fin d)) (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F),
     ∃ φ, Model.IsVac (Model.mk (σ := σ) (X := X) (W := Y) co (fun _ => 0) 0 ∅) B.ψ v φ := by
-  first | exact @GlobalTheory.VacAny.exists_isVac_any_darboux | exact GlobalTheory.VacAny.exists_isVac_any_darboux | (intros; apply GlobalTheory.VacAny.exists_isVac_any_darboux <;> assumption)
+  exact @GlobalTheory.VacAny.exists_isVac_any_darboux

@@ -25,4 +25,4 @@ theorem _root_.GlobalTheory.T.heckeCombination_scalarForm_keeps_adelicLaws : ∀
       ∀ b y, ∀ γ ∈ GQ ((I.rec7 l Z).sp.X j), ∀ (e : {e // A.chOf j e = b}), ∀ g ∈ GinfC ((I.rec7 l Z).sp.X j), ∀ (κ : A.U j b) (y' : (I.chain l u a).Y j),
         IsTr (G := fun _ => 1) (infM θ _ (rankN (I.rec7 l Z) j hj) g) ⟨y.1, y.2⟩ ⟨y'.1, y'.2⟩ →
         trc c (A.rd θ j hj b φ y) (γ * (A.h j b e * g) * κ.1) = (A.chi j b κ : ℂ) * trc c (A.rd θ j hj b φ y') (A.h j b e) := by
-  first | exact @GlobalTheory.AdForm.trc_rd_laws | exact GlobalTheory.AdForm.trc_rd_laws | (intros; apply GlobalTheory.AdForm.trc_rd_laws <;> assumption)
+  exact @GlobalTheory.AdForm.trc_rd_laws

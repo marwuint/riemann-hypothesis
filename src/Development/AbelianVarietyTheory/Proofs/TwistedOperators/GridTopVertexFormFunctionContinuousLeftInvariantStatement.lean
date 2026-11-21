@@ -6,4 +6,4 @@ open IsDedekindDomain NumberField MeasureTheory GlobalTheory.ChiGrid GlobalTheor
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.gridTopVertexFormFunction_continuous_left_invariant : Big fun {D} _ _ _ _ _ _ _ _ _ _ _ ch => ∀ t y, Continuous (formTop ch t y) ∧
     ∀ γ ∈ GQ (ch.G.V (.grid 0 D.R.m)), ∀ g, formTop ch t y (γ * g) = formTop ch t y g := by
-  first | exact @GlobalTheory.FormTopAut.formTop_cont_left | exact GlobalTheory.FormTopAut.formTop_cont_left | (intros; apply GlobalTheory.FormTopAut.formTop_cont_left <;> assumption)
+  exact @GlobalTheory.FormTopAut.formTop_cont_left

@@ -11,4 +11,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.flatThetaMaps_converge_thetaFunctions : ∀ D : D7, FlatLaw D := by
-  first | exact @GlobalTheory.Unf.Flat.flatLaw | exact GlobalTheory.Unf.Flat.flatLaw | (intros; apply GlobalTheory.Unf.Flat.flatLaw <;> assumption)
+  exact @GlobalTheory.Unf.Flat.flatLaw

@@ -50,5 +50,5 @@ section
 open GlobalTheory.SumSize GlobalTheory.RowClaim GlobalTheory.SumSize.OppConj
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.conj_mean_kernel_pairing : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → DictK → DepthK → PairStdK := by
-  first | exact @_root_.GlobalTheory.KerConjMean.kernel_conj_mean_pairing_standard_KType | exact _root_.GlobalTheory.KerConjMean.kernel_conj_mean_pairing_standard_KType | (intros; apply _root_.GlobalTheory.KerConjMean.kernel_conj_mean_pairing_standard_KType <;> assumption)
+  exact @_root_.GlobalTheory.KerConjMean.kernel_conj_mean_pairing_standard_KType
 end

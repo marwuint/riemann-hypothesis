@@ -25,4 +25,4 @@ theorem _root_.GlobalTheory.T.finiteDatum_localFunctions_eq_pureTensor_scalar : 
         (IsLocVec W (.chi i (j + 1)) ε (ρ.vX i (j + 1))) (IsLocVec W (.mu t (i + 1) j) ε (ρ.vT (i + 1) j)) τ Ψ →
       ∀ φ, IsFinPart Γ.M X.T φ → (∀ w ∈ locPl G t, ι w (φ (w.under (𝓞 D.host.F))) = Ψ w) →
         IsDatumA W e Γ τ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (s • f₀) φ) := by
-  first | exact @GlobalTheory.FlipMatch.datum_placesA | exact GlobalTheory.FlipMatch.datum_placesA | (intros; apply GlobalTheory.FlipMatch.datum_placesA <;> assumption)
+  exact @GlobalTheory.FlipMatch.datum_placesA

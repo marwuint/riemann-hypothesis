@@ -32,4 +32,4 @@ theorem _root_.GlobalTheory.T.integral_diagonalTheta_secondVariable_diagonal : �
       ∫ y in 𝓕₁, GlobalTheory.WeilM.thetaSum F (GlobalTheory.WeilM.schr ψ (Sum.elim x x, Sum.elim y (-y)) Φ) ∂μ =
         (μ.real 𝓕₁ : ℂ) * ∑' η : κ → F, Φ (Sum.elim ((fun i => algebraMap F (AF F) (η i)) + x)
           ((fun i => algebraMap F (AF F) (η i)) + x)) := by
-  first | exact @GlobalTheory.ThetaDiagUnfold.integral_thetaSum_schr_diag | exact GlobalTheory.ThetaDiagUnfold.integral_thetaSum_schr_diag | (intros; apply GlobalTheory.ThetaDiagUnfold.integral_thetaSum_schr_diag <;> assumption)
+  exact @GlobalTheory.ThetaDiagUnfold.integral_thetaSum_schr_diag

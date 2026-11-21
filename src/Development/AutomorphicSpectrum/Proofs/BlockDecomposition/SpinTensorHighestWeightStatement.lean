@@ -14,4 +14,4 @@ theorem _root_.GlobalTheory.T.spin_tensor_highest_weight : ∀ {n : ℕ} {ι : T
     (∀ i j : Fin n, (j : ℕ) = i + 1 → ((E i j) ^ 2) z = 0) →
     ∃ φ : (ι → ℂ) →ₗ[ℂ] Z, φ q = z ∧ (∀ a b, a < b → ∀ f, φ (spinM c a b *ᵥ f) = E a b (φ f)) ∧
       ∀ a f, φ (spinM c a a *ᵥ f) = E a a (φ f) - ((ν a : ℝ) : ℂ) • φ f := by
-  first | exact @GlobalTheory.CompanionTheory.RealCount.SpinMap.exists_spin_map | exact GlobalTheory.CompanionTheory.RealCount.SpinMap.exists_spin_map | (intros; apply GlobalTheory.CompanionTheory.RealCount.SpinMap.exists_spin_map <;> assumption)
+  exact @GlobalTheory.CompanionTheory.RealCount.SpinMap.exists_spin_map

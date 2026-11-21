@@ -21,5 +21,5 @@ section
 open GlobalTheory.SumSize GlobalTheory.RowClaim
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.sum_size_bound_opposite_conjugation : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → DictK → DepthK → InfRowK := by
-  first | exact @_root_.GlobalTheory.SumSize.OppConj.archimedean_sum_size_opposite_conjugate | exact _root_.GlobalTheory.SumSize.OppConj.archimedean_sum_size_opposite_conjugate | (intros; apply _root_.GlobalTheory.SumSize.OppConj.archimedean_sum_size_opposite_conjugate <;> assumption)
+  exact @_root_.GlobalTheory.SumSize.OppConj.archimedean_sum_size_opposite_conjugate
 end

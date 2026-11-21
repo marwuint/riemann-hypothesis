@@ -8,4 +8,4 @@ theorem _root_.GlobalTheory.T.smooth_map_localization_compat : ∀ (Ω₀ Ω : T
       S = Algebra.adjoin ℚ (insert h⁻¹ (A₀ : Set Ω₀)) →
       T = Algebra.adjoin ℚ (insert (algebraMap Ω₀ Ω h)⁻¹ (A₁ : Set Ω)) →
       ∃ ψ : S →+* T, (∀ s, ((ψ s : T) : Ω) = algebraMap Ω₀ Ω s) ∧ ψ.Smooth := by
-  first | exact @GlobalTheory.CompanionTheory.Ar.LocalisedSmooth.smooth_localised | exact GlobalTheory.CompanionTheory.Ar.LocalisedSmooth.smooth_localised | (intros; apply GlobalTheory.CompanionTheory.Ar.LocalisedSmooth.smooth_localised <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Ar.LocalisedSmooth.smooth_localised

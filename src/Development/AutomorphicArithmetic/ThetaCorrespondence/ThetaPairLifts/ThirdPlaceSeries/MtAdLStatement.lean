@@ -12,5 +12,5 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.exists_mtAd_psiVectorLocal_of_yRel : ∀ {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T} {P : Pre2 K w} {x : St P} (L : LocAll (lay0 (Dof x))) (l : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel hL x) {p0 : BaseLevelRowSide (w.D (oL x L).Z)} (Y : YT x L p0), YRel L Y → ∃ ad : MtAd Y (_root_.GlobalTheory.HeightCounting.Fin3.localMultiplicityFamily L l), ad.PV = _root_.GlobalTheory.HeightCounting.Fin3.psiVectorLocal L l := by
-  first | exact @_root_.GlobalTheory.HeightCounting.Fin3.exists_mtAd_psi_vector_of_yRel | exact _root_.GlobalTheory.HeightCounting.Fin3.exists_mtAd_psi_vector_of_yRel | (intros; apply _root_.GlobalTheory.HeightCounting.Fin3.exists_mtAd_psi_vector_of_yRel <;> assumption)
+  exact @_root_.GlobalTheory.HeightCounting.Fin3.exists_mtAd_psi_vector_of_yRel
 end

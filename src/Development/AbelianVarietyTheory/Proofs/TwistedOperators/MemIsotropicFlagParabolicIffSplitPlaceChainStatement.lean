@@ -11,4 +11,4 @@ theorem _root_.GlobalTheory.T.mem_isotropicFlagParabolic_iff_splitPlaceChain : �
     g ∈ 𝔉.par hc (Fv F v) ↔ ∀ j, ∀ u ∈ GlobalTheory.SplitFlag.flagChain 𝔉 τ j,
       ((GlobalTheory.AdelicU.splitHom hc.sig V.gram τ g : GL (Fin V.rank) (Fv F v)) : Matrix (Fin V.rank) (Fin V.rank) (Fv F v)) *ᵥ u ∈
         GlobalTheory.SplitFlag.flagChain 𝔉 τ j := by
-  first | exact @GlobalTheory.SplitFlag.mem_par_iff_flagChain | exact GlobalTheory.SplitFlag.mem_par_iff_flagChain | (intros; apply GlobalTheory.SplitFlag.mem_par_iff_flagChain <;> assumption)
+  exact @GlobalTheory.SplitFlag.mem_par_iff_flagChain

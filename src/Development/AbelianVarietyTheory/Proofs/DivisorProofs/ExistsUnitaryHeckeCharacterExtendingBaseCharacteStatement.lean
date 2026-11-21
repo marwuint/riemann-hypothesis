@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.exists_unitaryHeckeCharacter_extending_baseCharact
       ∃ lam' : (AF F ⊗[F] E)ˣ →* Circle, IsHeckeCharF lam' ∧
         (∀ z : (AF F ⊗[F] E)ˣ, At (evI F) ((z : AF F ⊗[F] E) - 1) → lam' z = 1) ∧
         ∀ a, lam' (idFF F E a) = lam a := by
-  first | exact @GlobalTheory.HeckeExtend.exists_extend_hecke | exact GlobalTheory.HeckeExtend.exists_extend_hecke | (intros; apply GlobalTheory.HeckeExtend.exists_extend_hecke <;> assumption)
+  exact @GlobalTheory.HeckeExtend.exists_extend_hecke

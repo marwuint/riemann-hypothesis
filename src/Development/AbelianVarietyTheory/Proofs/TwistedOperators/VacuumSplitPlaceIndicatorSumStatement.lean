@@ -20,4 +20,4 @@ theorem _root_.GlobalTheory.T.vacuum_split_place_indicator_sum : GlobalTheory.Fu
       ∀ z ∈ GlobalTheory.InertSph.latAt G.W v, (t : Matrix (Fin (a + a')) (Fin (a + a')) (AE F E)) *ᵥ z ∈ GlobalTheory.InertSph.latAt G.W v ∧
         ((t⁻¹ : GL (Fin (a + a')) (AE F E)) : Matrix (Fin (a + a')) (Fin (a + a')) (AE F E)) *ᵥ z ∈ GlobalTheory.InertSph.latAt G.W v) →
       (adeleClass F).modu (Units.map (Algebra.norm (AF F) : AE F E →* AF F) (Matrix.GeneralLinearGroup.det t)) = 1 := by
-  first | exact @GlobalTheory.SplitDetModule.modu_norm_det_split | exact GlobalTheory.SplitDetModule.modu_norm_det_split | (intros; apply GlobalTheory.SplitDetModule.modu_norm_det_split <;> assumption)
+  exact @GlobalTheory.SplitDetModule.modu_norm_det_split

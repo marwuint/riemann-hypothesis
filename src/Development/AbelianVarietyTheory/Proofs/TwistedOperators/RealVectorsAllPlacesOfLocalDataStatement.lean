@@ -17,4 +17,4 @@ theorem _root_.GlobalTheory.T.realVectors_allPlaces_of_localData : ∀ {D : D7} 
   (w : ∀ τ, M₀.H τ) (c : D.what₂.Tau → ℂ),
   (∀ τ, GlobalTheory.PackLoc.LocOK θ d M₀ M τ q (εA τ) (A τ) (εB τ) (B τ) (v₀ τ) (g₀ τ) (w τ) (c τ)) →
     ∃ p : Pack M₀ M, p.Is θ d (Fintype.card D.what₂.Tau * q) := by
-  first | exact @GlobalTheory.PackGlob.pack_of_loc | exact GlobalTheory.PackGlob.pack_of_loc | (intros; apply GlobalTheory.PackGlob.pack_of_loc <;> assumption)
+  exact @GlobalTheory.PackGlob.pack_of_loc

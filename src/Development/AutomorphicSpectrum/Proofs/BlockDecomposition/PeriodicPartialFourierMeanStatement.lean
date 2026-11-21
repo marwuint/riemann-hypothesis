@@ -8,4 +8,4 @@ open GlobalTheory.AutomorphicL2Unitary GlobalTheory.AdelicU GlobalTheory.Doublin
 open GlobalTheory.StdUnn GlobalTheory.StdUnn.Model PositivityTheory.GramSchwartzFunctions PositivityTheory.GramSchwartzFunctions.BC PositivityTheory.PfSWUS PositivityTheory.Rg.Rsw GlobalTheory.CompanionTheory.PcFc
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.periodic_partial_fourier_mean : ∀ {D : D7} {n ρ p : ℕ} (hn : ρ + p = n) (m : Meas D ρ p) (ψ : AddChar (AF D.host.F) ℂ) (b₀ : HermE D ρ) (Φ : hermA D n → ℂ), IsPer Φ → IsPer (pm hn m ψ b₀ Φ) := by
-  first | exact @GlobalTheory.CompanionTheory.PcFc.isPer_pm | exact GlobalTheory.CompanionTheory.PcFc.isPer_pm | (intros; apply GlobalTheory.CompanionTheory.PcFc.isPer_pm <;> assumption)
+  exact @GlobalTheory.CompanionTheory.PcFc.isPer_pm

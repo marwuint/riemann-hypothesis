@@ -13,4 +13,4 @@ open GlobalTheory.Core.Rk.SW
 
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.siegelSection_weylElement_eq_schrodingerIntegral : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χB : (AE D)ˣ →* Circle) (omh : WRep (dblSp A) B), IsWeilDatumO ψ (dblSp A) B 1 χB omh → ∀ (ν : Measure (WO A B)) (𝓨 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓨 → ∀ f, IsThetaFunO ψ (dblSp A) B f → ∀ w, IsWeyl A w → swSec A B omh ν 𝓨 f w = ∫ x, sch ψ A B ν 𝓨 f x ∂ν := by
-  first | exact @GlobalTheory.Core.Rk.WeylValue.swSec_weyl | exact GlobalTheory.Core.Rk.WeylValue.swSec_weyl | (intros; apply GlobalTheory.Core.Rk.WeylValue.swSec_weyl <;> assumption)
+  exact @GlobalTheory.Core.Rk.WeylValue.swSec_weyl

@@ -12,4 +12,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.exists_maximalCompactUnn_component_standardCartanInv : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (n : ℕ) (μ : D.host.E), IsSkew μ → ∃ k ∈ K D n, ∀ τ, compAt θ τ (mat k) = stdInv n μ τ := by
-  first | exact @GlobalTheory.CartanPt.exists_mem_K_compAt_eq_stdInv | exact GlobalTheory.CartanPt.exists_mem_K_compAt_eq_stdInv | (intros; apply GlobalTheory.CartanPt.exists_mem_K_compAt_eq_stdInv <;> assumption)
+  exact @GlobalTheory.CartanPt.exists_mem_K_compAt_eq_stdInv

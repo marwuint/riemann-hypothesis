@@ -17,4 +17,4 @@ set_option maxHeartbeats 800000
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.exists_weilRep_good_twist : ∀ (D : D7) (S T : HSp D) (B : Base S T), GlobalTheory.Published.WeilRepresentationUnitaryPair → B.Good → IsStdChar D B.F.ψ (-1) → ∀ t : Twist D Circle, t.Good → ∃ ω, B.IsWeil t.chi ω := by
-  first | exact @GlobalTheory.WeilTwistExists.exists_isWeil | exact GlobalTheory.WeilTwistExists.exists_isWeil | (intros; apply GlobalTheory.WeilTwistExists.exists_isWeil <;> assumption)
+  exact @GlobalTheory.WeilTwistExists.exists_isWeil

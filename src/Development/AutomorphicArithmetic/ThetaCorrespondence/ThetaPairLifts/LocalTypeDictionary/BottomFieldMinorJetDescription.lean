@@ -164,5 +164,5 @@ theorem _root_.GlobalTheory.T.bottom_field_minor_jet_description : ∀ {D : D7} 
         ∀ U : GlobalTheory.NormSum.Tup D A'.rank WW.rank n, ∃ Q : MvPolynomial (GL3Theta.Idx D A'.rank WW.rank) ℂ,
           (∀ α, IsAlgebraic ℚ (Q.coeff α)) ∧
           X.ker' W.ψ W.θ t (GlobalTheory.NormSum.minorPol D U) h x = Ω * GL3Theta.applyAt0 D Q (StandardLatticesGL3.comb D (TaylorLogMetric.tor0 D cc δ) c s e0) := by
-  first | exact @_root_.GlobalTheory.BottomFieldDict.kernel_minor_polynomial_eq_jet | exact _root_.GlobalTheory.BottomFieldDict.kernel_minor_polynomial_eq_jet | (intros; apply _root_.GlobalTheory.BottomFieldDict.kernel_minor_polynomial_eq_jet <;> assumption)
+  exact @_root_.GlobalTheory.BottomFieldDict.kernel_minor_polynomial_eq_jet
 end

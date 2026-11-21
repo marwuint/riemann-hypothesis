@@ -12,5 +12,5 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj Formalism.L2.D
 open GlobalTheory.BigTop GlobalTheory.BigOn
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.geoSt_of_pageSt' : _root_.GlobalTheory.BigOn.PageStatement → _root_.GlobalTheory.BigOn.GeometricStatement' := by
-  first | exact @_root_.GlobalTheory.BigOn.geoSt_of_pageSt_alt | exact _root_.GlobalTheory.BigOn.geoSt_of_pageSt_alt | (intros; apply _root_.GlobalTheory.BigOn.geoSt_of_pageSt_alt <;> assumption)
+  exact @_root_.GlobalTheory.BigOn.geoSt_of_pageSt_alt
 end

@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.split_place_diagonal_stabilizer_generated_hermitia
     ∀ H : Subgroup (GlobalTheory.DblVac.UD σ V),
       (∀ p ∈ GlobalTheory.DblVac.KD σ V v, p ∈ GlobalTheory.DblVac.PDiag σ V → p ∈ H) →
       (∀ p ∈ GlobalTheory.DblVac.KD σ V v, p ∈ GlobalTheory.DblVac.PAnti σ V → p ∈ H) → ∀ g ∈ GlobalTheory.DblVac.KD σ V v, g ∈ H := by
-  first | exact @GlobalTheory.DblVac.gen_diag_anti_split_herm | exact GlobalTheory.DblVac.gen_diag_anti_split_herm | (intros; apply GlobalTheory.DblVac.gen_diag_anti_split_herm <;> assumption)
+  exact @GlobalTheory.DblVac.gen_diag_anti_split_herm

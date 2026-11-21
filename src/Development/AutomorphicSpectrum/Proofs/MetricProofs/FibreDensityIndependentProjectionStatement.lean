@@ -29,4 +29,4 @@ theorem _root_.GlobalTheory.T.fibre_density_independent_projection : ∀ (K : Ty
           E ⊆ W →
             ∫⁻ y, ENNReal.ofReal (cxPosDens (conePts Q) Ψ (pot L) (E.indicator g) y) =
               ∫⁻ y, ENNReal.ofReal (cxPosDens (conePts Q) Ψ' (pot L) (E.indicator g) y) := by
-  first | exact @GlobalTheory.CompanionTheory.Ar.Pub.CxPosLocal.cxPosPart_local | exact GlobalTheory.CompanionTheory.Ar.Pub.CxPosLocal.cxPosPart_local | (intros; apply GlobalTheory.CompanionTheory.Ar.Pub.CxPosLocal.cxPosPart_local <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Ar.Pub.CxPosLocal.cxPosPart_local

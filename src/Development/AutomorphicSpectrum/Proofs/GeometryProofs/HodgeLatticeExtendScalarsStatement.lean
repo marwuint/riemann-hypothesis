@@ -30,4 +30,4 @@ theorem _root_.GlobalTheory.T.hodge_lattice_extend_scalars : ∀ (E : Type) [Fie
       (∀ f : Module.Dual C (Fin g → C), ((0 : Fin g → C), f) ∈ HV ↔
         ∀ e ∈ stdLat A C g, f e ∈ (algebraMap A C).range) ∧
       ∀ ht : ∀ i, t i ∈ HLy, HT.IsFreeOn ρHC HV (fun i => ev ⟨t i, ht i⟩) := by
-  first | exact @GlobalTheory.CompanionTheory.Ar.Flat.CPoint.EvalExists.exists_eval | exact GlobalTheory.CompanionTheory.Ar.Flat.CPoint.EvalExists.exists_eval | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.CPoint.EvalExists.exists_eval <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Ar.Flat.CPoint.EvalExists.exists_eval

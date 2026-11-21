@@ -18,4 +18,4 @@ theorem _root_.GlobalTheory.T.lie_model_pullback_action_ring : ∀ (E : Type) [F
     (j : V →+ V'), GlobalTheory.CompanionTheory.Ar.Dominates ξ' ξ f i → M.IsActOf t.act.act ρ → M'.IsActOf t'.act.act ρ' →
     (∀ e, (M'.pt (j e)).left ≫ m.φ = spMap (dualMap i) ≫ (M.pt e).left) →
     ∀ a e, j (ρ a e) = ρ' a (j e) := by
-  first | exact @GlobalTheory.CompanionTheory.Ar.FlagStep.lieMap_act_pull | exact GlobalTheory.CompanionTheory.Ar.FlagStep.lieMap_act_pull | (intros; apply GlobalTheory.CompanionTheory.Ar.FlagStep.lieMap_act_pull <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Ar.FlagStep.lieMap_act_pull

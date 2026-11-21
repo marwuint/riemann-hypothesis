@@ -14,4 +14,4 @@ theorem _root_.GlobalTheory.T.exists_descent_map_nonzero_of_small_field_form : �
       ∀ (T : Module.End D.what₂.LL (S.WL j)) (hT : ∀ w ∈ (S.A j).WK, T w ∈ (S.A j).WK) (w : S.WL j),
         Φ (T w) = Module.End.baseChangeHom S.Ks (KB S i b) (FmK S j)
           ((T.restrictScalars S.Ks).restrict (p := (S.A j).WK) (q := (S.A j).WK) hT) (Φ w) := by
-  first | exact @GlobalTheory.exists_desc_of_isKsForm | exact GlobalTheory.exists_desc_of_isKsForm | (intros; apply GlobalTheory.exists_desc_of_isKsForm <;> assumption)
+  exact @GlobalTheory.exists_desc_of_isKsForm

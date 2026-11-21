@@ -13,4 +13,4 @@ theorem _root_.GlobalTheory.T.inertPlace_schwartzBruhat_vacuumCondition_eq_smul 
           (B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V'.J) (incM F G.W.J) γ γ) • (G.M'.vac v))) →
       ∀ φ ∈ SB (Fin a' × Fin (a + a') → Fv F v), (∀ γ ∈ latAtV G.V' G.W v, Acts (evFin F v) (G.M'.co.rho B.ψ γ) φ
           (B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.V'.J) (incM F G.W.J) γ γ) • φ)) → ∃ c : ℂ, φ = c • G.M'.vac v := by
-  first | exact @GlobalTheory.VacUniqInert.vac_unique | exact GlobalTheory.VacUniqInert.vac_unique | (intros; apply GlobalTheory.VacUniqInert.vac_unique <;> assumption)
+  exact @GlobalTheory.VacUniqInert.vac_unique

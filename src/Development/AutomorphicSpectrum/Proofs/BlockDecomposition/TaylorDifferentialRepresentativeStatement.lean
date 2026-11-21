@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.taylor_differential_representative : ∀ {R : Type
       CrystallineSemistableComparison.Pb.Rep (Fil ((n : ℤ) + 1)) (Fil ((n : ℤ) + 1 + 1)) (fun u => CH.d _ n f u) x →
       CrystallineSemistableComparison.Pb.Rep (Fil ((n : ℤ) + 1)) (Fil ((n : ℤ) + 1 + 1))
         (fun u => ∑ a : Idx n d × Fin d, E.form σ (Fin.snoc (α := fun _ => Fin d) a.1.1 a.2) ((-1) ^ n * p a.2 (y a.1)) u) x := by
-  first | exact @GlobalTheory.CompanionTheory.ConeLocal.connecting_form | exact GlobalTheory.CompanionTheory.ConeLocal.connecting_form | (intros; apply GlobalTheory.CompanionTheory.ConeLocal.connecting_form <;> assumption)
+  exact @GlobalTheory.CompanionTheory.ConeLocal.connecting_form

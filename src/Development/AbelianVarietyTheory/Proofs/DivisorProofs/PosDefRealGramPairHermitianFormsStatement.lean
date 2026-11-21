@@ -11,4 +11,4 @@ theorem _root_.GlobalTheory.T.posDef_real_gram_pair_hermitian_forms : ∀ (g n :
     (Matrix.of fun k l => (e k ⬝ᵥ H₁.mulVec (star (e l))).re).PosDef ∧
     ((Matrix.of fun k l => (e k ⬝ᵥ H₁.mulVec (star (e l))).re) *
       LinearMap.toMatrix e e (γ.restrictScalars ℝ)).PosDef := by
-  first | exact @GlobalTheory.HermGram.gram_posDef_pair | exact GlobalTheory.HermGram.gram_posDef_pair | (intros; apply GlobalTheory.HermGram.gram_posDef_pair <;> assumption)
+  exact @GlobalTheory.HermGram.gram_posDef_pair

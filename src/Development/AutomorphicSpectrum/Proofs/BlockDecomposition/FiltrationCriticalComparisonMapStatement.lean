@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.filtration_critical_comparison_map : ∀ {R : Type
         z.1 = Ideal.Quotient.mk _ (c.sum fun k y => (Φ.A.map (Q.j X.T)).hom y * Φ.dp k (Q.X X.T)) →
         z'.1 = Ideal.Quotient.mk _ (c'.sum fun k y => (Φ.A.map (Q.j X.T)).hom y * Φ.dp k (Q.X X.T)) →
         (β.app X).hom z = z' := by
-  first | exact @GlobalTheory.CompanionTheory.PolySes.ses | exact GlobalTheory.CompanionTheory.PolySes.ses | (intros; apply GlobalTheory.CompanionTheory.PolySes.ses <;> assumption)
+  exact @GlobalTheory.CompanionTheory.PolySes.ses

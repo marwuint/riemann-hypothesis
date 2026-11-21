@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.exists_integralUnitary_blockLevel_unitBlock : ∀ 
     ∃ k ∈ intG D a, ∀ i j, (((h : GL (Fin d) (AE D)) : Matrix (Fin d) (Fin d) (AE D)) * (unitBlock D 0 a d).map (inc D) -
       (unitBlock D 0 a d).map (inc D) * (((k : GL (Fin a) (AE D))⁻¹ : GL (Fin a) (AE D)) : Matrix (Fin a) (Fin a) (AE D))) i j ∈
         hatId D 𝔪 := by
-  first | exact @GlobalTheory.FunObj.StdDatum.BlockPoint.exists_intG_unitBlock | exact GlobalTheory.FunObj.StdDatum.BlockPoint.exists_intG_unitBlock | (intros; apply GlobalTheory.FunObj.StdDatum.BlockPoint.exists_intG_unitBlock <;> assumption)
+  exact @GlobalTheory.FunObj.StdDatum.BlockPoint.exists_intG_unitBlock

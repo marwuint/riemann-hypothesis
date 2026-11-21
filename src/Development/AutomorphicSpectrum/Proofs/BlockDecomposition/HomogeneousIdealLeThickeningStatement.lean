@@ -22,4 +22,4 @@ theorem _root_.GlobalTheory.T.homogeneous_ideal_le_thickening : ∀ (R : Type) [
       IsClosedImmersion j ∧
       (∀ e, IsPullback (b e) (i e) j (pullback.fst (PO R N).hom (thick R I e))) ∧
       ∀ e, β e ≫ b (e + 1) = b e := by
-  first | exact @GlobalTheory.CompanionTheory.GE.exists_closed_of_homogIdeal | exact GlobalTheory.CompanionTheory.GE.exists_closed_of_homogIdeal | (intros; apply GlobalTheory.CompanionTheory.GE.exists_closed_of_homogIdeal <;> assumption)
+  exact @GlobalTheory.CompanionTheory.GE.exists_closed_of_homogIdeal

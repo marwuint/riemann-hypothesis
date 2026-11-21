@@ -12,4 +12,4 @@ theorem _root_.GlobalTheory.T.unique_embedding_extension : ∀ {E Ω : Type} [Fi
       GlobalTheory.Pst.Induces Bw → ∀ (LL' : FinExt l) (τ' : ↥Bw.Kw.1 →ₐ[ℚ_[l]] ↥LL'.1),
       ∃! j : {j : w.adicCompletion E →+* Qbar l // Continuous j},
         IsInduced Bw (j.1.comp (algebraMap E (w.adicCompletion E))) τ' := by
-  first | exact @GlobalTheory.CompanionTheory.EmbUniq.existsUnique_continuous_induced | exact GlobalTheory.CompanionTheory.EmbUniq.existsUnique_continuous_induced | (intros; apply GlobalTheory.CompanionTheory.EmbUniq.existsUnique_continuous_induced <;> assumption)
+  exact @GlobalTheory.CompanionTheory.EmbUniq.existsUnique_continuous_induced

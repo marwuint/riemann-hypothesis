@@ -23,4 +23,4 @@ theorem _root_.GlobalTheory.T.unitBlockCoset_iff_maximalLevel_congruent_conjIdea
     cosetFn (cA D e) (D.host.conj • modul P c) (unitPt S T (cA D e) o) (actO S T g⁻¹ 1 y) ≠ 0 →
     (cosetFn (cA D e) (D.host.conj • modul P c) (unitPt S T (cA D e) o) (actO S T g'⁻¹ 1 y) ≠ 0 ↔
       CongOne D (D.host.conj • modul P c) (k'⁻¹ * k)) := by
-  first | exact @GlobalTheory.BotSmallDict.CosetCong.coset_iff_congOne | exact GlobalTheory.BotSmallDict.CosetCong.coset_iff_congOne | (intros; apply GlobalTheory.BotSmallDict.CosetCong.coset_iff_congOne <;> assumption)
+  exact @GlobalTheory.BotSmallDict.CosetCong.coset_iff_congOne

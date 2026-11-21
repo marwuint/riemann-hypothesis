@@ -11,4 +11,4 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNo
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.isCompl_hermitianOrthogonal_of_totallyPositive : ∀ {E : Type} [Field E] [NumberField E] [StarRing E] (S : Formalism.BasicNotions.HSpace E) (U : Submodule E S.V), (∀ x ∈ orth S U, x ≠ 0 → 0 < Algebra.trace ℚ E (S.hT x x)) → IsCompl U (orth S U) := by
-  first | exact @GlobalTheory.isCompl_orth_of_definite | exact GlobalTheory.isCompl_orth_of_definite | (intros; apply GlobalTheory.isCompl_orth_of_definite <;> assumption)
+  exact @GlobalTheory.isCompl_orth_of_definite

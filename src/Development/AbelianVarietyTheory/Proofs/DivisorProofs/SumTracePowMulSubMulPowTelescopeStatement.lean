@@ -9,4 +9,4 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.CxPts G
 open scoped Matrix ContDiff ComplexOrder
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.sum_trace_pow_mul_sub_mul_pow_telescope : ∀ (R : Type) [CommRing R] (r : Type) [Fintype r] [DecidableEq r] (P Q : Matrix r r R) (k : ℕ), ∑ i ∈ Finset.range k, (P ^ i * (P - Q) * Q ^ (k - 1 - i)).trace = (P ^ k).trace - (Q ^ k).trace := by
-  first | exact @GlobalTheory.ChernCalc.sum_trace_pow_mul_sub_mul_pow | exact GlobalTheory.ChernCalc.sum_trace_pow_mul_sub_mul_pow | (intros; apply GlobalTheory.ChernCalc.sum_trace_pow_mul_sub_mul_pow <;> assumption)
+  exact @GlobalTheory.ChernCalc.sum_trace_pow_mul_sub_mul_pow

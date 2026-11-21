@@ -24,4 +24,4 @@ theorem _root_.GlobalTheory.T.weil_representation_unitary_standard_character : G
         ν (g * h) = ν g * ν h) ∧
       ContinuousOn ν {g : UG (cA σ) JB | At (evI F) ((g.1 : Matrix β β (AE F E)) - 1)} ∧
       ∀ g : UG (cA σ) JB, At (evI F) ((g.1 : Matrix β β (AE F E)) - 1) → ν g ≠ 0 := by
-  first | exact @GlobalTheory.SplitScalar.splittings_differ_by_character | exact GlobalTheory.SplitScalar.splittings_differ_by_character | (intros; apply GlobalTheory.SplitScalar.splittings_differ_by_character <;> assumption)
+  exact @GlobalTheory.SplitScalar.splittings_differ_by_character

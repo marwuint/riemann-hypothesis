@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.integral_diagonal_conj_lastSimpleReflectionCell : 
         (q : ℂ) ^ (-4 * ordL (((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) (lo k) (lo k))) * ∫ u : cellU y, F (u : GU σ n) ∂μ) ∧
       (∀ F : GU σ n → ENNReal, ∫⁻ u : cellU y, F (t⁻¹ * (u : GU σ n) * t) ∂μ =
         ‖(q : ℂ) ^ (-4 * ordL (((t : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) (lo k) (lo k)))‖ₑ * ∫⁻ u : cellU y, F (u : GU σ n) ∂μ) := by
-  first | exact @GlobalTheory.WeylCell.WeylUnipotentShell.integral_conj_diag_cellU_last | exact GlobalTheory.WeylCell.WeylUnipotentShell.integral_conj_diag_cellU_last | (intros; apply GlobalTheory.WeylCell.WeylUnipotentShell.integral_conj_diag_cellU_last <;> assumption)
+  exact @GlobalTheory.WeylCell.WeylUnipotentShell.integral_conj_diag_cellU_last

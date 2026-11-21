@@ -20,4 +20,4 @@ theorem _root_.GlobalTheory.T.cover_cup_action_basis : ∀ {O : Type} [CommRing 
     (hg : ∀ (n : ℕ) (i : Fin (n + 1) → ι) (a a' : Fin (n + 1)) (k' : κ (i a')),
       b i a' k' = ∑ k, act i (rs (le_inf (capO_le U i a) (capO_le U i a')) (g (i a) (i a') k k')) (b i a k)),
     Nonempty (VB str U (CrystallineSemistableComparison.Pb.cechH F U' m)) := by
-  first | exact @GlobalTheory.CompanionTheory.CechVB.vb_basis | exact GlobalTheory.CompanionTheory.CechVB.vb_basis | (intros; apply GlobalTheory.CompanionTheory.CechVB.vb_basis <;> assumption)
+  exact @GlobalTheory.CompanionTheory.CechVB.vb_basis

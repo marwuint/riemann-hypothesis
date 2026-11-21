@@ -8,4 +8,4 @@ open scoped CategoryTheory.Obj
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.representing_additiveFamilies_isDual_comm : ∀ (S : Scheme.{0}) (A B : Over S) [GrpObj A] (P : LB (A ⊗ B).left), Rep A (toUnit B) P → ∃ _ : GrpObj B, IsCommMonObj B ∧ IsDual A B P ∧ IsAdditive (swap P) := by
-  first | exact @GlobalTheory.DualCon.rep_isDual | exact GlobalTheory.DualCon.rep_isDual | (intros; apply GlobalTheory.DualCon.rep_isDual <;> assumption)
+  exact @GlobalTheory.DualCon.rep_isDual

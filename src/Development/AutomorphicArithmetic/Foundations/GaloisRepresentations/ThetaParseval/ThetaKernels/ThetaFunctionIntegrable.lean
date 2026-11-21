@@ -18,5 +18,5 @@ theorem _root_.GlobalTheory.T.theta_function_integrable : ∀ (F E : Type) [Fiel
       ∀ f : Formalism.IndefR.DatumF.WOF F E nS nT → ℂ, Formalism.IndefR.DatumF.IsThetaFunOF σ JS JT ξ₀ B.ψ f → ∀ L : ℝ →+ Formalism.IndefR.DatumF.WOF F E nS nT, Continuous L → (∀ t, (L t).map (Formalism.IndefR.DatumF.finPartF F E) = 0) →
       ∀ (k : ℕ) (L' : (Fin k → ℝ) →+ Formalism.IndefR.DatumF.WOF F E nS nT), Continuous L' → (∀ t, (L' t).map (Formalism.IndefR.DatumF.finPartF F E) = 0) →
       ∀ w : Formalism.IndefR.DatumF.WOF F E nS nT, ContDiff ℝ ∞ fun x => deriv (fun t : ℝ => Formalism.IndefR.DatumF.heisOF σ JS JT ξ₀ B.ψ (L t) f (w + L' x)) 0 := by
-  first | exact @_root_.GlobalTheory.ThetaLineSmoothF.contDiff_deriv_heisOF_line_k | exact _root_.GlobalTheory.ThetaLineSmoothF.contDiff_deriv_heisOF_line_k | (intros; apply _root_.GlobalTheory.ThetaLineSmoothF.contDiff_deriv_heisOF_line_k <;> assumption)
+  exact @_root_.GlobalTheory.ThetaLineSmoothF.contDiff_deriv_heisOF_line_k
 end

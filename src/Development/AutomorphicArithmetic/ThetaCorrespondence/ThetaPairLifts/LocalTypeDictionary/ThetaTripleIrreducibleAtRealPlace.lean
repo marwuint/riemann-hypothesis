@@ -303,5 +303,5 @@ theorem _root_.GlobalTheory.T.theta_triple_lift_irreducible : GlobalTheory.Publi
       GlobalTheory.TripleRead.IsTransp ψ false Γ.M' om' ωB e (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W₁ (-1) h.JW₁) (GlobalTheory.TripleRead.toUX X e h.JX) →
       ∀ R Rf, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched Bs Γ Xc om om' R Rf →
         IsIrred X (ModuleCat.of ℂ (GlobalTheory.TripleAssembly.PiT R Γ Rf)) (GlobalTheory.TripleAssembly.opFin ωA (algF ψ θ true A B) (GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf)) (GlobalTheory.TripleAssembly.opLie θ ωA (algF ψ θ true A B) (GlobalTheory.TripleAssembly.mapA ψ e Bs Γ R Rf)) := by
-  first | exact @_root_.GlobalTheory.TripleAssembly.Irred.theta_triple_piT_irreducible | exact _root_.GlobalTheory.TripleAssembly.Irred.theta_triple_piT_irreducible | (intros; apply _root_.GlobalTheory.TripleAssembly.Irred.theta_triple_piT_irreducible <;> assumption)
+  exact @_root_.GlobalTheory.TripleAssembly.Irred.theta_triple_piT_irreducible
 end

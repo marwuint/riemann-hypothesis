@@ -85,5 +85,5 @@ theorem _root_.GlobalTheory.T.bottomClassSum_finite_support : ∀ {D : D7} {T : 
     IsBottomTri W i j X →
     ∃ K : Finset (FVar D WW.rank A.rank →₀ ℕ), ∀ t, ∀ h ∈ GfC WW, ∀ k ∉ K,
       X.I W.ψ W.θ t (MvPolynomial.monomial k 1) h = 0 := by
-  first | exact @_root_.GlobalTheory.BottomDeg.bottomClassSum_eq_zero_off_finite | exact _root_.GlobalTheory.BottomDeg.bottomClassSum_eq_zero_off_finite | (intros; apply _root_.GlobalTheory.BottomDeg.bottomClassSum_eq_zero_off_finite <;> assumption)
+  exact @_root_.GlobalTheory.BottomDeg.bottomClassSum_eq_zero_off_finite
 end

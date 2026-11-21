@@ -14,4 +14,4 @@ theorem _root_.GlobalTheory.T.norm_signed_sum_integral_le : ∀ (E : Type) [Fiel
     ∀ Y : Fin m → Matrix (Fin a) (Fin a) (Cinf E), (∀ i j, Y i * Y j = 0) → (∀ i, ‖toL (Y i)‖ ≤ R) →
     ‖∑ ε : Fin m → Bool, (GroundTheory.Automorphic.altSign ε : ℂ) *
         ∫ w, f (toL ((1 + GroundTheory.Automorphic.altPoint Y ε) * Matrix.of w)) * β w‖ ≤ c * F * ∏ i, ‖toL (Y i)‖ := by
-  first | exact @GlobalTheory.AltConv.norm_sum_altSign_integral_le | exact GlobalTheory.AltConv.norm_sum_altSign_integral_le | (intros; apply GlobalTheory.AltConv.norm_sum_altSign_integral_le <;> assumption)
+  exact @GlobalTheory.AltConv.norm_sum_altSign_integral_le

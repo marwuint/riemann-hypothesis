@@ -25,4 +25,4 @@ theorem _root_.GlobalTheory.T.realPoint_acts_on_vacuum_by_algebraicScalar : ∀ 
     IsBottomTri W i j X → ∀ (t : T), ∀ γ ∈ Formalism.L2.Theta.GQ A, ∀ a ∈ GinfC A, ∀ γ' ∈ Formalism.L2.Theta.GQ WW, ∀ a' ∈ GinfC WW,
       γ * a ∈ GfC A → γ' * a' ∈ GfC WW →
       ∃ C : ℂ, IsAlgebraic ℚ C ∧ X.ω t (a, a') X.vac = C • X.vac := by
-  first | exact @GlobalTheory.RealScalarAlg.realScalar | exact GlobalTheory.RealScalarAlg.realScalar | (intros; apply GlobalTheory.RealScalarAlg.realScalar <;> assumption)
+  exact @GlobalTheory.RealScalarAlg.realScalar

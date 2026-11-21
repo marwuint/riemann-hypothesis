@@ -23,4 +23,4 @@ theorem _root_.GlobalTheory.T.exists_finset_integral_adele_mulVec_mem_lattice_cl
         AddSubgroup.closure {z | ∃ b : AF F, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.AdelicU.evFin F w) b ∧
           GlobalTheory.AdelicU.evFin F w b ∈ w.adicCompletionIntegers F ∧
           ∃ y' ∈ L, z = b • fun i => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (F := F) (AF F) (y' i)} := by
-  first | exact @GlobalTheory.AdelicLatticeIntegral.exists_finset_smul_mulVec_mem_closure | exact GlobalTheory.AdelicLatticeIntegral.exists_finset_smul_mulVec_mem_closure | (intros; apply GlobalTheory.AdelicLatticeIntegral.exists_finset_smul_mulVec_mem_closure <;> assumption)
+  exact @GlobalTheory.AdelicLatticeIntegral.exists_finset_smul_mulVec_mem_closure

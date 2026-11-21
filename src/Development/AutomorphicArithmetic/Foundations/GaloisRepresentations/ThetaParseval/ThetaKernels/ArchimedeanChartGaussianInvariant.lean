@@ -21,5 +21,5 @@ theorem _root_.GlobalTheory.T.archimedean_chart_gaussian_invariant : ∀ (F E : 
         (∃ U : AddSubgroup (WOF F E nS nT), IsOpen (U : Set (WOF F E nS nT)) ∧
           ∀ u ∈ U, u.map (infPartF F E) = 0 → heisOF σ JS JT ξ₀ B.ψ u f.1 = f.1) →
         IsThetaFunOF σ JS JT ξ₀ B.ψ f.1 := by
-  first | exact @_root_.GlobalTheory.ThetaOfSmF.theta_of_smF_k | exact _root_.GlobalTheory.ThetaOfSmF.theta_of_smF_k | (intros; apply _root_.GlobalTheory.ThetaOfSmF.theta_of_smF_k <;> assumption)
+  exact @_root_.GlobalTheory.ThetaOfSmF.theta_of_smF_k
 end

@@ -24,4 +24,4 @@ theorem _root_.GlobalTheory.T.matched_maps_archimedean_identity : GlobalTheory.F
         R.p f ∈ N → R.p f₁ ∈ N) →
       ∀ k ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.KInf σ Γ.W Bs.emb, ∀ f ∈ Γ.M.Pol Bs.ψ Bs.emb, ∀ f₁ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F (Fin a × Fin (a + a')),
         GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Acts (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) (om (1, k)) f f₁ → R.p f ∈ N → R.p f₁ ∈ N := by
-  first | exact @GlobalTheory.KStableLie.lieStable_kStable | exact GlobalTheory.KStableLie.lieStable_kStable | (intros; apply GlobalTheory.KStableLie.lieStable_kStable <;> assumption)
+  exact @GlobalTheory.KStableLie.lieStable_kStable

@@ -8,4 +8,4 @@ theorem _root_.GlobalTheory.T.exists_weightedHomogeneous_homogenisation : ∀ {L
       ((MvPolynomial.eval z F : Q) : L) = (z 0 : L) ^ N *
         MvPolynomial.eval₂ Q.subtype (fun i => (z i.succ : L) / (z 0 : L) ^ wt i.succ) P ∧
       ∀ α, ∃ β, F.coeff β = P.coeff α := by
-  first | exact @GlobalTheory.exists_weightedHomogenisation | exact GlobalTheory.exists_weightedHomogenisation | (intros; apply GlobalTheory.exists_weightedHomogenisation <;> assumption)
+  exact @GlobalTheory.exists_weightedHomogenisation

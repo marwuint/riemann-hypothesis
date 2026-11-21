@@ -10,4 +10,4 @@ theorem _root_.GlobalTheory.T.heisenberg_equivariant_isometry : ∀ {V : Type} [
       ⇑(T g) = GlobalTheory.GaussLine.heisFun β (s • w').1 (s • w').2 ⇑(T f)) →
     ∀ f g : SchwartzMap V ℂ, (∀ x, g x = GlobalTheory.GaussLine.dHeis β w ⇑f x) →
     ∀ x, T g x = GlobalTheory.GaussLine.dHeis β w' ⇑(T f) x := by
-  first | exact @GlobalTheory.HeisenbergL2.map_dHeis_of_isometry | exact GlobalTheory.HeisenbergL2.map_dHeis_of_isometry | (intros; apply GlobalTheory.HeisenbergL2.map_dHeis_of_isometry <;> assumption)
+  exact @GlobalTheory.HeisenbergL2.map_dHeis_of_isometry

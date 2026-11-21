@@ -27,4 +27,4 @@ theorem _root_.GlobalTheory.T.comparison_data_steps_non_reference_tuple : ∀ {K
         (∀ j hj, (I.at' j hj).C = (w.D Z).chTw u ((w.D Z).what₂.muAt v)) ∧
         (∀ j hj, Formalism.MainNotions.G.KAat.ChX (I.at' j hj).st) ∧
         (∀ j, (w.D Z).R.m ≤ j → IsEmpty (Lv.compS j)) := by
-  first | exact @GlobalTheory.Mem.Top.KerTwLv.cmpJ_data_ne | exact GlobalTheory.Mem.Top.KerTwLv.cmpJ_data_ne | (intros; apply GlobalTheory.Mem.Top.KerTwLv.cmpJ_data_ne <;> assumption)
+  exact @GlobalTheory.Mem.Top.KerTwLv.cmpJ_data_ne

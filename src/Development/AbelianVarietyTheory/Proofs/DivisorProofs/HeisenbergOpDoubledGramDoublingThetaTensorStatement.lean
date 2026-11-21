@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.heisenbergOp_doubledGram_doublingThetaTensor : ∀
         Formalism.IndefR.DatumF.heisOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ w (GlobalTheory.DblTargetDelta.deltaT f₁ f₂) =
           GlobalTheory.DblTargetDelta.deltaT (Formalism.IndefR.DatumF.heisOF σ JS JT ξ₀ B.ψ (GlobalTheory.DblTargetDelta.topR w) f₁)
             (Formalism.IndefR.DatumF.heisOF σ JS JT ξ₀ B.ψ (-GlobalTheory.DblTargetDelta.botR w) f₂) := by
-  first | exact @GlobalTheory.DblHeis.heisOF_dblG_deltaT | exact GlobalTheory.DblHeis.heisOF_dblG_deltaT | (intros; apply GlobalTheory.DblHeis.heisOF_dblG_deltaT <;> assumption)
+  exact @GlobalTheory.DblHeis.heisOF_dblG_deltaT

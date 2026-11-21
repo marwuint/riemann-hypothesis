@@ -18,4 +18,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.Local
 open GlobalTheory.LiftRows (Given)
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.schurProduct_typings_agree_thetaChain : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Given R F → IPDict R := by
-  first | exact @GlobalTheory.ChainTw.IPDictPf.main | exact GlobalTheory.ChainTw.IPDictPf.main | (intros; apply GlobalTheory.ChainTw.IPDictPf.main <;> assumption)
+  exact @GlobalTheory.ChainTw.IPDictPf.main

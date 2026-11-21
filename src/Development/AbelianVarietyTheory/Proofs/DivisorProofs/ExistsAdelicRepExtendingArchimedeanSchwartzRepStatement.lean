@@ -9,4 +9,4 @@ theorem _root_.GlobalTheory.T.exists_adelicRep_extending_archimedeanSchwartzRep 
     (ρ : G →* (SInf F κ →L[ℂ] SInf F κ)),
     ∃ ω₀ : G →* Module.End ℂ ((κ → AF F) → ℂ), ∀ (g : G) (f : SInf F κ) (h : (κ → Af F) → ℂ),
       ω₀ g (pureA F f h) = pureA F (ρ g f) h := by
-  first | exact @GlobalTheory.SliceExt.exists_rep_pure | exact GlobalTheory.SliceExt.exists_rep_pure | (intros; apply GlobalTheory.SliceExt.exists_rep_pure <;> assumption)
+  exact @GlobalTheory.SliceExt.exists_rep_pure

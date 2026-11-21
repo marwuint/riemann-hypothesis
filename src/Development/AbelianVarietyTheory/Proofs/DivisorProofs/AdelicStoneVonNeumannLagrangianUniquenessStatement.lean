@@ -13,4 +13,4 @@ theorem _root_.GlobalTheory.T.adelicStoneVonNeumann_lagrangian_uniqueness : ∀ 
     (∀ (t : AF F), ∀ w ∈ L, ∀ φ ∈ schA F κ,
       l₂ (schr ψ (t • ((fun i => algebraMap F (AF F) (w.1 i)), (fun i => algebraMap F (AF F) (w.2 i)))) φ) = l₂ φ) →
     (∃ φ ∈ schA F κ, l₂ φ ≠ 0) → ∃ c : ℂ, ∀ φ ∈ schA F κ, l₁ φ = c * l₂ φ := by
-  first | exact @GlobalTheory.AdelicSvN.main | exact GlobalTheory.AdelicSvN.main | (intros; apply GlobalTheory.AdelicSvN.main <;> assumption)
+  exact @GlobalTheory.AdelicSvN.main

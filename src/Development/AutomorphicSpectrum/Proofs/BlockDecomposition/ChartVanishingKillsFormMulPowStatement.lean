@@ -11,4 +11,4 @@ theorem _root_.GlobalTheory.T.chart_vanishing_kills_form_mul_pow : ∀ {R : Type
       (GlobalTheory.ProjSpace.formOn (GlobalTheory.ProjSpace.chart R N k) k le_rfl n f hf) = 0 →
     ∃ (m : ℕ) (h : (X k ^ m * f : MvPolynomial (Fin (N + 1)) R).IsHomogeneous (m + n)),
       KillsForm φ (m + n) (X k ^ m * f) h := by
-  first | exact @GlobalTheory.CompanionTheory.GE.exists_killsForm_X_pow_mul | exact GlobalTheory.CompanionTheory.GE.exists_killsForm_X_pow_mul | (intros; apply GlobalTheory.CompanionTheory.GE.exists_killsForm_X_pow_mul <;> assumption)
+  exact @GlobalTheory.CompanionTheory.GE.exists_killsForm_X_pow_mul

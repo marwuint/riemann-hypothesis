@@ -14,4 +14,4 @@ theorem _root_.GlobalTheory.T.partial_fourier_left_isometry_l2 : ∀ (F : Type) 
       ∃ c : ℝ≥0∞, ∀ φ ∈ schA F κ, ∫⁻ x, ‖A φ x‖ₑ ^ 2 ∂μ = c * ∫⁻ x, ‖φ x‖ₑ ^ 2 ∂μ) →
     ∀ μ : @Measure (κ ⊕ κ' → AF F) (borel _), @Measure.IsAddHaarMeasure _ _ _ (borel _) μ →
       ∃ c : ℝ≥0∞, ∀ Φ ∈ schA F (κ ⊕ κ'), ∫⁻ x, ‖partL (κ' := κ') A Φ x‖ₑ ^ 2 ∂μ = c * ∫⁻ x, ‖Φ x‖ₑ ^ 2 ∂μ := by
-  first | exact @GlobalTheory.DoublingEvaluationL2.partL_lintegral_sq | exact GlobalTheory.DoublingEvaluationL2.partL_lintegral_sq | (intros; apply GlobalTheory.DoublingEvaluationL2.partL_lintegral_sq <;> assumption)
+  exact @GlobalTheory.DoublingEvaluationL2.partL_lintegral_sq

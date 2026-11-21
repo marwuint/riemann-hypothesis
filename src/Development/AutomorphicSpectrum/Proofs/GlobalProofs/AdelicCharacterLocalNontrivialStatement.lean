@@ -18,4 +18,4 @@ theorem _root_.GlobalTheory.T.adapted_frame_orthogonal_subspace : ∀ (D : D7) (
       (∀ (i : Fin V.rank) (j : Fin V'.rank), frameMat V V' ι i j = ∑ r : Fin V'.rank, C.1 i (⟨a + r.val, by omega⟩ : Fin V.rank) * B r j) ∧
       ∀ b : Fin V.rank, (b.val < a ∨ V.rank ≤ b.val + a) →
         (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frameMat V V' ι) * V.gram) *ᵥ (fun k => C.1 k b) = 0 := by
-  first | exact @GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.ComplFrame.frame_cols | exact GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.ComplFrame.frame_cols | (intros; apply GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.ComplFrame.frame_cols <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Hypotheses₂.LeviPart.ComplFrame.frame_cols

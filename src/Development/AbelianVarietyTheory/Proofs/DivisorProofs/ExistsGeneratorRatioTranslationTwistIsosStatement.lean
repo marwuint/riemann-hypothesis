@@ -23,4 +23,4 @@ theorem _root_.GlobalTheory.T.exists_generator_ratio_translationTwist_isos : ∀
         Geo.Tor.Good D.P.L z J → r z ∈ D₀.P.L.U j' →
         Geo.Tor.gv w r z (fun i => J (r ≫ GlobalTheory.MumCmp.twφ D₀ D β b i)) j' =
           Geo.Tor.gw W r z (J (r ≫ GlobalTheory.MumCmp.twφ D₀ D β b 0)) j' * Geo.Tor.val ν (r ≫ D₀.P.A.hom) z J := by
-  first | exact @GlobalTheory.MumCmp.TwRatio.exists_twist_ratio | exact GlobalTheory.MumCmp.TwRatio.exists_twist_ratio | (intros; apply GlobalTheory.MumCmp.TwRatio.exists_twist_ratio <;> assumption)
+  exact @GlobalTheory.MumCmp.TwRatio.exists_twist_ratio

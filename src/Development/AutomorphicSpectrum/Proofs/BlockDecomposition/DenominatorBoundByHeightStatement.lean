@@ -12,4 +12,4 @@ open GlobalTheory.CompanionTheory.GodementH
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.denominator_bound_by_height : ∀ (F : Type) [Field F] [NumberField F] (y : F), ∃ m : ℕ, 0 < m ∧ (m : ℝ≥0) ≤ ∏ᶠ v : Pl F, max 1 ‖algebraMap F (Fv F v) y‖₊ ∧
     IsIntegral ℤ ((m : F) * y) := by
-  first | exact @GlobalTheory.CompanionTheory.GodementH.Den.denominator_le | exact GlobalTheory.CompanionTheory.GodementH.Den.denominator_le | (intros; apply GlobalTheory.CompanionTheory.GodementH.Den.denominator_le <;> assumption)
+  exact @GlobalTheory.CompanionTheory.GodementH.Den.denominator_le

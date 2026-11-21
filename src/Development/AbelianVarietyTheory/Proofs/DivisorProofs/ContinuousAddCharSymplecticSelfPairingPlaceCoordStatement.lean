@@ -27,4 +27,4 @@ theorem _root_.GlobalTheory.T.continuous_addChar_symplecticSelfPairing_placeCoor
         (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F JB)
         (∑ m, GlobalTheory.EmbChart.atPlace v (a m : Fv F v) • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F (g m))
         (∑ m, GlobalTheory.EmbChart.atPlace v (a m : Fv F v) • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F (g m)))) := by
-  first | exact @GlobalTheory.ContSymp.continuous_psi_symp_atPlace | exact GlobalTheory.ContSymp.continuous_psi_symp_atPlace | (intros; apply GlobalTheory.ContSymp.continuous_psi_symp_atPlace <;> assumption)
+  exact @GlobalTheory.ContSymp.continuous_psi_symp_atPlace

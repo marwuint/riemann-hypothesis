@@ -16,5 +16,5 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.E
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.dataNW_all_linked_good_members : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL), GlobalTheory.Fc.RowE (Bl.IsGoodE p.s) (_root_.GlobalTheory.Mem.Top.Bl.BundleLinkage p) (fun _ D _ _ _ => GlobalTheory.Core.Deg.DataNW D) := by
-  first | exact @_root_.GlobalTheory.Fam.MemberData.dataNW_of_isGoodE_of_isLinked | exact _root_.GlobalTheory.Fam.MemberData.dataNW_of_isGoodE_of_isLinked | (intros; apply _root_.GlobalTheory.Fam.MemberData.dataNW_of_isGoodE_of_isLinked <;> assumption)
+  exact @_root_.GlobalTheory.Fam.MemberData.dataNW_of_isGoodE_of_isLinked
 end

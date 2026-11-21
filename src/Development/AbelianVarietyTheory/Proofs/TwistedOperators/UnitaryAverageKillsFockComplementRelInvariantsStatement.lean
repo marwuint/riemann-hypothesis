@@ -11,4 +11,4 @@ theorem _root_.GlobalTheory.T.unitaryAverage_kills_fock_complement_relInvariants
     (∀ I ∈ GlobalTheory.MinorFrame.inv a d n, Formalism.L2.DIV.fockS I P = 0) →
     ∫ g, (∏ τ, (ρ g τ : Matrix (Fin a) (Fin a) ℂ).det ^ (-(n τ : ℤ))) *
       Λ (GlobalTheory.MinorFrame.colSub (fun τ => (ρ g τ : Matrix (Fin a) (Fin a) ℂ)) P) ∂ν = 0 := by
-  first | exact @GlobalTheory.UnitaryAvg.avg_perp | exact GlobalTheory.UnitaryAvg.avg_perp | (intros; apply GlobalTheory.UnitaryAvg.avg_perp <;> assumption)
+  exact @GlobalTheory.UnitaryAvg.avg_perp

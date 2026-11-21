@@ -23,4 +23,4 @@ theorem _root_.GlobalTheory.T.exists_levelIsometry_extension_algClosed : ∀ {E 
     ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing R) F],
     ∃ I : (letI := H.starRing; TateIsoQ Dw C.P.D.toPre C.P.oD F), GlobalTheory.LowDat.XFLevel C tK m1 m2 F I ∧
       ∀ n a, (I.ev n a).y = (I₀.ev n a).y := by
-  first | exact @GlobalTheory.LowDat.exists_xfLevel_ext | exact GlobalTheory.LowDat.exists_xfLevel_ext | (intros; apply GlobalTheory.LowDat.exists_xfLevel_ext <;> assumption)
+  exact @GlobalTheory.LowDat.exists_xfLevel_ext

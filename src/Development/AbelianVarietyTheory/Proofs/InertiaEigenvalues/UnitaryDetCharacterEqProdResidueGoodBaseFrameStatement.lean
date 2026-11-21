@@ -10,4 +10,4 @@ open Formalism.IndefR.Links (PolF)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.unitaryDetCharacter_eq_prod_residue_goodBaseFrame : ∀ {D : D7} {S T : HSp D} (B : Base S T), B.Good → ∀ {A : Type} [CommGroup A] (t : Twist D A), t.Good → ∀ {κ : GA D T}, κ ∈ GfC T → Lev.finE T κ ∈ St B.F.βT → detChar T t.chi κ = ∏ PP ∈ t.Q, t.res PP (Matrix.GeneralLinearGroup.det (redFn B.F.βT PP (Lev.finE T κ))) := by
-  first | exact @GlobalTheory.TwistDetStabAll.detChar_eq_prod_res | exact GlobalTheory.TwistDetStabAll.detChar_eq_prod_res | (intros; apply GlobalTheory.TwistDetStabAll.detChar_eq_prod_res <;> assumption)
+  exact @GlobalTheory.TwistDetStabAll.detChar_eq_prod_res

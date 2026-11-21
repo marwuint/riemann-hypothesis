@@ -13,4 +13,4 @@ theorem _root_.GlobalTheory.T.frame_form_coboundary_relation : ∀ {R : Type} [C
         (Φ.A.map (Q.j _)).hom (E.form σ (Fin.succ ∘ I) x s))) →
     (∀ s, (show sqM _ _ _ from w s).1 = Ideal.Quotient.mk _ (E.form σ (Fin.cons 0 (Fin.succ ∘ I)) x s)) →
     CH.d _ j y = -(CH.Mor.ofNatTrans (Functor.whiskerRight (Cut.jσ Q σ) (gr Fil r))).pullC (j + 1) w := by
-  first | exact @GlobalTheory.CompanionTheory.GrDelta.gr_delta | exact GlobalTheory.CompanionTheory.GrDelta.gr_delta | (intros; apply GlobalTheory.CompanionTheory.GrDelta.gr_delta <;> assumption)
+  exact @GlobalTheory.CompanionTheory.GrDelta.gr_delta

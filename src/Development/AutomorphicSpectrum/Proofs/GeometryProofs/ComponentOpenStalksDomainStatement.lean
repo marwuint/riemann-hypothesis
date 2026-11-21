@@ -14,4 +14,4 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.component_open_stalks_domain : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (U : Set (Xo.XF c)) (Z : CptOver Y U), (Function.Injective β ∧ IsNoetherianRing O ∧ ∀ x : c.F, ∃ a b : O, β b ≠ 0 ∧ x * β b = β a) → ∃ U' : (Xo.XF c).Opens, (U' : Set (Xo.XF c)) = U ∧ ∀ p : Xo.XF c, p ∈ U → IsDomain ((Xo.XF c).presheaf.stalk p) := by
-  first | exact @GlobalTheory.CompanionTheory.Ar.Flat.cptOver_isOpen_isDomain | exact GlobalTheory.CompanionTheory.Ar.Flat.cptOver_isOpen_isDomain | (intros; apply GlobalTheory.CompanionTheory.Ar.Flat.cptOver_isOpen_isDomain <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Ar.Flat.cptOver_isOpen_isDomain

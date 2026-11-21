@@ -20,4 +20,4 @@ theorem _root_.GlobalTheory.T.tateIso_latticePart_surjective_coisotropicKernel :
     ∀ (F : Type) [Field F] [IsAlgClosed F] [CharZero F] [Algebra (FractionRing R) F] (I : TateIsoQ D D₀ oa F),
     ∃ y : ℕ → D.La →ₗ[𝓞 E] D₀.X, (∀ n, 0 < n → ∀ a, ∃ e, y n a = (I.ev n a).y + n • e) ∧
       ∀ n, 0 < n → Cois D (y n) n := by
-  first | exact @GlobalTheory.LowFilt.tateIsoQ_y_cois | exact GlobalTheory.LowFilt.tateIsoQ_y_cois | (intros; apply GlobalTheory.LowFilt.tateIsoQ_y_cois <;> assumption)
+  exact @GlobalTheory.LowFilt.tateIsoQ_y_cois

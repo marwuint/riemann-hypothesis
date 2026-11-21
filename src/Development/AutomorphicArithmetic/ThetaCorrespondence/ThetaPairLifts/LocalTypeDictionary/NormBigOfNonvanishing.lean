@@ -48,5 +48,5 @@ section
 open GlobalTheory.SqTop
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.normBig_of_lNe : _root_.GlobalTheory.FunPr.ThetaLocalInputs → (∀ D, GlobalTheory.NormSum.Inp D) → LNe → NormBig := by
-  first | exact @_root_.GlobalTheory.NormBigProof.normBig_alt | exact _root_.GlobalTheory.NormBigProof.normBig_alt | (intros; apply _root_.GlobalTheory.NormBigProof.normBig_alt <;> assumption)
+  exact @_root_.GlobalTheory.NormBigProof.normBig_alt
 end

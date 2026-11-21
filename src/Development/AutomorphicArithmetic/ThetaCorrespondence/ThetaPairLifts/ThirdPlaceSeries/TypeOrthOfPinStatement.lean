@@ -14,5 +14,5 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.type_orthogonality_of_form' : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D), ∀ i : D.nd.Loc, MtForm D P.M i → GlobalTheory.ThetaExh.TypeOrth D.nd D.naut i := by
-  first | exact @_root_.GlobalTheory.ThetaExh.typeOrth_of_pin_alt | exact _root_.GlobalTheory.ThetaExh.typeOrth_of_pin_alt | (intros; apply _root_.GlobalTheory.ThetaExh.typeOrth_of_pin_alt <;> assumption)
+  exact @_root_.GlobalTheory.ThetaExh.typeOrth_of_pin_alt
 end

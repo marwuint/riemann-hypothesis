@@ -10,4 +10,4 @@ open scoped nonZeroDivisors ContDiff
 open GlobalTheory.AscFin
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.fourierJacobiVertexLattice_splitsAlongWitt_at_place : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (F : Frames G), Std F → ∀ (ρ : ℕ) (h : 2 * ρ + 2 ≤ D.R.m) (v : GlobalTheory.FinPl.Pl D), MonoAt (F.dJ ρ h) (G.Λ (.grid (2 * ρ + 1) 0)) (G.Λ (.core (2 * ρ + 1))) v := by
-  first | exact @GlobalTheory.AscFin.MonoJac.monoAt_jac | exact GlobalTheory.AscFin.MonoJac.monoAt_jac | (intros; apply GlobalTheory.AscFin.MonoJac.monoAt_jac <;> assumption)
+  exact @GlobalTheory.AscFin.MonoJac.monoAt_jac

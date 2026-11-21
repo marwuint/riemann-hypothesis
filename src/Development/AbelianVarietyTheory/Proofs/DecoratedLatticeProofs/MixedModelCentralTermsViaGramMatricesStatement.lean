@@ -11,4 +11,4 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Unf
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.mixedModelCentralTerms_via_gramMatrices : ∀ D : D7, GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.CentralTerms D := by
-  first | exact @GlobalTheory.CentralGram.central | exact GlobalTheory.CentralGram.central | (intros; apply GlobalTheory.CentralGram.central <;> assumption)
+  exact @GlobalTheory.CentralGram.central

@@ -31,4 +31,4 @@ theorem _root_.GlobalTheory.T.real_part_gram_in_symplectic_group : ∀ (g : ℕ)
       (∀ l : Λ, l ≠ 0 → ρ ^ 2 ≤ (hermForm Hm (l : Fin g → ℂ) (l : Fin g → ℂ)).re) ∧
       (Matrix.of fun i j : Fin g => (hermForm Hm (bs' (Sum.inl i) : Fin g → ℂ) (bs' (Sum.inl j) : Fin g → ℂ)).re).det ≤
         ρ ^ 2 * (2 * g) ^ (g - 1) := by
-  first | exact @GlobalTheory.CompanionTheory.Ar.NformRed.symplectic_reduction_basis | exact GlobalTheory.CompanionTheory.Ar.NformRed.symplectic_reduction_basis | (intros; apply GlobalTheory.CompanionTheory.Ar.NformRed.symplectic_reduction_basis <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Ar.NformRed.symplectic_reduction_basis

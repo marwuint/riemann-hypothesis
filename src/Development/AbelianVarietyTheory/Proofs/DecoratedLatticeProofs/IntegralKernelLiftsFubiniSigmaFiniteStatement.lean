@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.integral_kernel_lifts_fubini_sigmaFinite : ∀ {X�
     MemLp (fun y => ∫ x, k₁ x y * u₁ x ∂μ₁) 2 ν ∧ MemLp (fun y => ∫ x, k₂ x y * u₂ x ∂μ₂) 2 ν ∧
     ∫ y, (∫ x, k₁ x y * u₁ x ∂μ₁) * conj (∫ x, k₂ x y * u₂ x ∂μ₂) ∂ν =
       ∫ p : X₁ × X₂, (∫ y, k₁ p.1 y * conj (k₂ p.2 y) ∂ν) * u₁ p.1 * conj (u₂ p.2) ∂μ₁.prod μ₂ := by
-  first | exact @GlobalTheory.AbsFubini.abstract_fubini_two_lifts | exact GlobalTheory.AbsFubini.abstract_fubini_two_lifts | (intros; apply GlobalTheory.AbsFubini.abstract_fubini_two_lifts <;> assumption)
+  exact @GlobalTheory.AbsFubini.abstract_fubini_two_lifts

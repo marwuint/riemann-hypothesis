@@ -18,4 +18,4 @@ theorem _root_.GlobalTheory.T.realMatrix_mem_besselUnipotent_of_frame : ∀ {K V
     (∀ y, (∀ a, H.B (e a) y = 0) → m y - y ∈ Submodule.span K (Set.range e)) →
     ∀ n : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ, (∀ y, n *ᵥ Φ y = Φ (m y)) →
     n ∈ Formalism.QuantumDeterminants.Nset k r := by
-  first | exact @GlobalTheory.DegVol.FrameUnip.mem_Nset | exact GlobalTheory.DegVol.FrameUnip.mem_Nset | (intros; apply GlobalTheory.DegVol.FrameUnip.mem_Nset <;> assumption)
+  exact @GlobalTheory.DegVol.FrameUnip.mem_Nset

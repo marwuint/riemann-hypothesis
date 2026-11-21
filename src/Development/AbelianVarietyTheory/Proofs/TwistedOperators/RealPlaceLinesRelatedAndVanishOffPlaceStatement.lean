@@ -36,4 +36,4 @@ theorem _root_.GlobalTheory.T.realPlaceLines_related_and_vanish_off_place : ∀ 
           (cS.symm (lineAt θ τ (cplxO ((frSgn ε A).cart τ) (B.cart τ) z) 1)).map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piInf (Bs.emb w')) = 0) ∧
         (cS.symm (lineAt θ τ (cplxO ((frSgn ε A).cart τ) (B.cart τ) z) 1)).map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piInf (Bs.emb w)) =
           Complex.I • (Vs.θ w * (cS.symm (lineAt θ τ z 1)).map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.piInf (Bs.emb w)) * (Ws.θ w)ᵀ) := by
-  first | exact @GlobalTheory.PlaceLines.lines_at_place | exact GlobalTheory.PlaceLines.lines_at_place | (intros; apply GlobalTheory.PlaceLines.lines_at_place <;> assumption)
+  exact @GlobalTheory.PlaceLines.lines_at_place

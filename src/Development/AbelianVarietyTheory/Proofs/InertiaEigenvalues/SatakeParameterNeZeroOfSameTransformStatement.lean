@@ -10,4 +10,4 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.satakeParameter_ne_zero_of_sameTransform : ∀ (K : Type) [Field K] [Valued K (WithZero (Multiplicative ℤ))] [CompleteSpace K] (ϖ : K) (σ : K →+* K) (q n : ℕ), Formalism.UG.IsUnramInv ϖ σ q → ∀ (α : Fin (n / 2) → ℂ) (β : Fin (n / 2) → ℂˣ), (∀ h ∈ Formalism.UG.Hecke ℂ (Formalism.UG.KU σ n), Formalism.UG.SatU ϖ q h α = Formalism.UG.SatU ϖ q h (fun i => (β i : ℂ))) → ∀ i, α i ≠ 0 := by
-  first | exact @GlobalTheory.SatNonzero.satU_ne_zero | exact GlobalTheory.SatNonzero.satU_ne_zero | (intros; apply GlobalTheory.SatNonzero.satU_ne_zero <;> assumption)
+  exact @GlobalTheory.SatNonzero.satU_ne_zero

@@ -75,6 +75,6 @@ section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.L2 Formalism.L2.Host Formalism.L2.NT Formalism.IndefR.NX NumberField IsDedekindDomain GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.R3 GlobalTheory.Mem.R3.Rw GlobalTheory.HeightCounting GlobalTheory.HeightCounting.Up
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.stageASameGalois_of_inputs_phtCmp : _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → PhtCmp → ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.SameGaloisLevelExists hL := by
-  first | exact @_root_.GlobalTheory.HeightCounting.Up.sa_of_prN_alt_alt | exact _root_.GlobalTheory.HeightCounting.Up.sa_of_prN_alt_alt | (intros; apply _root_.GlobalTheory.HeightCounting.Up.sa_of_prN_alt_alt <;> assumption)
+  exact @_root_.GlobalTheory.HeightCounting.Up.sa_of_prN_alt_alt
 end
 end

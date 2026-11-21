@@ -8,4 +8,4 @@ theorem _root_.GlobalTheory.T.chart_firstColumns_eq_graph_times_topBlock : ∀ (
     (z : V (nd X)) (τ : X.Ψ), (chartMatrixTopBlock X z τ).det = 1 ∧ ∀ a : Fin X.p0,
     col (mat (cpt X x z) τ) (Fin.castLE X.p0_le a) =
       ∑ c : Fin X.p0, chartMatrixTopBlock X z τ c a • col (mat (X.xZ x (graphCoord X z)) τ) (Fin.castLE X.p0_le c) := by
-  first | exact @GlobalTheory.ChartGraph.cols_graph | exact GlobalTheory.ChartGraph.cols_graph | (intros; apply GlobalTheory.ChartGraph.cols_graph <;> assumption)
+  exact @GlobalTheory.ChartGraph.cols_graph

@@ -13,4 +13,4 @@ theorem _root_.GlobalTheory.T.exists_span_eq_one_mod_of_splits_in_rayClassField 
     GlobalTheory.Mem.Fld.IsRayField K L 𝔮 → ∀ 𝔭 : HeightOneSpectrum (𝓞 K), ¬ 𝔭.asIdeal ∣ 𝔮 →
       (𝔭.asIdeal.primesOver (𝓞 L)).ncard = Module.finrank K L →
         ∃ π : 𝓞 K, 𝔭.asIdeal = Ideal.span {π} ∧ π - 1 ∈ 𝔮 := by
-  first | exact @GlobalTheory.Mem.RaySplit.exists_span_eq_of_splits | exact GlobalTheory.Mem.RaySplit.exists_span_eq_of_splits | (intros; apply GlobalTheory.Mem.RaySplit.exists_span_eq_of_splits <;> assumption)
+  exact @GlobalTheory.Mem.RaySplit.exists_span_eq_of_splits

@@ -19,5 +19,5 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.E
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.chrEq_packB_mu0_succ_of_bWit : ∀ {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ} (b : _root_.GlobalTheory.Fc.BundleCondition (q.w.D q.Z) q.O c), _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b → ∀ j : Fin q.B.R.m, Formalism.IndefR.Links.ChrEq ((_root_.GlobalTheory.Fam.pk_z (_root_.GlobalTheory.Fam.packB_alt b)).mu0 ((j : ℕ) + 1)) (q.w.I.C.mu0 j) := by
-  first | exact @_root_.GlobalTheory.Fam.level_character_matches_witness_alt_bis | exact _root_.GlobalTheory.Fam.level_character_matches_witness_alt_bis | (intros; apply _root_.GlobalTheory.Fam.level_character_matches_witness_alt_bis <;> assumption)
+  exact @_root_.GlobalTheory.Fam.level_character_matches_witness_alt_bis
 end

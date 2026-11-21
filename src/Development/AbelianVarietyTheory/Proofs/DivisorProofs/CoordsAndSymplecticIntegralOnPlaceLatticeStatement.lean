@@ -38,4 +38,4 @@ theorem _root_.GlobalTheory.T.coords_and_symplectic_integral_on_placeLattice : �
                    (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F JX) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F JY) γ γ) ∧
         evFin F v (GlobalTheory.WeilM.symp (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) (inclR (F := F) (AF F) ξ) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F JX)
           (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM F JY) γ γ) ∈ v.adicCompletionIntegers F) := by
-  first | exact @GlobalTheory.LatticeAtPlace.coords_symp_integral | exact GlobalTheory.LatticeAtPlace.coords_symp_integral | (intros; apply GlobalTheory.LatticeAtPlace.coords_symp_integral <;> assumption)
+  exact @GlobalTheory.LatticeAtPlace.coords_symp_integral

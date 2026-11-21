@@ -27,4 +27,4 @@ theorem _root_.GlobalTheory.T.heisenberg_realPoint_fockVacuum_pairing_scalar : �
     (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) h) →
     (∀ τ, IsFockVacAt (heisO ψ S T) θ τ (cplxO (sS τ) (sT τ)) e) →
     thetaIP μ 𝓕 h (heisO ψ S T w e) = κ * thetaIP μ 𝓕 h e := by
-  first | exact @GlobalTheory.RealVacScalar.compress_real | exact GlobalTheory.RealVacScalar.compress_real | (intros; apply GlobalTheory.RealVacScalar.compress_real <;> assumption)
+  exact @GlobalTheory.RealVacScalar.compress_real

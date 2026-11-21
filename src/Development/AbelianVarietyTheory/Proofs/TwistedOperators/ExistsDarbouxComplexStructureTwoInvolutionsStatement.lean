@@ -21,4 +21,4 @@ theorem _root_.GlobalTheory.T.exists_darboux_complex_structure_two_involutions :
         (∀ w, u'.map (piInf (τ w)) = (((ε' w : ℤ) : ℂ) * Complex.I) • (θA w * u.map (piInf (τ w)) * (θB w)ᵀ)) ∧
         (∀ w, u₁.map (piInf (τ w)) = (((ε w : ℤ) : ℂ) * Complex.I) • (θA w * u.map (piInf (τ w)) * (θB w)ᵀ)) ∧
         coord d u = y ∧ coord d u' = J (y - (2 : ℝ) • e y) ∧ coord d u₁ = J y := by
-  first | exact @GlobalTheory.SignInvolDarboux.exists_bridge | exact GlobalTheory.SignInvolDarboux.exists_bridge | (intros; apply GlobalTheory.SignInvolDarboux.exists_bridge <;> assumption)
+  exact @GlobalTheory.SignInvolDarboux.exists_bridge

@@ -143,5 +143,5 @@ section
 open GlobalTheory.Mem.Top.Bl GlobalTheory.Mem.LiteralAutomorphy
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.compatibleSystem_member_rationalWeights : _root_.GlobalTheory.Mem.LiteralAutomorphy.MemberHypotheses → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.WeilSiegelFormulaUnitary → GlobalTheory.Published.SiegelWeilUnitarySchrodinger → GlobalTheory.Published.SiegelEisensteinContinuation → _root_.GlobalTheory.Published.UnusedSlot72 → GlobalTheory.Published.UnramifiedDoublingGL → GlobalTheory.Published.BernsteinZelevinskyFiniteness → GlobalTheory.Published.SchurOrthogonalitySquareIntegrable → RowRatW → _root_.GlobalTheory.Mem.Top.Bl.MultiplicityCoverHypotheses := by
-  first | exact @_root_.GlobalTheory.Mem.member_hodgeHyp_of_localInputs_rationalWeights | exact _root_.GlobalTheory.Mem.member_hodgeHyp_of_localInputs_rationalWeights | (intros; apply _root_.GlobalTheory.Mem.member_hodgeHyp_of_localInputs_rationalWeights <;> assumption)
+  exact @_root_.GlobalTheory.Mem.member_hodgeHyp_of_localInputs_rationalWeights
 end

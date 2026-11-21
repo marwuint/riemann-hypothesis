@@ -26,4 +26,4 @@ theorem _root_.GlobalTheory.T.inertIntegralPoints_fix_adelic_classical_vacuum : 
   Formalism.MainNotions.StandardLatticesGL3.SuppInert D (x : GL (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D)) → Formalism.MainNotions.StandardLatticesGL3.SuppInert D (y : GL (Fin d) (Formalism.MainNotions.StandardLatticesGL3.AE D)) →
   Formalism.MainNotions.StandardLatticesGL3.IntG D (x : GL (Fin a) (Formalism.MainNotions.StandardLatticesGL3.AE D)) → Formalism.MainNotions.StandardLatticesGL3.IntG D (y : GL (Fin d) (Formalism.MainNotions.StandardLatticesGL3.AE D)) →
   Reads ψ θ hS hT cc δ r (W.Om x y e0) (om (g, h) f₀) := by
-  first | exact @GlobalTheory.VacInertMove.inert_vacuum_reads | exact GlobalTheory.VacInertMove.inert_vacuum_reads | (intros; apply GlobalTheory.VacInertMove.inert_vacuum_reads <;> assumption)
+  exact @GlobalTheory.VacInertMove.inert_vacuum_reads

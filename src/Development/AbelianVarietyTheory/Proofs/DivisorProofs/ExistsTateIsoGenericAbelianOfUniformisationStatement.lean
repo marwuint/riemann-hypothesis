@@ -17,4 +17,4 @@ theorem _root_.GlobalTheory.T.exists_tateIso_generic_abelian_of_uniformisation :
   ∃ J : TateIso D F (TFK (R := R) F ⟶ P.A.A) (fun a g => g ≫ (letI := H.starRing; P.oA.act a))
       (fun n g g' z => Out.WeilIs P.A.A P.A.L n g g' (unitOn z)),
     (∀ n, J.ζ n = I.ζ n) ∧ ∀ n, 0 < n → ∀ a, P.ToA F n (I.ev n a) (J.ev n a) := by
-  first | exact @GlobalTheory.LowDat.exists_tateIso_toA | exact GlobalTheory.LowDat.exists_tateIso_toA | (intros; apply GlobalTheory.LowDat.exists_tateIso_toA <;> assumption)
+  exact @GlobalTheory.LowDat.exists_tateIso_toA

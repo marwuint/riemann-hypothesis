@@ -8,4 +8,4 @@ open NumberField IsDedekindDomain WeierstrassCurve GlobalTheory GlobalTheory.Pub
 open scoped IntermediateField BigOperators Topology
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.product_derivWeierstrassP_half_periods_discriminant : ∀ (L : PeriodPair) (a b t : ℂ), a ∉ L.lattice → b ∉ L.lattice → a + b ∉ L.lattice → 2 * a ∈ L.lattice → 2 * b ∈ L.lattice → 2 * t ∉ L.lattice → L.derivWeierstrassP t * L.derivWeierstrassP (t + a) * L.derivWeierstrassP (t + b) * L.derivWeierstrassP (t + (a + b)) = (latticeCurve L).Δ := by
-  first | exact @GlobalTheory.CMModel.prod_derivWeierstrassP_translates_eq_Δ | exact GlobalTheory.CMModel.prod_derivWeierstrassP_translates_eq_Δ | (intros; apply GlobalTheory.CMModel.prod_derivWeierstrassP_translates_eq_Δ <;> assumption)
+  exact @GlobalTheory.CMModel.prod_derivWeierstrassP_translates_eq_Δ

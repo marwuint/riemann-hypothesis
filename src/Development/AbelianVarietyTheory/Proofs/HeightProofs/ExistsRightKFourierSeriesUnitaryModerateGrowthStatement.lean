@@ -27,4 +27,4 @@ theorem _root_.GlobalTheory.T.exists_rightKFourierSeries_unitary_moderateGrowth 
         ∀ y ∈ UJset ε, ‖Φ i w y‖ ≤ B i k * (1 + hs y) ^ N) ∧
       (∀ k, Summable fun i => B i k) ∧
       ∀ y ∈ UJset ε, HasSum (fun i => ∫ k, e i k * f (y * Formalism.REAL.toMK k) ∂(Formalism.REAL.muK ε)) (f y) := by
-  first | exact @GlobalTheory.KFourier.exists_rightKFourier | exact GlobalTheory.KFourier.exists_rightKFourier | (intros; apply GlobalTheory.KFourier.exists_rightKFourier <;> assumption)
+  exact @GlobalTheory.KFourier.exists_rightKFourier

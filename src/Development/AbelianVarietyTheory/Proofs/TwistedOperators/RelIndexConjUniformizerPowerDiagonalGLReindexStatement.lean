@@ -7,4 +7,4 @@ theorem _root_.GlobalTheory.T.relIndex_conj_uniformizerPowerDiagonalGL_reindex :
     (n n' : Type) [Fintype n] [DecidableEq n] [Fintype n'] [DecidableEq n'] (σ : n ≃ n') (e : n → ℤ),
     ((KO k n').map (MulAut.conj (torusElt k n' ϖ (e ∘ σ.symm))).toMonoidHom).relIndex (KO k n') =
       ((KO k n).map (MulAut.conj (torusElt k n ϖ e)).toMonoidHom).relIndex (KO k n) := by
-  first | exact @GlobalTheory.ReindexTorus.relIndex_conj_torusElt_reindex | exact GlobalTheory.ReindexTorus.relIndex_conj_torusElt_reindex | (intros; apply GlobalTheory.ReindexTorus.relIndex_conj_torusElt_reindex <;> assumption)
+  exact @GlobalTheory.ReindexTorus.relIndex_conj_torusElt_reindex

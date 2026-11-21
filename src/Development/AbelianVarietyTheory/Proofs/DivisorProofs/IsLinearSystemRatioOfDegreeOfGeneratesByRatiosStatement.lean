@@ -7,4 +7,4 @@ open NumberField GlobalTheory.AllWt GlobalTheory.CompHt GlobalTheory.DegCmp Glob
 open scoped ENNReal NNReal
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.isLinearSystemRatioOfDegree_of_generatesByRatios : ∀ (K V Ω : Type) [Field K] [AddCommGroup V] [Module K V] [Field Ω] [Algebra K Ω] (ev : V →ₗ[K] Ω), GenRatios ev → ∀ (τ : ℕ) (t : Ω), IsRatio ev τ t := by
-  first | exact @GlobalTheory.DegVal.isRatio_of_genRatios | exact GlobalTheory.DegVal.isRatio_of_genRatios | (intros; apply GlobalTheory.DegVal.isRatio_of_genRatios <;> assumption)
+  exact @GlobalTheory.DegVal.isRatio_of_genRatios

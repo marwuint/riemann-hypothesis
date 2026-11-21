@@ -17,4 +17,4 @@ theorem _root_.GlobalTheory.T.exists_lambdaGenerator_zpow_with_periods : ∀ {R 
       ∀ (a b : D.X) (z : (TK R).left) (J : ((TK R).left ⟶ D.P.A.left) → D.P.L.ι), Good D.P.L z J →
         val (D.tau a (n • b)) (𝟙 _) z J *
           val g (lift (toUnit (TK R) ≫ D.c a) (toUnit (TK R) ≫ D.c b)).left z J = val (D.tau a b) (𝟙 _) z J ^ n := by
-  first | exact @GlobalTheory.Mum.exists_lamGen_zpow | exact GlobalTheory.Mum.exists_lamGen_zpow | (intros; apply GlobalTheory.Mum.exists_lamGen_zpow <;> assumption)
+  exact @GlobalTheory.Mum.exists_lamGen_zpow

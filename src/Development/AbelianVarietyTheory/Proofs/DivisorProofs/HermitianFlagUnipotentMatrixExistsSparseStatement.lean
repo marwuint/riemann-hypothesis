@@ -15,4 +15,4 @@ theorem _root_.GlobalTheory.T.hermitian_flag_unipotent_matrix_exists_sparse : �
         (∀ i j, N i j ≠ 0 → (i.val < l ∧ l ≤ j.val) ∨ (i.val < l + d ∧ l + d ≤ j.val)) ∧
         (∀ v : Fin n → ℂ, (∀ i : Fin r, i.val < l + d → Matrix.mulVec (X.conjTranspose * J) v i = 0) →
           ∃ w : Fin r → ℂ, (∀ i, w i ≠ 0 → i.val < l + d) ∧ Matrix.mulVec u v - v = Matrix.mulVec X w) := by
-  first | exact @GlobalTheory.isotropic_unipotent_column_relations | exact GlobalTheory.isotropic_unipotent_column_relations | (intros; apply GlobalTheory.isotropic_unipotent_column_relations <;> assumption)
+  exact @GlobalTheory.isotropic_unipotent_column_relations

@@ -5,4 +5,4 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.FockTranslateSc
 open GlobalTheory.CompanionTheory.ThTot
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.euclidean_total : EucTotal := by
-  first | exact @GlobalTheory.CompanionTheory.ThTot.EucT.eucTotal | exact GlobalTheory.CompanionTheory.ThTot.EucT.eucTotal | (intros; apply GlobalTheory.CompanionTheory.ThTot.EucT.eucTotal <;> assumption)
+  exact @GlobalTheory.CompanionTheory.ThTot.EucT.eucTotal

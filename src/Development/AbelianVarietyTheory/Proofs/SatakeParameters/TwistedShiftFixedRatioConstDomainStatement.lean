@@ -10,4 +10,4 @@ theorem _root_.GlobalTheory.T.twistedShift_fixed_ratio_const_domain : ∀ {B G :
   ∀ p q : Polynomial B, q ≠ 0 →
   (∀ g, q * (p.map (σ g : B →+* B)).comp (X + C (τ g)) = (q.map (σ g : B →+* B)).comp (X + C (τ g)) * p) →
   ∃ d d' : B, d ≠ 0 ∧ C d * p = C d' * q ∧ ∀ g, d * σ g d' = σ g d * d' := by
-  first | exact @GlobalTheory.InvRatFun.fixed_ratio_const | exact GlobalTheory.InvRatFun.fixed_ratio_const | (intros; apply GlobalTheory.InvRatFun.fixed_ratio_const <;> assumption)
+  exact @GlobalTheory.InvRatFun.fixed_ratio_const

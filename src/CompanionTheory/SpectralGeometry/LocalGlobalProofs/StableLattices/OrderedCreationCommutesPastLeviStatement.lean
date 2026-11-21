@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.ordered_creation_commutes_past_levi : ∀ (n : ℕ
       (∀ e ∈ l, lF E e.1.1 e.1.2 x = 0) →
       bd (allT n) E (((l.map cre).prod : Module.End ℂ (Cn n V)) x) =
         (-1 : ℂ) ^ l.length • ((l.map cre).prod : Module.End ℂ (Cn n V)) (bd (allT n) E x) := by
-  first | exact @GlobalTheory.CompanionTheory.FarReg.BdProd.bd_prod | exact GlobalTheory.CompanionTheory.FarReg.BdProd.bd_prod | (intros; apply GlobalTheory.CompanionTheory.FarReg.BdProd.bd_prod <;> assumption)
+  exact @GlobalTheory.CompanionTheory.FarReg.BdProd.bd_prod

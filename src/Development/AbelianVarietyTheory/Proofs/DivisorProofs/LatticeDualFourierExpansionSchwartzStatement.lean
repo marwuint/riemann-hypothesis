@@ -9,4 +9,4 @@ theorem _root_.GlobalTheory.T.lattice_dual_fourier_expansion_schwartz : ∀ {V :
         ‖c μ‖ * (1 + ‖(μ : V)‖) ^ N)) ∧
       ∀ x : V, HasSum (fun μ : {μ : V // ∀ l ∈ Λ, ∃ k : ℤ, P l μ = k} =>
         c μ * Complex.exp (2 * Real.pi * Complex.I * (P x μ : ℂ))) (∑' l : Λ, f (x + l)) := by
-  first | exact @GlobalTheory.periodisation_hasSum_fourier_bilinForm | exact GlobalTheory.periodisation_hasSum_fourier_bilinForm | (intros; apply GlobalTheory.periodisation_hasSum_fourier_bilinForm <;> assumption)
+  exact @GlobalTheory.periodisation_hasSum_fourier_bilinForm

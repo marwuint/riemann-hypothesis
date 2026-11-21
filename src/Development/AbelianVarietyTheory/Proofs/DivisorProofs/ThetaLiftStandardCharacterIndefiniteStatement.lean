@@ -18,4 +18,4 @@ theorem _root_.GlobalTheory.T.theta_lift_standard_character_indefinite : ∀ (F 
       (∀ (k : ℕ) (L : (Fin k → ℝ) →+ Formalism.IndefR.DatumF.WOF F E nS nT), Continuous L → (∀ t, (L t).map (Formalism.IndefR.DatumF.finPartF F E) = 0) →
         ∀ w : Formalism.IndefR.DatumF.WOF F E nS nT, ContDiff ℝ ∞ fun x => g (w + L x)) →
       Continuous g := by
-  first | exact @GlobalTheory.WeilContF.continuous_of_level_real | exact GlobalTheory.WeilContF.continuous_of_level_real | (intros; apply GlobalTheory.WeilContF.continuous_of_level_real <;> assumption)
+  exact @GlobalTheory.WeilContF.continuous_of_level_real

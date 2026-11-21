@@ -22,4 +22,4 @@ theorem _root_.GlobalTheory.T.split_frame_lattice_functional : OnStd fun {D} _ _
   ∀ a ∈ (pcFB W F σ h h').A₁, ∀ (q : Fin (σ + 1)) i, ∃ z ∈ IsLocalRing.maximalIdeal 𝒪[k] ^ G.pl.depth sc v,
     (z : k) = (ϖ : k) ^ (G.pl.depth sc v * (q.1 + 1)) * (p.pr (incA D (-D.host.xi0)))⁻¹ ^ (q.1 + 1) *
       (β.b' *ᵥ fun j => p.pr (a j q)) i := by
-  first | exact @GlobalTheory.DepthColumn.col_mem_depth | exact GlobalTheory.DepthColumn.col_mem_depth | (intros; apply GlobalTheory.DepthColumn.col_mem_depth <;> assumption)
+  exact @GlobalTheory.DepthColumn.col_mem_depth

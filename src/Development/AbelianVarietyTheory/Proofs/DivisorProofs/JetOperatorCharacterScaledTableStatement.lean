@@ -22,4 +22,4 @@ theorem _root_.GlobalTheory.T.jetOperator_characterScaledTable : ∀ {ι : Type}
     (J : (Formalism.L2.Ker.DVar ι a b →₀ ℕ) → ℂ) (w : ι → ℂ) (c : ℂ), Formalism.L2.Ker.JetInVV ℂ lam lam' n →
     Formalism.L2.Ker.jetOp lam lam' (fun m => c * ((m.prod fun v e => w v.1 ^ e) * J m)) n =
       (c * ∏ τ, w τ ^ (∑ i, (lam' τ).natW i)) • Formalism.L2.Ker.jetOp lam lam' J n := by
-  first | exact @GlobalTheory.JetCharScale.jetOp_scale | exact GlobalTheory.JetCharScale.jetOp_scale | (intros; apply GlobalTheory.JetCharScale.jetOp_scale <;> assumption)
+  exact @GlobalTheory.JetCharScale.jetOp_scale

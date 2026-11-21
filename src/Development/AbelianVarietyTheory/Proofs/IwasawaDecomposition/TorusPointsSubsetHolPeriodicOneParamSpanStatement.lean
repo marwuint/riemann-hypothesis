@@ -9,4 +9,4 @@ open scoped CategoryTheory.MonObj CategoryTheory.Obj
 open MonoidalCategory CartesianMonoidalCategory MonObj GlobalTheory.PeriodSpan
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.torusPoints_subset_holPeriodicOneParamSpan : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] (y : Sp ℂ ⟶ X) (E : TorusExtension ((Over.pullback y).obj G)), torusPts G y E ⊆ (perHolSub G y : Set (Over.mk y ⟶ G)) := by
-  first | exact @GlobalTheory.PeriodSpan.torusPts_subset_perHolSub | exact GlobalTheory.PeriodSpan.torusPts_subset_perHolSub | (intros; apply GlobalTheory.PeriodSpan.torusPts_subset_perHolSub <;> assumption)
+  exact @GlobalTheory.PeriodSpan.torusPts_subset_perHolSub

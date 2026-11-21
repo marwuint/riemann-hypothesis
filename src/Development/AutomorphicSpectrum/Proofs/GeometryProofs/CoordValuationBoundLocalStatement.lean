@@ -17,4 +17,4 @@ theorem _root_.GlobalTheory.T.coord_valuation_bound_local : ∀ (X : Scheme.{0})
     ∃ (c : (k : K) → J k) (h : genPt ξ ⤳ centre zA), (∀ k, w ⟨k, c k⟩ ≠ 0) ∧
       (∀ k i, v (w ⟨k, i⟩) ≤ v (w ⟨k, c k⟩)) ∧
       InChart ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) c ⟨centre zA, h⟩ := by
-  first | exact @GlobalTheory.CompanionTheory.Ar.RootHt.bestChart_finite | exact GlobalTheory.CompanionTheory.Ar.RootHt.bestChart_finite | (intros; apply GlobalTheory.CompanionTheory.Ar.RootHt.bestChart_finite <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Ar.RootHt.bestChart_finite

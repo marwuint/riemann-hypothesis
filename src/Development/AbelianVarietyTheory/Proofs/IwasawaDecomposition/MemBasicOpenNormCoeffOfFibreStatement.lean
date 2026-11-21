@@ -14,4 +14,4 @@ theorem _root_.GlobalTheory.T.exists_mem_basicOpen_normCoeff_of_fibre : ∀ {X Y
     [IsDomain Γ(X, V)] [IsIntegrallyClosed Γ(X, V)] (τ : Γ(Y, f ⁻¹ᵁ V)) (x : X), x ∈ V →
     (∀ y : Y, f y = x → y ∈ Y.basicOpen τ) →
     ∃ k, 1 ≤ k ∧ x ∈ X.basicOpen (normCoeff (f.app V).hom (f.finite_app V hV) τ k) := by
-  first | exact @GlobalTheory.NormalDescent.mem_basicOpen_normCoeff_of_fibre | exact GlobalTheory.NormalDescent.mem_basicOpen_normCoeff_of_fibre | (intros; apply GlobalTheory.NormalDescent.mem_basicOpen_normCoeff_of_fibre <;> assumption)
+  exact @GlobalTheory.NormalDescent.mem_basicOpen_normCoeff_of_fibre

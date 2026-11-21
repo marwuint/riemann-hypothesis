@@ -58,5 +58,5 @@ theorem _root_.GlobalTheory.T.exists_factor_of_isStageC : _root_.GlobalTheory.Fu
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →
     NumbersIn D.what₂.embLL S μ₀ → ∀ (i j : Fin D.R.m) (p q : ℕ) (A A' WW : HSp D) (X : Tri T A A' WW), GlobalTheory.SqTower.IsStageC W i j p q X →
       ∃ lam : T → ℂ, Factor X W.ψ W.θ lam := by
-  first | exact @_root_.GlobalTheory.StageFactor.theta_tower_stage_norm_factorization | exact _root_.GlobalTheory.StageFactor.theta_tower_stage_norm_factorization | (intros; apply _root_.GlobalTheory.StageFactor.theta_tower_stage_norm_factorization <;> assumption)
+  exact @_root_.GlobalTheory.StageFactor.theta_tower_stage_norm_factorization
 end

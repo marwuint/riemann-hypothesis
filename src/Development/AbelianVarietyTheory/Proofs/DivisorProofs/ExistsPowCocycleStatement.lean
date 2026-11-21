@@ -28,4 +28,4 @@ theorem _root_.GlobalTheory.T.exists_pow_cocycle_alt : ∀ (R R₀ : Type) [Comm
         (spMap (algebraMap (Localization.Away (f j * f l)) (Localization.Away (s j l i))) ≫ spMap (IsLocalization.Away.awayToAwayRight (P := Localization.Away (f j * f l)) (f j) (f l)) ≫ t' k j)
         ![spMap (algebraMap (Localization.Away (f j * f l)) (Localization.Away (s j l i))) ≫ spMap (IsLocalization.Away.awayToAwayLeft (P := Localization.Away (f j * f l)) (f l) (f j)) ≫ t' k l, spMap (algebraMap (Localization.Away (f j * f l)) (Localization.Away (s j l i))) ≫ spMap (IsLocalization.Away.awayToAwayRight (P := Localization.Away (f j * f l)) (f j) (f l)) ≫ e j]
         ![1, 1 - algebraMap R (Localization.Away (s j l i)) (f k) ^ (N + M)] := by
-  first | exact @GlobalTheory.SecGlue.exists_pow_cocycle | exact GlobalTheory.SecGlue.exists_pow_cocycle | (intros; apply GlobalTheory.SecGlue.exists_pow_cocycle <;> assumption)
+  exact @GlobalTheory.SecGlue.exists_pow_cocycle

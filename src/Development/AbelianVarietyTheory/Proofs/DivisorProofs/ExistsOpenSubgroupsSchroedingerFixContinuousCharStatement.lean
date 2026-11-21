@@ -14,4 +14,4 @@ theorem _root_.GlobalTheory.T.exists_openSubgroups_schroedinger_fix_continuousCh
       ∃ L₁ L₂ : AddSubgroup (κ → FiniteAdeleRing (𝓞 F) F),
         IsOpen (L₁ : Set (κ → FiniteAdeleRing (𝓞 F) F)) ∧ IsOpen (L₂ : Set (κ → FiniteAdeleRing (𝓞 F) F)) ∧
         ∀ x ∈ L₁, ∀ y ∈ L₂, schr ψ (GlobalTheory.WeilCont.adeleJoin F 0 x, GlobalTheory.WeilCont.adeleJoin F 0 y) Φ = Φ := by
-  first | exact @GlobalTheory.SchrFixFin.exists_fix | exact GlobalTheory.SchrFixFin.exists_fix | (intros; apply GlobalTheory.SchrFixFin.exists_fix <;> assumption)
+  exact @GlobalTheory.SchrFixFin.exists_fix

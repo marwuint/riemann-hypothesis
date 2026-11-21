@@ -29,4 +29,4 @@ theorem _root_.GlobalTheory.T.cell_identity_rankinSelberg_torus_translate : ∀ 
       ENNReal.ofReal (GlobalTheory.CellDec.dinv (m + 1) l.1) * GlobalTheory.RSCell.bInt (Fin.last m) F Φ J (Pi.single (Fin.last m) 1) x (GlobalTheory.CellDec.tl (m + 1) ϖ l.1 * g) =
         ENNReal.ofReal (GlobalTheory.CellDec.dinv (m + 1) l₀.1) * GlobalTheory.RSCell.bInt (Fin.last m) F Φ J (Pi.single (Fin.last m) 1) x (GlobalTheory.CellDec.tl (m + 1) ϖ l₀.1 * g) *
           GlobalTheory.RSCell.cellProd T α x (l.1 - l₀.1) := by
-  first | exact @GlobalTheory.CellPw.cell_identity | exact GlobalTheory.CellPw.cell_identity | (intros; apply GlobalTheory.CellPw.cell_identity <;> assumption)
+  exact @GlobalTheory.CellPw.cell_identity

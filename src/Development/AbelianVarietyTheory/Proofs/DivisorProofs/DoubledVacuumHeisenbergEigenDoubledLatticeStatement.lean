@@ -21,4 +21,4 @@ theorem _root_.GlobalTheory.T.doubledVacuum_heisenbergEigen_doubledLattice : ∀
       Acts (evFin F v) (dd.rho B.ψ (Matrix.fromCols w₁ᵀ w₂ᵀ)) (boxFun (G.M.vac v) (fun x => star (G.M.vac v x)))
         (B.ψ (⅟(2 : AF F) * symp (cA σ) (inclR (F := F) (AF F) (θ : E)) (incM F G.W.J) (dbl (incM F G.V.J))
           (Matrix.fromCols w₁ᵀ w₂ᵀ) (Matrix.fromCols w₁ᵀ w₂ᵀ)) • (boxFun (G.M.vac v) (fun x => star (G.M.vac v x))))) := by
-  first | exact @GlobalTheory.DblVacEigen.doubled_vac_eigen | exact GlobalTheory.DblVacEigen.doubled_vac_eigen | (intros; apply GlobalTheory.DblVacEigen.doubled_vac_eigen <;> assumption)
+  exact @GlobalTheory.DblVacEigen.doubled_vac_eigen

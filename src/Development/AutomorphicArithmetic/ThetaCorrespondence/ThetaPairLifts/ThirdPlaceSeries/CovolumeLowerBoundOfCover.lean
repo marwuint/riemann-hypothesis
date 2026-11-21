@@ -65,6 +65,6 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 open Formalism.MainNotions
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.exists_neg_unitE_le_log_ratAt : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → Closed FamHyp fun Fm _ => ∃ K : ℝ, 0 ≤ K ∧ _root_.GlobalTheory.CovTop.EventuallyAtAllPoints Fm fun _ _ _ p => ∀ i, -(K * unitE p) ≤ Real.log (ratAt p i) := by
-  first | exact @_root_.GlobalTheory.CovTop.MeasLow.nef_share_lower_bound_alt | exact _root_.GlobalTheory.CovTop.MeasLow.nef_share_lower_bound_alt | (intros; apply _root_.GlobalTheory.CovTop.MeasLow.nef_share_lower_bound_alt <;> assumption)
+  exact @_root_.GlobalTheory.CovTop.MeasLow.nef_share_lower_bound_alt
 end
 end

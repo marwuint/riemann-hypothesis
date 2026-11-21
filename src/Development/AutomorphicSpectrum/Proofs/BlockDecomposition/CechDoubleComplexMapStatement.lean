@@ -30,4 +30,4 @@ theorem _root_.GlobalTheory.T.cech_double_complex_map : ∀ {R : Type} [CommRing
       ∀ p q (x : ((dbl U hU F).col p).H q) (i : Fin (p + 1) → ι'),
         (tupM U' hU' F' i).pull q ((φ.col p).mapH q x) =
           (morU m (U := capT U (τ ∘ i)) (U' := capT U' i) fun T hT k => hτ (i k) T (hT k)).pull q ((tupM U hU F (τ ∘ i)).pull q x) := by
-  first | exact @GlobalTheory.CompanionTheory.CechSerre.dbl_mor | exact GlobalTheory.CompanionTheory.CechSerre.dbl_mor | (intros; apply GlobalTheory.CompanionTheory.CechSerre.dbl_mor <;> assumption)
+  exact @GlobalTheory.CompanionTheory.CechSerre.dbl_mor

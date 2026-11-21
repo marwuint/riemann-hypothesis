@@ -26,5 +26,5 @@ theorem _root_.GlobalTheory.T.weil_representation_pair_continuous : ∀ (F E : T
               GlobalTheory.WeilSchrodinger.IsTransportF σ B.ψ co ω om →
               (∀ p, ∀ φ ∈ schA F κ, om p φ ∈ schA F κ) ∧
               ∀ p w, ∀ φ ∈ schA F κ, om p (co.rho B.ψ w φ) = co.rho B.ψ (actAB (cA σ) p w) (om p φ) := by
-  first | exact @_root_.GlobalTheory.TransportHeisF.pres_impl_k | exact _root_.GlobalTheory.TransportHeisF.pres_impl_k | (intros; apply _root_.GlobalTheory.TransportHeisF.pres_impl_k <;> assumption)
+  exact @_root_.GlobalTheory.TransportHeisF.pres_impl_k
 end

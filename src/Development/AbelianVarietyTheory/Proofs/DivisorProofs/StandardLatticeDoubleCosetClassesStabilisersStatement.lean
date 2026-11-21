@@ -32,4 +32,4 @@ theorem _root_.GlobalTheory.T.standardLattice_doubleCosetClasses_stabilisers : �
       (∀ g : GA D A', ∃! x, ∃ γ ∈ GQ A', ∃ k ∈ (Formalism.L2.DIV.St r.β).comap (Lev.finE A'), g = γ * gx x * k) ∧
       ∀ x, {γ : GA D A' | γ ∈ GQ A' ∧ (gx x)⁻¹ * γ * gx x ∈ (Formalism.L2.DIV.St r.β).comap (Lev.finE A')}.ncard =
         GlobalTheory.NormSum.gam D (GlobalTheory.NormSum.intG D n) x.out := by
-  first | exact @GlobalTheory.BotClassDict.classes_and_stabilisers | exact GlobalTheory.BotClassDict.classes_and_stabilisers | (intros; apply GlobalTheory.BotClassDict.classes_and_stabilisers <;> assumption)
+  exact @GlobalTheory.BotClassDict.classes_and_stabilisers

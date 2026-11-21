@@ -9,4 +9,4 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory GlobalTheory.AbLaw
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.mumford_bundle_cech_cohomology_finrank : ∀ (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Spec (CommRingCat.of K))) (κ : Type) [LinearOrder κ] [Fintype κ] (D : κ → (P.A ⊗ P.A).left.Opens), (∀ i, IsAffineOpen (D i)) → ⨆ i, D i = ⊤ → ∀ n, Module.finrank K ((cechLB (P.A ⊗ P.A).hom (translDiff P.A P.L (𝟙 P.A)) D).homology n) = if n = P.g then 1 else 0 := by
-  first | exact @GlobalTheory.MumfordCohom.finrank_cechLB_translDiff | exact GlobalTheory.MumfordCohom.finrank_cechLB_translDiff | (intros; apply GlobalTheory.MumfordCohom.finrank_cechLB_translDiff <;> assumption)
+  exact @GlobalTheory.MumfordCohom.finrank_cechLB_translDiff

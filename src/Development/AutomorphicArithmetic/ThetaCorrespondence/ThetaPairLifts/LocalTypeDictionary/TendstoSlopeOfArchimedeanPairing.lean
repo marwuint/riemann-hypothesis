@@ -215,5 +215,5 @@ theorem _root_.GlobalTheory.T.archimedean_line_pairing_twist : _root_.GlobalTheo
       (∀ t : ℝ, om (γ (Multiplicative.ofAdd t), 1) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) f r) =
         GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) (c t) r) ∧
       Tendsto (fun t : ℝ => t⁻¹ • (c t - c 0)) (𝓝[≠] 0) (𝓝 g) := by
-  first | exact @_root_.GlobalTheory.ArchLinePair.exists_curve_along_archimedean_line | exact _root_.GlobalTheory.ArchLinePair.exists_curve_along_archimedean_line | (intros; apply _root_.GlobalTheory.ArchLinePair.exists_curve_along_archimedean_line <;> assumption)
+  exact @_root_.GlobalTheory.ArchLinePair.exists_curve_along_archimedean_line
 end

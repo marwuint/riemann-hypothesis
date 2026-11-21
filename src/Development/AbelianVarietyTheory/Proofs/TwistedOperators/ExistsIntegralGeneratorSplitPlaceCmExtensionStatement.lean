@@ -18,4 +18,4 @@ theorem _root_.GlobalTheory.T.exists_integral_generator_splitPlace_cmExtension :
     B.IsGood σ → ∀ v : Pl F, Formalism.MainNotions.SchurIrreducible.IsSplit (E := E) v →
     ∃ (a : 𝓞 E) (b c : 𝓞 F), (a : E) ^ 2 + algebraMap F E (b : F) * a + algebraMap F E (c : F) = 0 ∧
       σ (a : E) = -algebraMap F E (b : F) - a ∧ c ∈ v.asIdeal ∧ b ∉ v.asIdeal := by
-  first | exact @GlobalTheory.SplitGen.exists_integral_gen_split | exact GlobalTheory.SplitGen.exists_integral_gen_split | (intros; apply GlobalTheory.SplitGen.exists_integral_gen_split <;> assumption)
+  exact @GlobalTheory.SplitGen.exists_integral_gen_split

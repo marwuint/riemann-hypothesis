@@ -18,4 +18,4 @@ open GlobalTheory.StdRead
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.unitDetCharacter_integralFrame_pow_eq_one : ∀ {D : D7} (e : AE D) (𝔪 : Ideal (𝓞 D.host.E)), GoodMod e 𝔪 → ∀ ν : (AE D)ˣ →* Circle, KillsCong ν 𝔪 →
   ∀ {n : ℕ} (β : GL (Fin n) (EAf D)), IsIntM β.val → IsIntM (β⁻¹).val → ∃ m : ℕ, 0 < m ∧ unitChar ν e β.val ^ m = 1 := by
-  first | exact @GlobalTheory.StdRead.unitChar_pow_eq_one | exact GlobalTheory.StdRead.unitChar_pow_eq_one | (intros; apply GlobalTheory.StdRead.unitChar_pow_eq_one <;> assumption)
+  exact @GlobalTheory.StdRead.unitChar_pow_eq_one

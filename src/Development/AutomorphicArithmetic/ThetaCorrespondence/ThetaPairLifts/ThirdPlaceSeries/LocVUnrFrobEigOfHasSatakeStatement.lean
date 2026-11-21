@@ -16,5 +16,5 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.unr_and_frobEig_eq_inv_satake : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (D : D7) (P : _root_.GlobalTheory.NPin.CharacterChoiceData hL D) (i : D.nd.Loc) (Q : D.naut.AV i) (sp : SplitPlace D.host.E) (σ : GlobalTheory.SmGL.IrrRep (GL (Fin D.R.nV) (sp.w.adicCompletion D.host.E))) (α : Fin D.R.nV → ℂˣ), IsLocS (P.H.av.S i Q) sp σ → GlobalTheory.SmGL.HasSatake σ.ρ α → D.naut.unr (D.naut.locV i Q sp.w) ∧ D.naut.frobEig (D.naut.locV i Q sp.w) = Finset.univ.val.map (fun k => (((α k)⁻¹ : ℂˣ) : ℂ)) := by
-  first | exact @_root_.GlobalTheory.LlcSplit.locV_unr_frobEig_of_hasSatake_alt | exact _root_.GlobalTheory.LlcSplit.locV_unr_frobEig_of_hasSatake_alt | (intros; apply _root_.GlobalTheory.LlcSplit.locV_unr_frobEig_of_hasSatake_alt <;> assumption)
+  exact @_root_.GlobalTheory.LlcSplit.locV_unr_frobEig_of_hasSatake_alt
 end

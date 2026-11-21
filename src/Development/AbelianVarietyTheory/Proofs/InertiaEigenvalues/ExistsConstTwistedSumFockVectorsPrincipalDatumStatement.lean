@@ -17,4 +17,4 @@ theorem _root_.GlobalTheory.T.exists_const_twistedSum_fockVectors_principalDatum
       ∑ u ∈ F.attach, ((B.levLam ψ ⟨u.1, hF u.1 u.2⟩ : ℂˣ) : ℂ) •
         ω ((((GlobalTheory.ClassRegroup.finEquiv S).symm u.1 : GfC S) : GA D S), 1) (B.F.fock ((GlobalTheory.FlatVecSum.princ B).vecFlat ψ) P) =
       κ • B.F.fock (B.vecFlat ψ) P := by
-  first | exact @GlobalTheory.LevTransl.sum_om_fock_princ | exact GlobalTheory.LevTransl.sum_om_fock_princ | (intros; apply GlobalTheory.LevTransl.sum_om_fock_princ <;> assumption)
+  exact @GlobalTheory.LevTransl.sum_om_fock_princ

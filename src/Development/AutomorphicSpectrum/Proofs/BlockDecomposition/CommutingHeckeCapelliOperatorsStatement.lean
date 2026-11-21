@@ -24,4 +24,4 @@ theorem _root_.GlobalTheory.T.commuting_hecke_capelli_operators : ∀ (E : Type)
     (∀ τ, a τ (r - 1) = ∑ i : Fin r, Eop (a := r + s) τ (Fin.castAdd s i) (Fin.castAdd s i) + t τ • 1) ∧
     (∀ τ u, GlobalTheory.CompanionTheory.CTFin.capR r s τ (u - (s : ℂ) / 2) = ∑ k ∈ Finset.range (r + 1), u ^ k • a τ k) ∧
     (∀ τ u, GlobalTheory.CompanionTheory.CTFin.capS r s τ (u + (r : ℂ) / 2) = ∑ k ∈ Finset.range (s + 1), u ^ k • b τ k) := by
-  first | exact @GlobalTheory.CompanionTheory.CapCoeff.exists_coeffs | exact GlobalTheory.CompanionTheory.CapCoeff.exists_coeffs | (intros; apply GlobalTheory.CompanionTheory.CapCoeff.exists_coeffs <;> assumption)
+  exact @GlobalTheory.CompanionTheory.CapCoeff.exists_coeffs

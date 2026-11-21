@@ -96,5 +96,5 @@ theorem _root_.GlobalTheory.T.twist_jetKappa_split_move : _root_.GlobalTheory.Fu
       ∃ ζ : ℂ, (∃ n : ℕ, 0 < n ∧ ζ ^ n = 1) ∧ ∃ r : ℝ, 0 < r ∧
         GlobalTheory.MovedKappaEx.JetKap ch p (s * x) (s' * y)
           ((r : ℂ) * ζ * ((((ch.G.chrT p x₀)⁻¹ * ch.G.chrS p y₀ : Circle)) : ℂ) * κ) := by
-  first | exact @_root_.GlobalTheory.SplitMoveKappa.jetKappa_split_move | exact _root_.GlobalTheory.SplitMoveKappa.jetKappa_split_move | (intros; apply _root_.GlobalTheory.SplitMoveKappa.jetKappa_split_move <;> assumption)
+  exact @_root_.GlobalTheory.SplitMoveKappa.jetKappa_split_move
 end

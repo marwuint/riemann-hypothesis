@@ -22,4 +22,4 @@ theorem _root_.GlobalTheory.T.sheet_integral_projection_formula : ∀ (m : ℕ) 
       ∀ (h : (((k : Fin (m + 1)) → Bk n k) → ℂ) → ℝ) (T : ι → ℝ),
       (∀ l, v ∈ (e l) '' S l → h (segre (Γ l v)) = T l) →
       ∑ᶠ w ∈ fibre (ptIdeal (i (genericPoint X))) Ψ v, h w = ∑' l, ((e l) '' S l).indicator (fun _ => T l) v := by
-  first | exact @GlobalTheory.CompanionTheory.MixZ.ArchEq.finsum_fibre_eq | exact GlobalTheory.CompanionTheory.MixZ.ArchEq.finsum_fibre_eq | (intros; apply GlobalTheory.CompanionTheory.MixZ.ArchEq.finsum_fibre_eq <;> assumption)
+  exact @GlobalTheory.CompanionTheory.MixZ.ArchEq.finsum_fibre_eq

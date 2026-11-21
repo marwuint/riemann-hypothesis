@@ -23,4 +23,4 @@ theorem _root_.GlobalTheory.T.exists_inertPlace_transversal_of_localCore : (∀ 
         ((GlobalTheory.DblVac.antiCols (F := F) (E := E) n)ᵀ * GlobalTheory.DblVac.matD g * GlobalTheory.DblVac.antiCols n +
           (GlobalTheory.DblVac.antiCols (F := F) (E := E) n)ᵀ * GlobalTheory.DblVac.matD g * (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E)) * Z)⁻¹ *ᵥ z ∈
           GlobalTheory.InertSph.latAt X v := by
-  first | exact @GlobalTheory.TransvChoose.exists_transversal | exact GlobalTheory.TransvChoose.exists_transversal | (intros; apply GlobalTheory.TransvChoose.exists_transversal <;> assumption)
+  exact @GlobalTheory.TransvChoose.exists_transversal

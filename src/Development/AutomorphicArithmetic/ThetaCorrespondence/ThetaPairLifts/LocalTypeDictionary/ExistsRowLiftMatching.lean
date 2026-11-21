@@ -53,5 +53,5 @@ theorem _root_.GlobalTheory.T.twist_row_lift_exists : _root_.GlobalTheory.FunPr.
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A},
     HidaSetting large₂ R F → ∀ (ch : Choice R), ch.IsBase → ∀ (CF : ℝ), ch.AtScale CF large₂.sc.b →
     ∃ G' : GlobalTheory.Grid.GridPre R, G'.Is ∧ GlobalTheory.RowLift.RowMatchS ch G' := by
-  first | exact @_root_.GlobalTheory.RowLift.exists_row_lift_matching | exact _root_.GlobalTheory.RowLift.exists_row_lift_matching | (intros; apply _root_.GlobalTheory.RowLift.exists_row_lift_matching <;> assumption)
+  exact @_root_.GlobalTheory.RowLift.exists_row_lift_matching
 end

@@ -22,4 +22,4 @@ theorem _root_.GlobalTheory.T.exists_archimedeanPhaseSpace_complexStructure_sign
         (∀ w, u'.map (piInf (τ w)) = A w * ((((ε w : ℤ) : ℂ) * Complex.I) • (Jm (P w) (Q w) * c w * Jm (R w) (S w))) * (C w)ᵀ) ∧
         (∀ w, u₁.map (piInf (τ w)) = A w * (Complex.I • (Jm (P w) (Q w) * c w * Jm (R w) (S w))) * (C w)ᵀ) ∧
         coord d u = y ∧ coord d u' = J (y - (2 : ℝ) • e y) ∧ coord d u₁ = J y := by
-  first | exact @GlobalTheory.HoweD.exists_bridgeD | exact GlobalTheory.HoweD.exists_bridgeD | (intros; apply GlobalTheory.HoweD.exists_bridgeD <;> assumption)
+  exact @GlobalTheory.HoweD.exists_bridgeD

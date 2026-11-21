@@ -12,4 +12,4 @@ theorem _root_.GlobalTheory.T.hermitianDualLattice_baseChange : ∀ (K K' : Type
       (Submodule.span (𝓞 K') ((fun x : Fin d → K => Matrix.mulVec G fun k => φ (x k)) '' (A : Set (Fin d → K)))) =
     Submodule.span (𝓞 K') ((fun x : Fin d → K => Matrix.mulVec G fun k => φ (x k)) ''
       ((Formalism.HermitianLatticesTheory.dual (Formalism.DivisionValues.hform H) A : Submodule (𝓞 K) (Fin d → K)) : Set (Fin d → K))) := by
-  first | exact @GlobalTheory.Mem.DualBC.dual_baseChange | exact GlobalTheory.Mem.DualBC.dual_baseChange | (intros; apply GlobalTheory.Mem.DualBC.dual_baseChange <;> assumption)
+  exact @GlobalTheory.Mem.DualBC.dual_baseChange

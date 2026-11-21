@@ -20,4 +20,4 @@ theorem _root_.GlobalTheory.T.ordQ_mapDomain_residuePlace_transport : ∀ {L K :
   (∀ P : Place cL, P.IsPrimeOf Q → P.ring ≠ S.ring → P.ring ≠ E.ring →
     P.ordQ (Finsupp.mapDomain (fun g : S.ring => (g : L)) φ) = 0) →
   F.ordQ (Finsupp.mapDomain ψ φ) = E.ordQ (Finsupp.mapDomain (fun g : S.ring => (g : L)) φ) := by
-  first | exact @GlobalTheory.FieldPair.ordQ_mapDomain_residue_eq | exact GlobalTheory.FieldPair.ordQ_mapDomain_residue_eq | (intros; apply GlobalTheory.FieldPair.ordQ_mapDomain_residue_eq <;> assumption)
+  exact @GlobalTheory.FieldPair.ordQ_mapDomain_residue_eq

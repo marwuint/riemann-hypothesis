@@ -22,4 +22,4 @@ theorem _root_.GlobalTheory.T.inertCompletionToAdeles_properties : ∀ {F E : Ty
   (∀ x, GlobalTheory.InertBigCell.iotaW hw (2⁻¹ * x) = ⅟(2 : AF F) • GlobalTheory.InertBigCell.iotaW hw x) ∧
   (∀ e : E, GlobalTheory.InertBigCell.iotaW hw (algebraMap E (w.adicCompletion E) e) =
     algebraMap (AF F) (AE F E) (GlobalTheory.LatVac.liftV v 1) * inclR (F := F) (AF F) e) := by
-  first | exact @GlobalTheory.InertBigCell.iotaW_adelic_place | exact GlobalTheory.InertBigCell.iotaW_adelic_place | (intros; apply GlobalTheory.InertBigCell.iotaW_adelic_place <;> assumption)
+  exact @GlobalTheory.InertBigCell.iotaW_adelic_place

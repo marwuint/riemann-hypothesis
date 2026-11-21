@@ -10,4 +10,4 @@ open GlobalTheory.CompanionTheory.Ar.PB.WSq GlobalTheory.CompanionTheory.Ar.PB.W
 open GlobalTheory.CompanionTheory.Ar.PB.PFl
 set_option maxHeartbeats 1000000 in
 theorem _root_.GlobalTheory.T.pMat_stepCols_entry : ∀ (Ψ : Type) (N j : ℕ) (keep : Ψ × Fin N → Prop) (q : PIdx j keep), j ≤ N → keep (q.1.1.1, pStep j keep q.1.1.1 q.1.1.2.2) ∧ IsProperStep N j (pStep j keep q.1.1.1 q.1.1.2.2) ∧ q.1.1.2.2 ∈ stepCols N j (pStep j keep q.1.1.1 q.1.1.2.2) ∧ q.1.1.2.1 ∉ stepCols N j (pStep j keep q.1.1.1 q.1.1.2.2) ∧ ∀ c : PIdx j keep → ℂ, pMat keep c q.1.1.1 q.1.1.2.1 q.1.1.2.2 = c q ∧ ∀ x ∈ stepCols N j (pStep j keep q.1.1.1 q.1.1.2.2), x ≠ q.1.1.2.2 → pMat keep c q.1.1.1 x q.1.1.2.2 = 0 := by
-  first | exact @GlobalTheory.CompanionTheory.Ar.PB.PFl.SmallStep.pStep_reads | exact GlobalTheory.CompanionTheory.Ar.PB.PFl.SmallStep.pStep_reads | (intros; apply GlobalTheory.CompanionTheory.Ar.PB.PFl.SmallStep.pStep_reads <;> assumption)
+  exact @GlobalTheory.CompanionTheory.Ar.PB.PFl.SmallStep.pStep_reads

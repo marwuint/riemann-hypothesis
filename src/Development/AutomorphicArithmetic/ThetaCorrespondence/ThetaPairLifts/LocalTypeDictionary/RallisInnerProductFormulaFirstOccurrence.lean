@@ -109,5 +109,5 @@ theorem _root_.GlobalTheory.T.rallis_inner_product_formula_first_occurrence : _r
           ∀ (hd : P'.d = P.d) (h : GA D P.d),
             (∀ T, starRingEnd ℂ (P.coord h T) = κ * u * c0 s * ∑ T', (M T T' : ℂ) * P'.coord (hd ▸ h) T') ∧
             ∀ T', P'.coord (hd ▸ h) T' * (κ * u * c0 s) = ∑ T, (M' T' T : ℂ) * starRingEnd ℂ (P.coord h T) := by
-  first | exact @_root_.GlobalTheory.BotFormula.bottom_theta_petersson_norm_formula | exact _root_.GlobalTheory.BotFormula.bottom_theta_petersson_norm_formula | (intros; apply _root_.GlobalTheory.BotFormula.bottom_theta_petersson_norm_formula <;> assumption)
+  exact @_root_.GlobalTheory.BotFormula.bottom_theta_petersson_norm_formula
 end

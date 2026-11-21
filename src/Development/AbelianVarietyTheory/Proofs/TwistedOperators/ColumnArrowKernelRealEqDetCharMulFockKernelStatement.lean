@@ -35,4 +35,4 @@ theorem _root_.GlobalTheory.T.columnArrowKernel_real_eq_detChar_mul_fockKernel :
                 Matrix (Fin (G.V (.top j)).rank) (Fin (G.V (.top j)).rank) ℂ)ᵀ)
               (GlobalTheory.AvgCol.frChInv W S.N j Q))))
             (x : GA D (G.V (.top j))) (finOf _ h : GA D (G.V (.top (j + 1)))) := by
-  first | exact @GlobalTheory.ColKer.kerA_col_mul_real | exact GlobalTheory.ColKer.kerA_col_mul_real | (intros; apply GlobalTheory.ColKer.kerA_col_mul_real <;> assumption)
+  exact @GlobalTheory.ColKer.kerA_col_mul_real

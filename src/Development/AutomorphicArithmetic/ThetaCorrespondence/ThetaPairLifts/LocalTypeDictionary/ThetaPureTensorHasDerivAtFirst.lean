@@ -80,5 +80,5 @@ theorem _root_.GlobalTheory.T.theta_pure_tensor_hasDerivAt_first : GlobalTheory.
           ∃ L : ℝ →+ WO (sgn true W) X, Continuous L ∧ (∀ t, (L t).map (finPart D) = 0) ∧
             GlobalTheory.TripleRead.thO Γ.M ψ (sgn true W).gram e (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f₁ φ) =
               fun x => deriv (fun t : ℝ => heisO ψ (sgn true W) X (L t) (GlobalTheory.TripleRead.thO Γ.M ψ (sgn true W).gram e (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ)) x) 0 := by
-  first | exact @_root_.GlobalTheory.ThetaDer.theta_pure_tensor_first_deriv | exact _root_.GlobalTheory.ThetaDer.theta_pure_tensor_first_deriv | (intros; apply _root_.GlobalTheory.ThetaDer.theta_pure_tensor_first_deriv <;> assumption)
+  exact @_root_.GlobalTheory.ThetaDer.theta_pure_tensor_first_deriv
 end

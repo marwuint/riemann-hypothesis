@@ -17,4 +17,4 @@ theorem _root_.GlobalTheory.T.torsion_shape_of_torsion_counts : ∀ {O : Type} [
       Nat.card (LinearMap.ker (ϖ ^ n • LinearMap.id : Hc →ₗ[O] Hc)) ≤ C * Nat.card (IsLocalRing.ResidueField O) ^ (n * d)) →
     Nat.card (LinearMap.ker (ϖ ^ 1 • LinearMap.id : Hc →ₗ[O] Hc)) ≤ Nat.card (IsLocalRing.ResidueField O) ^ (d + 1) →
     Formalism.RepresentationBoundsCohomology.JT.QuotShape Hc ⊥ d := by
-  first | exact @GlobalTheory.ShapeNeg.Shape.quotShape_of_counts | exact GlobalTheory.ShapeNeg.Shape.quotShape_of_counts | (intros; apply GlobalTheory.ShapeNeg.Shape.quotShape_of_counts <;> assumption)
+  exact @GlobalTheory.ShapeNeg.Shape.quotShape_of_counts

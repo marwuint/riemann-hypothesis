@@ -16,4 +16,4 @@ theorem _root_.GlobalTheory.T.scaling_open_subgroups_finite : ∀ (F : Type) [Fi
       ∃ R : Finset (κ → FiniteAdeleRing (𝓞 F) F), g = ∑ r ∈ R, g r • fun y : κ → FiniteAdeleRing (𝓞 F) F =>
         ∏ᶠ v, Set.indicator {x : κ → v.adicCompletion F | ∀ i, x i - Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (r i) ∈ B v}
           (1 : (κ → v.adicCompletion F) → ℂ) (fun i => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (y i)) := by
-  first | exact @GlobalTheory.BoxCosetSum.eq_sum_finprod_box_indicator | exact GlobalTheory.BoxCosetSum.eq_sum_finprod_box_indicator | (intros; apply GlobalTheory.BoxCosetSum.eq_sum_finprod_box_indicator <;> assumption)
+  exact @GlobalTheory.BoxCosetSum.eq_sum_finprod_box_indicator

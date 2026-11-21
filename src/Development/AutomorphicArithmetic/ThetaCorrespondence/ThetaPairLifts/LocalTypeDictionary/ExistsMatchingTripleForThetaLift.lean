@@ -77,5 +77,5 @@ theorem _root_.GlobalTheory.T.exists_matching_triple_for_theta_lift : GlobalTheo
       GlobalTheory.TripleRead.IsTransp ψ false Γ.M' om' ωB e (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W₁ (-1) h.JW₁) (GlobalTheory.TripleRead.toUX X e h.JX) →
       ∀ R Rf, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsMatched Bs Γ Xc om om' R Rf →
         ∃ Pi rf rl p p', IsMatch ψ θ A A₁ B α β ωA ωB Pi rf rl p p' := by
-  first | exact @_root_.GlobalTheory.TripleAssembly.triple_exists_matching | exact _root_.GlobalTheory.TripleAssembly.triple_exists_matching | (intros; apply _root_.GlobalTheory.TripleAssembly.triple_exists_matching <;> assumption)
+  exact @_root_.GlobalTheory.TripleAssembly.triple_exists_matching
 end
